@@ -10,5 +10,6 @@
     "experimentalTernaries": true,
     "singleAttributePerLine": false,
     "arrowParens": "always",
-    "htmlWhitespaceSensitivity": "css"
+    "htmlWhitespaceSensitivity": "css",
+    "endOfLine": "crlf"
 }

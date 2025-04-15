@@ -16,5 +16,6 @@ export const Default: Story = {
         svgContent: homeFilled,
         ariaLabel: "ariaLabel",
         onClick: fn(),
+        isSmall: false,
     },
 };

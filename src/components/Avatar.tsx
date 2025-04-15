@@ -7,9 +7,26 @@ interface AvatarProps {
 }
 
 const getInitials = (name: string) => {
-    const initials = name.match(/\b\w/g) || [];
-    return ((initials.shift() || "") + (initials.pop() || "")).toUpperCase();
-}
+    const initials = name
+        .trim()
+        .replace(/\s+/g, " ")
+        .split(" ")
+        .map((word) => word.charAt(0));
+
+    if (initials.length === 0) {
+        return "?";
+    }
+
+    if (initials.length === 1) {
+        return initials[0].toUpperCase();
+    }
+
+    if (initials.length > 2) {
+        initials.splice(2, initials.length - 2);
+    }
+
+    return initials.join("").toUpperCase();
+};
 
 const getSize = (size: string) => {
     switch (size) {
@@ -22,13 +39,14 @@ const getSize = (size: string) => {
         default:
             return styles.medium;
     }
-}
+};
 
-const Avatar: React.FC<AvatarProps> = ( { userName, size = "medium" }) => {
-  return (
-    <div className={`${styles.avatar} ${getSize(size)}`} role="presentation">{getInitials(userName)}</div>
-
-  );
-}
+const Avatar: React.FC<AvatarProps> = ({ userName, size = "medium" }) => {
+    return (
+        <div className={`${styles.avatar} ${getSize(size)}`} role="presentation">
+            {getInitials(userName)}
+        </div>
+    );
+};
 
 export default Avatar;

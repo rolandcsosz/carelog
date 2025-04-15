@@ -1,0 +1,29 @@
+.container {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+    border-radius: 15px;
+    border: 1px solid #e1e1e1;
+    height: 50px;
+    padding: 5px;
+}
+
+.button {
+    background-color: transparent;
+    border-radius: 10px;
+    color: #2f2f2f;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+.selected {
+    background-color: #3182ce;
+    color: white;
+}

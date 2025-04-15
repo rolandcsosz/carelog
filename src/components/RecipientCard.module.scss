@@ -1,0 +1,96 @@
+.homecard {
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 1);
+    display: flex;
+    gap: 10px;
+    justify-content: start;
+    padding: 15px;
+    border: 1px solid rgba(239, 238, 238, 1);
+}
+.homecardcontainer {
+    background-color: rgba(255, 255, 255, 1);
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: space-between;
+    flex: 1;
+    flex-basis: 0%;
+}
+.iconrow {
+    background-color: rgba(255, 255, 255, 1);
+    display: flex;
+    width: 100%;
+    align-items: center;
+    overflow: hidden;
+    justify-content: start;
+}
+
+.spacer {
+    align-self: stretch;
+    display: flex;
+    width: 81px;
+    height: 24px;
+    flex: 1;
+    flex-basis: 0%;
+}
+
+.name {
+    color: var(--Black, #000);
+    font-feature-settings:
+        "liga" off,
+        "clig" off;
+    letter-spacing: 0.8px;
+    align-self: stretch;
+    margin: auto 0;
+    margin-left: 10px;
+    font:
+        700 15px/1.1 Roboto,
+        -apple-system,
+        Roboto,
+        Helvetica,
+        sans-serif;
+}
+
+.img {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 24px;
+    align-self: stretch;
+    margin: auto 0;
+}
+
+.checkCircle {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    justify-content: start;
+    width: 20px;
+    margin: auto 0;
+}
+.img2 {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 20px;
+    fill: var(--green-500, #38a169);
+    align-self: stretch;
+    margin: auto 0;
+}
+.detailsrow {
+    background-color: rgba(255, 255, 255, 1);
+    margin-top: 25px;
+    width: 100%;
+    overflow: hidden;
+    color: rgba(0, 0, 0, 1);
+    letter-spacing: 0.8px;
+    font:
+        400 15px/17px Roboto,
+        -apple-system,
+        Roboto,
+        Helvetica,
+        sans-serif;
+}

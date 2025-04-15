@@ -1,18 +1,19 @@
 import React from "react";
-import styles from "./InputDesign.module.scss";
+import styles from "./IconButton.module.scss";
 
 interface IconButtonProps {
-  svgContent: string;
-  ariaLabel: string;
-  onClick?: () => void;
+    svgContent: string | null | undefined;
+    ariaLabel: string;
+    onClick?: () => void;
+    isSmall?: boolean;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ svgContent, ariaLabel, onClick = () => {} }) => {
-  return (
-    <button className={styles.navIconButton} aria-label={ariaLabel} onClick={onClick}>
-      <img src={svgContent} alt={ariaLabel} />
-    </button>
-  );
+const IconButton: React.FC<IconButtonProps> = ({ svgContent, ariaLabel, onClick = () => {}, isSmall = false }) => {
+    return svgContent === null ? null : (
+            <button className={`${styles.iconButton} ${styles.small}`} aria-label={ariaLabel} onClick={onClick}>
+                <img src={svgContent} alt={ariaLabel} />
+            </button>
+        );
 };
 
 export default IconButton;

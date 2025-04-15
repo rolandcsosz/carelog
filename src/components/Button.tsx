@@ -23,11 +23,7 @@ const getSize = (size: string) => {
 export const Button = ({ primary = false, size = "medium", label, ...props }: ButtonProps) => {
     const mode = primary ? styles.primary : styles.secondary;
     return (
-        <button
-            type="button"
-            className={[styles.button, `${getSize(size)}`, mode].join(" ")}
-            {...props}
-        >
+        <button type="button" className={[styles.button, `${getSize(size)}`, mode].join(" ")} {...props}>
             {label}
         </button>
     );
