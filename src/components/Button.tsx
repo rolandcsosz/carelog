@@ -5,6 +5,7 @@ export interface ButtonProps {
     size?: "small" | "medium" | "large";
     label: string;
     onClick?: () => void;
+    fillWidth?: boolean;
 }
 
 const getSize = (size: string) => {
@@ -20,10 +21,15 @@ const getSize = (size: string) => {
     }
 };
 
-export const Button = ({ primary = false, size = "medium", label, ...props }: ButtonProps) => {
+export const Button = ({ primary = false, size = "medium", label, fillWidth = false }: ButtonProps) => {
     const mode = primary ? styles.primary : styles.secondary;
     return (
-        <button type="button" className={[styles.button, `${getSize(size)}`, mode].join(" ")} {...props}>
+        <button
+            type="button"
+            className={[styles.button, `${getSize(size)}`, mode].join(" ")}
+            style={{ width: fillWidth ? "100%" : "auto" }}
+            onClick={() => {}}
+        >
             {label}
         </button>
     );

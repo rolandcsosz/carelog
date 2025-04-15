@@ -1,0 +1,22 @@
+.dropdown {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    font:
+        400 15px/32px Roboto,
+        -apple-system,
+        Roboto,
+        Helvetica,
+        sans-serif;
+
+    &::placeholder {
+        color: #a0aec0;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #a0aec0;
+    }
+}

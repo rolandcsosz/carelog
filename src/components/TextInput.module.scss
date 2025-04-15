@@ -1,0 +1,42 @@
+.textInput {
+    display: flex;
+    height: 32px;
+    padding: 0 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    font:
+        400 15px/110% Roboto,
+        -apple-system,
+        Roboto,
+        Helvetica,
+        sans-serif;
+
+    &::placeholder {
+        color: #a0aec0;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #a0aec0;
+    }
+}
+
+.fill {
+    width: calc(100% - 32px);
+}
+
+.searchContainer {
+    display: flex;
+    width: calc(100% + 16px);
+}
+
+.searchIcon {
+    position: relative;
+    top: 0;
+    right: 26px;
+}

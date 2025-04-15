@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import styles from "./PersonCard.module.scss";
 import chevronRight from "../assets/chevron-right.svg";
