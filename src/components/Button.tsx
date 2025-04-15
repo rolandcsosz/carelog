@@ -21,14 +21,20 @@ const getSize = (size: string) => {
     }
 };
 
-export const Button = ({ primary = false, size = "medium", label, fillWidth = false }: ButtonProps) => {
+export const Button = ({
+    primary = false,
+    size = "medium",
+    label,
+    fillWidth = false,
+    onClick = () => {},
+}: ButtonProps) => {
     const mode = primary ? styles.primary : styles.secondary;
     return (
         <button
             type="button"
             className={[styles.button, `${getSize(size)}`, mode].join(" ")}
             style={{ width: fillWidth ? "100%" : "auto" }}
-            onClick={() => {}}
+            onClick={onClick}
         >
             {label}
         </button>

@@ -4,14 +4,20 @@ import IconButton from "./IconButton";
 
 type MenuProps = {
     config: MenuConfig;
+    onMenuItemClick?: (item: string) => void;
 };
 
-const Menu: React.FC<MenuProps> = ({ config }) => {
+const Menu: React.FC<MenuProps> = ({ config, onMenuItemClick = () => {} }) => {
     const [selectedMenu, setSelectedMenu] = React.useState<string>("");
+
+    const handleMenuItemClick = (item: string) => {
+        setSelectedMenu(item);
+        onMenuItemClick(item);
+    };
 
     useEffect(() => {
         if (Object.keys(config) && Object.keys(config).length > 0) {
-            setSelectedMenu(Object.keys(config)[0]);
+            handleMenuItemClick(Object.keys(config)[0]);
         }
     }, [config]);
 
@@ -23,7 +29,7 @@ const Menu: React.FC<MenuProps> = ({ config }) => {
                         key={menu}
                         svgContent={selectedMenu === menu ? config[menu].selectedIcon : config[menu].unselectedIcon}
                         ariaLabel={config[menu].alt}
-                        onClick={() => setSelectedMenu(menu)}
+                        onClick={() => handleMenuItemClick(menu)}
                     />
                 ))}
             </div>

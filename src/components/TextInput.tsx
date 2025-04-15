@@ -4,14 +4,21 @@ import styles from "./TextInput.module.scss";
 interface TextInputProps {
     text: string;
     placeholder?: string;
+    type?: string;
     onChange: (value: string) => void;
     fillWidth?: boolean;
 }
 
-const TextInput: React.FC<TextInputProps> = ({ text, placeholder = "", onChange, fillWidth = false }) => {
+const TextInput: React.FC<TextInputProps> = ({
+    text,
+    placeholder = "",
+    type = "text",
+    onChange,
+    fillWidth = false,
+}) => {
     return (
         <input
-            type="text"
+            type={type}
             className={`${styles.textInput} ${fillWidth ? styles.fill : ""}`}
             value={text}
             onChange={(e) => onChange(e.target.value)}
