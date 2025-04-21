@@ -1,7 +1,5 @@
-// PopupContext.tsx
 import { createContext, useCallback, useContext, useState, ReactNode, JSX } from "react";
 
-// Define the context type interface
 interface PopupContextType {
     isOpen: boolean;
     content: ReactNode | null;
@@ -9,10 +7,8 @@ interface PopupContextType {
     openPopup: (component: ReactNode) => void;
 }
 
-// Create the PopupContext with an undefined default value
-export const PopupContext = createContext<PopupContextType | undefined>(undefined);
+const PopupContext = createContext<PopupContextType | undefined>(undefined);
 
-// Provider component
 export const PopupProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     const [isOpen, setIsOpen] = useState(false);
     const [content, setContent] = useState<ReactNode | null>(null);
@@ -30,7 +26,6 @@ export const PopupProvider = ({ children }: { children: ReactNode }): JSX.Elemen
     return <PopupContext.Provider value={{ isOpen, content, openPopup, closePopup }}>{children}</PopupContext.Provider>;
 };
 
-// Custom hook to use the popup context
 export const usePopup = (): PopupContextType => {
     const context = useContext(PopupContext);
     if (!context) {

@@ -17,23 +17,40 @@
     bottom: 0;
     width: 100%;
     height: auto;
-    background-color: white; /* Optional: Add a background to ensure visibility */
+    background-color: white;
 }
 
-.content {
+.screenContainer {
+    width: 100%;
+    height: calc(100% - 84px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.screenStack {
     z-index: 1;
     top: 0;
     position: fixed;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align content to the left */
-    justify-content: flex-start; /* Align content to the top */
-    overflow-y: auto; /* Enable scrolling for the content */
-    height: calc(100vh - 84px); /* Adjust height to exclude the navigation bar */
-    width: 100vw;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+    height: calc(100% - 84px);
+    width: 100%;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+}
+
+.screenStack > * {
+    flex: 1 0 100%;
+    max-width: 100%;
+    height: 100%;
 }
 
 .open {
