@@ -18,30 +18,33 @@ export const NavigationProvider = ({ children }: { children: ReactNode }): JSX.E
 
     const addPageToStack = useCallback(
         (page: ReactNode) => {
-            let updatedPages = [...pages];
-
-            if (bufferAdded) {
-                setBufferAdded(false);
-                updatedPages = updatedPages.slice(0, -1);
-            }
-
-            setPages([...updatedPages, page]);
+            setPages((prevPages) => {
+                let updatedPages = [...prevPages];
+                if (bufferAdded && updatedPages.length > 0) {
+                    updatedPages = updatedPages.slice(0, -1);
+                }
+                const newPages = [...updatedPages, page];
+                return newPages;
+            });
 
             setActiveIndex((prevIndex) => prevIndex + 1);
         },
-        [[pages]],
+        [pages, bufferAdded, setActiveIndex, setPages],
     );
 
     const removeLastPageFromStack = useCallback(() => {
-        setActiveIndex((prevIndex) => prevIndex - 1);
+        setActiveIndex((prevIndex) => Math.max(prevIndex - 1, 0));
 
-        if (activeIndex === pages.length) {
-            setBufferAdded(true);
-            return;
-        }
-
-        setPages((prevPages) => prevPages.slice(0, -1));
-    }, [activeIndex, pages]);
+        setTimeout(() => {
+            setPages((prevPages) => {
+                const updatedPages = [...prevPages];
+                if (updatedPages.length > 0) {
+                    updatedPages.pop();
+                }
+                return updatedPages;
+            });
+        }, 300);
+    }, [setActiveIndex, setPages]);
 
     const setActiveMenu = useCallback((menu: string) => {
         setActiveIndex((prevIndex) => prevIndex + 1);

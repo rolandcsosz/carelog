@@ -5,11 +5,14 @@ import PersonCard from "../../components/PersonCard";
 import { Button } from "../../components/Button";
 import { usePopup } from "../../context/popupContext";
 import NameFormRow from "./NameFormRow";
+import { useNavigation } from "../../context/navigationContext";
+import UserProfile from "../shared/UserProfile";
 
 const Caregivers: React.FC = () => {
     const [searchText, setSearchText] = React.useState<string>("");
     const [, setNewName] = React.useState<string>("");
     const { openPopup } = usePopup();
+    const { addPageToStack, removeLastPageFromStack } = useNavigation();
 
     return (
         <div className={styles.page}>
@@ -22,7 +25,18 @@ const Caregivers: React.FC = () => {
             />
             <div className={styles.caregiversContainer}>
                 {Array.from({ length: 10 }).map((_, i) => (
-                    <PersonCard key={i} userName="Gondozó Gondozó" />
+                    <PersonCard
+                        key={i}
+                        userName={`Gondozó Gondozó ${i}`}
+                        onClick={() => {
+                            addPageToStack(
+                                <UserProfile
+                                    userName={`Gondozó Gondozó ${i}`}
+                                    backButtonOnClick={removeLastPageFromStack}
+                                />,
+                            );
+                        }}
+                    />
                 ))}
             </div>
 

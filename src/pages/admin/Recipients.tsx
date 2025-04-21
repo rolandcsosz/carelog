@@ -6,13 +6,13 @@ import { Button } from "../../components/Button";
 import { usePopup } from "../../context/popupContext";
 import NameFormRow from "./NameFormRow";
 import { useNavigation } from "../../context/navigationContext";
-import Back from "./Back";
+import UserProfile from "../shared/UserProfile";
 
 const Recipients: React.FC = () => {
     const [searchText, setSearchText] = React.useState<string>("");
     const [, setNewName] = React.useState<string>("");
     const { openPopup } = usePopup();
-    const { addPageToStack } = useNavigation();
+    const { addPageToStack, removeLastPageFromStack } = useNavigation();
 
     return (
         <div className={styles.page}>
@@ -26,9 +26,29 @@ const Recipients: React.FC = () => {
             <div className={styles.caregiversContainer}>
                 {Array.from({ length: 10 }).map((_, i) => (
                     <PersonCard
-                        userName="Gondozott Gondozott"
+                        userName={`Gondozott Gondozott ${i}`}
                         onClick={() => {
-                            addPageToStack(<Back />);
+                            addPageToStack(
+                                <UserProfile
+                                    userName={`Gondozott Gondozott ${i}`}
+                                    backButtonOnClick={removeLastPageFromStack}
+                                >
+                                    <Button
+                                        primary={true}
+                                        size="large"
+                                        label="Új"
+                                        onClick={() => {
+                                            addPageToStack(
+                                                <UserProfile
+                                                    userName={`Gondozott Gondozott ${i}${i}`}
+                                                    backButtonOnClick={removeLastPageFromStack}
+                                                />,
+                                            );
+                                        }}
+                                        fillWidth={true}
+                                    />
+                                </UserProfile>,
+                            );
                         }}
                     />
                 ))}

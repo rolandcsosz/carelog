@@ -50,6 +50,7 @@ const App: React.FC = () => {
                     left: child.offsetLeft,
                     behavior: "smooth",
                 });
+                child.style.transition = "all 0.3s ease-in-out"; // Set transition time
             }
         }
     };
