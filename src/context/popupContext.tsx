@@ -1,5 +1,5 @@
 // PopupContext.tsx
-import React, { createContext, useCallback, useContext, useState, ReactNode, JSX } from "react";
+import { createContext, useCallback, useContext, useState, ReactNode, JSX } from "react";
 
 // Define the context type interface
 interface PopupContextType {

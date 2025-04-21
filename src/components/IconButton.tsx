@@ -8,7 +8,7 @@ interface IconButtonProps {
     isSmall?: boolean;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ svgContent, ariaLabel, onClick = () => {}, isSmall = false }) => {
+const IconButton: React.FC<IconButtonProps> = ({ svgContent, ariaLabel, onClick = () => {} /* isSmall = false*/ }) => {
     return svgContent === null ? null : (
             <button className={`${styles.iconButton} ${styles.small}`} aria-label={ariaLabel} onClick={onClick}>
                 <img src={svgContent} alt={ariaLabel} />

@@ -8,7 +8,7 @@ import NameFormRow from "./NameFormRow";
 
 const Caregivers: React.FC = () => {
     const [searchText, setSearchText] = React.useState<string>("");
-    const [newName, setNewName] = React.useState<string>("");
+    const [, setNewName] = React.useState<string>("");
     const { openPopup } = usePopup();
     return (
         <div className={styles.page}>

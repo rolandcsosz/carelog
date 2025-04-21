@@ -11,9 +11,14 @@
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
         "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
-        "check-format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\""
+        "check-format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
+        "android": "vite build && npx cap sync android && npx cap open android"
     },
     "dependencies": {
+        "@capacitor/android": "^7.2.0",
+        "@capacitor/cli": "^7.2.0",
+        "@capacitor/core": "^7.2.0",
+        "@ionic/react": "^8.5.5",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },

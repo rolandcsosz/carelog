@@ -8,18 +8,18 @@ interface DateCardProps {
     date: Date | number;
     onClick?: () => void;
 }
-
+/*
 const isValidDate = (timestamp: number): boolean => {
     const date = new Date(timestamp);
     return !isNaN(date.getTime());
-};
+};*/
 
-const storeDate = (timestamp: number): Date | null => {
+/*const storeDate = (timestamp: number): Date | null => {
     if (isValidDate(timestamp)) {
         return new Date(timestamp);
     }
     return null;
-};
+};*/
 
 const formatDate = (date: Date | number): string => {
     const parsedDate = new Date(date);

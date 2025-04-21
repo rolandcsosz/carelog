@@ -12,7 +12,9 @@ import Recipients from "./pages/admin/Recipients";
 import Account from "./pages/admin/Account";
 import Popup from "./components/Popup";
 import { usePopup } from "./hooks/usePopup";
-import TextInput from "./components/TextInput";
+import { setupIonicReact } from "@ionic/react";
+
+setupIonicReact();
 
 const recipientMenuConfig: MenuConfig = {
     caregivers: {
@@ -35,7 +37,7 @@ const recipientMenuConfig: MenuConfig = {
 const App: React.FC = () => {
     const [selectedMenu, setSelectedMenu] = React.useState<string>("");
     const { isOpen, content, closePopup } = usePopup();
-    const [name, setName] = React.useState<string>("");
+    //const [name, setName] = React.useState<string>("");
     return (
         <div className={styles.appContainer}>
             <div className={styles.content}>

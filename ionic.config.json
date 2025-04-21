@@ -1,0 +1,10 @@
+{
+    "name": "Activity Log",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "react",
+    "build": {
+        "buildDir": "build"
+    }
+}
