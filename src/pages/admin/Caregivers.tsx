@@ -7,6 +7,7 @@ import { usePopup } from "../../context/popupContext";
 import NameFormRow from "./NameFormRow";
 import { useNavigation } from "../../context/navigationContext";
 import UserProfile from "../shared/UserProfile";
+import Caregiver from "./Caregiver";
 
 const Caregivers: React.FC = () => {
     const [searchText, setSearchText] = React.useState<string>("");
@@ -29,12 +30,7 @@ const Caregivers: React.FC = () => {
                         key={i}
                         userName={`Gondozó Gondozó ${i}`}
                         onClick={() => {
-                            addPageToStack(
-                                <UserProfile
-                                    userName={`Gondozó Gondozó ${i}`}
-                                    backButtonOnClick={removeLastPageFromStack}
-                                />,
-                            );
+                            addPageToStack(<Caregiver userName={`Gondozó Gondozó ${i}`} />);
                         }}
                     />
                 ))}

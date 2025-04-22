@@ -1,6 +1,6 @@
 .switch {
     width: 50px;
-    height: 28px;
+    height: 26px;
     background-color: #cbd5e0;
     border-radius: 9999px;
     padding: 2px;
@@ -13,14 +13,14 @@
         background-color: #3182ce;
 
         .thumb {
-            transform: translateX(22px);
+            transform: translateX(24px);
         }
     }
 }
 
 .thumb {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     background-color: white;
     border-radius: 50%;
     transition: transform 0.3s ease;
