@@ -1,0 +1,27 @@
+.panel {
+    background-color: #f9f9f9;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 250px 40px 20px 40px;
+    box-sizing: border-box;
+    height: 100vh;
+    overflow: hidden;
+
+    .title {
+        color: #292929;
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+    }
+
+    .subtitle {
+        color: #545454;
+    }
+
+    .loginForm {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}

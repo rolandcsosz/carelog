@@ -15,6 +15,8 @@ import { usePopup } from "./context/popupContext";
 import { setupIonicReact } from "@ionic/react";
 import { useNavigation } from "./context/navigationContext";
 import { useScroll } from "./context/scrollContext";
+import { useAuth } from "./hooks/useAuth";
+import Login from "./pages/shared/Login";
 
 setupIonicReact();
 
@@ -23,16 +25,19 @@ const recipientMenuConfig: MenuConfig = {
         selectedIcon: caregiverFilled,
         unselectedIcon: caregiverOutline,
         alt: "Caregivers",
+        component: Caregivers,
     },
     recipients: {
         selectedIcon: recipientFilled,
         unselectedIcon: recipientOutline,
         alt: "Recipients",
+        component: Recipients,
     },
     account: {
         selectedIcon: accountFilled,
         unselectedIcon: accountOutline,
         alt: "Account",
+        component: Account,
     },
 };
 
@@ -41,10 +46,15 @@ const App: React.FC = () => {
     const { isOpen, content, closePopup } = usePopup();
     const screenStackRef = useRef<HTMLDivElement>(null);
     const { pages, activeIndex, reset } = useNavigation();
-    const containerRef = useRef<HTMLDivElement>(null); // Shared ref for scrollable content
+    const containerRef = useRef<HTMLDivElement>(null);
     const { setScrollPosition } = useScroll();
     const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const prevActiveIndex = useRef<number>(-1); // Initialize to -1 or another invalid index
+    const prevActiveIndex = useRef<number>(-1);
+    const { authState } = useAuth();
+
+    useEffect(() => {
+        console.log("Auth state changed:", authState);
+    }, [authState]);
 
     const scrollToIndex = (index: number) => {
         if (screenStackRef.current) {
@@ -102,47 +112,51 @@ const App: React.FC = () => {
         pageRefs.current[index] = ref;
     };
 
-    return (
-        <div className={styles.appContainer}>
-            <div className={styles.screenStack} ref={screenStackRef}>
-                {/* Main scrollable container */}
-                <div ref={containerRef} className={styles.screenContainer}>
-                    {selectedMenu === "caregivers" && <Caregivers />}
-                    {selectedMenu === "recipients" && <Recipients />}
-                    {selectedMenu === "account" && <Account />}
+    return !authState || !authState.isAuthenticated ?
+            <Login />
+        :   <div className={styles.appContainer}>
+                <div className={styles.screenStack} ref={screenStackRef}>
+                    <div ref={containerRef} className={styles.screenContainer}>
+                        {Object.keys(recipientMenuConfig).map((menu) => {
+                            if (menu !== selectedMenu) {
+                                return null;
+                            }
+
+                            const Component = recipientMenuConfig[menu].component;
+
+                            if (!Component) {
+                                return null;
+                            }
+
+                            return <Component key={menu} />;
+                        })}
+                    </div>
+
+                    {pages.map((page, index) => (
+                        <div ref={(el) => setPageRef(index + 1, el)} key={index + 1} className={styles.screenContainer}>
+                            {page}
+                        </div>
+                    ))}
                 </div>
 
-                {/* Render pages dynamically with individual refs */}
-                {pages.map((page, index) => (
-                    <div
-                        ref={(el) => setPageRef(index + 1, el)} // Set unique ref for each page
-                        key={index + 1}
-                        className={styles.screenContainer}
-                    >
-                        {page}
-                    </div>
-                ))}
-            </div>
+                <div className={styles.navigationContainer}>
+                    <Menu config={recipientMenuConfig} onMenuItemClick={setSelectedMenu} />
+                </div>
 
-            <div className={styles.navigationContainer}>
-                <Menu config={recipientMenuConfig} onMenuItemClick={setSelectedMenu} />
-            </div>
-
-            {isOpen && (
-                <Popup
-                    confirmButtonText={"Hozzáad"}
-                    onClose={closePopup}
-                    onConfirm={() => {
-                        console.log("Confirmed");
-                        closePopup();
-                    }}
-                    onlyConfirm={true}
-                    title={selectedMenu === "caregivers" ? "Új gondozó hozzáadása" : "Új gondozott hozzáadása"}
-                    children={content}
-                />
-            )}
-        </div>
-    );
+                {isOpen && (
+                    <Popup
+                        confirmButtonText={"Hozzáad"}
+                        onClose={closePopup}
+                        onConfirm={() => {
+                            console.log("Confirmed");
+                            closePopup();
+                        }}
+                        onlyConfirm={true}
+                        title={selectedMenu === "caregivers" ? "Új gondozó hozzáadása" : "Új gondozott hozzáadása"}
+                        children={content}
+                    />
+                )}
+            </div>;
 };
 
 export default App;

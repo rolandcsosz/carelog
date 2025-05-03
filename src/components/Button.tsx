@@ -6,6 +6,7 @@ export interface ButtonProps {
     label: string;
     onClick?: () => void;
     fillWidth?: boolean;
+    type?: "button" | "submit" | "reset";
 }
 
 const getSize = (size: string) => {
@@ -27,11 +28,12 @@ export const Button = ({
     label,
     fillWidth = false,
     onClick = () => {},
+    type = "button",
 }: ButtonProps) => {
     const mode = primary ? styles.primary : styles.secondary;
     return (
         <button
-            type="button"
+            type={type}
             className={[styles.button, `${getSize(size)}`, mode].join(" ")}
             style={{ width: fillWidth ? "100%" : "auto" }}
             onClick={onClick}
