@@ -16,7 +16,7 @@ const Recipients: React.FC = () => {
     const { addPageToStack, removeLastPageFromStack } = useNavigation();
 
     useEffect(() => {
-        console.log(searchText);
+        //console.log(searchText);
     }, [searchText]);
 
     return (

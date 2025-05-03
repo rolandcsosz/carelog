@@ -15,7 +15,6 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({ menus, onChange }) => {
     }, [menus, onChange, selectedMenu]);
 
     const handleMenuClick = (menu: string) => {
-        console.log("Selected menu:", menu);
         setSelectedMenu(menu);
         onChange(menu);
     };

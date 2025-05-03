@@ -1,5 +1,5 @@
 import styles from "./App.module.scss";
-import React, { use, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Menu from "./components/Menu";
 import accountFilled from "./assets/account-filled.svg";
 import accountOutline from "./assets/account-outline.svg";
@@ -14,7 +14,7 @@ import Popup from "./components/Popup";
 import { usePopup } from "./context/popupContext";
 import { setupIonicReact } from "@ionic/react";
 import { useNavigation } from "./context/navigationContext";
-import { useWindowSize } from "./hooks/useWindowSize";
+import { useScroll } from "./context/scrollContext";
 
 setupIonicReact();
 
@@ -41,6 +41,10 @@ const App: React.FC = () => {
     const { isOpen, content, closePopup } = usePopup();
     const screenStackRef = useRef<HTMLDivElement>(null);
     const { pages, activeIndex, reset } = useNavigation();
+    const containerRef = useRef<HTMLDivElement>(null); // Shared ref for scrollable content
+    const { setScrollPosition } = useScroll();
+    const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const prevActiveIndex = useRef<number>(-1); // Initialize to -1 or another invalid index
 
     const scrollToIndex = (index: number) => {
         if (screenStackRef.current) {
@@ -50,7 +54,7 @@ const App: React.FC = () => {
                     left: child.offsetLeft,
                     behavior: "smooth",
                 });
-                child.style.transition = "all 0.3s ease-in-out"; // Set transition time
+                child.style.transition = "all 0.3s ease-in-out";
             }
         }
     };
@@ -65,24 +69,66 @@ const App: React.FC = () => {
         }
     }, [selectedMenu, reset]);
 
+    useEffect(() => {
+        const activePage = activeIndex === 0 ? containerRef.current : pageRefs.current[activeIndex];
+
+        if (!activePage) {
+            return;
+        }
+
+        if (prevActiveIndex && activeIndex > prevActiveIndex.current) {
+            activePage.scrollTo({
+                top: 0,
+                behavior: "auto",
+            });
+        }
+
+        const handleScroll = () => {
+            setScrollPosition(activePage.scrollTop);
+        };
+
+        activePage.addEventListener("scroll", handleScroll);
+        prevActiveIndex.current = activeIndex;
+
+        return () => {
+            activePage.removeEventListener("scroll", handleScroll);
+            if (activePage) {
+                setScrollPosition(0);
+            }
+        };
+    }, [activeIndex, setScrollPosition]);
+
+    const setPageRef = (index: number, ref: HTMLDivElement | null) => {
+        pageRefs.current[index] = ref;
+    };
+
     return (
         <div className={styles.appContainer}>
             <div className={styles.screenStack} ref={screenStackRef}>
-                <div className={styles.screenContainer}>
+                {/* Main scrollable container */}
+                <div ref={containerRef} className={styles.screenContainer}>
                     {selectedMenu === "caregivers" && <Caregivers />}
                     {selectedMenu === "recipients" && <Recipients />}
                     {selectedMenu === "account" && <Account />}
                 </div>
+
+                {/* Render pages dynamically with individual refs */}
                 {pages.map((page, index) => (
-                    <div key={index} className={styles.screenContainer}>
+                    <div
+                        ref={(el) => setPageRef(index + 1, el)} // Set unique ref for each page
+                        key={index + 1}
+                        className={styles.screenContainer}
+                    >
                         {page}
                     </div>
                 ))}
             </div>
+
             <div className={styles.navigationContainer}>
                 <Menu config={recipientMenuConfig} onMenuItemClick={setSelectedMenu} />
             </div>
-            {isOpen ?
+
+            {isOpen && (
                 <Popup
                     confirmButtonText={"Hozzáad"}
                     onClose={closePopup}
@@ -94,7 +140,7 @@ const App: React.FC = () => {
                     title={selectedMenu === "caregivers" ? "Új gondozó hozzáadása" : "Új gondozott hozzáadása"}
                     children={content}
                 />
-            :   null}
+            )}
         </div>
     );
 };
