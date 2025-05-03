@@ -1,0 +1,2129 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Activity logs API",
+        "version": "1.0.0",
+        "description": "API documentation using Swagger"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "summary": "User login",
+                "tags": ["Auth"],
+                "security": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "password"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login, returns JWT and user data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "role": {
+                                            "type": "string"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid password",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Hibás jelszó"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Felhasználó nem található"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Szerverhiba",
+                                    "message": "Something went wrong..."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logs": {
+            "post": {
+                "summary": "Create a new log entry",
+                "tags": ["Logs"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["id", "date", "relationshipId", "finished", "closed", "tasks"],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "relationshipId": {
+                                        "type": "string"
+                                    },
+                                    "finished": {
+                                        "type": "boolean"
+                                    },
+                                    "closed": {
+                                        "type": "boolean"
+                                    },
+                                    "tasks": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": ["subTaskId", "startTime", "endTime", "done"],
+                                            "properties": {
+                                                "subTaskId": {
+                                                    "type": "string"
+                                                },
+                                                "startTime": {
+                                                    "type": "string",
+                                                    "format": "time"
+                                                },
+                                                "endTime": {
+                                                    "type": "string",
+                                                    "format": "time"
+                                                },
+                                                "done": {
+                                                    "type": "boolean"
+                                                },
+                                                "note": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Log created successfully"
+                    },
+                    "500": {
+                        "description": "Error creating log"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get all logs",
+                "tags": ["Logs"],
+                "responses": {
+                    "200": {
+                        "description": "List of logs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "_index": {
+                                                "type": "string"
+                                            },
+                                            "_source": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "date": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "relationshipId": {
+                                                        "type": "string"
+                                                    },
+                                                    "finished": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "closed": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "tasks": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "subTaskId": {
+                                                                    "type": "string"
+                                                                },
+                                                                "startTime": {
+                                                                    "type": "string",
+                                                                    "format": "time"
+                                                                },
+                                                                "endTime": {
+                                                                    "type": "string",
+                                                                    "format": "time"
+                                                                },
+                                                                "done": {
+                                                                    "type": "boolean"
+                                                                },
+                                                                "note": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error fetching logs"
+                    }
+                }
+            }
+        },
+        "/logs/{id}": {
+            "get": {
+                "summary": "Get a specific log by ID",
+                "tags": ["Logs"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Log found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string"
+                                        },
+                                        "_index": {
+                                            "type": "string"
+                                        },
+                                        "_source": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "relationshipId": {
+                                                    "type": "string"
+                                                },
+                                                "finished": {
+                                                    "type": "boolean"
+                                                },
+                                                "closed": {
+                                                    "type": "boolean"
+                                                },
+                                                "tasks": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "subTaskId": {
+                                                                "type": "string"
+                                                            },
+                                                            "startTime": {
+                                                                "type": "string",
+                                                                "format": "time"
+                                                            },
+                                                            "endTime": {
+                                                                "type": "string",
+                                                                "format": "time"
+                                                            },
+                                                            "done": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "note": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Log not found"
+                    },
+                    "500": {
+                        "description": "Error fetching log"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a log entry by ID",
+                "tags": ["Logs"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "_index": {
+                                        "type": "string"
+                                    },
+                                    "_source": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "relationshipId": {
+                                                "type": "string"
+                                            },
+                                            "finished": {
+                                                "type": "boolean"
+                                            },
+                                            "closed": {
+                                                "type": "boolean"
+                                            },
+                                            "tasks": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "subTaskId": {
+                                                            "type": "string"
+                                                        },
+                                                        "startTime": {
+                                                            "type": "string",
+                                                            "format": "time"
+                                                        },
+                                                        "endTime": {
+                                                            "type": "string",
+                                                            "format": "time"
+                                                        },
+                                                        "done": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "note": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Log updated"
+                    },
+                    "404": {
+                        "description": "Log not found"
+                    },
+                    "500": {
+                        "description": "Error updating log"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a log by ID",
+                "tags": ["Logs"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Log deleted"
+                    },
+                    "404": {
+                        "description": "Log not found"
+                    },
+                    "500": {
+                        "description": "Error deleting log"
+                    }
+                }
+            }
+        },
+        "/logs/open": {
+            "get": {
+                "summary": "Get all logs that are not closed",
+                "tags": ["Logs"],
+                "responses": {
+                    "200": {
+                        "description": "List of open logs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "_index": {
+                                                "type": "string"
+                                            },
+                                            "_source": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "date": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "relationshipId": {
+                                                        "type": "string"
+                                                    },
+                                                    "finished": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "closed": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "tasks": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "subTaskId": {
+                                                                    "type": "string"
+                                                                },
+                                                                "startTime": {
+                                                                    "type": "string",
+                                                                    "format": "time"
+                                                                },
+                                                                "endTime": {
+                                                                    "type": "string",
+                                                                    "format": "time"
+                                                                },
+                                                                "done": {
+                                                                    "type": "boolean"
+                                                                },
+                                                                "note": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error fetching open logs"
+                    }
+                }
+            }
+        },
+        "/logs/relationship/{recipientId}/{caregiverId}": {
+            "get": {
+                "summary": "Get logs for a specific recipient-caregiver relationship",
+                "tags": ["Logs"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipientId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the recipient"
+                    },
+                    {
+                        "in": "path",
+                        "name": "caregiverId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the caregiver"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of logs for the recipient-caregiver relationship",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "relationshipId": {
+                                                "type": "string"
+                                            },
+                                            "finished": {
+                                                "type": "boolean"
+                                            },
+                                            "closed": {
+                                                "type": "boolean"
+                                            },
+                                            "tasks": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "subTaskId": {
+                                                            "type": "string"
+                                                        },
+                                                        "startTime": {
+                                                            "type": "string"
+                                                        },
+                                                        "endTime": {
+                                                            "type": "string"
+                                                        },
+                                                        "done": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "note": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Relationship not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/admins": {
+            "get": {
+                "summary": "Get all admins",
+                "tags": ["Admins"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of admins",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid or no token"
+                    },
+                    "403": {
+                        "description": "Not authorized"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new admin",
+                "tags": ["Admins"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "email", "password"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Admin created successfully"
+                    },
+                    "400": {
+                        "description": "Missing required field"
+                    },
+                    "401": {
+                        "description": "Invalid or no token"
+                    },
+                    "403": {
+                        "description": "Not authorized"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/admins/{id}": {
+            "get": {
+                "summary": "Get an admin by ID",
+                "tags": ["Admins"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Admin ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Admin data"
+                    },
+                    "401": {
+                        "description": "Invalid or no token"
+                    },
+                    "403": {
+                        "description": "Not authorized"
+                    },
+                    "404": {
+                        "description": "Admin not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an admin's info",
+                "tags": ["Admins"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Admin ID"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "email"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Admin updated"
+                    },
+                    "400": {
+                        "description": "Missing required field"
+                    },
+                    "401": {
+                        "description": "Invalid or no token"
+                    },
+                    "403": {
+                        "description": "Not authorized"
+                    },
+                    "404": {
+                        "description": "Admin not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an admin",
+                "tags": ["Admins"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Admin ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Admin deleted"
+                    },
+                    "401": {
+                        "description": "Invalid or no token"
+                    },
+                    "403": {
+                        "description": "Not authorized"
+                    },
+                    "404": {
+                        "description": "Admin not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/admins/{id}/password": {
+            "put": {
+                "summary": "Update an admins's password",
+                "tags": ["Admins"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Admin ID"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["currentPassword", "newPassword"],
+                                "properties": {
+                                    "currentPassword": {
+                                        "type": "string"
+                                    },
+                                    "newPassword": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated"
+                    },
+                    "400": {
+                        "description": "Invalid current password or missing field"
+                    },
+                    "401": {
+                        "description": "Invalid or no token"
+                    },
+                    "403": {
+                        "description": "Not authorized"
+                    },
+                    "404": {
+                        "description": "Admin not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/caregivers": {
+            "get": {
+                "summary": "Get all caregivers",
+                "tags": ["Caregivers"],
+                "responses": {
+                    "200": {
+                        "description": "A list of caregivers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new caregiver",
+                "tags": ["Caregivers"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "email", "phone", "password"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Caregiver created successfully"
+                    },
+                    "400": {
+                        "description": "Missing required field"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/caregivers/{id}": {
+            "get": {
+                "summary": "Get a caregiver by ID",
+                "tags": ["Caregivers"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Caregiver ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Caregiver data"
+                    },
+                    "404": {
+                        "description": "Caregiver not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a caregiver's info",
+                "tags": ["Caregivers"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Caregiver ID"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "email", "phone"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Caregiver updated"
+                    },
+                    "400": {
+                        "description": "Missing required field"
+                    },
+                    "404": {
+                        "description": "Caregiver not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a caregiver",
+                "tags": ["Caregivers"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Caregiver ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Caregiver deleted"
+                    },
+                    "404": {
+                        "description": "Caregiver not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/caregivers/{id}/password": {
+            "put": {
+                "summary": "Update a caregiver's password",
+                "tags": ["Caregivers"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Caregiver ID"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["currentPassword", "newPassword"],
+                                "properties": {
+                                    "currentPassword": {
+                                        "type": "string"
+                                    },
+                                    "newPassword": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated"
+                    },
+                    "400": {
+                        "description": "Invalid current password or missing field"
+                    },
+                    "404": {
+                        "description": "Caregiver not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/recipients": {
+            "get": {
+                "summary": "Get all recipients",
+                "tags": ["Recipients"],
+                "responses": {
+                    "200": {
+                        "description": "A list of recipients",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            },
+                                            "four_hand_care_needed": {
+                                                "type": "boolean"
+                                            },
+                                            "caregiver_note": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new recipient",
+                "tags": ["Recipients"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "email", "phone", "address", "password"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "four_hand_care_needed": {
+                                        "type": "boolean"
+                                    },
+                                    "caregiver_note": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recipient created successfully"
+                    },
+                    "400": {
+                        "description": "Missing required field"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/recipients/{id}": {
+            "get": {
+                "summary": "Get a recipient by ID",
+                "tags": ["Recipients"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Recipient ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipient data"
+                    },
+                    "404": {
+                        "description": "Recipient not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a recipient's info",
+                "tags": ["Recipients"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Recipient ID"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "email", "phone", "address"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "four_hand_care_needed": {
+                                        "type": "boolean"
+                                    },
+                                    "caregiver_note": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recipient updated"
+                    },
+                    "400": {
+                        "description": "Missing required field"
+                    },
+                    "404": {
+                        "description": "Recipient not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a recipient",
+                "tags": ["Recipients"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Recipient ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipient deleted"
+                    },
+                    "404": {
+                        "description": "Recipient not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/recipients/{id}/password": {
+            "put": {
+                "summary": "Update a recipient's password",
+                "tags": ["Recipients"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Recipient ID"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["currentPassword", "newPassword"],
+                                "properties": {
+                                    "currentPassword": {
+                                        "type": "string"
+                                    },
+                                    "newPassword": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated"
+                    },
+                    "400": {
+                        "description": "Invalid current password or missing field"
+                    },
+                    "404": {
+                        "description": "Recipient not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/recipients/caregivers": {
+            "post": {
+                "summary": "Assign a caregiver to a recipient",
+                "tags": ["Relationships"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["recipientId", "caregiverId"],
+                                "properties": {
+                                    "recipientId": {
+                                        "type": "integer"
+                                    },
+                                    "caregiverId": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Caregiver assigned to recipient"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/caregivers/recipients": {
+            "post": {
+                "summary": "Assign a recipient to a caregiver",
+                "tags": ["Relationships"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["recipientId", "caregiverId"],
+                                "properties": {
+                                    "recipientId": {
+                                        "type": "integer"
+                                    },
+                                    "caregiverId": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recipient assigned to caregiver"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/recipients/{id}/caregivers": {
+            "get": {
+                "summary": "Get all caregivers assigned to a recipient",
+                "tags": ["Relationships"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Recipient ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of caregivers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/caregivers/{id}/recipients": {
+            "get": {
+                "summary": "Get all recipients assigned to a caregiver",
+                "tags": ["Relationships"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Caregiver ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of recipients",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules": {
+            "post": {
+                "summary": "Create a new schedule",
+                "tags": ["Schedules"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["relationship_id", "date", "start_time", "end_time"],
+                                "properties": {
+                                    "relationship_id": {
+                                        "type": "integer"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "time"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "time"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Schedule created"
+                    },
+                    "400": {
+                        "description": "Missing required fields"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get all schedules",
+                "tags": ["Schedules"],
+                "responses": {
+                    "200": {
+                        "description": "List of all schedules",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules/{id}": {
+            "get": {
+                "summary": "Get schedule by ID",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Schedule ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Schedule details"
+                    },
+                    "404": {
+                        "description": "Schedule not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a schedule by ID",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Schedule ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["relationship_id", "date", "start_time", "end_time"],
+                                "properties": {
+                                    "relationship_id": {
+                                        "type": "integer"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "time"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "time"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Schedule updated"
+                    },
+                    "400": {
+                        "description": "Missing required fields"
+                    },
+                    "404": {
+                        "description": "Schedule not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a schedule by ID",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Schedule ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Schedule deleted"
+                    },
+                    "404": {
+                        "description": "Schedule not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules/caregiver/{caregiverId}": {
+            "get": {
+                "summary": "Get all schedules for a specific caregiver",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "caregiverId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the caregiver"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of schedules for the caregiver"
+                    },
+                    "404": {
+                        "description": "No schedules found for this caregiver"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules/recipient/{recipientId}": {
+            "get": {
+                "summary": "Get all schedules for a specific recipient",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipientId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the recipient"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of schedules for the recipient"
+                    },
+                    "404": {
+                        "description": "No schedules found for this recipient"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules/{id}/recipient": {
+            "get": {
+                "summary": "Get recipient details for a given schedule",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Schedule ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipient details for the schedule"
+                    },
+                    "404": {
+                        "description": "Recipient not found for this schedule"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules/{caregiverId}/{recipientId}": {
+            "get": {
+                "summary": "Get all schedules between a caregiver and a recipient",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "caregiverId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the caregiver"
+                    },
+                    {
+                        "in": "path",
+                        "name": "recipientId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the recipient"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of schedules between the caregiver and recipient"
+                    },
+                    "404": {
+                        "description": "No schedules found for this caregiver-recipient pair"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/tasktypes": {
+            "post": {
+                "summary": "Create a new task type",
+                "tags": ["TaskTypes"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["type"],
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Task type created"
+                    },
+                    "400": {
+                        "description": "Missing required field"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get all task types",
+                "tags": ["TaskTypes"],
+                "responses": {
+                    "200": {
+                        "description": "List of task types"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/tasktypes/{id}": {
+            "get": {
+                "summary": "Get a specific task type by ID",
+                "tags": ["TaskTypes"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Task type details"
+                    },
+                    "404": {
+                        "description": "Task type not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/subtasks": {
+            "post": {
+                "summary": "Create a new subtask",
+                "tags": ["SubTasks"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["title", "taskTypeId"],
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "taskTypeId": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Subtask created"
+                    },
+                    "400": {
+                        "description": "Missing required fields"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get all subtasks",
+                "tags": ["SubTasks"],
+                "responses": {
+                    "200": {
+                        "description": "List of all subtasks"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/subtasks/{id}": {
+            "get": {
+                "summary": "Get a specific subtask by ID",
+                "tags": ["SubTasks"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subtask details"
+                    },
+                    "404": {
+                        "description": "Subtask not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/subtasks/tasktype/{taskTypeId}": {
+            "get": {
+                "summary": "Get all subtasks by task type ID",
+                "tags": ["SubTasks"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "taskTypeId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of subtasks for the given task type"
+                    },
+                    "404": {
+                        "description": "No subtasks found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules/recipient/{recipientId}/last": {
+            "get": {
+                "summary": "Get the most recent past schedule for a recipient",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipientId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Last past schedule"
+                    },
+                    "404": {
+                        "description": "No past schedule found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules/recipient/{recipientId}/next": {
+            "get": {
+                "summary": "Get the next upcoming schedule for a recipient",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipientId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Next upcoming schedule"
+                    },
+                    "404": {
+                        "description": "No upcoming schedule found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/schedules/caregiver/{caregiverId}/today": {
+            "get": {
+                "summary": "Get today's schedules for a caregiver",
+                "tags": ["Schedules"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "caregiverId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of today's schedules"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        }
+    },
+    "tags": []
+}

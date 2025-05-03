@@ -12,13 +12,15 @@
         "build-storybook": "storybook build",
         "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
         "check-format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
-        "android": "vite build && npx cap sync android && npx cap open android"
+        "android": "vite build && npx cap sync android && npx cap open android",
+        "openapi-ts": "openapi-ts --input openapi.json --output api --client legacy/fetch"
     },
     "dependencies": {
         "@capacitor/android": "^7.2.0",
         "@capacitor/cli": "^7.2.0",
         "@capacitor/core": "^7.2.0",
         "@emotion/styled": "^11.14.0",
+        "@hey-api/client-fetch": "^0.10.0",
         "@ionic/react": "^8.5.5",
         "@mui/x-date-pickers": "^8.0.0",
         "dayjs": "^1.11.13",
@@ -28,6 +30,7 @@
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.6",
         "@eslint/js": "^9.21.0",
+        "@hey-api/openapi-ts": "^0.66.7",
         "@storybook/addon-essentials": "^8.6.11",
         "@storybook/addon-onboarding": "^8.6.11",
         "@storybook/blocks": "^8.6.11",
