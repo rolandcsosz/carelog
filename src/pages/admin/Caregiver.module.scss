@@ -2,8 +2,32 @@
     display: flex;
     flex-direction: column;
     align-items: start;
+    justify-content: space-between;
+    height: 100%;
+    width: calc(100%);
+    background-color: #fbfbfb;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.caregiverContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
     justify-content: start;
-    height: fit-content;
+    height: 100%;
+    width: calc(100%);
+    background-color: #fbfbfb;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.calendarContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    height: 100%;
     width: calc(100%);
     background-color: #fbfbfb;
     margin-top: 30px;
@@ -21,13 +45,17 @@
 }
 
 .caregiversContainer {
-    height: fit-content;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: start;
-    justify-content: start;
+    justify-content: space-between;
     width: 100%;
     gap: 10px;
+}
+
+.dataSpacer {
+    height: auto;
 }
 
 .spacer {

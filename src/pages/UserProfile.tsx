@@ -1,9 +1,9 @@
 import styles from "./UserProfile.module.scss";
-import React, { use, useEffect, useRef, useState } from "react";
-import Avatar from "../../components/Avatar";
-import IconButton from "../../components/IconButton";
-import chevronLeft from "../../assets/chevron-left.svg";
-import { useScroll } from "../../context/scrollContext";
+import React from "react";
+import Avatar from "../components/Avatar";
+import IconButton from "../components/IconButton";
+import chevronLeft from "../assets/chevron-left.svg";
+import { useScroll } from "../context/scrollContext";
 
 interface UserProfileProps extends React.PropsWithChildren {
     userName: string;

@@ -1,57 +1,74 @@
 import styles from "./Recipients.module.scss";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import SearchTextInput from "../../components/SearchTextInput";
 import PersonCard from "../../components/PersonCard";
 import { Button } from "../../components/Button";
 import { usePopup } from "../../context/popupContext";
-import NameFormRow from "./NameFormRow";
+import NewPersonFormRow from "../../components/admin/NewPersonFormRow";
 import { useNavigation } from "../../context/navigationContext";
-import UserProfile from "../shared/UserProfile";
 import Recipient from "./Recipient";
+import { useAdminModel } from "../../hooks/useAdminModel";
+import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
 
 const Recipients: React.FC = () => {
     const [searchText, setSearchText] = React.useState<string>("");
-    const [, setNewName] = React.useState<string>("");
     const { openPopup } = usePopup();
-    const { addPageToStack, removeLastPageFromStack } = useNavigation();
+    const { addPageToStack } = useNavigation();
+    const { recipients, addNewRecipient } = useAdminModel();
+    const [newPerson, setNewPerson] = React.useState<NewPersonData | null>(null);
+    const newPersonRef = useRef<NewPersonData | null>(null);
+
+    const handleNewRecipient = useCallback(() => {
+        if (!newPersonRef || !newPersonRef.current || newPersonRef.current.name.length === 0) {
+            console.log("Inalid data for new caregiver");
+            return;
+        }
+
+        addNewRecipient({
+            requestBody: {
+                name: newPersonRef.current.name,
+                email: newPersonRef.current.email,
+                phone: newPersonRef.current.phone,
+                password: newPersonRef.current.password,
+                four_hand_care_needed: false,
+                caregiver_note: "",
+                address: newPersonRef.current?.address || "",
+            },
+        });
+    }, [newPerson, addNewRecipient]);
 
     useEffect(() => {
-        //console.log(searchText);
-    }, [searchText]);
+        newPersonRef.current = newPerson;
+    }, [newPerson]);
 
     return (
         <div className={styles.page}>
             <div className={styles.title}>Gondozottak</div>
-            <SearchTextInput
-                text={searchText}
-                fillWidth={true}
-                placeholder="Keresés név alapján"
-                onChange={setSearchText}
-            />
+            <SearchTextInput text={searchText} fillWidth={true} placeholder="Keresés..." onChange={setSearchText} />
+            <div />
             <div className={styles.caregiversContainer}>
-                {Array.from({ length: 10 })
-                    .map((_, i) => i.toString())
-                    .filter((i) => {
-                        if (searchText === "") return true;
-                        return `Gondozott Gondozott ${i}`.toLowerCase().includes(searchText.toLowerCase());
+                {recipients
+                    .filter((recipient) => {
+                        return recipient.name.toLowerCase().includes(searchText.toLowerCase());
                     })
-                    .map((i) => (
+                    .map((recipient, index) => (
                         <PersonCard
-                            key={i}
-                            userName={`Gondozott Gondozott ${i}`}
+                            key={index}
+                            userName={recipient.name}
                             onClick={() => {
-                                addPageToStack(<Recipient userName={`Gondozott Gondozott ${i}`} />);
+                                addPageToStack(<Recipient recipient={recipient} />);
                             }}
                         />
                     ))}
             </div>
 
             <Button
+                noText={true}
                 primary={true}
+                icon={addButtonIconPrimary}
                 size="large"
-                label="Új gondozott hozzáadása"
                 onClick={() => {
-                    openPopup(<NameFormRow onNameChange={setNewName} />);
+                    openPopup(<NewPersonFormRow onChange={setNewPerson} AddressVisible={true} />, handleNewRecipient);
                 }}
                 fillWidth={true}
             />

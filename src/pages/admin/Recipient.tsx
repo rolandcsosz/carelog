@@ -1,32 +1,50 @@
 import styles from "./Recipient.module.scss";
-import React, { useState } from "react";
-import SearchTextInput from "../../components/SearchTextInput";
-import PersonCard from "../../components/PersonCard";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/Button";
-import { usePopup } from "../../context/popupContext";
-import NameFormRow from "./NameFormRow";
 import { useNavigation } from "../../context/navigationContext";
-import UserProfile from "../shared/UserProfile";
+import UserProfile from "../UserProfile";
 import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";
 import Dropdown from "../../components/Dropdown";
 import Switch from "../../components/Switch";
 import Calendar from "../../components/Calendar";
+import { useAdminModel } from "../../hooks/useAdminModel";
 
 interface RecipientsProps {
-    userName: string;
+    recipient: Recipient;
 }
 
-const Recipients: React.FC<RecipientsProps> = ({ userName }) => {
+const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     const [menu, setMenu] = useState<string>("Adatok");
-    const { addPageToStack, removeLastPageFromStack } = useNavigation();
-    const [phone, setPhone] = useState<string>("+36301234567");
-    const [email, setEmail] = useState<string>("hello@vmi.com");
-    const [password, setPassword] = useState<string>("jelszó");
-    const [address, setAddress] = useState<string>("Budapest, 1111 Csorba Hosszú utca 23. 3/12A");
+    const { removeLastPageFromStack } = useNavigation();
+    const [name] = useState<string>(recipient.name);
+    const [phone, setPhone] = useState<string>(recipient.phone);
+    const [email, setEmail] = useState<string>(recipient.email);
+    const [address, setAddress] = useState<string>(recipient.address);
     const [replacement, setReplacement] = useState<boolean>(false);
+    const { editRecipient, deleteRecipient } = useAdminModel();
+
+    useEffect(() => {
+        editRecipient({
+            id: recipient.id,
+            requestBody: {
+                name,
+                email,
+                phone,
+                address,
+                four_hand_care_needed: recipient.four_hand_care_needed,
+                caregiver_note: recipient.caregiver_note,
+            },
+        });
+    }, [name, phone, email, address]);
+
+    const handleDeleteRecipient = () => {
+        deleteRecipient({ id: recipient.id });
+        removeLastPageFromStack();
+    };
+
     return (
-        <UserProfile userName={userName} backButtonOnClick={removeLastPageFromStack}>
+        <UserProfile userName={name} backButtonOnClick={removeLastPageFromStack}>
             <ButtonGroup menus={["Adatok", "Beosztás"]} onChange={setMenu} />
 
             {menu === "Adatok" && (
@@ -57,31 +75,29 @@ const Recipients: React.FC<RecipientsProps> = ({ userName }) => {
                         </div>
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Telefon</div>
-                            <TextInput text={phone} placeholder="+36301234567" onChange={setPhone} fillWidth={true} />
+                            <TextInput text={phone} placeholder="Telefonszám" onChange={setPhone} fillWidth={true} />
                         </div>
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Cím</div>
-                            <TextInput
-                                text={address}
-                                placeholder="hello@vmi.com"
-                                onChange={setAddress}
-                                fillWidth={true}
-                            />
+                            <TextInput text={address} placeholder="Cím" onChange={setAddress} fillWidth={true} />
                         </div>
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Email</div>
-                            <TextInput text={email} placeholder="hello@vmi.com" onChange={setEmail} fillWidth={true} />
-                        </div>
-                        <div className={styles.formRow}>
-                            <div className={styles.formLabel}>Jelszó</div>
-                            <TextInput text={password} placeholder="jelszó" onChange={setPassword} fillWidth={true} />
+                            <TextInput text={email} placeholder="Email" onChange={setEmail} fillWidth={true} />
                         </div>
                     </div>
+                    <Button
+                        primary={true}
+                        size="large"
+                        label="Eltávolítás"
+                        onClick={handleDeleteRecipient}
+                        fillWidth={true}
+                    />
                 </div>
             )}
 
             {menu === "Beosztás" && (
-                <div className={styles.dataContainer}>
+                <div className={styles.calendarContainer}>
                     <Calendar />
                 </div>
             )}

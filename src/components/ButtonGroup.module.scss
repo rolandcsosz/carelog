@@ -10,6 +10,7 @@
     height: 50px;
     padding: 5px;
     width: calc(100% - 10px);
+    flex-shrink: 0;
 }
 
 .button {

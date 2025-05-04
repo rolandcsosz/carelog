@@ -1,0 +1,37 @@
+.textInput {
+    display: flex;
+    height: 40px;
+    padding: 0 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    font-family: Roboto, sans-serif;
+    font-size: 15px;
+
+    &::placeholder {
+        color: #a0aec0;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #a0aec0;
+    }
+}
+
+.fill {
+    width: calc(100% - 32px);
+}
+
+.searchContainer {
+    display: flex;
+    width: calc(100% + 16px);
+}
+
+.searchIcon {
+    position: relative;
+    top: 0;
+    right: 26px;
+}

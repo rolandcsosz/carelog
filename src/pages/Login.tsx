@@ -1,34 +1,33 @@
 import styles from "./Login.module.scss";
-import TextInput from "../../components/TextInput";
+import TextInput from "../components/TextInput";
 import React, { useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
-import { Button } from "../../components/Button";
+import { useAuth } from "../hooks/useAuth";
+import { Button } from "../components/Button";
+import { useApi } from "../hooks/useApi";
+import { postLogin } from "../../api/sdk.gen";
+import { PostLoginData, PostLoginResponse } from "../../api/types.gen";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     let { login } = useAuth();
+    const { request } = useApi();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const response = await request<PostLoginData, PostLoginResponse>(postLogin, {
+            requestBody: { email, password },
+        });
 
-        try {
-            const response = await fetch(import.meta.env.BASE_URL + "/loginn", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
+        if (!response) {
+            return;
+        }
 
-            if (response.ok) {
-                const result = await response.json();
-
-                if ("token" in result) {
-                    // login({ email, token: result.token });
-                }
-            }
-        } catch (error) {}
+        login({
+            id: response.user?.id ?? -1,
+            role: (response?.role as UserRole) ?? "invalid",
+            token: response.token ?? "",
+        });
     };
 
     return (

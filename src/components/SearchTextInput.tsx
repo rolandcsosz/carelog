@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./TextInput.module.scss";
+import styles from "./SearchTextInput.module.scss";
 import search from "../assets/search.svg";
 
 interface TextInputProps {

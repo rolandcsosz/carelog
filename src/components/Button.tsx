@@ -3,10 +3,12 @@ import styles from "./Button.module.scss";
 export interface ButtonProps {
     primary?: boolean;
     size?: "small" | "medium" | "large";
-    label: string;
+    label?: string;
     onClick?: () => void;
     fillWidth?: boolean;
     type?: "button" | "submit" | "reset";
+    noText?: boolean;
+    icon?: string;
 }
 
 const getSize = (size: string) => {
@@ -25,20 +27,23 @@ const getSize = (size: string) => {
 export const Button = ({
     primary = false,
     size = "medium",
-    label,
+    label = "",
     fillWidth = false,
     onClick = () => {},
     type = "button",
+    noText = false,
+    icon = "",
 }: ButtonProps) => {
     const mode = primary ? styles.primary : styles.secondary;
     return (
         <button
             type={type}
-            className={[styles.button, `${getSize(size)}`, mode].join(" ")}
+            className={`${styles.button} ${getSize(size)} ${mode} ${noText ? styles.noText : ""}`}
             style={{ width: fillWidth ? "100%" : "auto" }}
             onClick={onClick}
         >
-            {label}
+            {icon && <img src={icon} alt="" className={styles.icon} />}
+            {!noText && label}
         </button>
     );
 };

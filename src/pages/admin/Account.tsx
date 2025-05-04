@@ -2,7 +2,7 @@ import styles from "./Account.module.scss";
 import React, { useState } from "react";
 import { Button } from "../../components/Button";
 import TextInput from "../../components/TextInput";
-import UserProfile from "../shared/UserProfile";
+import UserProfile from "../UserProfile";
 
 const Account: React.FC = () => {
     const [phone, setPhone] = useState<string>("+36301234567");
@@ -14,7 +14,9 @@ const Account: React.FC = () => {
             userName="Varga Mihály"
             backButtonHidden
             additionalComponent={
-                <Button primary={true} size="large" label="Kijelentkezés" onClick={() => {}} fillWidth={true} />
+                <div className={styles.buttonContainer}>
+                    <Button primary={true} size="large" label="Kijelentkezés" onClick={() => {}} fillWidth={true} />
+                </div>
             }
         >
             <div className={styles.form}>

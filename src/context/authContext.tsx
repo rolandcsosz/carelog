@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { OpenAPI } from "../../api/core/OpenAPI";
 
 // Define the shape of the authentication state
 interface AuthState {
@@ -33,6 +34,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
                 user: userFromLocalStorage,
                 isAuthenticated: true,
             });
+
+            OpenAPI.TOKEN = userFromLocalStorage.token;
         } else {
             // If no user is found, set isAuthenticated to false
             setAuthState({
@@ -48,6 +51,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
             user,
             isAuthenticated: true,
         });
+        OpenAPI.TOKEN = user.token;
         localStorage.setItem("user", JSON.stringify(user));
     };
 

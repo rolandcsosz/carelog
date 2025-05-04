@@ -2,6 +2,18 @@
     display: flex;
     flex-direction: column;
     align-items: start;
+    justify-content: space-between;
+    height: 100%;
+    width: calc(100%);
+    background-color: #fbfbfb;
+    margin-top: 30px;
+    gap: 30px;
+}
+
+.calendarContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
     justify-content: start;
     height: fit-content;
     width: calc(100%);

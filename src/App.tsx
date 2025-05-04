@@ -16,7 +16,7 @@ import { setupIonicReact } from "@ionic/react";
 import { useNavigation } from "./context/navigationContext";
 import { useScroll } from "./context/scrollContext";
 import { useAuth } from "./hooks/useAuth";
-import Login from "./pages/shared/Login";
+import Login from "./pages/Login";
 
 setupIonicReact();
 
@@ -43,7 +43,7 @@ const recipientMenuConfig: MenuConfig = {
 
 const App: React.FC = () => {
     const [selectedMenu, setSelectedMenu] = React.useState<string>("");
-    const { isOpen, content, closePopup } = usePopup();
+    const { isOpen, content, closePopup, onConfirm, onCancel } = usePopup();
     const screenStackRef = useRef<HTMLDivElement>(null);
     const { pages, activeIndex, reset } = useNavigation();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -51,10 +51,6 @@ const App: React.FC = () => {
     const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const prevActiveIndex = useRef<number>(-1);
     const { authState } = useAuth();
-
-    useEffect(() => {
-        console.log("Auth state changed:", authState);
-    }, [authState]);
 
     const scrollToIndex = (index: number) => {
         if (screenStackRef.current) {
@@ -147,10 +143,8 @@ const App: React.FC = () => {
                     <Popup
                         confirmButtonText={"Hozzáad"}
                         onClose={closePopup}
-                        onConfirm={() => {
-                            console.log("Confirmed");
-                            closePopup();
-                        }}
+                        onConfirm={onConfirm}
+                        onCancel={onCancel}
                         onlyConfirm={true}
                         title={selectedMenu === "caregivers" ? "Új gondozó hozzáadása" : "Új gondozott hozzáadása"}
                         children={content}
