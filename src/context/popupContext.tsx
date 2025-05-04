@@ -1,50 +1,65 @@
 import { createContext, useCallback, useContext, useState, ReactNode, JSX, useRef } from "react";
 
+type PopupProps = {
+    content: ReactNode | null;
+    onConfirm: () => void;
+    onCancel: () => void;
+    confirmButtonText?: string;
+    cancelButtonText?: string;
+    title: string;
+    confirmOnly?: boolean;
+};
+
 interface PopupContextType {
     isOpen: boolean;
     content: ReactNode | null;
     closePopup: () => void;
-    openPopup: (component: ReactNode, onConfirm: () => void, onCancel?: () => void) => void;
+    openPopup: (info: PopupProps) => void;
     onConfirm: () => void;
     onCancel: () => void;
+    title: string;
+    confirmButtonText: string;
+    cancelButtonText: string;
+    confirmOnly: boolean;
 }
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined);
 
 export const PopupProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     const [isOpen, setIsOpen] = useState(false);
-    const [content, setContent] = useState<ReactNode | null>(null);
-    const onConfirmCallbackRef = useRef<(() => void) | null>(null);
-    const onCancelCallbackRef = useRef<(() => void) | null>(null);
+    const [popupProps, setPopupProps] = useState<PopupProps | null>(null);
 
-    const openPopup = useCallback((component: ReactNode, onConfirm: () => void, onCancel: () => void = () => {}) => {
-        setContent(component);
-        onConfirmCallbackRef.current = onConfirm;
-        onCancelCallbackRef.current = onCancel;
+    const openPopup = useCallback((info: PopupProps) => {
+        setPopupProps(info);
         setIsOpen(true);
     }, []);
 
     const closePopup = useCallback(() => {
         setIsOpen(false);
-        setContent(null);
+        setPopupProps(null);
     }, []);
 
-    const onConfirm = useCallback(() => {
-        if (onConfirmCallbackRef.current) {
-            onConfirmCallbackRef.current();
-        }
-        closePopup();
-    }, [closePopup]);
-
-    const onCancel = useCallback(() => {
-        if (onCancelCallbackRef.current) {
-            onCancelCallbackRef.current();
-        }
-        closePopup();
-    }, [closePopup]);
-
     return (
-        <PopupContext.Provider value={{ isOpen, content, openPopup, closePopup, onConfirm, onCancel }}>
+        <PopupContext.Provider
+            value={{
+                isOpen,
+                content: popupProps?.content,
+                title: popupProps?.title ?? "",
+                confirmButtonText: popupProps?.confirmButtonText ?? "",
+                cancelButtonText: popupProps?.cancelButtonText ?? "",
+                confirmOnly: popupProps?.confirmOnly ?? false,
+                openPopup,
+                closePopup,
+                onConfirm: () => {
+                    popupProps?.onConfirm?.();
+                    closePopup();
+                },
+                onCancel: () => {
+                    popupProps?.onCancel?.();
+                    closePopup();
+                },
+            }}
+        >
             {children}
         </PopupContext.Provider>
     );

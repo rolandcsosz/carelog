@@ -1,5 +1,5 @@
 import styles from "./App.module.scss";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Menu from "./components/Menu";
 import accountFilled from "./assets/account-filled.svg";
 import accountOutline from "./assets/account-outline.svg";
@@ -43,14 +43,24 @@ const recipientMenuConfig: MenuConfig = {
 
 const App: React.FC = () => {
     const [selectedMenu, setSelectedMenu] = React.useState<string>("");
-    const { isOpen, content, closePopup, onConfirm, onCancel } = usePopup();
+    const {
+        isOpen,
+        content,
+        closePopup,
+        onConfirm,
+        onCancel,
+        title,
+        confirmButtonText,
+        cancelButtonText,
+        confirmOnly,
+    } = usePopup();
     const screenStackRef = useRef<HTMLDivElement>(null);
     const { pages, activeIndex, reset } = useNavigation();
     const containerRef = useRef<HTMLDivElement>(null);
     const { setScrollPosition } = useScroll();
     const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const prevActiveIndex = useRef<number>(-1);
-    const { authState } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const scrollToIndex = (index: number) => {
         if (screenStackRef.current) {
@@ -108,7 +118,7 @@ const App: React.FC = () => {
         pageRefs.current[index] = ref;
     };
 
-    return !authState || !authState.isAuthenticated ?
+    return !isAuthenticated ?
             <Login />
         :   <div className={styles.appContainer}>
                 <div className={styles.screenStack} ref={screenStackRef}>
@@ -141,12 +151,13 @@ const App: React.FC = () => {
 
                 {isOpen && (
                     <Popup
-                        confirmButtonText={"Hozzáad"}
+                        confirmButtonText={confirmButtonText}
+                        cancelButtonText={cancelButtonText}
                         onClose={closePopup}
                         onConfirm={onConfirm}
                         onCancel={onCancel}
-                        onlyConfirm={true}
-                        title={selectedMenu === "caregivers" ? "Új gondozó hozzáadása" : "Új gondozott hozzáadása"}
+                        confirmOnly={confirmOnly}
+                        title={title}
                         children={content}
                     />
                 )}

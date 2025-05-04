@@ -5,12 +5,16 @@ import {
     DeleteCaregiversByIdResponse,
     DeleteRecipientsByIdData,
     DeleteRecipientsByIdResponse,
+    GetAdminsByIdData,
+    GetAdminsByIdResponse,
     GetCaregiversResponse,
     GetRecipientsResponse,
     PostCaregiversData,
     PostCaregiversResponse,
     PostRecipientsData,
     PostRecipientsResponse,
+    PutAdminsByIdData,
+    PutAdminsByIdResponse,
     PutCaregiversByIdData,
     PutCaregiversByIdResponse,
     PutRecipientsByIdData,
@@ -20,13 +24,16 @@ import { CancelablePromise } from "../../api/core/CancelablePromise";
 import {
     deleteCaregiversById,
     deleteRecipientsById,
+    getAdminsById,
     getCaregivers,
     getRecipients,
     postCaregivers,
     postRecipients,
+    putAdminsById,
     putCaregiversById,
     putRecipientsById,
 } from "../../api/sdk.gen";
+import { useAuth } from "./useAuth";
 
 const fetchCaregivers = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
@@ -69,8 +76,30 @@ const fetchRecipients = async (
     );
 };
 
+const fetchLogedInUser = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    id: number,
+): Promise<Admin | undefined> => {
+    const response = await request<GetAdminsByIdData, GetAdminsByIdResponse>(getAdminsById, { id: id });
+    if (!response || (response as any).length === 0) {
+        return undefined;
+    }
+
+    const first = (response as any)[0];
+    if (!first) {
+        return undefined;
+    }
+
+    return {
+        id: first.id ?? -1,
+        name: first.name ?? "",
+        email: first.email ?? "",
+    };
+};
+
 export const useAdminModel = () => {
     const { request } = useApi();
+    const { user } = useAuth();
 
     const { data: caregivers = [], refetch: refetchCaregivers } = useQuery<Caregiver[]>({
         queryKey: ["caregivers"],
@@ -80,6 +109,13 @@ export const useAdminModel = () => {
     const { data: recipients = [], refetch: refetchRecipients } = useQuery<Recipient[]>({
         queryKey: ["recipients"],
         queryFn: () => fetchRecipients(request),
+    });
+
+    const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Admin | undefined>({
+        queryKey: ["logedInUser", user?.id ?? -1],
+        queryFn: () => fetchLogedInUser(request, user?.id ?? -1),
+        enabled: !!user?.id,
+        staleTime: 0,
     });
 
     const { mutate: addNewCaregiver } = useMutation({
@@ -148,6 +184,17 @@ export const useAdminModel = () => {
         },
     });
 
+    const { mutate: updateLogedInUser } = useMutation({
+        mutationFn: (updateInfo: PutAdminsByIdData) =>
+            request<PutAdminsByIdData, PutAdminsByIdResponse>(putAdminsById, updateInfo),
+        onSuccess: () => {
+            refetchLogedInUser();
+        },
+        onError: (error: any) => {
+            console.error("Error updating user:", error);
+        },
+    });
+
     const refetchData = () => {
         refetchCaregivers();
         refetchRecipients();
@@ -163,5 +210,7 @@ export const useAdminModel = () => {
         editRecipient,
         refetchData,
         deleteRecipient,
+        logedInUser,
+        updateLogedInUser,
     };
 };

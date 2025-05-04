@@ -10,18 +10,18 @@ type PopupProps = {
     onClose: () => void;
     onConfirm: () => void;
     onCancel?: () => void;
-    onlyConfirm: boolean;
+    confirmOnly: boolean;
     title: string;
     children: React.ReactNode;
 };
 
 const Popup: React.FC<PopupProps> = ({
-    cancelButtonText = "",
+    cancelButtonText = "Mégse",
     confirmButtonText,
     onClose,
     onConfirm,
     onCancel = () => {},
-    onlyConfirm,
+    confirmOnly,
     title,
     children,
 }) => {
@@ -35,10 +35,10 @@ const Popup: React.FC<PopupProps> = ({
                 <div className={styles.modalHeader}>{title}</div>
                 <div className={styles.modalBody}>{children}</div>
                 <div className={styles.modalFooter}>
-                    {onlyConfirm ? null : (
+                    {confirmOnly ? null : (
                         <Button
                             size={"medium"}
-                            label={cancelButtonText}
+                            label={cancelButtonText === "" ? "Mégse" : cancelButtonText}
                             onClick={onCancel}
                             primary={false}
                             fillWidth={true}

@@ -65,7 +65,14 @@ const Caregivers: React.FC = () => {
                 icon={addButtonIconPrimary}
                 size="large"
                 onClick={() => {
-                    openPopup(<NewPersonFormRow onChange={setNewPerson} />, handleNewCaregiver);
+                    openPopup({
+                        title: "Új gondozó hozzáadása",
+                        confirmButtonText: "Hozzáadás",
+                        content: <NewPersonFormRow onChange={setNewPerson} />,
+                        onConfirm: handleNewCaregiver,
+                        onCancel: () => {},
+                        confirmOnly: true,
+                    });
                 }}
                 fillWidth={true}
             />

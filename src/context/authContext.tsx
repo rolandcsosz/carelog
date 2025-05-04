@@ -9,7 +9,8 @@ interface AuthState {
 
 // Define the shape of the authentication context
 interface AuthContextType {
-    authState: AuthState;
+    user: User | null;
+    isAuthenticated: boolean;
     login: (user: User) => void;
     logout: () => void;
 }
@@ -62,7 +63,14 @@ export const AuthProvider = ({ children }: { children: any }) => {
             isAuthenticated: false,
         });
         localStorage.removeItem("user");
+        OpenAPI.TOKEN = "";
     };
 
-    return <AuthContext.Provider value={{ authState, login, logout }}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider
+            value={{ user: authState.user, isAuthenticated: authState.isAuthenticated, login, logout }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 };

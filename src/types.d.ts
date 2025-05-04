@@ -9,6 +9,17 @@ type MenuConfig = {
 
 type UserRole = "admin" | "caregiver" | "invalid";
 
+interface NewPasswordData {
+    old: string;
+    new: string;
+}
+
+type Admin = {
+    id: number;
+    name: string;
+    email: string;
+};
+
 type User = {
     id: number;
     role: UserRole;

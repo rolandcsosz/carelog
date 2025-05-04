@@ -17,7 +17,7 @@ export const Default: Story = {
         onClose: () => {},
         onConfirm: () => {},
         onCancel: () => {},
-        onlyConfirm: true,
+        confirmOnly: true,
         title: "Új gondozó hozzáadása ",
         children: <div>Popup Content</div>,
     },

@@ -68,7 +68,14 @@ const Recipients: React.FC = () => {
                 icon={addButtonIconPrimary}
                 size="large"
                 onClick={() => {
-                    openPopup(<NewPersonFormRow onChange={setNewPerson} AddressVisible={true} />, handleNewRecipient);
+                    openPopup({
+                        title: "Új gondozott hozzáadása",
+                        confirmButtonText: "Hozzáadás",
+                        content: <NewPersonFormRow onChange={setNewPerson} AddressVisible={true} />,
+                        onConfirm: handleNewRecipient,
+                        onCancel: () => {},
+                        confirmOnly: true,
+                    });
                 }}
                 fillWidth={true}
             />
