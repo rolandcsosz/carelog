@@ -9,6 +9,9 @@ import Dropdown from "../../components/Dropdown";
 import Switch from "../../components/Switch";
 import Calendar from "../../components/Calendar";
 import { useAdminModel } from "../../hooks/useAdminModel";
+import { useApi } from "../../hooks/useApi";
+import { PostCaregiversRecipientsData, PostCaregiversRecipientsResponse } from "../../../api/types.gen";
+import { postCaregiversRecipients } from "../../../api/sdk.gen";
 
 interface RecipientsProps {
     recipient: Recipient;
@@ -22,7 +25,15 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     const [email, setEmail] = useState<string>(recipient.email);
     const [address, setAddress] = useState<string>(recipient.address);
     const [replacement, setReplacement] = useState<boolean>(false);
-    const { editRecipient, deleteRecipient } = useAdminModel();
+    const { relationships, caregivers, editRecipient, deleteRecipient } = useAdminModel();
+    const [selectedCaregiver, setSelectedCaregiver] = useState<Caregiver | null>(null);
+    const { request } = useApi();
+    const connectionForRecipient =
+        relationships?.filter((relationship) => relationship.recipientId === recipient.id)?.[0] || null;
+    const selectedCaregiverName =
+        connectionForRecipient ?
+            caregivers.find((caregiver) => caregiver.id === connectionForRecipient.caregiverId)?.name || "<<Üres>>"
+        :   "<<Üres>>";
 
     useEffect(() => {
         editRecipient({
@@ -38,9 +49,53 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
         });
     }, [name, phone, email, address]);
 
+    const deleteConnectionForRecipient = async () => {
+        const response = await request<PostCaregiversRecipientsData, PostCaregiversRecipientsResponse>(
+            postCaregiversRecipients,
+            {
+                requestBody: {
+                    recipientId: recipient.id,
+                    caregiverId: selectedCaregiver?.id ?? -1,
+                },
+            },
+        );
+        if (response) {
+            setSelectedCaregiver(null);
+        }
+    };
+
+    useEffect(() => {
+        const fetchCaregiverData = async () => {
+            const response = await request<PostCaregiversRecipientsData, PostCaregiversRecipientsResponse>(
+                postCaregiversRecipients,
+                {
+                    requestBody: {
+                        recipientId: recipient.id,
+                        caregiverId: selectedCaregiver?.id ?? -1,
+                    },
+                },
+            );
+        };
+        fetchCaregiverData();
+    }, [selectedCaregiver]);
+
     const handleDeleteRecipient = () => {
         deleteRecipient({ id: recipient.id });
         removeLastPageFromStack();
+    };
+
+    const handleSelectionChange = (selected: string) => {
+        if (selected === "<<Üres>>") {
+            setSelectedCaregiver(null);
+            return;
+        }
+
+        const selectedCaregiver = caregivers.find((caregiver) => caregiver.name === selected);
+        if (selectedCaregiver) {
+            setSelectedCaregiver(selectedCaregiver);
+        } else {
+            setSelectedCaregiver(null);
+        }
     };
 
     return (
@@ -53,9 +108,9 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Gondozó</div>
                             <Dropdown
-                                selected={"Gondozó 1"}
-                                options={["Gondozó 1", "Gondozó 2", "Gondozó 3"]}
-                                onChange={() => {}}
+                                selected={selectedCaregiverName}
+                                options={["<<Üres>>", ...caregivers.map((caregiver) => caregiver.name)]}
+                                onChange={handleSelectionChange}
                                 fillWidth={true}
                             />
                         </div>
@@ -66,9 +121,9 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Helyettes gondozó</div>
                             <Dropdown
-                                selected={"Gondozó 2"}
+                                selected={selectedCaregiver?.name || ""}
                                 disabled={!replacement}
-                                options={["Gondozó 1", "Gondozó 2", "Gondozó 3"]}
+                                options={["<<Üres>>", ...caregivers.map((caregiver) => caregiver.name)]}
                                 onChange={() => {}}
                                 fillWidth={true}
                             />

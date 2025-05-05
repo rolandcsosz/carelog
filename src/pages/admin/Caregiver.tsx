@@ -7,6 +7,11 @@ import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";
 import Calendar from "../../components/Calendar";
 import { useAdminModel } from "../../hooks/useAdminModel";
+import PersonCard from "../../components/PersonCard";
+import Recipient from "./Recipient";
+import { getDateString } from "../../utils";
+import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
+import ScheduleCard from "../../components/ScheduleCard";
 
 interface CaregiverProps {
     caregiver: Caregiver;
@@ -14,11 +19,16 @@ interface CaregiverProps {
 
 const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
     const [menu, setMenu] = useState<string>("Adatok");
-    const { removeLastPageFromStack } = useNavigation();
+    const { addPageToStack, removeLastPageFromStack } = useNavigation();
     const [name] = useState<string>(caregiver.name);
     const [phone, setPhone] = useState<string>(caregiver.phone);
     const [email, setEmail] = useState<string>(caregiver.email);
-    const { editCaregiver, deleteCaregiver } = useAdminModel();
+    const { relationships, recipients, editCaregiver, deleteCaregiver } = useAdminModel();
+    const recipientIds =
+        relationships
+            ?.filter((relationship) => relationship.caregiverId === caregiver.id)
+            .map((relationship) => relationship.recipientId) || [];
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
     useEffect(() => {
         editCaregiver({
@@ -34,6 +44,10 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
     const handleDeleteRecipient = () => {
         deleteCaregiver({ id: caregiver.id });
         removeLastPageFromStack();
+    };
+
+    const handleDateChange = (date: Date) => {
+        setSelectedDate(date);
     };
 
     return (
@@ -65,7 +79,7 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
 
             {menu === "Gondozottak" && (
                 <div className={styles.caregiverContainer}>
-                    <div className={styles.title}>Helyettesített</div>
+                    {/*<div className={styles.title}>Helyettesített</div>*/}
 
                     {/*Array.from({ length: 2 }).map((_, i) => (
                         <PersonCard
@@ -75,26 +89,52 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
                                 addPageToStack(<Recipient userName={`Gondozott ${i}`} />);
                             }}
                         />
-                    ))*/}
+                    ))
                     <div className={styles.spacer} />
+                    */}
 
                     <div className={styles.title}>Állandó</div>
 
-                    {/*Array.from({ length: 10 }).map((_, i) => (
-                        <PersonCard
-                            key={i}
-                            userName={`Gondozott ${i}`}
-                            onClick={() => {
-                                addPageToStack(<Recipient userName={`Gondozott ${i}`} />);
-                            }}
-                        />
-                    ))*/}
+                    {recipients
+                        .filter((recipient) => recipient.id in recipientIds)
+                        .map((recipient, i) => (
+                            <PersonCard
+                                key={i}
+                                userName={recipient.name}
+                                onClick={() => {
+                                    addPageToStack(<Recipient recipient={recipient} />);
+                                }}
+                            />
+                        ))}
                 </div>
             )}
 
             {menu === "Beosztás" && (
                 <div className={styles.calendarContainer}>
-                    <Calendar />
+                    <Calendar onDateChange={handleDateChange} />
+                    <div className={styles.title}>
+                        {selectedDate ? getDateString(selectedDate) : getDateString(new Date())}
+                    </div>
+                    <div className={styles.scheduleContainer}>
+                        {Array.from({ length: 3 }).map((_, i) => (
+                            <ScheduleCard
+                                key={i}
+                                title="Gondozott"
+                                options={recipients.map((recipient) => recipient.name)}
+                                onChange={() => {}}
+                                startTime="08:00"
+                                endTime="16:00"
+                            />
+                        ))}
+                    </div>
+                    <Button
+                        noText={true}
+                        primary={true}
+                        icon={addButtonIconPrimary}
+                        size="large"
+                        onClick={() => {}}
+                        fillWidth={true}
+                    />
                 </div>
             )}
         </UserProfile>

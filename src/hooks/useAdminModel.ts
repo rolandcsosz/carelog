@@ -8,9 +8,13 @@ import {
     GetAdminsByIdData,
     GetAdminsByIdResponse,
     GetCaregiversResponse,
+    GetRecipientsByIdCaregiversData,
+    GetRecipientsByIdCaregiversResponse,
     GetRecipientsResponse,
     PostCaregiversData,
     PostCaregiversResponse,
+    PostRecipientsCaregiversData,
+    PostRecipientsCaregiversResponse,
     PostRecipientsData,
     PostRecipientsResponse,
     PutAdminsByIdData,
@@ -27,8 +31,10 @@ import {
     getAdminsById,
     getCaregivers,
     getRecipients,
+    getRecipientsByIdCaregivers,
     postCaregivers,
     postRecipients,
+    postRecipientsCaregivers,
     putAdminsById,
     putCaregiversById,
     putRecipientsById,
@@ -97,6 +103,33 @@ const fetchLogedInUser = async (
     };
 };
 
+const fetchRelationships = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    caregivers: Caregiver[],
+): Promise<Relationship[]> => {
+    const relationships: Relationship[] = (
+        await Promise.all(
+            caregivers.map(async (caregiver) => {
+                const response = await request<GetRecipientsByIdCaregiversData, GetRecipientsByIdCaregiversResponse>(
+                    getRecipientsByIdCaregivers,
+                    { id: caregiver.id },
+                );
+                if (!response || response.length === 0) {
+                    return [];
+                }
+
+                return response.map((relationship) => ({
+                    id: relationship.id,
+                    caregiverId: caregiver.id,
+                    recipientId: relationship.id,
+                })) as Relationship[];
+            }),
+        )
+    ).flat();
+
+    return relationships;
+};
+
 export const useAdminModel = () => {
     const { request } = useApi();
     const { user } = useAuth();
@@ -115,6 +148,12 @@ export const useAdminModel = () => {
         queryKey: ["logedInUser", user?.id ?? -1],
         queryFn: () => fetchLogedInUser(request, user?.id ?? -1),
         enabled: !!user?.id,
+        staleTime: 0,
+    });
+    const { data: relationships, refetch: refetchRelationships } = useQuery<Relationship[]>({
+        queryKey: ["relationships", caregivers.map((c) => c.id).join(",")],
+        queryFn: () => fetchRelationships(request, caregivers),
+        enabled: !!user?.id && caregivers.length > 0,
         staleTime: 0,
     });
 
@@ -195,6 +234,20 @@ export const useAdminModel = () => {
         },
     });
 
+    const { mutate: newRelationship } = useMutation({
+        mutationFn: (updateInfo: PostRecipientsCaregiversData) =>
+            request<PostRecipientsCaregiversData, PostRecipientsCaregiversResponse>(
+                postRecipientsCaregivers,
+                updateInfo,
+            ),
+        onSuccess: () => {
+            refetchRelationships();
+        },
+        onError: (error: any) => {
+            console.error("Error adding relationship:", error);
+        },
+    });
+
     const refetchData = () => {
         refetchCaregivers();
         refetchRecipients();
@@ -212,5 +265,7 @@ export const useAdminModel = () => {
         deleteRecipient,
         logedInUser,
         updateLogedInUser,
+        relationships,
+        newRelationship,
     };
 };

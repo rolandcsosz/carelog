@@ -7,7 +7,15 @@ type MenuConfig = {
     };
 };
 
+type Id = number;
+
 type UserRole = "admin" | "caregiver" | "invalid";
+
+interface NewScheduleData {
+    selectedOption: string;
+    start: string;
+    end: string;
+}
 
 interface NewPasswordData {
     old: string;
@@ -49,4 +57,10 @@ type Recipient = {
     address: string;
     four_hand_care_needed: boolean;
     caregiver_note: string;
+};
+
+type Relationship = {
+    id: number;
+    caregiverId: number;
+    recipientId: number;
 };
