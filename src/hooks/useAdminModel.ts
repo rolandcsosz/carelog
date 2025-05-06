@@ -11,12 +11,18 @@ import {
     GetRecipientsByIdCaregiversData,
     GetRecipientsByIdCaregiversResponse,
     GetRecipientsResponse,
+    GetSchedulesCaregiverByCaregiverIdData,
+    GetSchedulesCaregiverByCaregiverIdResponse,
+    GetSchedulesRecipientByRecipientIdData,
+    GetSchedulesRecipientByRecipientIdResponse,
     PostCaregiversData,
     PostCaregiversResponse,
     PostRecipientsCaregiversData,
     PostRecipientsCaregiversResponse,
     PostRecipientsData,
     PostRecipientsResponse,
+    PostSchedulesData,
+    PostSchedulesResponse,
     PutAdminsByIdData,
     PutAdminsByIdResponse,
     PutCaregiversByIdData,
@@ -32,9 +38,12 @@ import {
     getCaregivers,
     getRecipients,
     getRecipientsByIdCaregivers,
+    getSchedulesCaregiverByCaregiverId,
+    getSchedulesRecipientByRecipientId,
     postCaregivers,
     postRecipients,
     postRecipientsCaregivers,
+    postSchedules,
     putAdminsById,
     putCaregiversById,
     putRecipientsById,
@@ -52,10 +61,10 @@ const fetchCaregivers = async (
     return response.map(
         (caregiver) =>
             ({
-                id: caregiver?.id,
-                name: caregiver?.name,
-                phone: caregiver?.phone,
-                email: caregiver?.email,
+                id: caregiver?.id || "",
+                name: caregiver?.name || "",
+                phone: caregiver?.phone || "",
+                email: caregiver?.email || "",
             }) as Caregiver,
     );
 };
@@ -71,7 +80,7 @@ const fetchRecipients = async (
     return response.map(
         (recipient) =>
             ({
-                id: recipient?.id || -1,
+                id: recipient?.id || "",
                 name: recipient?.name || "",
                 email: recipient?.email || "",
                 phone: recipient?.phone || "",
@@ -112,22 +121,106 @@ const fetchRelationships = async (
             caregivers.map(async (caregiver) => {
                 const response = await request<GetRecipientsByIdCaregiversData, GetRecipientsByIdCaregiversResponse>(
                     getRecipientsByIdCaregivers,
-                    { id: caregiver.id },
+                    { id: Number(caregiver.id) },
                 );
                 if (!response || response.length === 0) {
                     return [];
                 }
 
                 return response.map((relationship) => ({
-                    id: relationship.id,
-                    caregiverId: caregiver.id,
-                    recipientId: relationship.id,
+                    caregiverId: caregiver.id || "",
+                    recipientId: relationship?.id || "",
                 })) as Relationship[];
             }),
         )
     ).flat();
 
     return relationships;
+};
+
+const fetchSchedulesForRecipient = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    recipientId: Id,
+): Promise<Schedule[]> => {
+    const schedules = await request<GetSchedulesRecipientByRecipientIdData, GetSchedulesRecipientByRecipientIdResponse>(
+        getSchedulesRecipientByRecipientId,
+        {
+            recipientId: Number(recipientId),
+        },
+    );
+
+    if (!schedules || (schedules as any).length === 0) {
+        return [] as Schedule[];
+    }
+
+    type ScheduleResponse = {
+        id: string;
+        relationship_id: string;
+        date: string;
+        start_time: string;
+        end_time: string;
+    };
+
+    return (schedules as ScheduleResponse[]).map(
+        (schedule) =>
+            ({
+                relationshipId: schedule.relationship_id || -1,
+                start: schedule.start_time || "00:00:00",
+                end: schedule.end_time || "00:00:00",
+                date: schedule.date || new Date(),
+            }) as Schedule,
+    );
+};
+
+const fetchSchedulesForCaregiver = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    caregiverId: Id,
+): Promise<Schedule[]> => {
+    const schedules = await request<GetSchedulesCaregiverByCaregiverIdData, GetSchedulesCaregiverByCaregiverIdResponse>(
+        getSchedulesCaregiverByCaregiverId,
+        {
+            caregiverId: Number(caregiverId),
+        },
+    );
+
+    if (!schedules || (schedules as any)?.length === 0) {
+        return [] as Schedule[];
+    }
+
+    type ScheduleResponse = {
+        id: string;
+        relationship_id: string;
+        date: string;
+        start_time: string;
+        end_time: string;
+    };
+
+    return (schedules as ScheduleResponse[]).map(
+        (schedule) =>
+            ({
+                relationshipId: schedule.relationship_id || -1,
+                start: schedule.start_time || "00:00:00",
+                end: schedule.end_time || "00:00:00",
+                date: new Date(schedule.date) || new Date(),
+            }) as Schedule,
+    );
+};
+
+const addSchedule = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    data: PostSchedulesData,
+): Promise<Schedule | null> => {
+    const response = await request<PostSchedulesData, PostSchedulesResponse>(postSchedules, data);
+    if (!response) {
+        return null;
+    }
+
+    return {
+        relationshipId: (response as any)?.relationship_id || -1,
+        start: (response as any)?.start_time || "00:00",
+        end: (response as any)?.end_time || "00:00",
+        date: (response as any)?.date || new Date(),
+    } as Schedule;
 };
 
 export const useAdminModel = () => {
@@ -146,7 +239,7 @@ export const useAdminModel = () => {
 
     const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Admin | undefined>({
         queryKey: ["logedInUser", user?.id ?? -1],
-        queryFn: () => fetchLogedInUser(request, user?.id ?? -1),
+        queryFn: () => fetchLogedInUser(request, Number(user?.id) ?? -1),
         enabled: !!user?.id,
         staleTime: 0,
     });
@@ -267,5 +360,8 @@ export const useAdminModel = () => {
         updateLogedInUser,
         relationships,
         newRelationship,
+        fetchSchedulesForRecipient,
+        fetchSchedulesForCaregiver,
+        addSchedule,
     };
 };

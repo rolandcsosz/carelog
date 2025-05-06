@@ -9,9 +9,17 @@ interface ScheduleCardProps {
     onChange: (value: NewScheduleData) => void;
     startTime: string;
     endTime: string;
+    dropDownDisabled?: boolean;
 }
 
-const ScheduleCard: React.FC<ScheduleCardProps> = ({ title, options, onChange, startTime, endTime }) => {
+const ScheduleCard: React.FC<ScheduleCardProps> = ({
+    title,
+    options,
+    onChange,
+    startTime,
+    endTime,
+    dropDownDisabled = false,
+}) => {
     const [selectedOption, setSelectedOption] = React.useState<string>(options[0]);
     const [selectedStartTime, setSelectedStartTime] = React.useState<string>(startTime);
     const [selectedEndTime, setSelectedEndTime] = React.useState<string>(endTime);
@@ -29,7 +37,13 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({ title, options, onChange, s
         <div className={styles.container}>
             <div className={styles.row}>
                 <div className={styles.headerText}>{title}</div>
-                <Dropdown selected={title} options={options} onChange={setSelectedOption} fillWidth={true}></Dropdown>
+                <Dropdown
+                    disabled={dropDownDisabled}
+                    selected={title}
+                    options={options}
+                    onChange={setSelectedOption}
+                    fillWidth={true}
+                ></Dropdown>
             </div>
             <div className={styles.row}>
                 <div className={styles.timeContainer}>

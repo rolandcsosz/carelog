@@ -761,7 +761,7 @@ export const postSchedules = (data: PostSchedulesData): CancelablePromise<PostSc
 
 /**
  * Get all schedules
- * @returns string List of all schedules
+ * @returns unknown List of all schedules
  * @throws ApiError
  */
 export const getSchedules = (): CancelablePromise<GetSchedulesResponse> => {

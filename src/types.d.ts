@@ -7,7 +7,7 @@ type MenuConfig = {
     };
 };
 
-type Id = number;
+type Id = string;
 
 type UserRole = "admin" | "caregiver" | "invalid";
 
@@ -23,13 +23,13 @@ interface NewPasswordData {
 }
 
 type Admin = {
-    id: number;
+    id: Id;
     name: string;
     email: string;
 };
 
 type User = {
-    id: number;
+    id: Id;
     role: UserRole;
     token: string;
 };
@@ -43,14 +43,14 @@ interface NewPersonData {
 }
 
 type Caregiver = {
-    id: number;
+    id: Id;
     name: string;
     phone: string;
     email: string;
 };
 
 type Recipient = {
-    id: number;
+    id: Id;
     name: string;
     email: string;
     phone: string;
@@ -60,7 +60,13 @@ type Recipient = {
 };
 
 type Relationship = {
-    id: number;
-    caregiverId: number;
-    recipientId: number;
+    caregiverId: Id;
+    recipientId: Id;
+};
+
+type Schedule = {
+    relationshipId: Id;
+    start: string;
+    end: string;
+    date: Date;
 };

@@ -5,13 +5,10 @@ import { useNavigation } from "../../context/navigationContext";
 import UserProfile from "../UserProfile";
 import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";
-import Calendar from "../../components/Calendar";
 import { useAdminModel } from "../../hooks/useAdminModel";
 import PersonCard from "../../components/PersonCard";
 import Recipient from "./Recipient";
-import { getDateString } from "../../utils";
-import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
-import ScheduleCard from "../../components/ScheduleCard";
+import Schedule from "../Schedule";
 
 interface CaregiverProps {
     caregiver: Caregiver;
@@ -24,15 +21,19 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
     const [phone, setPhone] = useState<string>(caregiver.phone);
     const [email, setEmail] = useState<string>(caregiver.email);
     const { relationships, recipients, editCaregiver, deleteCaregiver } = useAdminModel();
-    const recipientIds =
-        relationships
-            ?.filter((relationship) => relationship.caregiverId === caregiver.id)
-            .map((relationship) => relationship.recipientId) || [];
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+    const recipientIds = recipients
+        .filter((recipient) =>
+            relationships?.some(
+                (relationship) =>
+                    relationship.recipientId === recipient.id && relationship.caregiverId === caregiver.id,
+            ),
+        )
+        .map((recipient) => recipient.id);
 
     useEffect(() => {
         editCaregiver({
-            id: caregiver.id,
+            id: Number(caregiver.id),
             requestBody: {
                 name,
                 phone,
@@ -42,12 +43,8 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
     }, [name, phone, email]);
 
     const handleDeleteRecipient = () => {
-        deleteCaregiver({ id: caregiver.id });
+        deleteCaregiver({ id: Number(caregiver.id) });
         removeLastPageFromStack();
-    };
-
-    const handleDateChange = (date: Date) => {
-        setSelectedDate(date);
     };
 
     return (
@@ -96,7 +93,7 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
                     <div className={styles.title}>Állandó</div>
 
                     {recipients
-                        .filter((recipient) => recipient.id in recipientIds)
+                        .filter((recipient) => recipientIds.includes(recipient.id))
                         .map((recipient, i) => (
                             <PersonCard
                                 key={i}
@@ -109,34 +106,7 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
                 </div>
             )}
 
-            {menu === "Beosztás" && (
-                <div className={styles.calendarContainer}>
-                    <Calendar onDateChange={handleDateChange} />
-                    <div className={styles.title}>
-                        {selectedDate ? getDateString(selectedDate) : getDateString(new Date())}
-                    </div>
-                    <div className={styles.scheduleContainer}>
-                        {Array.from({ length: 3 }).map((_, i) => (
-                            <ScheduleCard
-                                key={i}
-                                title="Gondozott"
-                                options={recipients.map((recipient) => recipient.name)}
-                                onChange={() => {}}
-                                startTime="08:00"
-                                endTime="16:00"
-                            />
-                        ))}
-                    </div>
-                    <Button
-                        noText={true}
-                        primary={true}
-                        icon={addButtonIconPrimary}
-                        size="large"
-                        onClick={() => {}}
-                        fillWidth={true}
-                    />
-                </div>
-            )}
+            {menu === "Beosztás" && <Schedule userId={caregiver.id} recipientIds={recipientIds} />}
         </UserProfile>
     );
 };

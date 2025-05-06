@@ -7,11 +7,11 @@ import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";
 import Dropdown from "../../components/Dropdown";
 import Switch from "../../components/Switch";
-import Calendar from "../../components/Calendar";
 import { useAdminModel } from "../../hooks/useAdminModel";
 import { useApi } from "../../hooks/useApi";
 import { PostCaregiversRecipientsData, PostCaregiversRecipientsResponse } from "../../../api/types.gen";
 import { postCaregiversRecipients } from "../../../api/sdk.gen";
+import Schedule from "../Schedule";
 
 interface RecipientsProps {
     recipient: Recipient;
@@ -35,9 +35,18 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
             caregivers.find((caregiver) => caregiver.id === connectionForRecipient.caregiverId)?.name || "<<Üres>>"
         :   "<<Üres>>";
 
+    const caregiverIds = caregivers
+        .filter((caregiver) =>
+            relationships?.some(
+                (relationship) =>
+                    relationship.recipientId === recipient.id && relationship.caregiverId === caregiver.id,
+            ),
+        )
+        .map((caregiver) => caregiver.id);
+
     useEffect(() => {
         editRecipient({
-            id: recipient.id,
+            id: Number(recipient.id),
             requestBody: {
                 name,
                 email,
@@ -54,8 +63,8 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
             postCaregiversRecipients,
             {
                 requestBody: {
-                    recipientId: recipient.id,
-                    caregiverId: selectedCaregiver?.id ?? -1,
+                    recipientId: Number(recipient.id),
+                    caregiverId: Number(selectedCaregiver?.id) ?? -1,
                 },
             },
         );
@@ -70,8 +79,8 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                 postCaregiversRecipients,
                 {
                     requestBody: {
-                        recipientId: recipient.id,
-                        caregiverId: selectedCaregiver?.id ?? -1,
+                        recipientId: Number(recipient.id),
+                        caregiverId: Number(selectedCaregiver?.id) ?? -1,
                     },
                 },
             );
@@ -80,7 +89,7 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     }, [selectedCaregiver]);
 
     const handleDeleteRecipient = () => {
-        deleteRecipient({ id: recipient.id });
+        deleteRecipient({ id: Number(recipient.id) });
         removeLastPageFromStack();
     };
 
@@ -151,11 +160,7 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                 </div>
             )}
 
-            {menu === "Beosztás" && (
-                <div className={styles.calendarContainer}>
-                    <Calendar />
-                </div>
-            )}
+            {menu === "Beosztás" && <Schedule userId={recipient.id} caregiverIds={caregiverIds} />}
         </UserProfile>
     );
 };

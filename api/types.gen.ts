@@ -407,7 +407,12 @@ export type PostSchedulesData = {
 
 export type PostSchedulesResponse = unknown;
 
-export type GetSchedulesResponse = Array<string>;
+export type GetSchedulesResponse = Array<{
+    relationship_id?: number;
+    date?: string;
+    start_time?: string;
+    end_time?: string;
+}>;
 
 export type GetSchedulesByIdData = {
     /**

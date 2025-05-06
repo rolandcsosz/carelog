@@ -25,7 +25,7 @@ const Account: React.FC = () => {
 
     useEffect(() => {
         updateLogedInUser({
-            id: logedInUser?.id ?? -1,
+            id: Number(logedInUser?.id) ?? -1,
             requestBody: {
                 name: logedInUser?.name ?? "",
                 email: email,
@@ -35,7 +35,7 @@ const Account: React.FC = () => {
 
     const handleSave = async () => {
         await request<PutAdminsByIdPasswordData, PutAdminsByIdPasswordResponse>(putAdminsByIdPassword, {
-            id: logedInUser?.id ?? -1,
+            id: Number(logedInUser?.id) ?? -1,
             requestBody: {
                 currentPassword: latestPasswords.current?.old ?? "",
                 newPassword: latestPasswords.current?.new ?? "",

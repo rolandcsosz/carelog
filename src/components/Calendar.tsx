@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -11,17 +11,14 @@ interface CalendarProps {
     highlightedDates?: Date[];
 }
 
-const Calendar: React.FC<CalendarProps> = ({
-    onDateChange,
-    highlightedDates = [
-        new Date("2025-05-07T00:00:00Z"),
-        new Date("2025-05-08T00:00:00Z"),
-        new Date("2025-05-09T00:00:00Z"),
-    ],
-}) => {
+const Calendar: React.FC<CalendarProps> = ({ onDateChange, highlightedDates = [] }) => {
+    const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(dayjs());
     const handleDateChange = (date: dayjs.Dayjs | null) => {
-        if (onDateChange && date) {
-            onDateChange(date.toDate());
+        if (date) {
+            setSelectedDate(date);
+            if (onDateChange) {
+                onDateChange(date.toDate());
+            }
         }
     };
 
@@ -36,15 +33,15 @@ const Calendar: React.FC<CalendarProps> = ({
             <PickersDay
                 {...pickersDayProps}
                 sx={{
-                    position: "relative", // <-- important
+                    position: "relative",
                     ...(isHighlighted && {
                         "&::after": {
                             content: '""',
                             position: "absolute",
-                            bottom: 4, //left: '50%',
-                            width: 16, // very small dot
+                            bottom: 4,
+                            width: 16,
                             height: 4,
-                            backgroundColor: "#90CDF4", // or any color
+                            backgroundColor: "#90CDF4",
                             borderRadius: 6,
                         },
                     }),
@@ -58,8 +55,9 @@ const Calendar: React.FC<CalendarProps> = ({
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar
                     slots={{ day: (props) => renderDay(props.day, [], props) }}
+                    value={selectedDate}
                     defaultValue={dayjs()}
-                    disablePast={true}
+                    disablePast={false}
                     onChange={handleDateChange}
                     sx={{
                         width: "100%",
@@ -74,7 +72,7 @@ const Calendar: React.FC<CalendarProps> = ({
                             display: "flex",
                             width: "100%",
                             height: "100%",
-                            flexDirection: "column", // Set flex direction to column for proper height handling
+                            flexDirection: "column",
                         },
 
                         "& .MuiDayCalendar-monthContainer": {
@@ -103,13 +101,13 @@ const Calendar: React.FC<CalendarProps> = ({
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            width: "100%", // Ensures the cell fills the width
-                            height: "100%", // Ensures the cell fills the height
+                            width: "100%",
+                            height: "100%",
                         },
                         "& .MuiTypography-root": {
-                            width: "100%", // Ensures the text fills the width
-                            height: "100%", // Ensures the text fills the height
-                            textAlign: "center", // Centers the day number text
+                            width: "100%",
+                            height: "100%",
+                            textAlign: "center",
                         },
                         "& .MuiDayCalendar-root": {
                             height: "100%",
@@ -130,10 +128,10 @@ const Calendar: React.FC<CalendarProps> = ({
                             justifyContent: "center",
                         },
                         "& .MuiPickersDay-root.Mui-selected": {
-                            backgroundColor: "#3182ce;", // Set your desired color here
-                            color: "#FFFFFF", // Set text color for better contrast
+                            backgroundColor: "#3182ce;",
+                            color: "#FFFFFF",
                             "&:hover": {
-                                backgroundColor: "#3182ce;", // Optional: hover color for selected day
+                                backgroundColor: "#3182ce;",
                             },
                         },
                     }}

@@ -1628,7 +1628,24 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "type": "string"
+                                        "type": "object",
+                                        "properties": {
+                                            "relationship_id": {
+                                                "type": "integer"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "start_time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            },
+                                            "end_time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            }
+                                        }
                                     }
                                 }
                             }
