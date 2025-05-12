@@ -59,6 +59,11 @@ import type {
     GetRecipientsByIdCaregiversResponse,
     GetCaregiversByIdRecipientsData,
     GetCaregiversByIdRecipientsResponse,
+    DeleteRelationshipsByIdData,
+    DeleteRelationshipsByIdResponse,
+    PutRelationshipsByIdData,
+    PutRelationshipsByIdResponse,
+    GetRelationshipsResponse,
     PostSchedulesData,
     PostSchedulesResponse,
     GetSchedulesResponse,
@@ -733,6 +738,70 @@ export const getCaregiversByIdRecipients = (
         path: {
             id: data.id,
         },
+        errors: {
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Delete a caregiver-recipient relationship
+ * @param data The data for the request.
+ * @param data.id Relationship ID
+ * @returns unknown Relationship deleted successfully
+ * @throws ApiError
+ */
+export const deleteRelationshipsById = (
+    data: DeleteRelationshipsByIdData,
+): CancelablePromise<DeleteRelationshipsByIdResponse> => {
+    return __request(OpenAPI, {
+        method: "DELETE",
+        url: "/relationships/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Relationship not found",
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Update a caregiver-recipient relationship
+ * @param data The data for the request.
+ * @param data.id Relationship ID
+ * @param data.requestBody
+ * @returns unknown Relationship updated successfully
+ * @throws ApiError
+ */
+export const putRelationshipsById = (
+    data: PutRelationshipsByIdData,
+): CancelablePromise<PutRelationshipsByIdResponse> => {
+    return __request(OpenAPI, {
+        method: "PUT",
+        url: "/relationships/{id}",
+        path: {
+            id: data.id,
+        },
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            404: "Relationship not found",
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Get all caregiver-recipient relationships
+ * @returns unknown A list of relationships with caregiver and recipient details
+ * @throws ApiError
+ */
+export const getRelationships = (): CancelablePromise<GetRelationshipsResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/relationships",
         errors: {
             500: "Server error",
         },

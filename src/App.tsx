@@ -7,6 +7,12 @@ import caregiverFilled from "./assets/caregiver-filled.svg";
 import caregiverOutline from "./assets/caregiver-outline.svg";
 import recipientFilled from "./assets/recipient-filled.svg";
 import recipientOutline from "./assets/recipient-outline.svg";
+import homeFilled from "./assets/home-filled.svg";
+import homeOutline from "./assets/home-outline.svg";
+import calendarFilled from "./assets/calendar-filled.svg";
+import calendarOutline from "./assets/calendar-outline.svg";
+import listFilled from "./assets/list-filled.svg";
+import listOutline from "./assets/list-outline.svg";
 import Caregivers from "./pages/admin/Caregivers";
 import Recipients from "./pages/admin/Recipients";
 import Account from "./pages/admin/Account";
@@ -20,7 +26,7 @@ import Login from "./pages/Login";
 
 setupIonicReact();
 
-const recipientMenuConfig: MenuConfig = {
+const adminMenuConfig: MenuConfig = {
     caregivers: {
         selectedIcon: caregiverFilled,
         unselectedIcon: caregiverOutline,
@@ -32,6 +38,33 @@ const recipientMenuConfig: MenuConfig = {
         unselectedIcon: recipientOutline,
         alt: "Recipients",
         component: Recipients,
+    },
+    account: {
+        selectedIcon: accountFilled,
+        unselectedIcon: accountOutline,
+        alt: "Account",
+        component: Account,
+    },
+};
+
+const caregiverMenuConfig: MenuConfig = {
+    home: {
+        selectedIcon: homeFilled,
+        unselectedIcon: homeOutline,
+        alt: "Home",
+        component: () => <div>Home</div>,
+    },
+    calendar: {
+        selectedIcon: calendarFilled,
+        unselectedIcon: calendarOutline,
+        alt: "Calendar",
+        component: () => <div>Calendar</div>,
+    },
+    list: {
+        selectedIcon: listFilled,
+        unselectedIcon: listOutline,
+        alt: "List view",
+        component: () => <div>List view</div>,
     },
     account: {
         selectedIcon: accountFilled,
@@ -60,7 +93,8 @@ const App: React.FC = () => {
     const { setScrollPosition } = useScroll();
     const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const prevActiveIndex = useRef<number>(-1);
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
+    const usedConfig = user?.role === "admin" ? adminMenuConfig : caregiverMenuConfig;
 
     const scrollToIndex = (index: number) => {
         if (screenStackRef.current) {
@@ -123,12 +157,12 @@ const App: React.FC = () => {
         :   <div className={styles.appContainer}>
                 <div className={styles.screenStack} ref={screenStackRef}>
                     <div ref={containerRef} className={styles.screenContainer}>
-                        {Object.keys(recipientMenuConfig).map((menu) => {
+                        {Object.keys(usedConfig).map((menu) => {
                             if (menu !== selectedMenu) {
                                 return null;
                             }
 
-                            const Component = recipientMenuConfig[menu].component;
+                            const Component = usedConfig[menu].component;
 
                             if (!Component) {
                                 return null;
@@ -146,7 +180,7 @@ const App: React.FC = () => {
                 </div>
 
                 <div className={styles.navigationContainer}>
-                    <Menu config={recipientMenuConfig} onMenuItemClick={setSelectedMenu} />
+                    <Menu config={usedConfig} onMenuItemClick={setSelectedMenu} />
                 </div>
 
                 {isOpen && (

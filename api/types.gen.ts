@@ -396,6 +396,38 @@ export type GetCaregiversByIdRecipientsResponse = Array<{
     address?: string;
 }>;
 
+export type DeleteRelationshipsByIdData = {
+    /**
+     * Relationship ID
+     */
+    id: number;
+};
+
+export type DeleteRelationshipsByIdResponse = unknown;
+
+export type PutRelationshipsByIdData = {
+    /**
+     * Relationship ID
+     */
+    id: number;
+    requestBody: {
+        recipientId: number;
+        caregiverId: number;
+    };
+};
+
+export type PutRelationshipsByIdResponse = unknown;
+
+export type GetRelationshipsResponse = Array<{
+    relationship_id?: number;
+    recipient_id?: number;
+    recipient_name?: string;
+    recipient_email?: string;
+    caregiver_id?: number;
+    caregiver_name?: string;
+    caregiver_email?: string;
+}>;
+
 export type PostSchedulesData = {
     requestBody: {
         relationship_id: number;

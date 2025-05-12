@@ -24,7 +24,7 @@ const Login: React.FC = () => {
         }
 
         login({
-            id: response.user?.id ?? -1,
+            id: response.user?.id?.toString() ?? "",
             role: (response?.role as UserRole) ?? "invalid",
             token: response.token ?? "",
         });
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
 
     return (
         <div className={styles.panel}>
-            <h1 className={styles.title}>Hello újra :)</h1>
+            <h1 className={styles.title}>Bejelentkezés</h1>
             <p className={styles.subtitle}>Írd be az email címed és a jelszavad</p>
             <form className={styles.loginForm} onSubmit={handleSubmit}>
                 <TextInput text={email} placeholder="Email" onChange={setEmail} fillWidth={true} />

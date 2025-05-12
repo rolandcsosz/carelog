@@ -230,23 +230,25 @@ export const useAdminModel = () => {
     const { data: caregivers = [], refetch: refetchCaregivers } = useQuery<Caregiver[]>({
         queryKey: ["caregivers"],
         queryFn: () => fetchCaregivers(request),
+        enabled: !!user?.id && user.role === "admin",
     });
 
     const { data: recipients = [], refetch: refetchRecipients } = useQuery<Recipient[]>({
         queryKey: ["recipients"],
         queryFn: () => fetchRecipients(request),
+        enabled: !!user?.id && user.role === "admin",
     });
 
     const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Admin | undefined>({
-        queryKey: ["logedInUser", user?.id ?? -1],
+        queryKey: ["logedInAdminUser", user?.id ?? -1],
         queryFn: () => fetchLogedInUser(request, Number(user?.id) ?? -1),
-        enabled: !!user?.id,
+        enabled: !!user?.id && user.role === "admin",
         staleTime: 0,
     });
     const { data: relationships, refetch: refetchRelationships } = useQuery<Relationship[]>({
         queryKey: ["relationships", caregivers.map((c) => c.id).join(",")],
         queryFn: () => fetchRelationships(request, caregivers),
-        enabled: !!user?.id && caregivers.length > 0,
+        enabled: !!user?.id && caregivers.length > 0 && user.role === "admin",
         staleTime: 0,
     });
 
