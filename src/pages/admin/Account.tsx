@@ -16,7 +16,6 @@ import {
     PutCaregiversByIdData,
     PutCaregiversByIdPasswordData,
     PutCaregiversByIdPasswordResponse,
-    PutCaregiversByIdResponse,
 } from "../../../api/types.gen";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 
@@ -25,13 +24,12 @@ const Account: React.FC = () => {
     const { logout, user } = useAuth();
     const { openPopup } = usePopup();
     const { user: adminUser } = useAdminModel();
-    const { logedInUser: logedInCaregiverUser, updateLogedInUser: updateLogedInCaregiverUser } = useCaregiverModel();
-    const logedInUser: Admin | Caregiver | undefined = user?.role === "admin" ? adminUser.info : logedInCaregiverUser;
-    const updateLogedInUser = user?.role === "admin" ? adminUser.update : updateLogedInCaregiverUser;
+    const { user: caregiverUser } = useCaregiverModel();
+    const logedInUser: Admin | Caregiver | undefined = user?.role === "admin" ? adminUser.info : caregiverUser.info;
     const [email, setEmail] = useState<string>(
-        user?.role === "admin" ? (adminUser.info?.email ?? "") : (logedInCaregiverUser?.email ?? ""),
+        user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.info?.email ?? ""),
     );
-    const [phone, setPhone] = useState<string>(logedInCaregiverUser?.phone ?? "");
+    const [phone, setPhone] = useState<string>(caregiverUser.info?.phone ?? "");
     const latestPasswords = useRef<NewPasswordData | null>(null);
 
     const setLatestPasswords = (passwords: NewPasswordData) => {
@@ -67,13 +65,13 @@ const Account: React.FC = () => {
                     phone: phone ?? "",
                 },
             };
-            updateLogedInCaregiverUser(updatedUser);
+            caregiverUser.update(updatedUser);
         }
-    }, [email, logedInUser, updateLogedInUser, phone]);
+    }, [email, logedInUser, phone]);
 
     useEffect(() => {
-        setEmail(user?.role === "admin" ? (adminUser.info?.email ?? "") : (logedInCaregiverUser?.email ?? ""));
-        setPhone(logedInCaregiverUser?.phone ?? "");
+        setEmail(user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.info?.email ?? ""));
+        setPhone(caregiverUser.info?.phone ?? "");
     }, [logedInUser, user?.role]);
 
     const handleSave = async () => {

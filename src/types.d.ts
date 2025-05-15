@@ -72,3 +72,25 @@ type Schedule = {
     end: string;
     date: Date;
 };
+
+type TaskType = {
+    id: Id;
+    name: string;
+};
+
+type Task = {
+    subTaskId: string;
+    startTime: string;
+    endTime: string;
+    done: boolean;
+    note: string;
+};
+
+type Logs = {
+    id: string;
+    date: string;
+    relationshipId: string;
+    finished: boolean;
+    closed: boolean;
+    tasks: Task[];
+};

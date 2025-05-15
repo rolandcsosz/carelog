@@ -2,13 +2,35 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useApi } from "./useApi";
 import {
     GetCaregiversByIdData,
+    GetCaregiversByIdRecipientsData,
+    GetCaregiversByIdRecipientsResponse,
     GetCaregiversByIdResponse,
+    GetLogsRelationshipByRecipientIdByCaregiverIdData,
+    GetLogsRelationshipByRecipientIdByCaregiverIdResponse,
+    GetTasktypesResponse,
+    PostLogsData,
+    PostLogsResponse,
     PutCaregiversByIdData,
     PutCaregiversByIdResponse,
+    PutLogsByIdData,
+    PutLogsByIdResponse,
+    PutRecipientsByIdData,
+    PutRecipientsByIdResponse,
 } from "../../api/types.gen";
 import { CancelablePromise } from "../../api/core/CancelablePromise";
-import { getCaregiversById, putCaregiversById } from "../../api/sdk.gen";
+import {
+    getCaregiversById,
+    getCaregiversByIdRecipients,
+    getLogsRelationshipByRecipientIdByCaregiverId,
+    getTasktypes,
+    postLogs,
+    putCaregiversById,
+    putLogsById,
+    putRecipientsById,
+} from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
+import { fetchSchedulesForCaregiver } from "../utils";
+import { useEffect } from "react";
 
 const fetchLogedInUser = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
@@ -32,6 +54,116 @@ const fetchLogedInUser = async (
     };
 };
 
+const fetchRelationships = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    caregiverId: Id,
+): Promise<Relationship[]> => {
+    const response = await request<GetCaregiversByIdRecipientsData, GetCaregiversByIdRecipientsResponse>(
+        getCaregiversByIdRecipients,
+        { id: caregiverId },
+    );
+    if (!response || response.length === 0) {
+        return [];
+    }
+
+    return response.map((relationship) => ({
+        caregiverId: caregiverId,
+        recipientId: relationship?.id || "",
+    })) as Relationship[];
+};
+
+const fetchRecipients = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    caregiverId: Id,
+): Promise<Recipient[]> => {
+    const response = await request<GetCaregiversByIdRecipientsData, GetCaregiversByIdRecipientsResponse>(
+        getCaregiversByIdRecipients,
+        { id: caregiverId },
+    );
+    if (!response || response.length === 0) {
+        return [];
+    }
+
+    return response.map(
+        (recipient) =>
+            ({
+                id: recipient?.id || "",
+                name: recipient?.name || "",
+                email: recipient?.email || "",
+                phone: recipient?.phone || "",
+                address: recipient?.address || "",
+                four_hand_care_needed: false, // recipient?.four_hand_care_needed TODO missing?
+                caregiver_note: "", // recipient?.caregiver_note TODO missing?
+            }) as Recipient,
+    );
+};
+
+const fetchSchedules = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    caregiverId: Id,
+): Promise<Schedule[]> => {
+    return await fetchSchedulesForCaregiver(request, caregiverId);
+};
+
+const fetchTaskType = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+): Promise<TaskType[]> => {
+    const response = await request<void, GetTasktypesResponse>(getTasktypes, undefined);
+
+    if (!response || response.length === 0) {
+        return [];
+    }
+
+    return response.map((taskType) => ({
+        id: taskType?.id || "",
+        name: taskType?.type || "",
+    })) as TaskType[];
+};
+
+const fetchLogs = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    caregiverId: Id,
+    recipientIds: Id[],
+): Promise<Logs[]> => {
+    const logs: Logs[] = (
+        await Promise.all(
+            recipientIds.map(async (recipientId) => {
+                const response = await request<
+                    GetLogsRelationshipByRecipientIdByCaregiverIdData,
+                    GetLogsRelationshipByRecipientIdByCaregiverIdResponse
+                >(
+                    getLogsRelationshipByRecipientIdByCaregiverId,
+                    { recipientId: recipientId.toString(), caregiverId: caregiverId.toString() }, // TODO check if this is correct
+                );
+                if (!response || response.length === 0) {
+                    return [];
+                }
+
+                return response.map(
+                    (log) =>
+                        ({
+                            id: log?.id || "",
+                            date: log?.date || "",
+                            relationshipId: log?.relationshipId || "",
+                            finished: log?.finished || false,
+                            closed: log?.closed || false,
+                            tasks:
+                                log?.tasks?.map((task) => ({
+                                    subTaskId: task?.subTaskId || "",
+                                    startTime: task?.startTime || "",
+                                    endTime: task?.endTime || "",
+                                    done: task?.done || false,
+                                    note: task?.note || "",
+                                })) || [],
+                        }) as Logs,
+                );
+            }),
+        )
+    ).flat();
+
+    return logs;
+};
+
 export const useCaregiverModel = () => {
     const { request } = useApi();
     const { user } = useAuth();
@@ -39,6 +171,39 @@ export const useCaregiverModel = () => {
     const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Caregiver | undefined>({
         queryKey: ["logedInCaregiverUser", user?.id ?? -1],
         queryFn: () => fetchLogedInUser(request, Number(user?.id) ?? -1),
+        enabled: !!user?.id && user?.role === "caregiver",
+        staleTime: 0,
+    });
+
+    const { data: recipients, refetch: refetchRecipients } = useQuery<Recipient[]>({
+        queryKey: ["caregiverecipients", user?.id],
+        queryFn: () => fetchRecipients(request, user?.id ?? -1),
+        enabled: !!user?.id && user.role === "caregiver",
+    });
+
+    const { data: schedule, refetch: refetchSchedules } = useQuery<Schedule[]>({
+        queryKey: ["caregiverecipients", user?.id],
+        queryFn: () => fetchSchedules(request, user?.id ?? -1),
+        enabled: !!user?.id && user.role === "caregiver",
+    });
+
+    const { data: relationships, refetch: refetchRelationships } = useQuery<Relationship[]>({
+        queryKey: ["caregiverRelationships", user?.id],
+        queryFn: () => fetchRelationships(request, user?.id ?? -1),
+        enabled: !!user?.id && user?.role === "caregiver",
+        staleTime: 0,
+    });
+
+    const { data: taskTypes, refetch: refetchTaskTypes } = useQuery<TaskType[]>({
+        queryKey: ["taskTypes", user?.id],
+        queryFn: () => fetchTaskType(request),
+        enabled: !!user?.id && user?.role === "caregiver",
+        staleTime: 0,
+    });
+
+    const { data: logs, refetch: refetchLogs } = useQuery<Logs[]>({
+        queryKey: ["taskTypes", user?.id, recipients?.map((c) => c.id).join(",")],
+        queryFn: () => fetchLogs(request, user?.id ?? -1, recipients?.map((c) => c.id) || []),
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
     });
@@ -54,8 +219,70 @@ export const useCaregiverModel = () => {
         },
     });
 
+    const { mutate: editRecipient } = useMutation({
+        mutationFn: (body: PutRecipientsByIdData) =>
+            request<PutRecipientsByIdData, PutRecipientsByIdResponse>(putRecipientsById, body),
+        onSuccess: () => {
+            refetchRecipients();
+        },
+        onError: (error: any) => {
+            console.error("Error editing recipient:", error);
+        },
+    });
+
+    const { mutate: addLog } = useMutation({
+        mutationFn: (body: PostLogsData) => request<PostLogsData, PostLogsResponse>(postLogs, body),
+        onSuccess: () => {
+            refetchLogs();
+        },
+        onError: (error: any) => {
+            console.error("Error adding log:", error);
+        },
+    });
+
+    const { mutate: editLog } = useMutation({
+        mutationFn: (body: PutLogsByIdData) => request<PutLogsByIdData, PutLogsByIdResponse>(putLogsById, body),
+        onSuccess: () => {
+            refetchLogs();
+        },
+        onError: (error: any) => {
+            console.error("Error editing log:", error);
+        },
+    });
+
+    useEffect(() => {
+        if (user?.role === "caregiver" && relationships) {
+            refetchRecipients();
+        }
+    }, [relationships]);
+
     return {
-        logedInUser,
-        updateLogedInUser,
+        user: {
+            info: logedInUser,
+            update: updateLogedInUser,
+        },
+        recipients: {
+            info: recipients,
+            edit: editRecipient,
+            refetch: refetchRecipients,
+        },
+        schedules: {
+            info: schedule,
+            refetch: refetchSchedules,
+        },
+        relationships: {
+            info: relationships,
+            refetch: refetchRelationships,
+        },
+        taskTypes: {
+            info: taskTypes,
+            refetch: refetchTaskTypes,
+        },
+        logs: {
+            info: logs,
+            add: addLog,
+            refetch: refetchLogs,
+            edit: editLog,
+        },
     };
 };

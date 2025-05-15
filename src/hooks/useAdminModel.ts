@@ -11,9 +11,9 @@ import {
     DeleteSchedulesByIdResponse,
     GetAdminsByIdData,
     GetAdminsByIdResponse,
+    GetCaregiversByIdRecipientsData,
+    GetCaregiversByIdRecipientsResponse,
     GetCaregiversResponse,
-    GetRecipientsByIdCaregiversData,
-    GetRecipientsByIdCaregiversResponse,
     GetRecipientsResponse,
     GetSchedulesCaregiverByCaregiverIdData,
     GetSchedulesCaregiverByCaregiverIdResponse,
@@ -46,8 +46,8 @@ import {
     deleteSchedulesById,
     getAdminsById,
     getCaregivers,
+    getCaregiversByIdRecipients,
     getRecipients,
-    getRecipientsByIdCaregivers,
     getSchedulesCaregiverByCaregiverId,
     getSchedulesRecipientByRecipientId,
     postCaregivers,
@@ -61,6 +61,7 @@ import {
     putSchedulesById,
 } from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
+import { fetchSchedulesForCaregiver } from "../utils";
 
 const fetchCaregivers = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
@@ -131,9 +132,9 @@ const fetchRelationships = async (
     const relationships: Relationship[] = (
         await Promise.all(
             caregivers.map(async (caregiver) => {
-                const response = await request<GetRecipientsByIdCaregiversData, GetRecipientsByIdCaregiversResponse>(
-                    getRecipientsByIdCaregivers,
-                    { id: Number(caregiver.id) },
+                const response = await request<GetCaregiversByIdRecipientsData, GetCaregiversByIdRecipientsResponse>(
+                    getCaregiversByIdRecipients,
+                    { id: caregiver.id },
                 );
                 if (!response || response.length === 0) {
                     return [];
@@ -157,7 +158,7 @@ const fetchSchedulesForRecipient = async (
     const schedules = await request<GetSchedulesRecipientByRecipientIdData, GetSchedulesRecipientByRecipientIdResponse>(
         getSchedulesRecipientByRecipientId,
         {
-            recipientId: Number(recipientId),
+            recipientId: recipientId,
         },
     );
 
@@ -172,32 +173,6 @@ const fetchSchedulesForRecipient = async (
                 start: schedule.start_time || "00:00:00",
                 end: schedule.end_time || "00:00:00",
                 date: schedule.date || new Date(),
-            }) as Schedule,
-    );
-};
-
-const fetchSchedulesForCaregiver = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
-    caregiverId: Id,
-): Promise<Schedule[]> => {
-    const schedules = await request<GetSchedulesCaregiverByCaregiverIdData, GetSchedulesCaregiverByCaregiverIdResponse>(
-        getSchedulesCaregiverByCaregiverId,
-        {
-            caregiverId: Number(caregiverId),
-        },
-    );
-
-    if (!schedules || schedules.length === 0) {
-        return [];
-    }
-
-    return schedules.map(
-        (schedule) =>
-            ({
-                relationshipId: schedule.relationship_id || -1,
-                start: schedule.start_time || "00:00:00",
-                end: schedule.end_time || "00:00:00",
-                date: schedule.date ? new Date(schedule.date) : new Date(),
             }) as Schedule,
     );
 };
@@ -253,7 +228,7 @@ export const useAdminModel = () => {
 
     const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Admin | undefined>({
         queryKey: ["logedInAdminUser", user?.id ?? -1],
-        queryFn: () => fetchLogedInUser(request, Number(user?.id) ?? -1),
+        queryFn: () => fetchLogedInUser(request, user?.id ?? -1),
         enabled: !!user?.id && user.role === "admin",
         staleTime: 0,
     });
