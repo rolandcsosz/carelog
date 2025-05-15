@@ -157,12 +157,10 @@
                                                     "type": "string"
                                                 },
                                                 "startTime": {
-                                                    "type": "string",
-                                                    "format": "time"
+                                                    "type": "string"
                                                 },
                                                 "endTime": {
-                                                    "type": "string",
-                                                    "format": "time"
+                                                    "type": "string"
                                                 },
                                                 "done": {
                                                     "type": "boolean"
@@ -180,7 +178,22 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Log created successfully"
+                        "description": "Log created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Error creating log"
@@ -200,54 +213,41 @@
                                     "items": {
                                         "type": "object",
                                         "properties": {
-                                            "_id": {
+                                            "id": {
                                                 "type": "string"
                                             },
-                                            "_index": {
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "relationshipId": {
                                                 "type": "string"
                                             },
-                                            "_source": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "type": "string",
-                                                        "format": "date"
-                                                    },
-                                                    "relationshipId": {
-                                                        "type": "string"
-                                                    },
-                                                    "finished": {
-                                                        "type": "boolean"
-                                                    },
-                                                    "closed": {
-                                                        "type": "boolean"
-                                                    },
-                                                    "tasks": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "subTaskId": {
-                                                                    "type": "string"
-                                                                },
-                                                                "startTime": {
-                                                                    "type": "string",
-                                                                    "format": "time"
-                                                                },
-                                                                "endTime": {
-                                                                    "type": "string",
-                                                                    "format": "time"
-                                                                },
-                                                                "done": {
-                                                                    "type": "boolean"
-                                                                },
-                                                                "note": {
-                                                                    "type": "string"
-                                                                }
-                                                            }
+                                            "finished": {
+                                                "type": "boolean"
+                                            },
+                                            "closed": {
+                                                "type": "boolean"
+                                            },
+                                            "tasks": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "subTaskId": {
+                                                            "type": "string"
+                                                        },
+                                                        "startTime": {
+                                                            "type": "string"
+                                                        },
+                                                        "endTime": {
+                                                            "type": "string"
+                                                        },
+                                                        "done": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "note": {
+                                                            "type": "string"
                                                         }
                                                     }
                                                 }
@@ -286,54 +286,41 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "_id": {
+                                        "id": {
                                             "type": "string"
                                         },
-                                        "_index": {
+                                        "date": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "relationshipId": {
                                             "type": "string"
                                         },
-                                        "_source": {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string"
-                                                },
-                                                "date": {
-                                                    "type": "string",
-                                                    "format": "date"
-                                                },
-                                                "relationshipId": {
-                                                    "type": "string"
-                                                },
-                                                "finished": {
-                                                    "type": "boolean"
-                                                },
-                                                "closed": {
-                                                    "type": "boolean"
-                                                },
-                                                "tasks": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "subTaskId": {
-                                                                "type": "string"
-                                                            },
-                                                            "startTime": {
-                                                                "type": "string",
-                                                                "format": "time"
-                                                            },
-                                                            "endTime": {
-                                                                "type": "string",
-                                                                "format": "time"
-                                                            },
-                                                            "done": {
-                                                                "type": "boolean"
-                                                            },
-                                                            "note": {
-                                                                "type": "string"
-                                                            }
-                                                        }
+                                        "finished": {
+                                            "type": "boolean"
+                                        },
+                                        "closed": {
+                                            "type": "boolean"
+                                        },
+                                        "tasks": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "subTaskId": {
+                                                        "type": "string"
+                                                    },
+                                                    "startTime": {
+                                                        "type": "string"
+                                                    },
+                                                    "endTime": {
+                                                        "type": "string"
+                                                    },
+                                                    "done": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "note": {
+                                                        "type": "string"
                                                     }
                                                 }
                                             }
@@ -371,54 +358,41 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "_id": {
+                                    "id": {
                                         "type": "string"
                                     },
-                                    "_index": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "relationshipId": {
                                         "type": "string"
                                     },
-                                    "_source": {
-                                        "type": "object",
-                                        "properties": {
-                                            "id": {
-                                                "type": "string"
-                                            },
-                                            "date": {
-                                                "type": "string",
-                                                "format": "date"
-                                            },
-                                            "relationshipId": {
-                                                "type": "string"
-                                            },
-                                            "finished": {
-                                                "type": "boolean"
-                                            },
-                                            "closed": {
-                                                "type": "boolean"
-                                            },
-                                            "tasks": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "subTaskId": {
-                                                            "type": "string"
-                                                        },
-                                                        "startTime": {
-                                                            "type": "string",
-                                                            "format": "time"
-                                                        },
-                                                        "endTime": {
-                                                            "type": "string",
-                                                            "format": "time"
-                                                        },
-                                                        "done": {
-                                                            "type": "boolean"
-                                                        },
-                                                        "note": {
-                                                            "type": "string"
-                                                        }
-                                                    }
+                                    "finished": {
+                                        "type": "boolean"
+                                    },
+                                    "closed": {
+                                        "type": "boolean"
+                                    },
+                                    "tasks": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "subTaskId": {
+                                                    "type": "string"
+                                                },
+                                                "startTime": {
+                                                    "type": "string"
+                                                },
+                                                "endTime": {
+                                                    "type": "string"
+                                                },
+                                                "done": {
+                                                    "type": "boolean"
+                                                },
+                                                "note": {
+                                                    "type": "string"
                                                 }
                                             }
                                         }
@@ -480,54 +454,43 @@
                                     "items": {
                                         "type": "object",
                                         "properties": {
-                                            "_id": {
+                                            "id": {
                                                 "type": "string"
                                             },
-                                            "_index": {
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "relationshipId": {
                                                 "type": "string"
                                             },
-                                            "_source": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "string"
-                                                    },
-                                                    "date": {
-                                                        "type": "string",
-                                                        "format": "date"
-                                                    },
-                                                    "relationshipId": {
-                                                        "type": "string"
-                                                    },
-                                                    "finished": {
-                                                        "type": "boolean"
-                                                    },
-                                                    "closed": {
-                                                        "type": "boolean"
-                                                    },
-                                                    "tasks": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "subTaskId": {
-                                                                    "type": "string"
-                                                                },
-                                                                "startTime": {
-                                                                    "type": "string",
-                                                                    "format": "time"
-                                                                },
-                                                                "endTime": {
-                                                                    "type": "string",
-                                                                    "format": "time"
-                                                                },
-                                                                "done": {
-                                                                    "type": "boolean"
-                                                                },
-                                                                "note": {
-                                                                    "type": "string"
-                                                                }
-                                                            }
+                                            "finished": {
+                                                "type": "boolean"
+                                            },
+                                            "closed": {
+                                                "type": "boolean"
+                                            },
+                                            "tasks": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "subTaskId": {
+                                                            "type": "string"
+                                                        },
+                                                        "startTime": {
+                                                            "type": "string",
+                                                            "format": "time"
+                                                        },
+                                                        "endTime": {
+                                                            "type": "string",
+                                                            "format": "time"
+                                                        },
+                                                        "done": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "note": {
+                                                            "type": "string"
                                                         }
                                                     }
                                                 }
@@ -706,7 +669,28 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Admin created successfully"
+                        "description": "Admin created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Missing required field"
@@ -745,7 +729,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Admin data"
+                        "description": "Admin data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Invalid or no token"
@@ -983,7 +988,31 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Caregiver created successfully"
+                        "description": "Caregiver created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Missing required field"
@@ -1011,7 +1040,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Caregiver data"
+                        "description": "Caregiver data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Caregiver not found"
@@ -1059,7 +1109,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Caregiver updated"
+                        "description": "Caregiver updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Missing required field"
@@ -1231,7 +1302,34 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Recipient created successfully"
+                        "description": "Recipient created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "type": "string"
+                                        },
+                                        "address": {
+                                            "type": "string"
+                                        },
+                                        "four_hand_care_needed": {
+                                            "type": "boolean"
+                                        },
+                                        "caregiver_note": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Missing required field"
@@ -1259,7 +1357,37 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Recipient data"
+                        "description": "Recipient data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "type": "string"
+                                        },
+                                        "address": {
+                                            "type": "string"
+                                        },
+                                        "four_hand_care_needed": {
+                                            "type": "boolean"
+                                        },
+                                        "caregiver_note": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Recipient not found"
@@ -1406,39 +1534,6 @@
                 }
             }
         },
-        "/recipients/caregivers": {
-            "post": {
-                "summary": "Assign a caregiver to a recipient",
-                "tags": ["Relationships"],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "required": ["recipientId", "caregiverId"],
-                                "properties": {
-                                    "recipientId": {
-                                        "type": "integer"
-                                    },
-                                    "caregiverId": {
-                                        "type": "integer"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Caregiver assigned to recipient"
-                    },
-                    "500": {
-                        "description": "Server error"
-                    }
-                }
-            }
-        },
         "/caregivers/recipients": {
             "post": {
                 "summary": "Assign a recipient to a caregiver",
@@ -1464,7 +1559,25 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Recipient assigned to caregiver"
+                        "description": "Recipient assigned to caregiver",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "relationship_id": {
+                                            "type": "integer"
+                                        },
+                                        "recipientId": {
+                                            "type": "integer"
+                                        },
+                                        "caregiverId": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Server error"
@@ -1508,6 +1621,9 @@
                                             },
                                             "email": {
                                                 "type": "string"
+                                            },
+                                            "relationship_id": {
+                                                "type": "integer"
                                             }
                                         }
                                     }
@@ -1669,16 +1785,10 @@
                                             "recipient_name": {
                                                 "type": "string"
                                             },
-                                            "recipient_email": {
-                                                "type": "string"
-                                            },
                                             "caregiver_id": {
                                                 "type": "integer"
                                             },
                                             "caregiver_name": {
-                                                "type": "string"
-                                            },
-                                            "caregiver_email": {
                                                 "type": "string"
                                             }
                                         }
@@ -1727,7 +1837,34 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Schedule created"
+                        "description": "Schedule created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "relationship_id": {
+                                            "type": "integer"
+                                        },
+                                        "date": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "start_time": {
+                                            "type": "string",
+                                            "format": "time"
+                                        },
+                                        "end_time": {
+                                            "type": "string",
+                                            "format": "time"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Missing required fields"
@@ -1750,6 +1887,9 @@
                                     "items": {
                                         "type": "object",
                                         "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
                                             "relationship_id": {
                                                 "type": "integer"
                                             },
@@ -1794,7 +1934,34 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Schedule details"
+                        "description": "Schedule details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "relationship_id": {
+                                            "type": "integer"
+                                        },
+                                        "date": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "start_time": {
+                                            "type": "string",
+                                            "format": "time"
+                                        },
+                                        "end_time": {
+                                            "type": "string",
+                                            "format": "time"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Schedule not found"
@@ -1905,7 +2072,37 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of schedules for the caregiver"
+                        "description": "List of schedules for the caregiver",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "relationship_id": {
+                                                "type": "integer"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "start_time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            },
+                                            "end_time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "No schedules found for this caregiver"
@@ -1933,38 +2130,40 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of schedules for the recipient"
+                        "description": "List of schedules for the recipient",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "relationship_id": {
+                                                "type": "integer"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "start_time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            },
+                                            "end_time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "No schedules found for this recipient"
-                    },
-                    "500": {
-                        "description": "Server error"
-                    }
-                }
-            }
-        },
-        "/schedules/{id}/recipient": {
-            "get": {
-                "summary": "Get recipient details for a given schedule",
-                "tags": ["Schedules"],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "description": "Schedule ID"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Recipient details for the schedule"
-                    },
-                    "404": {
-                        "description": "Recipient not found for this schedule"
                     },
                     "500": {
                         "description": "Server error"
@@ -1998,7 +2197,37 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of schedules between the caregiver and recipient"
+                        "description": "List of schedules between the caregiver and recipient",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "relationship_id": {
+                                                "type": "integer"
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "start_time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            },
+                                            "end_time": {
+                                                "type": "string",
+                                                "format": "time"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "No schedules found for this caregiver-recipient pair"
@@ -2031,7 +2260,22 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Task type created"
+                        "description": "Task type created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Missing required field"
@@ -2046,7 +2290,25 @@
                 "tags": ["TaskTypes"],
                 "responses": {
                     "200": {
-                        "description": "List of task types"
+                        "description": "List of task types",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Server error"
@@ -2070,7 +2332,22 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Task type details"
+                        "description": "Task type details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Task type not found"
@@ -2106,7 +2383,25 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Subtask created"
+                        "description": "Subtask created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "tasktypeId": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Missing required fields"
@@ -2121,7 +2416,28 @@
                 "tags": ["SubTasks"],
                 "responses": {
                     "200": {
-                        "description": "List of all subtasks"
+                        "description": "List of all subtasks",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "tasktypeId": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Server error"
@@ -2145,7 +2461,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Subtask details"
+                        "description": "Subtask details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "tasktypeId": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Subtask not found"
@@ -2172,88 +2506,31 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of subtasks for the given task type"
+                        "description": "List of subtasks for the given task type",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "tasktypeId": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "No subtasks found"
-                    },
-                    "500": {
-                        "description": "Server error"
-                    }
-                }
-            }
-        },
-        "/schedules/recipient/{recipientId}/last": {
-            "get": {
-                "summary": "Get the most recent past schedule for a recipient",
-                "tags": ["Schedules"],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "recipientId",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Last past schedule"
-                    },
-                    "404": {
-                        "description": "No past schedule found"
-                    },
-                    "500": {
-                        "description": "Server error"
-                    }
-                }
-            }
-        },
-        "/schedules/recipient/{recipientId}/next": {
-            "get": {
-                "summary": "Get the next upcoming schedule for a recipient",
-                "tags": ["Schedules"],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "recipientId",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Next upcoming schedule"
-                    },
-                    "404": {
-                        "description": "No upcoming schedule found"
-                    },
-                    "500": {
-                        "description": "Server error"
-                    }
-                }
-            }
-        },
-        "/schedules/caregiver/{caregiverId}/today": {
-            "get": {
-                "summary": "Get today's schedules for a caregiver",
-                "tags": ["Schedules"],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "caregiverId",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of today's schedules"
                     },
                     "500": {
                         "description": "Server error"
