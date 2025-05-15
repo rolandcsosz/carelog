@@ -5,7 +5,7 @@ import Calendar from "../components/Calendar";
 import ScheduleCard from "../components/ScheduleCard";
 import { useAdminModel } from "../hooks/useAdminModel";
 import { useApi } from "../hooks/useApi";
-import { convertToGlobalUTC, getDateString } from "../utils";
+import { compareTime, convertToGlobalUTC, getDateString } from "../utils";
 import addButtonIconPrimary from "../assets/add-button-icon-primary.svg";
 
 interface ScheduleProps {
@@ -22,11 +22,25 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
 
     const { request } = useApi();
     const { caregivers, relationships, recipients, schedules } = useAdminModel();
-
     const userMode: ScheduleMode =
         caregiverIds ? "recipient"
         : recipientIds ? "caregiver"
         : null;
+
+    const firstRelationshipForUser = relationships.list?.find((relationship) => {
+        if (userMode === "caregiver") {
+            return (
+                relationship.caregiverId === userId &&
+                (!recipientIds || recipientIds.includes(relationship.recipientId))
+            );
+        } else if (userMode === "recipient") {
+            return (
+                relationship.recipientId === userId &&
+                (!caregiverIds || caregiverIds.includes(relationship.caregiverId))
+            );
+        }
+        return false;
+    });
 
     const filteredIds =
         userMode === "caregiver" ?
@@ -65,7 +79,7 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
 
     useEffect(() => {
         refetchSchedules();
-    }, [userMode, userId, schedules, request]);
+    }, [userMode, userId]);
 
     const handleDateChange = (date: Date) => {
         setSelectedDate(date);
@@ -100,29 +114,40 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
         let connection: Relationship | undefined = undefined;
 
         if (userMode === "caregiver") {
+            const selectedRecipient = recipients.list?.find((r) => r.name === schedule.selectedOption);
+            if (!selectedRecipient) {
+                console.error("Selected recipient not found");
+                return;
+            }
             connection = relationships.list?.find(
-                (rel) => rel.recipientId === schedule.selectedId && rel.caregiverId === userId,
+                (rel) => rel.recipientId === selectedRecipient.id && rel.caregiverId === userId,
             );
         } else if (userMode === "recipient") {
+            const selectedCaregiver = caregivers.list?.find((c) => c.name === schedule.selectedOption);
+            if (!selectedCaregiver) {
+                console.error("Selected caregiver not found");
+                return;
+            }
             connection = relationships.list?.find(
-                (rel) => rel.recipientId === userId && rel.caregiverId === schedule.selectedId,
+                (rel) => rel.recipientId === userId && rel.caregiverId === selectedCaregiver.id,
             );
         }
 
         if (!connection) {
-            handleAddSchedule({
-                relationshipId: schedule.selectedId,
-                start: schedule.start,
-                end: schedule.end,
-                date: selectedDate,
-            });
+            console.error("Connection not found");
             return;
         }
 
+        console.log("EDIT SCHEDULE", schedule.id, {
+            relationship_id: Number(connection.id),
+            start_time: schedule.start,
+            end_time: schedule.end,
+            date: selectedDate.toDateString(), //TODO check if this is correct
+        });
         const response = await schedules.edit(request, {
-            id: connection.recipientId,
+            id: schedule.id,
             requestBody: {
-                relationship_id: schedule.selectedId,
+                relationship_id: connection.id,
                 start_time: schedule.start,
                 end_time: schedule.end,
                 date: selectedDate.toDateString(), //TODO check if this is correct
@@ -130,18 +155,30 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
         });
 
         if (response) {
-            refetchSchedules();
+            setFetchedSchedules((prev) =>
+                prev.map((s) =>
+                    s.id === schedule.id ?
+                        {
+                            ...s,
+                            start: schedule.start,
+                            end: schedule.end,
+                            date: selectedDate,
+                            relationshipId: connection!.id,
+                        }
+                    :   s,
+                ),
+            );
         }
     };
 
-    const filteredSchedules = fetchedSchedules.filter(
-        (schedule) => selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate),
-    );
+    const filteredSchedules = fetchedSchedules
+        .filter((schedule) => selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate))
+        .sort((a, b) => compareTime(a.start, b.start));
 
     const dropdownOptions =
         userMode === "caregiver" ?
-            new Map(recipients.list?.filter((r) => filteredIds?.includes(r.id)).map((r) => [r.id, r.name]))
-        :   new Map(caregivers.list?.filter((c) => filteredIds?.includes(c.id)).map((c) => [c.id, c.name]));
+            recipients.list?.filter((r) => filteredIds?.includes(r.id)).map((r) => r.name)
+        :   caregivers.list?.filter((c) => filteredIds?.includes(c.id)).map((c) => c.name);
 
     return (
         <div className={styles.calendarContainer}>
@@ -155,18 +192,33 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
             <div className={styles.scheduleContainer}>
                 {filteredSchedules.map((schedule, index) => (
                     <ScheduleCard
-                        key={index}
                         title={userMode === "caregiver" ? "Gondozott" : "Gondozó"}
                         options={dropdownOptions}
                         dropDownDisabled={userMode === "recipient"}
                         onChange={handleModifySchedule}
+                        id={schedule.id}
                         startTime={schedule.start}
                         endTime={schedule.end}
                     />
                 ))}
             </div>
 
-            <Button noText primary icon={addButtonIconPrimary} size="large" onClick={() => {}} fillWidth />
+            <Button
+                noText
+                primary
+                icon={addButtonIconPrimary}
+                size="large"
+                onClick={() =>
+                    handleAddSchedule({
+                        id: -1,
+                        relationshipId: Number(firstRelationshipForUser?.id) || -1,
+                        start: filteredSchedules.at(-1)?.end || "00:00:00",
+                        end: filteredSchedules.at(-1)?.end || "00:00:00",
+                        date: selectedDate,
+                    })
+                }
+                fillWidth
+            />
         </div>
     );
 };

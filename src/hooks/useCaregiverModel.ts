@@ -35,15 +35,15 @@ import { useEffect } from "react";
 const fetchLogedInUser = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
     id: number,
-): Promise<Caregiver | undefined> => {
+): Promise<Caregiver | null> => {
     const response = await request<GetCaregiversByIdData, GetCaregiversByIdResponse>(getCaregiversById, { id: id });
     if (!response || (response as any).length === 0) {
-        return undefined;
+        return null;
     }
 
     const first = (response as any)[0];
     if (!first) {
-        return undefined;
+        return null;
     }
 
     return {
@@ -168,7 +168,7 @@ export const useCaregiverModel = () => {
     const { request } = useApi();
     const { user } = useAuth();
 
-    const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Caregiver | undefined>({
+    const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Caregiver | null>({
         queryKey: ["logedInCaregiverUser", user?.id ?? -1],
         queryFn: () => fetchLogedInUser(request, Number(user?.id) ?? -1),
         enabled: !!user?.id && user?.role === "caregiver",

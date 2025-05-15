@@ -14,7 +14,8 @@ type Ok = {};
 type UserRole = "admin" | "caregiver" | "invalid";
 
 interface NewScheduleData {
-    selectedId: Id;
+    id: Id;
+    selectedOption: string;
     start: string;
     end: string;
 }
@@ -62,11 +63,13 @@ type Recipient = {
 };
 
 type Relationship = {
+    id: Id;
     caregiverId: Id;
     recipientId: Id;
 };
 
 type Schedule = {
+    id: Id;
     relationshipId: Id;
     start: string;
     end: string;

@@ -4,8 +4,9 @@ import Dropdown from "./Dropdown";
 import TextInput from "./TextInput";
 
 interface ScheduleCardProps {
+    id: number;
     title: string;
-    options: Map<number, string>;
+    options: string[];
     onChange: (value: NewScheduleData) => void;
     startTime: string;
     endTime: string;
@@ -13,6 +14,7 @@ interface ScheduleCardProps {
 }
 
 const ScheduleCard: React.FC<ScheduleCardProps> = ({
+    id,
     title,
     options,
     onChange,
@@ -20,18 +22,19 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
     endTime,
     dropDownDisabled = false,
 }) => {
-    const [selectedId, setSelectedId] = React.useState<number>(Array.from(options.keys())[0] || -1);
+    const [selectedOption, setSelectedOption] = React.useState<string>(options[0]);
     const [selectedStartTime, setSelectedStartTime] = React.useState<string>(startTime);
     const [selectedEndTime, setSelectedEndTime] = React.useState<string>(endTime);
 
     useEffect(() => {
         const newScheduleData: NewScheduleData = {
-            selectedId,
+            id: id,
+            selectedOption: selectedOption,
             start: selectedStartTime,
             end: selectedEndTime,
         };
         onChange(newScheduleData);
-    }, [selectedId, selectedStartTime, selectedEndTime]);
+    }, [selectedOption, selectedStartTime, selectedEndTime]);
 
     return (
         <div className={styles.container}>
@@ -39,9 +42,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
                 <div className={styles.headerText}>{title}</div>
                 <Dropdown
                     disabled={dropDownDisabled}
-                    selected={options.get(selectedId) || ""}
+                    selected={title}
                     options={options}
-                    onIdChange={setSelectedId}
+                    onChange={setSelectedOption}
                     fillWidth={true}
                 ></Dropdown>
             </div>

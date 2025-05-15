@@ -42,10 +42,34 @@ export const fetchSchedulesForCaregiver = async (
     return schedules.map(
         (schedule) =>
             ({
+                id: schedule.id || -1,
                 relationshipId: schedule.relationship_id || -1,
                 start: schedule.start_time || "00:00:00",
                 end: schedule.end_time || "00:00:00",
                 date: schedule.date ? new Date(schedule.date) : new Date(),
             }) as Schedule,
     );
+};
+
+const normalizeTime = (time: string) => {
+    if (/^\d{2}:\d{2}:\d{2}$/.test(time)) {
+        return time.slice(0, 5);
+    }
+    if (/^\d{2}:\d{2}$/.test(time)) {
+        return time;
+    }
+    return time;
+};
+
+export const compareTime = (a: string, b: string) => {
+    const startA = normalizeTime(a);
+    const startB = normalizeTime(b);
+
+    if (startA < startB) {
+        return -1;
+    } else if (startA > startB) {
+        return 1;
+    } else {
+        return 0;
+    }
 };

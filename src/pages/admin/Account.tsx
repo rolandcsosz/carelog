@@ -25,10 +25,13 @@ const Account: React.FC = () => {
     const { openPopup } = usePopup();
     const { user: adminUser } = useAdminModel();
     const { user: caregiverUser } = useCaregiverModel();
-    const logedInUser: Admin | Caregiver | undefined = user?.role === "admin" ? adminUser.info : caregiverUser.info;
+    const logedInUser: Admin | Caregiver | null =
+        user?.role === "admin" ? (adminUser.info ?? null) : (caregiverUser.info ?? null);
     const [email, setEmail] = useState<string>(
         user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.info?.email ?? ""),
     );
+
+    console.log("Account component", user?.role, logedInUser);
     const [phone, setPhone] = useState<string>(caregiverUser.info?.phone ?? "");
     const latestPasswords = useRef<NewPasswordData | null>(null);
 

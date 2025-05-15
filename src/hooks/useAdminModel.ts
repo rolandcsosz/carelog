@@ -15,6 +15,7 @@ import {
     GetCaregiversByIdRecipientsResponse,
     GetCaregiversResponse,
     GetRecipientsResponse,
+    GetRelationshipsResponse,
     GetSchedulesCaregiverByCaregiverIdData,
     GetSchedulesCaregiverByCaregiverIdResponse,
     GetSchedulesRecipientByRecipientIdData,
@@ -48,6 +49,7 @@ import {
     getCaregivers,
     getCaregiversByIdRecipients,
     getRecipients,
+    getRelationships,
     getSchedulesCaregiverByCaregiverId,
     getSchedulesRecipientByRecipientId,
     postCaregivers,
@@ -107,46 +109,36 @@ const fetchRecipients = async (
 const fetchLogedInUser = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
     id: number,
-): Promise<Admin | undefined> => {
+): Promise<Admin | null> => {
+    console.log("Fetching logged in user with ID:", id);
     const response = await request<GetAdminsByIdData, GetAdminsByIdResponse>(getAdminsById, { id: id });
-    if (!response || (response as any).length === 0) {
-        return undefined;
-    }
-
-    const first = (response as any)[0];
-    if (!first) {
-        return undefined;
+    if (!response) {
+        return null;
     }
 
     return {
-        id: first.id ?? -1,
-        name: first.name ?? "",
-        email: first.email ?? "",
+        id: response?.id || -1,
+        name: response?.name || "",
+        email: response?.email || "",
     };
 };
 
 const fetchRelationships = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
-    caregivers: Caregiver[],
 ): Promise<Relationship[]> => {
-    const relationships: Relationship[] = (
-        await Promise.all(
-            caregivers.map(async (caregiver) => {
-                const response = await request<GetCaregiversByIdRecipientsData, GetCaregiversByIdRecipientsResponse>(
-                    getCaregiversByIdRecipients,
-                    { id: caregiver.id },
-                );
-                if (!response || response.length === 0) {
-                    return [];
-                }
+    const response = await request<void, GetRelationshipsResponse>(getRelationships, undefined);
+    if (!response || response.length === 0) {
+        return [];
+    }
 
-                return response.map((relationship) => ({
-                    caregiverId: caregiver.id || "",
-                    recipientId: relationship?.id || "",
-                })) as Relationship[];
-            }),
-        )
-    ).flat();
+    const relationships = response.map(
+        (relationship) =>
+            ({
+                id: relationship?.relationship_id || -1,
+                caregiverId: relationship?.caregiver_id || -1,
+                recipientId: relationship?.recipient_id || -1,
+            }) as Relationship,
+    );
 
     return relationships;
 };
@@ -169,6 +161,7 @@ const fetchSchedulesForRecipient = async (
     return schedules.map(
         (schedule) =>
             ({
+                id: schedule?.id || -1,
                 relationshipId: schedule.relationship_id || -1,
                 start: schedule.start_time || "00:00:00",
                 end: schedule.end_time || "00:00:00",
@@ -226,15 +219,15 @@ export const useAdminModel = () => {
         enabled: !!user?.id && user.role === "admin",
     });
 
-    const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Admin | undefined>({
-        queryKey: ["logedInAdminUser", user?.id ?? -1],
+    const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Admin | null>({
+        queryKey: ["logedInAdminUser"],
         queryFn: () => fetchLogedInUser(request, user?.id ?? -1),
         enabled: !!user?.id && user.role === "admin",
         staleTime: 0,
     });
     const { data: relationships, refetch: refetchRelationships } = useQuery<Relationship[]>({
-        queryKey: ["relationships", caregivers.map((c) => c.id).join(",")],
-        queryFn: () => fetchRelationships(request, caregivers),
+        queryKey: ["relationships"],
+        queryFn: () => fetchRelationships(request),
         enabled: !!user?.id && caregivers.length > 0 && user.role === "admin",
         staleTime: 0,
     });

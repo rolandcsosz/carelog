@@ -21,11 +21,15 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     const [email, setEmail] = useState<string>(recipient.email);
     const [address, setAddress] = useState<string>(recipient.address);
     const { relationships, caregivers, recipients } = useAdminModel();
-    const [selectedCaregiver, setSelectedCaregiver] = useState<Caregiver | null>(null);
+    const connection = relationships.list?.find((relationship) => relationship.recipientId === recipient.id);
+    const caregiver = caregivers.list?.find((caregiver) => caregiver.id === connection?.caregiverId);
+    const [selectedCaregiver, setSelectedCaregiver] = useState<Caregiver | null>(caregiver || null);
+
     const connectionCount = relationships.list?.filter(
         (relationship) => relationship.recipientId === recipient.id,
     ).length;
     const hasMounted = useRef(false);
+
     const caregiverIds = caregivers.list
         ?.filter((caregiver) =>
             relationships.list?.some(
@@ -75,10 +79,16 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
         removeLastPageFromStack();
     };
 
-    const handleSelectionChange = (selectedCaregiverId: number) => {
-        const isRemove = selectedCaregiverId === -1;
+    const handleSelectionChange = (nameSelected: string) => {
+        const selectedCaregiver = caregivers.list?.find((c) => c.name === nameSelected);
+        if (!selectedCaregiver) {
+            setSelectedCaregiver(null);
+            return;
+        }
+
+        const isRemove = nameSelected === "<<Üres>>";
         const connection = relationships.list?.find(
-            (rel) => rel.recipientId === recipient.id && rel.caregiverId === selectedCaregiverId,
+            (rel) => rel.recipientId === recipient.id && rel.caregiverId === selectedCaregiver.id,
         );
 
         if (connection) {
@@ -90,10 +100,10 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                     id: connection.recipientId,
                     requestBody: {
                         recipientId: recipient.id,
-                        caregiverId: selectedCaregiverId,
+                        caregiverId: selectedCaregiver.id,
                     },
                 });
-                setSelectedCaregiver(caregivers.list?.find((c) => c.id === selectedCaregiverId) || null);
+                setSelectedCaregiver(caregivers.list?.find((c) => c.id === selectedCaregiver.id) || null);
             }
             return;
         }
@@ -106,9 +116,10 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
         relationships.add({
             requestBody: {
                 recipientId: recipient.id,
-                caregiverId: selectedCaregiverId,
+                caregiverId: selectedCaregiver.id,
             },
         });
+        setSelectedCaregiver(caregivers.list?.find((c) => c.id === selectedCaregiver.id) || null);
     };
 
     return (
@@ -121,22 +132,13 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Gondozó</div>
                             <Dropdown
-                                selected={connectionCount === 0 ? "<<Üres>>" : selectedCaregiver?.name || "<<Üres>>"}
+                                selected={selectedCaregiver?.name || ""}
                                 options={
                                     connectionCount === 0 ?
-                                        new Map<number, string>([
-                                            [-1, "<<Üres>>"],
-                                            ...(caregivers.list?.map(
-                                                (caregiver) => [caregiver.id, caregiver.name] as [number, string],
-                                            ) || []),
-                                        ])
-                                    :   new Map<number, string>([
-                                            ...(caregivers.list?.map(
-                                                (caregiver) => [caregiver.id, caregiver.name] as [number, string],
-                                            ) || []),
-                                        ])
+                                        ["<<Üres>>", ...(caregivers.list?.map((caregiver) => caregiver.name) || [])]
+                                    :   [...(caregivers.list?.map((caregiver) => caregiver.name) || [])]
                                 }
-                                onIdChange={handleSelectionChange}
+                                onChange={handleSelectionChange}
                                 fillWidth={true}
                             />
                         </div>

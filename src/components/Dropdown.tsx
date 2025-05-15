@@ -3,47 +3,24 @@ import styles from "./Dropdown.module.scss";
 
 interface DropdownProps {
     selected: string;
-    options: Map<number, string> | string[];
-    onChange?: (value: string) => void;
-    onIdChange?: (value: number) => void;
+    options: string[];
+    onChange: (value: string) => void;
     fillWidth?: boolean;
     disabled?: boolean;
 }
 
-const Dropdown = ({
-    selected,
-    options,
-    onChange = () => {},
-    onIdChange = () => {},
-    fillWidth = false,
-    disabled = false,
-}: DropdownProps) => {
-    const entries: { id: number | null; label: string }[] =
-        options instanceof Map ?
-            Array.from(options.entries()).map(([id, label]) => ({ id, label }))
-        :   options.map((v) => ({ label: v, id: null }));
-
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const label = e.target.options[e.target.selectedIndex].text;
-        const raw = e.target.value;
-
-        if (raw !== "") {
-            onIdChange(Number(raw));
-        }
-        onChange(label);
-    };
-
+const Dropdown: React.FC<DropdownProps> = ({ selected, options, onChange, fillWidth = false, disabled = false }) => {
     return (
         <select
             className={styles.dropdown}
             value={selected}
-            onChange={handleChange}
+            onChange={(e) => onChange(e.target.value)}
             style={{ width: fillWidth ? "100%" : "auto" }}
             disabled={disabled}
         >
-            {entries.map(({ label, id }) => (
-                <option key={label} value={id ?? ""}>
-                    {label}
+            {options.map((option, index) => (
+                <option key={index} value={option}>
+                    {option}
                 </option>
             ))}
         </select>
