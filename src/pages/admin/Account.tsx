@@ -24,12 +24,12 @@ const Account: React.FC = () => {
     const { request } = useApi();
     const { logout, user } = useAuth();
     const { openPopup } = usePopup();
-    const { logedInUser: logedInAdminUser, updateLogedInUser: updateLogedInAdminUser } = useAdminModel();
+    const { user: adminUser } = useAdminModel();
     const { logedInUser: logedInCaregiverUser, updateLogedInUser: updateLogedInCaregiverUser } = useCaregiverModel();
-    const logedInUser: Admin | Caregiver | undefined = user?.role === "admin" ? logedInAdminUser : logedInCaregiverUser;
-    const updateLogedInUser = user?.role === "admin" ? updateLogedInAdminUser : updateLogedInCaregiverUser;
+    const logedInUser: Admin | Caregiver | undefined = user?.role === "admin" ? adminUser.info : logedInCaregiverUser;
+    const updateLogedInUser = user?.role === "admin" ? adminUser.update : updateLogedInCaregiverUser;
     const [email, setEmail] = useState<string>(
-        user?.role === "admin" ? (logedInAdminUser?.email ?? "") : (logedInCaregiverUser?.email ?? ""),
+        user?.role === "admin" ? (adminUser.info?.email ?? "") : (logedInCaregiverUser?.email ?? ""),
     );
     const [phone, setPhone] = useState<string>(logedInCaregiverUser?.phone ?? "");
     const latestPasswords = useRef<NewPasswordData | null>(null);
@@ -57,7 +57,7 @@ const Account: React.FC = () => {
                     email,
                 },
             };
-            updateLogedInAdminUser(updatedUser);
+            adminUser.update(updatedUser);
         } else if (user?.role === "caregiver") {
             const updatedUser: PutCaregiversByIdData = {
                 id: Number(logedInUser.id) ?? -1,
@@ -72,7 +72,7 @@ const Account: React.FC = () => {
     }, [email, logedInUser, updateLogedInUser, phone]);
 
     useEffect(() => {
-        setEmail(user?.role === "admin" ? (logedInAdminUser?.email ?? "") : (logedInCaregiverUser?.email ?? ""));
+        setEmail(user?.role === "admin" ? (adminUser.info?.email ?? "") : (logedInCaregiverUser?.email ?? ""));
         setPhone(logedInCaregiverUser?.phone ?? "");
     }, [logedInUser, user?.role]);
 

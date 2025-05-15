@@ -35,25 +35,24 @@ export type PostLogsData = {
     };
 };
 
-export type PostLogsResponse = unknown;
+export type PostLogsResponse = {
+    message?: string;
+    id?: string;
+};
 
 export type GetLogsResponse = Array<{
-    _id?: string;
-    _index?: string;
-    _source?: {
-        id?: string;
-        date?: string;
-        relationshipId?: string;
-        finished?: boolean;
-        closed?: boolean;
-        tasks?: Array<{
-            subTaskId?: string;
-            startTime?: string;
-            endTime?: string;
-            done?: boolean;
-            note?: string;
-        }>;
-    };
+    id?: string;
+    date?: string;
+    relationshipId?: string;
+    finished?: boolean;
+    closed?: boolean;
+    tasks?: Array<{
+        subTaskId?: string;
+        startTime?: string;
+        endTime?: string;
+        done?: boolean;
+        note?: string;
+    }>;
 }>;
 
 export type GetLogsByIdData = {
@@ -61,9 +60,23 @@ export type GetLogsByIdData = {
 };
 
 export type GetLogsByIdResponse = {
-    _id?: string;
-    _index?: string;
-    _source?: {
+    id?: string;
+    date?: string;
+    relationshipId?: string;
+    finished?: boolean;
+    closed?: boolean;
+    tasks?: Array<{
+        subTaskId?: string;
+        startTime?: string;
+        endTime?: string;
+        done?: boolean;
+        note?: string;
+    }>;
+};
+
+export type PutLogsByIdData = {
+    id: string;
+    requestBody: {
         id?: string;
         date?: string;
         relationshipId?: string;
@@ -76,28 +89,6 @@ export type GetLogsByIdResponse = {
             done?: boolean;
             note?: string;
         }>;
-    };
-};
-
-export type PutLogsByIdData = {
-    id: string;
-    requestBody: {
-        _id?: string;
-        _index?: string;
-        _source?: {
-            id?: string;
-            date?: string;
-            relationshipId?: string;
-            finished?: boolean;
-            closed?: boolean;
-            tasks?: Array<{
-                subTaskId?: string;
-                startTime?: string;
-                endTime?: string;
-                done?: boolean;
-                note?: string;
-            }>;
-        };
     };
 };
 
@@ -110,22 +101,18 @@ export type DeleteLogsByIdData = {
 export type DeleteLogsByIdResponse = unknown;
 
 export type GetLogsOpenResponse = Array<{
-    _id?: string;
-    _index?: string;
-    _source?: {
-        id?: string;
-        date?: string;
-        relationshipId?: string;
-        finished?: boolean;
-        closed?: boolean;
-        tasks?: Array<{
-            subTaskId?: string;
-            startTime?: string;
-            endTime?: string;
-            done?: boolean;
-            note?: string;
-        }>;
-    };
+    id?: string;
+    date?: string;
+    relationshipId?: string;
+    finished?: boolean;
+    closed?: boolean;
+    tasks?: Array<{
+        subTaskId?: string;
+        startTime?: string;
+        endTime?: string;
+        done?: boolean;
+        note?: string;
+    }>;
 }>;
 
 export type GetLogsRelationshipByRecipientIdByCaregiverIdData = {
@@ -168,7 +155,12 @@ export type PostAdminsData = {
     };
 };
 
-export type PostAdminsResponse = unknown;
+export type PostAdminsResponse = {
+    id?: number;
+    name?: string;
+    email?: string;
+    password?: string;
+};
 
 export type GetAdminsByIdData = {
     /**
@@ -177,7 +169,12 @@ export type GetAdminsByIdData = {
     id: number;
 };
 
-export type GetAdminsByIdResponse = unknown;
+export type GetAdminsByIdResponse = {
+    id?: number;
+    name?: string;
+    email?: string;
+    password?: string;
+};
 
 export type PutAdminsByIdData = {
     /**
@@ -230,7 +227,13 @@ export type PostCaregiversData = {
     };
 };
 
-export type PostCaregiversResponse = unknown;
+export type PostCaregiversResponse = {
+    id?: number;
+    name?: string;
+    email?: string;
+    phone?: string;
+    password?: string;
+};
 
 export type GetCaregiversByIdData = {
     /**
@@ -239,7 +242,12 @@ export type GetCaregiversByIdData = {
     id: number;
 };
 
-export type GetCaregiversByIdResponse = unknown;
+export type GetCaregiversByIdResponse = {
+    id?: number;
+    name?: string;
+    phone?: string;
+    email?: string;
+};
 
 export type PutCaregiversByIdData = {
     /**
@@ -253,7 +261,12 @@ export type PutCaregiversByIdData = {
     };
 };
 
-export type PutCaregiversByIdResponse = unknown;
+export type PutCaregiversByIdResponse = {
+    id?: number;
+    name?: string;
+    email?: string;
+    phone?: string;
+};
 
 export type DeleteCaregiversByIdData = {
     /**
@@ -299,7 +312,14 @@ export type PostRecipientsData = {
     };
 };
 
-export type PostRecipientsResponse = unknown;
+export type PostRecipientsResponse = {
+    name?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    four_hand_care_needed?: boolean;
+    caregiver_note?: string;
+};
 
 export type GetRecipientsByIdData = {
     /**
@@ -308,7 +328,15 @@ export type GetRecipientsByIdData = {
     id: number;
 };
 
-export type GetRecipientsByIdResponse = unknown;
+export type GetRecipientsByIdResponse = {
+    id?: number;
+    name?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    four_hand_care_needed?: boolean;
+    caregiver_note?: string;
+};
 
 export type PutRecipientsByIdData = {
     /**
@@ -349,15 +377,6 @@ export type PutRecipientsByIdPasswordData = {
 
 export type PutRecipientsByIdPasswordResponse = unknown;
 
-export type PostRecipientsCaregiversData = {
-    requestBody: {
-        recipientId: number;
-        caregiverId: number;
-    };
-};
-
-export type PostRecipientsCaregiversResponse = unknown;
-
 export type PostCaregiversRecipientsData = {
     requestBody: {
         recipientId: number;
@@ -365,7 +384,11 @@ export type PostCaregiversRecipientsData = {
     };
 };
 
-export type PostCaregiversRecipientsResponse = unknown;
+export type PostCaregiversRecipientsResponse = {
+    relationship_id?: number;
+    recipientId?: number;
+    caregiverId?: number;
+};
 
 export type GetRecipientsByIdCaregiversData = {
     /**
@@ -379,6 +402,7 @@ export type GetRecipientsByIdCaregiversResponse = Array<{
     name?: string;
     phone?: string;
     email?: string;
+    relationship_id?: number;
 }>;
 
 export type GetCaregiversByIdRecipientsData = {
@@ -422,10 +446,8 @@ export type GetRelationshipsResponse = Array<{
     relationship_id?: number;
     recipient_id?: number;
     recipient_name?: string;
-    recipient_email?: string;
     caregiver_id?: number;
     caregiver_name?: string;
-    caregiver_email?: string;
 }>;
 
 export type PostSchedulesData = {
@@ -437,9 +459,16 @@ export type PostSchedulesData = {
     };
 };
 
-export type PostSchedulesResponse = unknown;
+export type PostSchedulesResponse = {
+    id?: number;
+    relationship_id?: number;
+    date?: string;
+    start_time?: string;
+    end_time?: string;
+};
 
 export type GetSchedulesResponse = Array<{
+    id?: number;
     relationship_id?: number;
     date?: string;
     start_time?: string;
@@ -453,7 +482,13 @@ export type GetSchedulesByIdData = {
     id: number;
 };
 
-export type GetSchedulesByIdResponse = unknown;
+export type GetSchedulesByIdResponse = {
+    id?: number;
+    relationship_id?: number;
+    date?: string;
+    start_time?: string;
+    end_time?: string;
+};
 
 export type PutSchedulesByIdData = {
     /**
@@ -486,7 +521,13 @@ export type GetSchedulesCaregiverByCaregiverIdData = {
     caregiverId: number;
 };
 
-export type GetSchedulesCaregiverByCaregiverIdResponse = unknown;
+export type GetSchedulesCaregiverByCaregiverIdResponse = Array<{
+    id?: number;
+    relationship_id?: number;
+    date?: string;
+    start_time?: string;
+    end_time?: string;
+}>;
 
 export type GetSchedulesRecipientByRecipientIdData = {
     /**
@@ -495,16 +536,13 @@ export type GetSchedulesRecipientByRecipientIdData = {
     recipientId: number;
 };
 
-export type GetSchedulesRecipientByRecipientIdResponse = unknown;
-
-export type GetSchedulesByIdRecipientData = {
-    /**
-     * Schedule ID
-     */
-    id: number;
-};
-
-export type GetSchedulesByIdRecipientResponse = unknown;
+export type GetSchedulesRecipientByRecipientIdResponse = Array<{
+    id?: number;
+    relationship_id?: number;
+    date?: string;
+    start_time?: string;
+    end_time?: string;
+}>;
 
 export type GetSchedulesByCaregiverIdByRecipientIdData = {
     /**
@@ -517,7 +555,13 @@ export type GetSchedulesByCaregiverIdByRecipientIdData = {
     recipientId: number;
 };
 
-export type GetSchedulesByCaregiverIdByRecipientIdResponse = unknown;
+export type GetSchedulesByCaregiverIdByRecipientIdResponse = Array<{
+    id?: number;
+    relationship_id?: number;
+    date?: string;
+    start_time?: string;
+    end_time?: string;
+}>;
 
 export type PostTasktypesData = {
     requestBody: {
@@ -525,15 +569,24 @@ export type PostTasktypesData = {
     };
 };
 
-export type PostTasktypesResponse = unknown;
+export type PostTasktypesResponse = {
+    id?: number;
+    type?: string;
+};
 
-export type GetTasktypesResponse = unknown;
+export type GetTasktypesResponse = Array<{
+    id?: number;
+    type?: string;
+}>;
 
 export type GetTasktypesByIdData = {
     id: number;
 };
 
-export type GetTasktypesByIdResponse = unknown;
+export type GetTasktypesByIdResponse = {
+    id?: number;
+    type?: string;
+};
 
 export type PostSubtasksData = {
     requestBody: {
@@ -542,36 +595,34 @@ export type PostSubtasksData = {
     };
 };
 
-export type PostSubtasksResponse = unknown;
+export type PostSubtasksResponse = {
+    id?: number;
+    title?: string;
+    tasktypeId?: number;
+};
 
-export type GetSubtasksResponse = unknown;
+export type GetSubtasksResponse = Array<{
+    id?: number;
+    title?: string;
+    tasktypeId?: number;
+}>;
 
 export type GetSubtasksByIdData = {
     id: number;
 };
 
-export type GetSubtasksByIdResponse = unknown;
+export type GetSubtasksByIdResponse = {
+    id?: number;
+    title?: string;
+    tasktypeId?: number;
+};
 
 export type GetSubtasksTasktypeByTaskTypeIdData = {
     taskTypeId: number;
 };
 
-export type GetSubtasksTasktypeByTaskTypeIdResponse = unknown;
-
-export type GetSchedulesRecipientByRecipientIdLastData = {
-    recipientId: number;
-};
-
-export type GetSchedulesRecipientByRecipientIdLastResponse = unknown;
-
-export type GetSchedulesRecipientByRecipientIdNextData = {
-    recipientId: number;
-};
-
-export type GetSchedulesRecipientByRecipientIdNextResponse = unknown;
-
-export type GetSchedulesCaregiverByCaregiverIdTodayData = {
-    caregiverId: number;
-};
-
-export type GetSchedulesCaregiverByCaregiverIdTodayResponse = unknown;
+export type GetSubtasksTasktypeByTaskTypeIdResponse = Array<{
+    id?: number;
+    title?: string;
+    tasktypeId?: number;
+}>;

@@ -51,8 +51,6 @@ import type {
     DeleteRecipientsByIdResponse,
     PutRecipientsByIdPasswordData,
     PutRecipientsByIdPasswordResponse,
-    PostRecipientsCaregiversData,
-    PostRecipientsCaregiversResponse,
     PostCaregiversRecipientsData,
     PostCaregiversRecipientsResponse,
     GetRecipientsByIdCaregiversData,
@@ -77,8 +75,6 @@ import type {
     GetSchedulesCaregiverByCaregiverIdResponse,
     GetSchedulesRecipientByRecipientIdData,
     GetSchedulesRecipientByRecipientIdResponse,
-    GetSchedulesByIdRecipientData,
-    GetSchedulesByIdRecipientResponse,
     GetSchedulesByCaregiverIdByRecipientIdData,
     GetSchedulesByCaregiverIdByRecipientIdResponse,
     PostTasktypesData,
@@ -93,12 +89,6 @@ import type {
     GetSubtasksByIdResponse,
     GetSubtasksTasktypeByTaskTypeIdData,
     GetSubtasksTasktypeByTaskTypeIdResponse,
-    GetSchedulesRecipientByRecipientIdLastData,
-    GetSchedulesRecipientByRecipientIdLastResponse,
-    GetSchedulesRecipientByRecipientIdNextData,
-    GetSchedulesRecipientByRecipientIdNextResponse,
-    GetSchedulesCaregiverByCaregiverIdTodayData,
-    GetSchedulesCaregiverByCaregiverIdTodayResponse,
 } from "./types.gen";
 
 /**
@@ -659,27 +649,6 @@ export const putRecipientsByIdPassword = (
 };
 
 /**
- * Assign a caregiver to a recipient
- * @param data The data for the request.
- * @param data.requestBody
- * @returns unknown Caregiver assigned to recipient
- * @throws ApiError
- */
-export const postRecipientsCaregivers = (
-    data: PostRecipientsCaregiversData,
-): CancelablePromise<PostRecipientsCaregiversResponse> => {
-    return __request(OpenAPI, {
-        method: "POST",
-        url: "/recipients/caregivers",
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            500: "Server error",
-        },
-    });
-};
-
-/**
  * Assign a recipient to a caregiver
  * @param data The data for the request.
  * @param data.requestBody
@@ -957,29 +926,6 @@ export const getSchedulesRecipientByRecipientId = (
 };
 
 /**
- * Get recipient details for a given schedule
- * @param data The data for the request.
- * @param data.id Schedule ID
- * @returns unknown Recipient details for the schedule
- * @throws ApiError
- */
-export const getSchedulesByIdRecipient = (
-    data: GetSchedulesByIdRecipientData,
-): CancelablePromise<GetSchedulesByIdRecipientResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/schedules/{id}/recipient",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            404: "Recipient not found for this schedule",
-            500: "Server error",
-        },
-    });
-};
-
-/**
  * Get all schedules between a caregiver and a recipient
  * @param data The data for the request.
  * @param data.caregiverId ID of the caregiver
@@ -1134,74 +1080,6 @@ export const getSubtasksTasktypeByTaskTypeId = (
         },
         errors: {
             404: "No subtasks found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get the most recent past schedule for a recipient
- * @param data The data for the request.
- * @param data.recipientId
- * @returns unknown Last past schedule
- * @throws ApiError
- */
-export const getSchedulesRecipientByRecipientIdLast = (
-    data: GetSchedulesRecipientByRecipientIdLastData,
-): CancelablePromise<GetSchedulesRecipientByRecipientIdLastResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/schedules/recipient/{recipientId}/last",
-        path: {
-            recipientId: data.recipientId,
-        },
-        errors: {
-            404: "No past schedule found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get the next upcoming schedule for a recipient
- * @param data The data for the request.
- * @param data.recipientId
- * @returns unknown Next upcoming schedule
- * @throws ApiError
- */
-export const getSchedulesRecipientByRecipientIdNext = (
-    data: GetSchedulesRecipientByRecipientIdNextData,
-): CancelablePromise<GetSchedulesRecipientByRecipientIdNextResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/schedules/recipient/{recipientId}/next",
-        path: {
-            recipientId: data.recipientId,
-        },
-        errors: {
-            404: "No upcoming schedule found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get today's schedules for a caregiver
- * @param data The data for the request.
- * @param data.caregiverId
- * @returns unknown List of today's schedules
- * @throws ApiError
- */
-export const getSchedulesCaregiverByCaregiverIdToday = (
-    data: GetSchedulesCaregiverByCaregiverIdTodayData,
-): CancelablePromise<GetSchedulesCaregiverByCaregiverIdTodayResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/schedules/caregiver/{caregiverId}/today",
-        path: {
-            caregiverId: data.caregiverId,
-        },
-        errors: {
             500: "Server error",
         },
     });

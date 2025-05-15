@@ -7,12 +7,14 @@ type MenuConfig = {
     };
 };
 
-type Id = string;
+type Id = number;
+
+type Ok = {};
 
 type UserRole = "admin" | "caregiver" | "invalid";
 
 interface NewScheduleData {
-    selectedOption: string;
+    selectedId: Id;
     start: string;
     end: string;
 }

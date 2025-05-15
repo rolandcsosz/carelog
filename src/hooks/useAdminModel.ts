@@ -5,6 +5,10 @@ import {
     DeleteCaregiversByIdResponse,
     DeleteRecipientsByIdData,
     DeleteRecipientsByIdResponse,
+    DeleteRelationshipsByIdData,
+    DeleteRelationshipsByIdResponse,
+    DeleteSchedulesByIdData,
+    DeleteSchedulesByIdResponse,
     GetAdminsByIdData,
     GetAdminsByIdResponse,
     GetCaregiversResponse,
@@ -16,9 +20,9 @@ import {
     GetSchedulesRecipientByRecipientIdData,
     GetSchedulesRecipientByRecipientIdResponse,
     PostCaregiversData,
+    PostCaregiversRecipientsData,
+    PostCaregiversRecipientsResponse,
     PostCaregiversResponse,
-    PostRecipientsCaregiversData,
-    PostRecipientsCaregiversResponse,
     PostRecipientsData,
     PostRecipientsResponse,
     PostSchedulesData,
@@ -29,11 +33,17 @@ import {
     PutCaregiversByIdResponse,
     PutRecipientsByIdData,
     PutRecipientsByIdResponse,
+    PutRelationshipsByIdData,
+    PutRelationshipsByIdResponse,
+    PutSchedulesByIdData,
+    PutSchedulesByIdResponse,
 } from "../../api/types.gen";
 import { CancelablePromise } from "../../api/core/CancelablePromise";
 import {
     deleteCaregiversById,
     deleteRecipientsById,
+    deleteRelationshipsById,
+    deleteSchedulesById,
     getAdminsById,
     getCaregivers,
     getRecipients,
@@ -41,12 +51,14 @@ import {
     getSchedulesCaregiverByCaregiverId,
     getSchedulesRecipientByRecipientId,
     postCaregivers,
+    postCaregiversRecipients,
     postRecipients,
-    postRecipientsCaregivers,
     postSchedules,
     putAdminsById,
     putCaregiversById,
     putRecipientsById,
+    putRelationshipsById,
+    putSchedulesById,
 } from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
 
@@ -149,19 +161,11 @@ const fetchSchedulesForRecipient = async (
         },
     );
 
-    if (!schedules || (schedules as any).length === 0) {
-        return [] as Schedule[];
+    if (!schedules || schedules.length === 0) {
+        return [];
     }
 
-    type ScheduleResponse = {
-        id: string;
-        relationship_id: string;
-        date: string;
-        start_time: string;
-        end_time: string;
-    };
-
-    return (schedules as ScheduleResponse[]).map(
+    return schedules.map(
         (schedule) =>
             ({
                 relationshipId: schedule.relationship_id || -1,
@@ -183,25 +187,17 @@ const fetchSchedulesForCaregiver = async (
         },
     );
 
-    if (!schedules || (schedules as any)?.length === 0) {
-        return [] as Schedule[];
+    if (!schedules || schedules.length === 0) {
+        return [];
     }
 
-    type ScheduleResponse = {
-        id: string;
-        relationship_id: string;
-        date: string;
-        start_time: string;
-        end_time: string;
-    };
-
-    return (schedules as ScheduleResponse[]).map(
+    return schedules.map(
         (schedule) =>
             ({
                 relationshipId: schedule.relationship_id || -1,
                 start: schedule.start_time || "00:00:00",
                 end: schedule.end_time || "00:00:00",
-                date: new Date(schedule.date) || new Date(),
+                date: schedule.date ? new Date(schedule.date) : new Date(),
             }) as Schedule,
     );
 };
@@ -221,6 +217,22 @@ const addSchedule = async (
         end: (response as any)?.end_time || "00:00",
         date: (response as any)?.date || new Date(),
     } as Schedule;
+};
+
+const editSchedule = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    data: PutSchedulesByIdData,
+): Promise<Ok | null> => {
+    const response = await request<PutSchedulesByIdData, PutSchedulesByIdResponse>(putSchedulesById, data);
+    return response ? {} : null;
+};
+
+const deleteSchedule = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    data: DeleteSchedulesByIdData,
+): Promise<Ok | null> => {
+    const response = await request<DeleteSchedulesByIdData, DeleteSchedulesByIdResponse>(deleteSchedulesById, data);
+    return response ? {} : null;
 };
 
 export const useAdminModel = () => {
@@ -253,8 +265,8 @@ export const useAdminModel = () => {
     });
 
     const { mutate: addNewCaregiver } = useMutation({
-        mutationFn: (newCaregiverData: PostCaregiversData) =>
-            request<PostCaregiversData, PostCaregiversResponse>(postCaregivers, newCaregiverData),
+        mutationFn: (body: PostCaregiversData) =>
+            request<PostCaregiversData, PostCaregiversResponse>(postCaregivers, body),
         onSuccess: () => {
             refetchCaregivers();
         },
@@ -264,8 +276,8 @@ export const useAdminModel = () => {
     });
 
     const { mutate: addNewRecipient } = useMutation({
-        mutationFn: (newRecipientData: PostRecipientsData) =>
-            request<PostRecipientsData, PostRecipientsResponse>(postRecipients, newRecipientData),
+        mutationFn: (body: PostRecipientsData) =>
+            request<PostRecipientsData, PostRecipientsResponse>(postRecipients, body),
         onSuccess: () => {
             refetchRecipients();
         },
@@ -275,8 +287,8 @@ export const useAdminModel = () => {
     });
 
     const { mutate: editCaregiver } = useMutation({
-        mutationFn: (editedCaregiverData: PutCaregiversByIdData) =>
-            request<PutCaregiversByIdData, PutCaregiversByIdResponse>(putCaregiversById, editedCaregiverData),
+        mutationFn: (body: PutCaregiversByIdData) =>
+            request<PutCaregiversByIdData, PutCaregiversByIdResponse>(putCaregiversById, body),
         onSuccess: () => {
             refetchCaregivers();
         },
@@ -286,8 +298,8 @@ export const useAdminModel = () => {
     });
 
     const { mutate: editRecipient } = useMutation({
-        mutationFn: (editedRecipientData: PutRecipientsByIdData) =>
-            request<PutRecipientsByIdData, PutRecipientsByIdResponse>(putRecipientsById, editedRecipientData),
+        mutationFn: (body: PutRecipientsByIdData) =>
+            request<PutRecipientsByIdData, PutRecipientsByIdResponse>(putRecipientsById, body),
         onSuccess: () => {
             refetchRecipients();
         },
@@ -297,8 +309,8 @@ export const useAdminModel = () => {
     });
 
     const { mutate: deleteCaregiver } = useMutation({
-        mutationFn: (deleteCaregiversData: DeleteCaregiversByIdData) =>
-            request<DeleteCaregiversByIdData, DeleteCaregiversByIdResponse>(deleteCaregiversById, deleteCaregiversData),
+        mutationFn: (body: DeleteCaregiversByIdData) =>
+            request<DeleteCaregiversByIdData, DeleteCaregiversByIdResponse>(deleteCaregiversById, body),
         onSuccess: () => {
             refetchCaregivers();
         },
@@ -308,8 +320,8 @@ export const useAdminModel = () => {
     });
 
     const { mutate: deleteRecipient } = useMutation({
-        mutationFn: (deleteRecipientData: DeleteRecipientsByIdData) =>
-            request<DeleteRecipientsByIdData, DeleteRecipientsByIdResponse>(deleteRecipientsById, deleteRecipientData),
+        mutationFn: (body: DeleteRecipientsByIdData) =>
+            request<DeleteRecipientsByIdData, DeleteRecipientsByIdResponse>(deleteRecipientsById, body),
         onSuccess: () => {
             refetchRecipients();
         },
@@ -319,8 +331,7 @@ export const useAdminModel = () => {
     });
 
     const { mutate: updateLogedInUser } = useMutation({
-        mutationFn: (updateInfo: PutAdminsByIdData) =>
-            request<PutAdminsByIdData, PutAdminsByIdResponse>(putAdminsById, updateInfo),
+        mutationFn: (body: PutAdminsByIdData) => request<PutAdminsByIdData, PutAdminsByIdResponse>(putAdminsById, body),
         onSuccess: () => {
             refetchLogedInUser();
         },
@@ -330,16 +341,35 @@ export const useAdminModel = () => {
     });
 
     const { mutate: newRelationship } = useMutation({
-        mutationFn: (updateInfo: PostRecipientsCaregiversData) =>
-            request<PostRecipientsCaregiversData, PostRecipientsCaregiversResponse>(
-                postRecipientsCaregivers,
-                updateInfo,
-            ),
+        mutationFn: (body: PostCaregiversRecipientsData) =>
+            request<PostCaregiversRecipientsData, PostCaregiversRecipientsResponse>(postCaregiversRecipients, body),
         onSuccess: () => {
             refetchRelationships();
         },
         onError: (error: any) => {
             console.error("Error adding relationship:", error);
+        },
+    });
+
+    const { mutate: editRelationship } = useMutation({
+        mutationFn: (body: PutRelationshipsByIdData) =>
+            request<PutRelationshipsByIdData, PutRelationshipsByIdResponse>(putRelationshipsById, body),
+        onSuccess: () => {
+            refetchRelationships();
+        },
+        onError: (error: any) => {
+            console.error("Error editing relationship:", error);
+        },
+    });
+
+    const { mutate: deleteRelationship } = useMutation({
+        mutationFn: (body: DeleteRelationshipsByIdData) =>
+            request<DeleteRelationshipsByIdData, DeleteRelationshipsByIdResponse>(deleteRelationshipsById, body),
+        onSuccess: () => {
+            refetchRelationships();
+        },
+        onError: (error: any) => {
+            console.error("Error deleting relationship:", error);
         },
     });
 
@@ -349,21 +379,35 @@ export const useAdminModel = () => {
     };
 
     return {
-        caregivers,
-        addNewCaregiver,
-        editCaregiver,
-        deleteCaregiver,
-        recipients,
-        addNewRecipient,
-        editRecipient,
+        caregivers: {
+            list: caregivers,
+            add: addNewCaregiver,
+            edit: editCaregiver,
+            delete: deleteCaregiver,
+        },
+        recipients: {
+            list: recipients,
+            add: addNewRecipient,
+            edit: editRecipient,
+            delete: deleteRecipient,
+        },
+        relationships: {
+            list: relationships,
+            add: newRelationship,
+            edit: editRelationship,
+            delete: deleteRelationship,
+        },
+        schedules: {
+            fetchForRecipient: fetchSchedulesForRecipient,
+            fetchForCaregiver: fetchSchedulesForCaregiver,
+            add: addSchedule,
+            edit: editSchedule,
+            delete: deleteSchedule,
+        },
+        user: {
+            info: logedInUser,
+            update: updateLogedInUser,
+        },
         refetchData,
-        deleteRecipient,
-        logedInUser,
-        updateLogedInUser,
-        relationships,
-        newRelationship,
-        fetchSchedulesForRecipient,
-        fetchSchedulesForCaregiver,
-        addSchedule,
     };
 };

@@ -14,7 +14,7 @@ const Recipients: React.FC = () => {
     const [searchText, setSearchText] = React.useState<string>("");
     const { openPopup } = usePopup();
     const { addPageToStack } = useNavigation();
-    const { recipients, addNewRecipient } = useAdminModel();
+    const { recipients } = useAdminModel();
     const [newPerson, setNewPerson] = React.useState<NewPersonData | null>(null);
     const newPersonRef = useRef<NewPersonData | null>(null);
 
@@ -24,7 +24,7 @@ const Recipients: React.FC = () => {
             return;
         }
 
-        addNewRecipient({
+        recipients.add({
             requestBody: {
                 name: newPersonRef.current.name,
                 email: newPersonRef.current.email,
@@ -35,7 +35,7 @@ const Recipients: React.FC = () => {
                 address: newPersonRef.current?.address || "",
             },
         });
-    }, [newPerson, addNewRecipient]);
+    }, [newPerson, recipients]);
 
     useEffect(() => {
         newPersonRef.current = newPerson;
@@ -47,8 +47,8 @@ const Recipients: React.FC = () => {
             <SearchTextInput text={searchText} fillWidth={true} placeholder="Keresés..." onChange={setSearchText} />
             <div />
             <div className={styles.caregiversContainer}>
-                {recipients
-                    .filter((recipient) => {
+                {recipients.list
+                    ?.filter((recipient) => {
                         return recipient.name.toLowerCase().includes(searchText.toLowerCase());
                     })
                     .map((recipient, index) => (

@@ -20,11 +20,11 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
     const [name] = useState<string>(caregiver.name);
     const [phone, setPhone] = useState<string>(caregiver.phone);
     const [email, setEmail] = useState<string>(caregiver.email);
-    const { relationships, recipients, editCaregiver, deleteCaregiver } = useAdminModel();
+    const { relationships, recipients, caregivers } = useAdminModel();
 
-    const recipientIds = recipients
-        .filter((recipient) =>
-            relationships?.some(
+    const recipientIds = recipients.list
+        ?.filter((recipient) =>
+            relationships.list?.some(
                 (relationship) =>
                     relationship.recipientId === recipient.id && relationship.caregiverId === caregiver.id,
             ),
@@ -32,7 +32,7 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
         .map((recipient) => recipient.id);
 
     useEffect(() => {
-        editCaregiver({
+        caregivers.edit({
             id: Number(caregiver.id),
             requestBody: {
                 name,
@@ -43,7 +43,7 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
     }, [name, phone, email]);
 
     const handleDeleteRecipient = () => {
-        deleteCaregiver({ id: Number(caregiver.id) });
+        caregivers.delete({ id: Number(caregiver.id) });
         removeLastPageFromStack();
     };
 
@@ -92,8 +92,8 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
 
                     <div className={styles.title}>Állandó</div>
 
-                    {recipients
-                        .filter((recipient) => recipientIds.includes(recipient.id))
+                    {recipients.list
+                        ?.filter((recipient) => recipientIds.includes(recipient.id))
                         .map((recipient, i) => (
                             <PersonCard
                                 key={i}

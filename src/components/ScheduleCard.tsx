@@ -5,7 +5,7 @@ import TextInput from "./TextInput";
 
 interface ScheduleCardProps {
     title: string;
-    options: string[];
+    options: Map<number, string>;
     onChange: (value: NewScheduleData) => void;
     startTime: string;
     endTime: string;
@@ -20,18 +20,18 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
     endTime,
     dropDownDisabled = false,
 }) => {
-    const [selectedOption, setSelectedOption] = React.useState<string>(options[0]);
+    const [selectedId, setSelectedId] = React.useState<number>(Array.from(options.keys())[0] || -1);
     const [selectedStartTime, setSelectedStartTime] = React.useState<string>(startTime);
     const [selectedEndTime, setSelectedEndTime] = React.useState<string>(endTime);
 
     useEffect(() => {
         const newScheduleData: NewScheduleData = {
-            selectedOption,
+            selectedId,
             start: selectedStartTime,
             end: selectedEndTime,
         };
         onChange(newScheduleData);
-    }, [selectedOption, selectedStartTime, selectedEndTime]);
+    }, [selectedId, selectedStartTime, selectedEndTime]);
 
     return (
         <div className={styles.container}>
@@ -39,9 +39,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
                 <div className={styles.headerText}>{title}</div>
                 <Dropdown
                     disabled={dropDownDisabled}
-                    selected={title}
+                    selected={options.get(selectedId) || ""}
                     options={options}
-                    onChange={setSelectedOption}
+                    onIdChange={setSelectedId}
                     fillWidth={true}
                 ></Dropdown>
             </div>

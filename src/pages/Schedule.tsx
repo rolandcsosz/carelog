@@ -9,20 +9,19 @@ import { convertToGlobalUTC, getDateString } from "../utils";
 import addButtonIconPrimary from "../assets/add-button-icon-primary.svg";
 
 interface ScheduleProps {
-    userId: string;
-    caregiverIds?: string[];
-    recipientIds?: string[];
+    userId: number;
+    caregiverIds?: number[];
+    recipientIds?: number[];
 }
 
 type ScheduleMode = "caregiver" | "recipient" | null;
 
 const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds }) => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-    const [schedules, setSchedules] = useState<Schedule[]>([]);
+    const [fetchedSchedules, setFetchedSchedules] = useState<Schedule[]>([]);
 
     const { request } = useApi();
-    const { caregivers, relationships, recipients, fetchSchedulesForCaregiver, fetchSchedulesForRecipient } =
-        useAdminModel();
+    const { caregivers, relationships, recipients, schedules } = useAdminModel();
 
     const userMode: ScheduleMode =
         caregiverIds ? "recipient"
@@ -31,18 +30,18 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
 
     const filteredIds =
         userMode === "caregiver" ?
-            recipients
-                .filter((recipient) =>
-                    relationships?.some(
+            recipients.list
+                ?.filter((recipient) =>
+                    relationships.list?.some(
                         (relationship) =>
                             relationship.recipientId === recipient.id && relationship.caregiverId === userId,
                     ),
                 )
                 .map((recipient) => recipient.id)
         : userMode === "recipient" ?
-            caregivers
-                .filter((caregiver) =>
-                    relationships?.some(
+            caregivers.list
+                ?.filter((caregiver) =>
+                    relationships.list?.some(
                         (relationship) =>
                             relationship.recipientId === userId && relationship.caregiverId === caregiver.id,
                     ),
@@ -50,50 +49,105 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
                 .map((caregiver) => caregiver.id)
         :   undefined;
 
-    useEffect(() => {
+    const refetchSchedules = async () => {
         const fetchSchedules = async () => {
             if (userMode === "caregiver") {
-                const response = await fetchSchedulesForCaregiver(request, userId);
-                setSchedules(response);
+                const response = await schedules.fetchForCaregiver(request, userId);
+                setFetchedSchedules(response);
             } else if (userMode === "recipient") {
-                const response = await fetchSchedulesForRecipient(request, userId);
-                setSchedules(response);
+                const response = await schedules.fetchForRecipient(request, userId);
+                setFetchedSchedules(response);
             }
         };
 
         fetchSchedules();
-    }, [userMode, userId, fetchSchedulesForCaregiver, fetchSchedulesForRecipient, request]);
+    };
+
+    useEffect(() => {
+        refetchSchedules();
+    }, [userMode, userId, schedules, request]);
 
     const handleDateChange = (date: Date) => {
         setSelectedDate(date);
     };
 
-    const handleEdit = (editedSchedule: Schedule) => {
-        // TODO: implement edit logic
+    const handleAddSchedule = async (schedule: Schedule) => {
+        const response = await schedules.add(request, {
+            requestBody: {
+                relationship_id: schedule.relationshipId,
+                start_time: schedule.start,
+                end_time: schedule.end,
+                date: schedule.date.toDateString(), //TODO check if this is correct
+            },
+        });
+
+        if (response) {
+            refetchSchedules();
+        }
     };
 
-    const handleAddSchedule = (schedule: Schedule) => {
-        // TODO: implement add logic
+    const handleDeleteSchedule = async (id: number) => {
+        const response = await schedules.delete(request, {
+            id: id,
+        });
+
+        if (response) {
+            refetchSchedules();
+        }
     };
 
-    const handleDeleteRecipient = () => {
-        // TODO: implement delete logic
+    const handleModifySchedule = async (schedule: NewScheduleData) => {
+        let connection: Relationship | undefined = undefined;
+
+        if (userMode === "caregiver") {
+            connection = relationships.list?.find(
+                (rel) => rel.recipientId === schedule.selectedId && rel.caregiverId === userId,
+            );
+        } else if (userMode === "recipient") {
+            connection = relationships.list?.find(
+                (rel) => rel.recipientId === userId && rel.caregiverId === schedule.selectedId,
+            );
+        }
+
+        if (!connection) {
+            handleAddSchedule({
+                relationshipId: schedule.selectedId,
+                start: schedule.start,
+                end: schedule.end,
+                date: selectedDate,
+            });
+            return;
+        }
+
+        const response = await schedules.edit(request, {
+            id: connection.recipientId,
+            requestBody: {
+                relationship_id: schedule.selectedId,
+                start_time: schedule.start,
+                end_time: schedule.end,
+                date: selectedDate.toDateString(), //TODO check if this is correct
+            },
+        });
+
+        if (response) {
+            refetchSchedules();
+        }
     };
 
-    const filteredSchedules = schedules.filter(
+    const filteredSchedules = fetchedSchedules.filter(
         (schedule) => selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate),
     );
 
     const dropdownOptions =
         userMode === "caregiver" ?
-            recipients.filter((r) => filteredIds?.includes(r.id)).map((r) => r.name)
-        :   caregivers.filter((c) => filteredIds?.includes(c.id)).map((c) => c.name);
+            new Map(recipients.list?.filter((r) => filteredIds?.includes(r.id)).map((r) => [r.id, r.name]))
+        :   new Map(caregivers.list?.filter((c) => filteredIds?.includes(c.id)).map((c) => [c.id, c.name]));
 
     return (
         <div className={styles.calendarContainer}>
             <Calendar
                 onDateChange={handleDateChange}
-                highlightedDates={schedules.map((schedule) => new Date(schedule.date))}
+                highlightedDates={fetchedSchedules.map((schedule) => new Date(schedule.date))}
             />
 
             <div className={styles.title}>{selectedDate ? getDateString(selectedDate) : getDateString(new Date())}</div>
@@ -105,7 +159,7 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
                         title={userMode === "caregiver" ? "Gondozott" : "Gondozó"}
                         options={dropdownOptions}
                         dropDownDisabled={userMode === "recipient"}
-                        onChange={() => {}}
+                        onChange={handleModifySchedule}
                         startTime={schedule.start}
                         endTime={schedule.end}
                     />

@@ -16,7 +16,7 @@ const Caregivers: React.FC = () => {
     const newPersonRef = useRef<NewPersonData | null>(null);
     const { openPopup } = usePopup();
     const { addPageToStack } = useNavigation();
-    const { caregivers, addNewCaregiver } = useAdminModel();
+    const { caregivers } = useAdminModel();
 
     const handleNewCaregiver = useCallback(() => {
         if (!newPersonRef || !newPersonRef.current || newPersonRef.current.name.length === 0) {
@@ -24,7 +24,7 @@ const Caregivers: React.FC = () => {
             return;
         }
 
-        addNewCaregiver({
+        caregivers.add({
             requestBody: {
                 name: newPersonRef.current.name,
                 email: newPersonRef.current.email,
@@ -32,7 +32,7 @@ const Caregivers: React.FC = () => {
                 password: newPersonRef.current.password,
             },
         });
-    }, [newPerson, addNewCaregiver]);
+    }, [newPerson, caregivers]);
 
     useEffect(() => {
         newPersonRef.current = newPerson;
@@ -44,8 +44,8 @@ const Caregivers: React.FC = () => {
             <SearchTextInput text={searchText} fillWidth={true} placeholder="Keresés..." onChange={setSearchText} />
             <div />
             <div className={styles.caregiversContainer}>
-                {caregivers
-                    .filter((caregiver) => {
+                {caregivers.list
+                    ?.filter((caregiver) => {
                         return caregiver.name.toLowerCase().includes(searchText.toLowerCase());
                     })
                     .map((caregiver, index) => (

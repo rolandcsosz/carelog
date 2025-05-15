@@ -1,16 +1,12 @@
 import styles from "./Recipient.module.scss";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../../components/Button";
 import { useNavigation } from "../../context/navigationContext";
 import UserProfile from "../UserProfile";
 import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";
 import Dropdown from "../../components/Dropdown";
-import Switch from "../../components/Switch";
 import { useAdminModel } from "../../hooks/useAdminModel";
-import { useApi } from "../../hooks/useApi";
-import { PostCaregiversRecipientsData, PostCaregiversRecipientsResponse } from "../../../api/types.gen";
-import { postCaregiversRecipients } from "../../../api/sdk.gen";
 import Schedule from "../Schedule";
 
 interface RecipientsProps {
@@ -24,20 +20,15 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     const [phone, setPhone] = useState<string>(recipient.phone);
     const [email, setEmail] = useState<string>(recipient.email);
     const [address, setAddress] = useState<string>(recipient.address);
-    const [replacement, setReplacement] = useState<boolean>(false);
-    const { relationships, caregivers, editRecipient, deleteRecipient } = useAdminModel();
+    const { relationships, caregivers, recipients } = useAdminModel();
     const [selectedCaregiver, setSelectedCaregiver] = useState<Caregiver | null>(null);
-    const { request } = useApi();
-    const connectionForRecipient =
-        relationships?.filter((relationship) => relationship.recipientId === recipient.id)?.[0] || null;
-    const selectedCaregiverName =
-        connectionForRecipient ?
-            caregivers.find((caregiver) => caregiver.id === connectionForRecipient.caregiverId)?.name || "<<Üres>>"
-        :   "<<Üres>>";
-
-    const caregiverIds = caregivers
-        .filter((caregiver) =>
-            relationships?.some(
+    const connectionCount = relationships.list?.filter(
+        (relationship) => relationship.recipientId === recipient.id,
+    ).length;
+    const hasMounted = useRef(false);
+    const caregiverIds = caregivers.list
+        ?.filter((caregiver) =>
+            relationships.list?.some(
                 (relationship) =>
                     relationship.recipientId === recipient.id && relationship.caregiverId === caregiver.id,
             ),
@@ -45,7 +36,28 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
         .map((caregiver) => caregiver.id);
 
     useEffect(() => {
-        editRecipient({
+        if (!connectionCount || connectionCount <= 1) {
+            return;
+        }
+
+        const recipientConnections = relationships.list?.filter((rel) => rel.recipientId === recipient.id) || [];
+
+        const idsToKeep = new Set([caregiverIds[0]]);
+
+        recipientConnections.forEach((rel) => {
+            if (!idsToKeep.has(rel.caregiverId)) {
+                relationships.delete({ id: rel.recipientId });
+            }
+        });
+    }, [connectionCount, recipient]);
+
+    useEffect(() => {
+        if (!hasMounted.current) {
+            hasMounted.current = true;
+            return;
+        }
+
+        recipients.edit({
             id: Number(recipient.id),
             requestBody: {
                 name,
@@ -58,53 +70,45 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
         });
     }, [name, phone, email, address]);
 
-    const deleteConnectionForRecipient = async () => {
-        const response = await request<PostCaregiversRecipientsData, PostCaregiversRecipientsResponse>(
-            postCaregiversRecipients,
-            {
-                requestBody: {
-                    recipientId: Number(recipient.id),
-                    caregiverId: Number(selectedCaregiver?.id) ?? -1,
-                },
-            },
-        );
-        if (response) {
-            setSelectedCaregiver(null);
-        }
-    };
-
-    useEffect(() => {
-        const fetchCaregiverData = async () => {
-            const response = await request<PostCaregiversRecipientsData, PostCaregiversRecipientsResponse>(
-                postCaregiversRecipients,
-                {
-                    requestBody: {
-                        recipientId: Number(recipient.id),
-                        caregiverId: Number(selectedCaregiver?.id) ?? -1,
-                    },
-                },
-            );
-        };
-        fetchCaregiverData();
-    }, [selectedCaregiver]);
-
     const handleDeleteRecipient = () => {
-        deleteRecipient({ id: Number(recipient.id) });
+        recipients.delete({ id: Number(recipient.id) });
         removeLastPageFromStack();
     };
 
-    const handleSelectionChange = (selected: string) => {
-        if (selected === "<<Üres>>") {
+    const handleSelectionChange = (selectedCaregiverId: number) => {
+        const isRemove = selectedCaregiverId === -1;
+        const connection = relationships.list?.find(
+            (rel) => rel.recipientId === recipient.id && rel.caregiverId === selectedCaregiverId,
+        );
+
+        if (connection) {
+            if (isRemove) {
+                relationships.delete({ id: connection.recipientId });
+                setSelectedCaregiver(null);
+            } else {
+                relationships.edit({
+                    id: connection.recipientId,
+                    requestBody: {
+                        recipientId: recipient.id,
+                        caregiverId: selectedCaregiverId,
+                    },
+                });
+                setSelectedCaregiver(caregivers.list?.find((c) => c.id === selectedCaregiverId) || null);
+            }
+            return;
+        }
+
+        if (isRemove) {
             setSelectedCaregiver(null);
             return;
         }
 
-        const selectedCaregiver = caregivers.find((caregiver) => caregiver.name === selected);
-        if (selectedCaregiver) {
-            setSelectedCaregiver(selectedCaregiver);
-        } else {
-            setSelectedCaregiver(null);
-        }
+        relationships.add({
+            requestBody: {
+                recipientId: recipient.id,
+                caregiverId: selectedCaregiverId,
+            },
+        });
     };
 
     return (
@@ -117,13 +121,26 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Gondozó</div>
                             <Dropdown
-                                selected={selectedCaregiverName}
-                                options={["<<Üres>>", ...caregivers.map((caregiver) => caregiver.name)]}
-                                onChange={handleSelectionChange}
+                                selected={connectionCount === 0 ? "<<Üres>>" : selectedCaregiver?.name || "<<Üres>>"}
+                                options={
+                                    connectionCount === 0 ?
+                                        new Map<number, string>([
+                                            [-1, "<<Üres>>"],
+                                            ...(caregivers.list?.map(
+                                                (caregiver) => [caregiver.id, caregiver.name] as [number, string],
+                                            ) || []),
+                                        ])
+                                    :   new Map<number, string>([
+                                            ...(caregivers.list?.map(
+                                                (caregiver) => [caregiver.id, caregiver.name] as [number, string],
+                                            ) || []),
+                                        ])
+                                }
+                                onIdChange={handleSelectionChange}
                                 fillWidth={true}
                             />
                         </div>
-                        <div className={styles.formRow}>
+                        {/*<div className={styles.formRow}>
                             <div className={styles.formLabel}>Helyettesítés</div>
                             <Switch initialState={replacement} onToggle={setReplacement} />
                         </div>
@@ -132,11 +149,11 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                             <Dropdown
                                 selected={selectedCaregiver?.name || ""}
                                 disabled={!replacement}
-                                options={["<<Üres>>", ...caregivers.map((caregiver) => caregiver.name)]}
+                                options={["<<Üres>>", ...caregivers.list?.map((caregiver) => caregiver.name)]}
                                 onChange={() => {}}
                                 fillWidth={true}
                             />
-                        </div>
+                        </div>*/}
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Telefon</div>
                             <TextInput text={phone} placeholder="Telefonszám" onChange={setPhone} fillWidth={true} />
