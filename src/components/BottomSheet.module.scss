@@ -1,0 +1,50 @@
+.bottomSheet {
+    z-index: 3;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+
+    .handleArea {
+        height: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: grab;
+    }
+
+    .handleBar {
+        width: 40px;
+        height: 6px;
+        background-color: gray;
+        border-radius: 3px;
+    }
+
+    .closeButton {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        border: none;
+        padding: 0;
+        background: none;
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .closeButton img {
+        display: block;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+    .bottomSheetContent {
+        height: calc(100% - 20px);
+    }
+}

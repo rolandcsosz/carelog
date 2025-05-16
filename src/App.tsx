@@ -27,6 +27,11 @@ import Login from "./pages/Login";
 import DailySchedule from "./pages/caregiver/DailySchedule";
 import Calendar from "./components/Calendar";
 import CalendarSchedule from "./pages/caregiver/CalendarSchedule";
+import { BottomSheet } from "./components/BottomSheet";
+import { useBottomSheet } from "./context/BottomSheetContext";
+import LogClosedSheet from "./components/LogClosedSheet";
+import { useCaregiverModel } from "./hooks/useCaregiverModel";
+import { getDateString } from "./utils";
 
 setupIonicReact();
 
@@ -99,6 +104,24 @@ const App: React.FC = () => {
     const prevActiveIndex = useRef<number>(-1);
     const { isAuthenticated, user } = useAuth();
     const usedConfig = user?.role === "admin" ? adminMenuConfig : caregiverMenuConfig;
+    const { isOpen: isSheetOpen, openSheet } = useBottomSheet();
+    const { recipients, schedules, relationships, logs } = useCaregiverModel();
+    const openLog = logs.info?.find(
+        (log) => !log.closed && relationships.info?.some((relationship) => relationship.id === log.relationshipId),
+    );
+
+    const getRecipientForLog = (log: Log): Recipient | undefined => {
+        const relationship = relationships.info?.find((relationship) => relationship.id === log.relationshipId);
+        if (relationship) {
+            const recipient = recipients.info?.find((recipient) => recipient.id === relationship.recipientId);
+            if (recipient) {
+                return recipient;
+            }
+        }
+        return undefined;
+    };
+
+    const recipient = openLog ? getRecipientForLog(openLog) : undefined;
 
     const scrollToIndex = (index: number) => {
         if (screenStackRef.current) {
@@ -186,9 +209,17 @@ const App: React.FC = () => {
                 <div className={styles.navigationContainer}>
                     <Menu
                         config={usedConfig}
-                        onMenuItemClick={setSelectedMenu} /*additionalComponent={
-                        <LogClosedSheet name="Kis Mária" date="2025/05/12"/>
-                    }*/
+                        onMenuItemClick={setSelectedMenu}
+                        additionalComponent={
+                            openLog &&
+                            recipient && (
+                                <LogClosedSheet
+                                    name={recipient.name}
+                                    date={getDateString(new Date(openLog.date))}
+                                    onOpen={openSheet}
+                                />
+                            )
+                        }
                     />
                 </div>
 
@@ -204,6 +235,9 @@ const App: React.FC = () => {
                         children={content}
                     />
                 )}
+
+                {isSheetOpen && <div className={styles.darkOverlay} />}
+                <BottomSheet />
             </div>;
 };
 

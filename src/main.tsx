@@ -6,6 +6,7 @@ import { NavigationProvider } from "./context/navigationContext";
 import { ScrollProvider } from "./context/scrollContext.tsx";
 import { AuthProvider } from "./context/authContext.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BottomSheetProvider } from "./context/BottomSheetContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")!).render(
                 <PopupProvider>
                     <ScrollProvider>
                         <QueryClientProvider client={new QueryClient()}>
-                            <App />
+                            <BottomSheetProvider>
+                                <App />
+                            </BottomSheetProvider>
                         </QueryClientProvider>
                     </ScrollProvider>
                 </PopupProvider>

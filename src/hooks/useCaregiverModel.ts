@@ -120,8 +120,8 @@ const fetchLogs = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
     caregiverId: Id,
     recipientIds: Id[],
-): Promise<Logs[]> => {
-    const logs: Logs[] = (
+): Promise<Log[]> => {
+    const logs: Log[] = (
         await Promise.all(
             recipientIds.map(async (recipientId) => {
                 const response = await request<
@@ -138,7 +138,7 @@ const fetchLogs = async (
                 return response.map(
                     (log) =>
                         ({
-                            id: Number(log?.id) || -1,
+                            id: log?.id || "",
                             date: log?.date ? new Date(log.date) : new Date(),
                             relationshipId: Number(log?.relationshipId) || -1,
                             finished: log?.finished || false,
@@ -151,7 +151,7 @@ const fetchLogs = async (
                                     done: task?.done || false,
                                     note: task?.note || "",
                                 })) || [],
-                        }) as Logs,
+                        }) as Log,
                 );
             }),
         )
@@ -197,7 +197,7 @@ export const useCaregiverModel = () => {
         staleTime: 0,
     });
 
-    const { data: logs, refetch: refetchLogs } = useQuery<Logs[]>({
+    const { data: logs, refetch: refetchLogs } = useQuery<Log[]>({
         queryKey: ["taskTypes", user?.id, recipients?.map((c) => c.id).join(",")],
         queryFn: () => fetchLogs(request, user?.id ?? -1, recipients?.map((c) => c.id) || []),
         enabled: !!user?.id && user?.role === "caregiver",

@@ -89,8 +89,8 @@ type Task = {
     note: string;
 };
 
-type Logs = {
-    id: Id;
+type Log = {
+    id: string;
     date: Date;
     relationshipId: Id;
     finished: boolean;

@@ -3,12 +3,10 @@ import { getSchedulesCaregiverByCaregiverId } from "../api/sdk.gen";
 import { GetSchedulesCaregiverByCaregiverIdData, GetSchedulesCaregiverByCaregiverIdResponse } from "../api/types.gen";
 
 export const getDateString = (date: Date): string => {
-    const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    };
-    return date.toLocaleDateString("hu-HU", options);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}/${month}/${day}`;
 };
 
 export const convertToGlobalUTC = (dateToConvert: Date): string => {
