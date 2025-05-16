@@ -14,7 +14,8 @@ import calendarOutline from "./assets/calendar-outline.svg";
 import listFilled from "./assets/list-filled.svg";
 import listOutline from "./assets/list-outline.svg";
 import Caregivers from "./pages/admin/Caregivers";
-import Recipients from "./pages/admin/Recipients";
+import AdminRecipients from "./pages/admin/Recipients";
+import Recipients from "./pages/caregiver/Recipients";
 import Account from "./pages/admin/Account";
 import Popup from "./components/Popup";
 import { usePopup } from "./context/popupContext";
@@ -23,6 +24,9 @@ import { useNavigation } from "./context/navigationContext";
 import { useScroll } from "./context/scrollContext";
 import { useAuth } from "./hooks/useAuth";
 import Login from "./pages/Login";
+import DailySchedule from "./pages/caregiver/DailySchedule";
+import Calendar from "./components/Calendar";
+import CalendarSchedule from "./pages/caregiver/CalendarSchedule";
 
 setupIonicReact();
 
@@ -37,7 +41,7 @@ const adminMenuConfig: MenuConfig = {
         selectedIcon: recipientFilled,
         unselectedIcon: recipientOutline,
         alt: "Recipients",
-        component: Recipients,
+        component: AdminRecipients,
     },
     account: {
         selectedIcon: accountFilled,
@@ -52,19 +56,19 @@ const caregiverMenuConfig: MenuConfig = {
         selectedIcon: homeFilled,
         unselectedIcon: homeOutline,
         alt: "Home",
-        component: () => <div>Home</div>,
+        component: DailySchedule,
     },
     calendar: {
         selectedIcon: calendarFilled,
         unselectedIcon: calendarOutline,
         alt: "Calendar",
-        component: () => <div>Calendar</div>,
+        component: CalendarSchedule,
     },
     list: {
         selectedIcon: listFilled,
         unselectedIcon: listOutline,
         alt: "List view",
-        component: () => <div>List view</div>,
+        component: Recipients,
     },
     account: {
         selectedIcon: accountFilled,
@@ -180,7 +184,12 @@ const App: React.FC = () => {
                 </div>
 
                 <div className={styles.navigationContainer}>
-                    <Menu config={usedConfig} onMenuItemClick={setSelectedMenu} />
+                    <Menu
+                        config={usedConfig}
+                        onMenuItemClick={setSelectedMenu} /*additionalComponent={
+                        <LogClosedSheet name="Kis Mária" date="2025/05/12"/>
+                    }*/
+                    />
                 </div>
 
                 {isOpen && (

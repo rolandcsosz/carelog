@@ -42,8 +42,8 @@ export const fetchSchedulesForCaregiver = async (
     return schedules.map(
         (schedule) =>
             ({
-                id: schedule.id || -1,
-                relationshipId: schedule.relationship_id || -1,
+                id: Number(schedule.id) || -1,
+                relationshipId: Number(schedule.relationship_id) || -1,
                 start: schedule.start_time || "00:00:00",
                 end: schedule.end_time || "00:00:00",
                 date: schedule.date ? new Date(schedule.date) : new Date(),

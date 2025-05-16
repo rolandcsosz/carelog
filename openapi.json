@@ -1676,6 +1676,9 @@
                                             },
                                             "address": {
                                                 "type": "string"
+                                            },
+                                            "relationship_id": {
+                                                "type": "integer"
                                             }
                                         }
                                     }

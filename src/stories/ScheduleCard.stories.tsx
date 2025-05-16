@@ -12,6 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
+        id: 1,
         title: "Gondozó",
         options: ["Option 1", "Option 2", "Option 3"],
         onChange: (value) => console.log(value),

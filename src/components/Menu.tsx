@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import styles from "./Menu.module.scss";
 import IconButton from "./IconButton";
 
 type MenuProps = {
     config: MenuConfig;
     onMenuItemClick?: (item: string) => void;
+    additionalComponent?: ReactNode;
 };
 
-const Menu: React.FC<MenuProps> = ({ config, onMenuItemClick = () => {} }) => {
+const Menu: React.FC<MenuProps> = ({ config, onMenuItemClick = () => {}, additionalComponent = null }) => {
     const [selectedMenu, setSelectedMenu] = React.useState<string>("");
 
     const handleMenuItemClick = (item: string) => {
@@ -22,19 +23,22 @@ const Menu: React.FC<MenuProps> = ({ config, onMenuItemClick = () => {} }) => {
     }, [config]);
 
     return (
-        <nav className={styles.navigationContainer}>
-            <div className={styles.navigationBar}>
-                {Object.keys(config).map((menu) => (
-                    <IconButton
-                        key={menu}
-                        svgContent={selectedMenu === menu ? config[menu].selectedIcon : config[menu].unselectedIcon}
-                        ariaLabel={config[menu].alt}
-                        onClick={() => handleMenuItemClick(menu)}
-                    />
-                ))}
-            </div>
-            <div className={styles.bottomSpacing} aria-hidden="true" />
-        </nav>
+        <div className={styles.container}>
+            {additionalComponent}
+            <nav className={styles.navigationContainer}>
+                <div className={styles.navigationBar}>
+                    {Object.keys(config).map((menu) => (
+                        <IconButton
+                            key={menu}
+                            svgContent={selectedMenu === menu ? config[menu].selectedIcon : config[menu].unselectedIcon}
+                            ariaLabel={config[menu].alt}
+                            onClick={() => handleMenuItemClick(menu)}
+                        />
+                    ))}
+                </div>
+                <div className={styles.bottomSpacing} aria-hidden="true" />
+            </nav>
+        </div>
     );
 };
 

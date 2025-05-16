@@ -1,0 +1,48 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #efeeee;
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    gap: 10px;
+    height: 50px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.userName {
+    color: #000;
+    letter-spacing: 0.8px;
+    margin-left: 15px;
+    font-family: Roboto, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: auto;
+}
+
+.text {
+    margin-left: 10px;
+    margin-right: auto;
+    font-family: "Roboto";
+    font-size: 15px;
+}
+
+.drag {
+    display: flex;
+    align-items: center;
+    width: 24px;
+    height: 100%;
+    background-color: #90cdf4;
+    border-radius: 10px 0 0px 10px;
+}
+
+.contentRow {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    padding-right: 15px;
+}

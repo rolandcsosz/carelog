@@ -8,7 +8,8 @@ import TextInput from "../../components/TextInput";
 import { useAdminModel } from "../../hooks/useAdminModel";
 import PersonCard from "../../components/PersonCard";
 import Recipient from "./Recipient";
-import Schedule from "../Schedule";
+import Schedule from "./AdminSchedule";
+import AdminSchedule from "./AdminSchedule";
 
 interface CaregiverProps {
     caregiver: Caregiver;
@@ -106,7 +107,7 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
                 </div>
             )}
 
-            {menu === "Beosztás" && <Schedule userId={caregiver.id} recipientIds={recipientIds} />}
+            {menu === "Beosztás" && <AdminSchedule userId={caregiver.id} recipientIds={recipientIds} />}
         </UserProfile>
     );
 };

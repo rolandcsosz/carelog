@@ -418,6 +418,7 @@ export type GetCaregiversByIdRecipientsResponse = Array<{
     email?: string;
     phone?: string;
     address?: string;
+    relationship_id?: number;
 }>;
 
 export type DeleteRelationshipsByIdData = {

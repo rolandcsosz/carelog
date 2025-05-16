@@ -7,7 +7,7 @@ import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";
 import Dropdown from "../../components/Dropdown";
 import { useAdminModel } from "../../hooks/useAdminModel";
-import Schedule from "../Schedule";
+import AdminSchedule from "./AdminSchedule";
 
 interface RecipientsProps {
     recipient: Recipient;
@@ -179,7 +179,7 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                 </div>
             )}
 
-            {menu === "Beosztás" && <Schedule userId={recipient.id} caregiverIds={caregiverIds} />}
+            {menu === "Beosztás" && <AdminSchedule userId={recipient.id} caregiverIds={caregiverIds} />}
         </UserProfile>
     );
 };

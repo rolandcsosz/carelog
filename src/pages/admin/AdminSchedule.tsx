@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Schedule.module.scss";
-import { Button } from "../components/Button";
-import Calendar from "../components/Calendar";
-import ScheduleCard from "../components/ScheduleCard";
-import { useAdminModel } from "../hooks/useAdminModel";
-import { useApi } from "../hooks/useApi";
-import { compareTime, convertToGlobalUTC, getDateString } from "../utils";
-import addButtonIconPrimary from "../assets/add-button-icon-primary.svg";
+import styles from "./AdminSchedule.module.scss";
+import { Button } from "../../components/Button";
+import Calendar from "../../components/Calendar";
+import ScheduleCard from "../../components/ScheduleCard";
+import { useAdminModel } from "../../hooks/useAdminModel";
+import { useApi } from "../../hooks/useApi";
+import { compareTime, convertToGlobalUTC, getDateString } from "../../utils";
+import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
 
-interface ScheduleProps {
+interface AdminScheduleProps {
     userId: number;
     caregiverIds?: number[];
     recipientIds?: number[];
 }
 
-type ScheduleMode = "caregiver" | "recipient" | null;
+type AdminScheduleMode = "caregiver" | "recipient" | null;
 
-const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds }) => {
+const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, recipientIds }) => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [fetchedSchedules, setFetchedSchedules] = useState<Schedule[]>([]);
 
     const { request } = useApi();
     const { caregivers, relationships, recipients, schedules } = useAdminModel();
-    const userMode: ScheduleMode =
+
+    const userMode: AdminScheduleMode =
         caregiverIds ? "recipient"
         : recipientIds ? "caregiver"
         : null;
@@ -138,12 +139,6 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
             return;
         }
 
-        console.log("EDIT SCHEDULE", schedule.id, {
-            relationship_id: Number(connection.id),
-            start_time: schedule.start,
-            end_time: schedule.end,
-            date: selectedDate.toDateString(), //TODO check if this is correct
-        });
         const response = await schedules.edit(request, {
             id: schedule.id,
             requestBody: {
@@ -223,4 +218,4 @@ const Schedule: React.FC<ScheduleProps> = ({ userId, caregiverIds, recipientIds 
     );
 };
 
-export default Schedule;
+export default AdminSchedule;

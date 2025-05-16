@@ -11,13 +11,9 @@ import {
     DeleteSchedulesByIdResponse,
     GetAdminsByIdData,
     GetAdminsByIdResponse,
-    GetCaregiversByIdRecipientsData,
-    GetCaregiversByIdRecipientsResponse,
     GetCaregiversResponse,
     GetRecipientsResponse,
     GetRelationshipsResponse,
-    GetSchedulesCaregiverByCaregiverIdData,
-    GetSchedulesCaregiverByCaregiverIdResponse,
     GetSchedulesRecipientByRecipientIdData,
     GetSchedulesRecipientByRecipientIdResponse,
     PostCaregiversData,
@@ -110,7 +106,6 @@ const fetchLogedInUser = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
     id: number,
 ): Promise<Admin | null> => {
-    console.log("Fetching logged in user with ID:", id);
     const response = await request<GetAdminsByIdData, GetAdminsByIdResponse>(getAdminsById, { id: id });
     if (!response) {
         return null;

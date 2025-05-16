@@ -90,9 +90,9 @@ type Task = {
 };
 
 type Logs = {
-    id: string;
-    date: string;
-    relationshipId: string;
+    id: Id;
+    date: Date;
+    relationshipId: Id;
     finished: boolean;
     closed: boolean;
     tasks: Task[];

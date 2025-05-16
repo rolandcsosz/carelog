@@ -37,20 +37,15 @@ const fetchLogedInUser = async (
     id: number,
 ): Promise<Caregiver | null> => {
     const response = await request<GetCaregiversByIdData, GetCaregiversByIdResponse>(getCaregiversById, { id: id });
-    if (!response || (response as any).length === 0) {
-        return null;
-    }
-
-    const first = (response as any)[0];
-    if (!first) {
+    if (!response) {
         return null;
     }
 
     return {
-        id: first.id ?? -1,
-        name: first.name ?? "",
-        email: first.email ?? "",
-        phone: first.phone ?? "",
+        id: response.id ?? -1,
+        name: response.name ?? "",
+        email: response.email ?? "",
+        phone: response.phone ?? "",
     };
 };
 
@@ -67,8 +62,9 @@ const fetchRelationships = async (
     }
 
     return response.map((relationship) => ({
-        caregiverId: caregiverId,
-        recipientId: relationship?.id || "",
+        id: Number(relationship?.relationship_id) || -1,
+        caregiverId: Number(caregiverId) || -1,
+        recipientId: Number(relationship?.id) || -1,
     })) as Relationship[];
 };
 
@@ -87,7 +83,7 @@ const fetchRecipients = async (
     return response.map(
         (recipient) =>
             ({
-                id: recipient?.id || "",
+                id: Number(recipient?.id) || "",
                 name: recipient?.name || "",
                 email: recipient?.email || "",
                 phone: recipient?.phone || "",
@@ -115,7 +111,7 @@ const fetchTaskType = async (
     }
 
     return response.map((taskType) => ({
-        id: taskType?.id || "",
+        id: Number(taskType?.id) || -1,
         name: taskType?.type || "",
     })) as TaskType[];
 };
@@ -142,9 +138,9 @@ const fetchLogs = async (
                 return response.map(
                     (log) =>
                         ({
-                            id: log?.id || "",
-                            date: log?.date || "",
-                            relationshipId: log?.relationshipId || "",
+                            id: Number(log?.id) || -1,
+                            date: log?.date ? new Date(log.date) : new Date(),
+                            relationshipId: Number(log?.relationshipId) || -1,
                             finished: log?.finished || false,
                             closed: log?.closed || false,
                             tasks:
@@ -169,20 +165,20 @@ export const useCaregiverModel = () => {
     const { user } = useAuth();
 
     const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Caregiver | null>({
-        queryKey: ["logedInCaregiverUser", user?.id ?? -1],
+        queryKey: ["logedInCaregiverUser"],
         queryFn: () => fetchLogedInUser(request, Number(user?.id) ?? -1),
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
     });
 
     const { data: recipients, refetch: refetchRecipients } = useQuery<Recipient[]>({
-        queryKey: ["caregiverecipients", user?.id],
+        queryKey: ["caregiverRecipients", user?.id],
         queryFn: () => fetchRecipients(request, user?.id ?? -1),
         enabled: !!user?.id && user.role === "caregiver",
     });
 
     const { data: schedule, refetch: refetchSchedules } = useQuery<Schedule[]>({
-        queryKey: ["caregiverecipients", user?.id],
+        queryKey: ["caregiverSchedules", user?.id],
         queryFn: () => fetchSchedules(request, user?.id ?? -1),
         enabled: !!user?.id && user.role === "caregiver",
     });

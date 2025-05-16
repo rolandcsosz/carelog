@@ -1,0 +1,119 @@
+.dataContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    height: 100%;
+    width: calc(100%);
+    background-color: #fbfbfb;
+    margin-top: 30px;
+    gap: 30px;
+    flex-shrink: 0;
+}
+
+.logContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    height: 100%;
+    width: calc(100%);
+    background-color: #fbfbfb;
+    margin-top: 40px;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    height: fit-content;
+    width: calc(100%);
+    background-color: #fbfbfb;
+    margin-top: 30px;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.calendarContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    height: fit-content;
+    width: calc(100%);
+    background-color: #fbfbfb;
+    margin-top: 30px;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.title {
+    font-size: 20px;
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+    color: #1c1b1f;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 5px;
+    margin-top: 30px;
+}
+
+.caregiversContainer {
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: 100%;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.spacer {
+    height: 20px;
+    flex-shrink: 0;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: 100%;
+    height: fit-content;
+    flex-shrink: 0;
+}
+
+.formRow:last-child {
+    border-bottom: none;
+}
+
+.formRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: fit-content;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    gap: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.formLabel {
+    font-size: 15px;
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+    color: #1c1b1f;
+    margin: 0;
+    padding: 0;
+    width: 99px;
+    flex-shrink: 0;
+}
+
+.fullSpacer {
+    height: auto;
+}

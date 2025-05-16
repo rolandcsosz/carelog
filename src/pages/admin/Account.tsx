@@ -30,8 +30,6 @@ const Account: React.FC = () => {
     const [email, setEmail] = useState<string>(
         user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.info?.email ?? ""),
     );
-
-    console.log("Account component", user?.role, logedInUser);
     const [phone, setPhone] = useState<string>(caregiverUser.info?.phone ?? "");
     const latestPasswords = useRef<NewPasswordData | null>(null);
 
@@ -50,7 +48,6 @@ const Account: React.FC = () => {
         if (!logedInUser || email === "" || (user?.role === "caregiver" && phone === "")) return;
 
         if (user?.role === "admin") {
-            console.log("Admin user update triggered", user?.role);
             const updatedUser: PutAdminsByIdData = {
                 id: Number(logedInUser.id) ?? -1,
                 requestBody: {
