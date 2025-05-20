@@ -7,6 +7,10 @@ import { ScrollProvider } from "./context/scrollContext.tsx";
 import { AuthProvider } from "./context/authContext.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BottomSheetProvider } from "./context/BottomSheetContext.tsx";
+import { OpenAPI } from "../api/core/OpenAPI";
+import { env } from "./env";
+
+OpenAPI.BASE = env.BACKEND_URL;
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
