@@ -12,6 +12,7 @@ dist
 dist-ssr
 build
 android
+ios
 *.local
 
 # Editor directories and files
