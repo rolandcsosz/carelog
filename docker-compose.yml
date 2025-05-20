@@ -1,10 +1,10 @@
 version: '3.8'
-
 services:
   frontend:
+    container_name: activity_log_frontend
     build:
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "80:80"
     environment:
-      - BACKEND_URL=http://127.0.1:8081
+      - BACKEND_URL=http://localhost:8080
