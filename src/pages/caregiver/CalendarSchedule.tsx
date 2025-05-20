@@ -4,7 +4,7 @@ import Calendar from "../../components/Calendar";
 import { compareTime, convertToGlobalUTC, getDateString } from "../../utils";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import TimeTableRow from "../../components/TimeTableRow";
-import { useNavigation } from "../../context/navigationContext";
+import useNavigation from "../../hooks/useNavigation";
 import Recipient from "./Recipient";
 
 const CalendarSchedule: React.FC = () => {

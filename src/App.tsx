@@ -18,19 +18,20 @@ import AdminRecipients from "./pages/admin/Recipients";
 import Recipients from "./pages/caregiver/Recipients";
 import Account from "./pages/admin/Account";
 import Popup from "./components/Popup";
-import { usePopup } from "./context/popupContext";
+import usePopup from "./hooks/usePopup";
 import { setupIonicReact } from "@ionic/react";
-import { useNavigation } from "./context/navigationContext";
-import { useScroll } from "./context/scrollContext";
+import useNavigation from "./hooks/useNavigation";
+import useScroll from "./hooks/useScroll";
 import { useAuth } from "./hooks/useAuth";
 import Login from "./pages/Login";
 import DailySchedule from "./pages/caregiver/DailySchedule";
 import CalendarSchedule from "./pages/caregiver/CalendarSchedule";
 import { BottomSheet } from "./components/BottomSheet";
-import { useBottomSheet } from "./context/BottomSheetContext";
+import useBottomSheet from "./hooks/useBottomSheet";
 import LogClosedSheet from "./components/LogClosedSheet";
 import { useCaregiverModel } from "./hooks/useCaregiverModel";
 import { getDateString } from "./utils";
+import usePersistedUser from "./hooks/usePersistedUser";
 
 setupIonicReact();
 
@@ -83,6 +84,7 @@ const caregiverMenuConfig: MenuConfig = {
 };
 
 const App: React.FC = () => {
+    const { restoreUser } = usePersistedUser();
     const [selectedMenu, setSelectedMenu] = React.useState<string>("");
     const {
         isOpen,
@@ -134,6 +136,10 @@ const App: React.FC = () => {
             }
         }
     };
+
+    useEffect(() => {
+        restoreUser();
+    }, [restoreUser]);
 
     useEffect(() => {
         scrollToIndex(activeIndex);

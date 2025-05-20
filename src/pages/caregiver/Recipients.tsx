@@ -2,7 +2,7 @@ import styles from "./Recipients.module.scss";
 import React from "react";
 import SearchTextInput from "../../components/SearchTextInput";
 import PersonCard from "../../components/PersonCard";
-import { useNavigation } from "../../context/navigationContext";
+import useNavigation from "../../hooks/useNavigation";
 import Recipient from "./Recipient";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 

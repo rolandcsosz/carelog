@@ -1,6 +1,6 @@
 import styles from "./Recipient.module.scss";
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "../../context/navigationContext";
+import useNavigation from "../../hooks/useNavigation";
 import UserProfile from "../UserProfile";
 import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";

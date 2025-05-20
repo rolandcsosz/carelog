@@ -5,7 +5,7 @@ import TextInput from "../../components/TextInput";
 import UserProfile from "../UserProfile";
 import { useAuth } from "../../hooks/useAuth";
 import { useAdminModel } from "../../hooks/useAdminModel";
-import { usePopup } from "../../context/popupContext";
+import usePopup from "../../hooks/usePopup";
 import NewPasswordForm from "../../components/NewPasswordForm";
 import { useApi } from "../../hooks/useApi";
 import { putAdminsByIdPassword, putCaregiversByIdPassword } from "../../../api/sdk.gen";

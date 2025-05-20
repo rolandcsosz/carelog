@@ -1,7 +1,7 @@
 import styles from "./Recipient.module.scss";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../../components/Button";
-import { useNavigation } from "../../context/navigationContext";
+import useNavigation from "../../hooks/useNavigation";
 import UserProfile from "../UserProfile";
 import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";

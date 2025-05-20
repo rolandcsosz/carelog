@@ -3,7 +3,7 @@ import React from "react";
 import Avatar from "../components/Avatar";
 import IconButton from "../components/IconButton";
 import chevronLeft from "../assets/chevron-left.svg";
-import { useScroll } from "../context/scrollContext";
+import useScroll from "../hooks/useScroll";
 
 interface UserProfileProps extends React.PropsWithChildren {
     userName: string;

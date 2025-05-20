@@ -1,11 +1,11 @@
 import styles from "./DailySchedule.module.scss";
 import React from "react";
-import { useNavigation } from "../../context/navigationContext.tsx";
+import useNavigation from "../../hooks/useNavigation.ts";
 import TimeTableRow from "../../components/TimeTableRow.tsx";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
 import Recipient from "./Recipient.tsx";
 import { compareTime, getDateString } from "../../utils.ts";
-import { useBottomSheet } from "../../context/BottomSheetContext.tsx";
+import useBottomSheet from "../../hooks/useBottomSheet.ts";
 
 const DailySchedule: React.FC = () => {
     const { addPageToStack } = useNavigation();

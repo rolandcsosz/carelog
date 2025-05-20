@@ -1,12 +1,25 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/authContext";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { userState } from "../model";
+import { OpenAPI } from "../../api/core/OpenAPI";
+import usePersistedUser from "./usePersistedUser";
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
+export function useAuth() {
+    const { storeUser, clearUser } = usePersistedUser();
+    const [user, setUser] = useRecoilState(userState);
 
-    if (!context) {
-        throw new Error("useAuth must be used within an AuthProvider");
-    }
+    const login = (newUser: User) => {
+        OpenAPI.TOKEN = newUser.token;
+        setUser(newUser);
+        storeUser(newUser);
+    };
 
-    return context;
-};
+    const logout = () => {
+        OpenAPI.TOKEN = "";
+        setUser(null);
+        clearUser();
+    };
+
+    const isAuthenticated = user !== null;
+
+    return { user, isAuthenticated, login, logout };
+}

@@ -1,7 +1,7 @@
 import styles from "./BottomSheet.module.scss";
 import sheetCloseButtonUrl from "../assets/sheet-close-button.svg";
 import { useRef, useState, useEffect } from "react";
-import { useBottomSheet } from "../context/BottomSheetContext";
+import useBottomSheet from "../hooks/useBottomSheet";
 import Log from "../pages/caregiver/Log";
 
 enum SheetSize {
