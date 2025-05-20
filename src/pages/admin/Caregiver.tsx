@@ -8,7 +8,6 @@ import TextInput from "../../components/TextInput";
 import { useAdminModel } from "../../hooks/useAdminModel";
 import PersonCard from "../../components/PersonCard";
 import Recipient from "./Recipient";
-import Schedule from "./AdminSchedule";
 import AdminSchedule from "./AdminSchedule";
 
 interface CaregiverProps {

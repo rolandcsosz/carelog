@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState, ReactNode, JSX, useRef } from "react";
+import { createContext, useCallback, useContext, useState, ReactNode, JSX } from "react";
 
 type PopupProps = {
     content: ReactNode | null;

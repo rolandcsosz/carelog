@@ -11,13 +11,11 @@ enum SheetSize {
 }
 
 export function BottomSheet() {
-    const { isOpen, content, closeSheet } = useBottomSheet();
+    const { isOpen, closeSheet } = useBottomSheet();
     const sheetRef = useRef(null);
     const [sheetHeight, setSheetHeight] = useState(SheetSize.CLOSED);
     const [isDragging, setIsDragging] = useState(false);
     const snapThreshold = SheetSize.HALF;
-    const animatonStep = 100;
-    const animationFrameCount = 32;
 
     useEffect(() => {
         if (isOpen) {

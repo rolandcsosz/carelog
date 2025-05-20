@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./CalendarSchedule.module.scss";
-import { Button } from "../../components/Button";
 import Calendar from "../../components/Calendar";
-import ScheduleCard from "../../components/ScheduleCard";
-import { useAdminModel } from "../../hooks/useAdminModel";
-import { useApi } from "../../hooks/useApi";
 import { compareTime, convertToGlobalUTC, getDateString } from "../../utils";
-import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import TimeTableRow from "../../components/TimeTableRow";
 import { useNavigation } from "../../context/navigationContext";
@@ -14,9 +9,7 @@ import Recipient from "./Recipient";
 
 const CalendarSchedule: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-
-    const { request } = useApi();
-    const { user, relationships, recipients, schedules } = useCaregiverModel();
+    const { relationships, recipients, schedules } = useCaregiverModel();
     const { addPageToStack } = useNavigation();
 
     const handleDateChange = (date: Date) => {

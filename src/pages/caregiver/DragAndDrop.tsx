@@ -1,30 +1,13 @@
 import styles from "./DragAndDrop.module.scss";
-import React, { useCallback, useEffect, useRef } from "react";
-import SearchTextInput from "../../components/SearchTextInput.tsx";
-import PersonCard from "../../components/PersonCard.tsx";
-import { Button } from "../../components/Button.tsx";
-import { usePopup } from "../../context/popupContext.tsx";
-import NewPersonFormRow from "../../components/admin/NewPersonFormRow.tsx";
-import { useNavigation } from "../../context/navigationContext.tsx";
-import Caregiver from "./DragAndDrop.tsx";
-import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
-import TimeTableRow from "../../components/TimeTableRow.tsx";
-import { IonItem, IonLabel, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail } from "@ionic/react";
+import React from "react";
+import { IonItem, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail } from "@ionic/react";
 import TodoItem from "../../components/TodoItem.tsx";
 import IconButton from "../../components/IconButton.tsx";
 import dragIndicator from "..//../assets/drag-indicator.svg";
 
 const DragAndDrop: React.FC = () => {
-    const { openPopup } = usePopup();
-    const { addPageToStack } = useNavigation();
     function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
-        // The `from` and `to` properties contain the index of the item
-        // when the drag started and ended, respectively
         console.log("Dragged from index", event.detail.from, "to", event.detail.to);
-
-        // Finish the reorder and position the item in the DOM based on
-        // where the gesture ended. This method can also be called directly
-        // by the reorder group
         event.detail.complete();
     }
 

@@ -24,7 +24,7 @@ const Login: React.FC = () => {
         }
 
         login({
-            id: response.user?.id?.toString() ?? "",
+            id: response.user?.id ?? -1,
             role: (response?.role as UserRole) ?? "invalid",
             token: response.token ?? "",
         });

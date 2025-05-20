@@ -1,16 +1,11 @@
 import styles from "./Recipient.module.scss";
-import React, { useEffect, useRef, useState } from "react";
-import { Button } from "../../components/Button";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "../../context/navigationContext";
 import UserProfile from "../UserProfile";
 import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";
-import Dropdown from "../../components/Dropdown";
-import { useAdminModel } from "../../hooks/useAdminModel";
 import DateCard from "../../components/DateCard";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
-import { getDateString } from "../../utils";
-import PersonCard from "../../components/PersonCard";
 import DragAndDrop from "./DragAndDrop";
 
 interface RecipientsProps {

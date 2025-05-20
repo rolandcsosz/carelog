@@ -1,10 +1,6 @@
 import React from "react";
 import styles from "./TodoItem.module.scss";
-import chevronRight from "../assets/chevron-right.svg";
-import Avatar from "./Avatar";
 import IconButton from "./IconButton";
-import { IonButton } from "@ionic/react";
-import dragIndicator from "../assets/drag-indicator.svg";
 import deleteIcon from "../assets/delete.svg";
 import Dropdown from "./Dropdown";
 
@@ -21,8 +17,12 @@ const TodoItem: React.FC<TodoItemProps> = ({
     selectedItem,
     options,
     index,
-    onSelectedChanged = (item: string) => {},
+    onSelectedChanged = (item: string) => {
+        void item;
+    }, // TODO
 }) => {
+    void onSelectedChanged; //TODO
+    void index; //TODO
     return (
         <div className={styles.container}>
             <div className={styles.contentRow}>

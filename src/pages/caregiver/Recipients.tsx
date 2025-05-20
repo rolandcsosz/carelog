@@ -1,23 +1,15 @@
 import styles from "./Recipients.module.scss";
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import SearchTextInput from "../../components/SearchTextInput";
 import PersonCard from "../../components/PersonCard";
-import { Button } from "../../components/Button";
-import { usePopup } from "../../context/popupContext";
-import NewPersonFormRow from "../../components/admin/NewPersonFormRow";
 import { useNavigation } from "../../context/navigationContext";
 import Recipient from "./Recipient";
-import { useAdminModel } from "../../hooks/useAdminModel";
-import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
-import { useAuth } from "../../hooks/useAuth";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 
 const Recipients: React.FC = () => {
     const [searchText, setSearchText] = React.useState<string>("");
-    const { openPopup } = usePopup();
     const { addPageToStack } = useNavigation();
     const { recipients } = useCaregiverModel();
-    const { user } = useAuth();
 
     return (
         <div className={styles.page}>

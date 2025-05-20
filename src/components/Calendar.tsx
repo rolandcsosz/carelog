@@ -27,6 +27,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateChange, highlightedDates = []
         selectedDates: Array<dayjs.Dayjs | null>,
         pickersDayProps: PickersDayProps,
     ) => {
+        void selectedDates;
         const isHighlighted = highlightedDates.some((highlightedDate) => day.isSame(dayjs(highlightedDate), "day"));
 
         return (

@@ -1,6 +1,5 @@
 import styles from "./DailySchedule.module.scss";
 import React from "react";
-import { usePopup } from "../../context/popupContext.tsx";
 import { useNavigation } from "../../context/navigationContext.tsx";
 import TimeTableRow from "../../components/TimeTableRow.tsx";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
@@ -11,7 +10,7 @@ import { useBottomSheet } from "../../context/BottomSheetContext.tsx";
 const DailySchedule: React.FC = () => {
     const { addPageToStack } = useNavigation();
     const { recipients, schedules, relationships, logs } = useCaregiverModel();
-    const { openSheet, closeSheet } = useBottomSheet();
+    const { openSheet } = useBottomSheet();
     const today = new Date();
     const openLog = logs.info?.find((log) => !log.closed);
 

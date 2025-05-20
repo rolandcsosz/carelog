@@ -101,7 +101,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         }
     };
 
-    const handleDeleteSchedule = async (id: number) => {
+    /*const handleDeleteSchedule = async (id: number) => {
         const response = await schedules.delete(request, {
             id: id,
         });
@@ -109,7 +109,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         if (response) {
             refetchSchedules();
         }
-    };
+    };*/
 
     const handleModifySchedule = async (schedule: NewScheduleData) => {
         let connection: Relationship | undefined = undefined;
@@ -185,7 +185,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
             <div className={styles.title}>{selectedDate ? getDateString(selectedDate) : getDateString(new Date())}</div>
 
             <div className={styles.scheduleContainer}>
-                {filteredSchedules.map((schedule, index) => (
+                {filteredSchedules.map((schedule) => (
                     <ScheduleCard
                         title={userMode === "caregiver" ? "Gondozott" : "Gondozó"}
                         options={dropdownOptions}

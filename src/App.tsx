@@ -25,7 +25,6 @@ import { useScroll } from "./context/scrollContext";
 import { useAuth } from "./hooks/useAuth";
 import Login from "./pages/Login";
 import DailySchedule from "./pages/caregiver/DailySchedule";
-import Calendar from "./components/Calendar";
 import CalendarSchedule from "./pages/caregiver/CalendarSchedule";
 import { BottomSheet } from "./components/BottomSheet";
 import { useBottomSheet } from "./context/BottomSheetContext";
@@ -105,7 +104,7 @@ const App: React.FC = () => {
     const { isAuthenticated, user } = useAuth();
     const usedConfig = user?.role === "admin" ? adminMenuConfig : caregiverMenuConfig;
     const { isOpen: isSheetOpen, openSheet } = useBottomSheet();
-    const { recipients, schedules, relationships, logs } = useCaregiverModel();
+    const { recipients, relationships, logs } = useCaregiverModel();
     const openLog = logs.info?.find(
         (log) => !log.closed && relationships.info?.some((relationship) => relationship.id === log.relationshipId),
     );

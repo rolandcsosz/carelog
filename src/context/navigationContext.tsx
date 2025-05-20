@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState, ReactNode, JSX, useEffect } from "react";
+import { createContext, useCallback, useContext, useState, ReactNode, JSX } from "react";
 
 interface NavigationContextType {
     pages: ReactNode[];
