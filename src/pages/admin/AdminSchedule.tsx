@@ -19,7 +19,6 @@ type AdminScheduleMode = "caregiver" | "recipient" | null;
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, recipientIds }) => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [fetchedSchedules, setFetchedSchedules] = useState<Schedule[]>([]);
-
     const { request } = useApi();
     const { caregivers, relationships, recipients, schedules } = useAdminModel();
 

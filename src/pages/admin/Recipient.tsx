@@ -68,8 +68,8 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                 email,
                 phone,
                 address,
-                four_hand_care_needed: recipient.four_hand_care_needed,
-                caregiver_note: recipient.caregiver_note,
+                fourHandCareNeeded: recipient.four_hand_care_needed,
+                caregiverNote: recipient.caregiver_note,
             },
         });
     }, [name, phone, email, address]);

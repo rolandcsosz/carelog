@@ -1,35 +1,19 @@
 import React, { useState } from "react";
 import styles from "./CalendarSchedule.module.scss";
 import Calendar from "../../components/Calendar";
-import { compareTime, convertToGlobalUTC, getDateString } from "../../utils";
+import { getDateString } from "../../utils";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import TimeTableRow from "../../components/TimeTableRow";
 import useNavigation from "../../hooks/useNavigation";
 import Recipient from "./Recipient";
+import useQueryData from "../../hooks/useQueryData";
 
 const CalendarSchedule: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-    const { relationships, recipients, schedules } = useCaregiverModel();
+    const { schedules } = useCaregiverModel();
     const { addPageToStack } = useNavigation();
-
-    const handleDateChange = (date: Date) => {
-        setSelectedDate(date);
-    };
-
-    const filteredSchedules = schedules.info
-        ?.filter((schedule) => selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate))
-        .sort((a, b) => compareTime(a.start, b.start));
-
-    const getRecipientForSchedule = (schedule: Schedule): Recipient | undefined => {
-        const relationship = relationships.info?.find((relationship) => relationship.id === schedule.relationshipId);
-        if (relationship) {
-            const recipient = recipients.info?.find((recipient) => recipient.id === relationship.recipientId);
-            if (recipient) {
-                return recipient;
-            }
-        }
-        return undefined;
-    };
+    const { getFilteredSchedules, getRecipientForSchedule } = useQueryData();
+    const filteredSchedules = getFilteredSchedules(selectedDate);
 
     return (
         <div className={styles.page}>
@@ -38,7 +22,7 @@ const CalendarSchedule: React.FC = () => {
 
             <div className={styles.calendarContainer}>
                 <Calendar
-                    onDateChange={handleDateChange}
+                    onDateChange={setSelectedDate}
                     highlightedDates={schedules.info?.map((schedule) => new Date(schedule.date))}
                 />
             </div>

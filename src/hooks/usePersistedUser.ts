@@ -30,7 +30,6 @@ const usePersistedUser = () => {
 
     const storeUser = useCallback(
         (user: User) => {
-            console.log("Storing user:", user);
             localStorage.setItem("user", JSON.stringify(user));
         },
         [setUser],

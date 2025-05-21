@@ -29,9 +29,11 @@ import CalendarSchedule from "./pages/caregiver/CalendarSchedule";
 import { BottomSheet } from "./components/BottomSheet";
 import useBottomSheet from "./hooks/useBottomSheet";
 import LogClosedSheet from "./components/LogClosedSheet";
-import { useCaregiverModel } from "./hooks/useCaregiverModel";
 import { getDateString } from "./utils";
 import usePersistedUser from "./hooks/usePersistedUser";
+import { useRecoilValue } from "recoil";
+import { openLogState } from "./model";
+import useQueryData from "./hooks/useQueryData";
 
 setupIonicReact();
 
@@ -83,7 +85,11 @@ const caregiverMenuConfig: MenuConfig = {
     },
 };
 
-const App: React.FC = () => {
+interface AppProps {
+    onLogedOut: () => void;
+}
+
+const App: React.FC<AppProps> = ({ onLogedOut }) => {
     const { restoreUser } = usePersistedUser();
     const [selectedMenu, setSelectedMenu] = React.useState<string>("");
     const {
@@ -103,25 +109,11 @@ const App: React.FC = () => {
     const { setScrollPosition } = useScroll();
     const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const prevActiveIndex = useRef<number>(-1);
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated, user, subscribeForLogout } = useAuth();
     const usedConfig = user?.role === "admin" ? adminMenuConfig : caregiverMenuConfig;
     const { isOpen: isSheetOpen, openSheet } = useBottomSheet();
-    const { recipients, relationships, logs } = useCaregiverModel();
-    const openLog = logs.info?.find(
-        (log) => !log.closed && relationships.info?.some((relationship) => relationship.id === log.relationshipId),
-    );
-
-    const getRecipientForLog = (log: Log): Recipient | undefined => {
-        const relationship = relationships.info?.find((relationship) => relationship.id === log.relationshipId);
-        if (relationship) {
-            const recipient = recipients.info?.find((recipient) => recipient.id === relationship.recipientId);
-            if (recipient) {
-                return recipient;
-            }
-        }
-        return undefined;
-    };
-
+    const openLog = useRecoilValue(openLogState);
+    const { getRecipientForLog } = useQueryData();
     const recipient = openLog ? getRecipientForLog(openLog) : undefined;
 
     const scrollToIndex = (index: number) => {
@@ -136,6 +128,13 @@ const App: React.FC = () => {
             }
         }
     };
+
+    useEffect(() => {
+        const unsubscribe = subscribeForLogout(onLogedOut);
+        return () => {
+            unsubscribe();
+        };
+    }, [onLogedOut, subscribeForLogout]);
 
     useEffect(() => {
         restoreUser();

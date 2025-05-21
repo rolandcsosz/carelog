@@ -7,6 +7,7 @@ import TextInput from "../../components/TextInput";
 import DateCard from "../../components/DateCard";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import DragAndDrop from "./DragAndDrop";
+import useQueryData from "../../hooks/useQueryData";
 
 interface RecipientsProps {
     recipient: Recipient;
@@ -15,13 +16,10 @@ interface RecipientsProps {
 const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     const [menu, setMenu] = useState<string>("Adatok");
     const { removeLastPageFromStack } = useNavigation();
-    const { relationships, logs, recipients } = useCaregiverModel();
-    const [note, setNote] = useState<string>(recipient.caregiver_note);
-    const logsForRecipient = logs.info?.filter((log) =>
-        relationships.info?.some(
-            (relationship) => relationship.id === log.relationshipId && relationship.recipientId === recipient.id,
-        ),
-    );
+    const { recipients } = useCaregiverModel();
+    const [note, setNote] = useState<string>(recipient.caregiverNote);
+    const { getLogsForRecipient } = useQueryData();
+    const logsForRecipient = getLogsForRecipient(recipient);
 
     useEffect(() => {
         if (!note) {
@@ -58,7 +56,7 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                         </div>
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Négykezes gondozás</div>
-                            {recipient.four_hand_care_needed ? "Igen" : "Nem"}
+                            {recipient.fourHandCareNeeded ? "Igen" : "Nem"}
                         </div>
                     </div>
                 </div>
@@ -81,7 +79,7 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
             {menu === "Jegyzetek" && (
                 <div className={styles.infoContainer}>
                     <div className={styles.title}>Általános Jegyzet</div>
-                    <TextInput text={recipient.caregiver_note} onChange={setNote} fillWidth={true} height={100} />
+                    <TextInput text={recipient.caregiverNote} onChange={setNote} fillWidth={true} height={100} />
                     <div className={styles.spacer} />
                     <div className={styles.title}>Teendők</div>
                     <DragAndDrop />

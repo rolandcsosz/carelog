@@ -94,8 +94,8 @@ const fetchRecipients = async (
                 email: recipient?.email || "",
                 phone: recipient?.phone || "",
                 address: recipient?.address || "",
-                four_hand_care_needed: recipient?.four_hand_care_needed || false,
-                caregiver_note: recipient?.caregiver_note || "",
+                fourHandCareNeeded: recipient?.four_hand_care_needed || false,
+                caregiverNote: recipient?.caregiver_note || "",
             }) as Recipient,
     );
 };

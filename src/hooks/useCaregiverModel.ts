@@ -31,6 +31,8 @@ import {
 import { useAuth } from "./useAuth";
 import { fetchSchedulesForCaregiver } from "../utils";
 import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { openLogState } from "../model";
 
 const fetchLogedInUser = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
@@ -88,8 +90,8 @@ const fetchRecipients = async (
                 email: recipient?.email || "",
                 phone: recipient?.phone || "",
                 address: recipient?.address || "",
-                four_hand_care_needed: false, // recipient?.four_hand_care_needed TODO missing?
-                caregiver_note: "", // recipient?.caregiver_note TODO missing?
+                fourHandCareNeeded: false, // recipient?.four_hand_care_needed TODO missing?
+                caregiverNote: "", // recipient?.caregiver_note TODO missing?
             }) as Recipient,
     );
 };
@@ -163,6 +165,7 @@ const fetchLogs = async (
 export const useCaregiverModel = () => {
     const { request } = useApi();
     const { user } = useAuth();
+    const setOpenLog = useSetRecoilState(openLogState);
 
     const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Caregiver | null>({
         queryKey: ["logedInCaregiverUser"],
@@ -251,6 +254,21 @@ export const useCaregiverModel = () => {
             refetchRecipients();
         }
     }, [relationships]);
+
+    useEffect(() => {
+        if (user?.role !== "caregiver" || !logs || !relationships) {
+            return;
+        }
+        const relationshipsForUser = relationships.filter((relationship) => {
+            return relationship.caregiverId === Number(user.id);
+        });
+
+        const openLog = logs.find(
+            (log) =>
+                !log.finished && relationshipsForUser.some((relationship) => relationship.id === log.relationshipId),
+        );
+        setOpenLog(openLog || null);
+    }, [logs, relationships, user?.role, setOpenLog]);
 
     return {
         user: {

@@ -4,40 +4,20 @@ import useNavigation from "../../hooks/useNavigation.ts";
 import TimeTableRow from "../../components/TimeTableRow.tsx";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
 import Recipient from "./Recipient.tsx";
-import { compareTime, getDateString } from "../../utils.ts";
+import { getDateString } from "../../utils.ts";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
+import useQueryData from "../../hooks/useQueryData.ts";
+import { openLogState } from "../../model.ts";
+import { useRecoilValue } from "recoil";
 
 const DailySchedule: React.FC = () => {
     const { addPageToStack } = useNavigation();
-    const { recipients, schedules, relationships, logs } = useCaregiverModel();
+    const { logs } = useCaregiverModel();
     const { openSheet } = useBottomSheet();
+    const { getFilteredSchedules, getRecipientForSchedule } = useQueryData();
     const today = new Date();
-    const openLog = logs.info?.find((log) => !log.closed);
-
-    const filteredSchedules =
-        schedules.info
-            ?.filter((schedule) => {
-                const scheduleDate = new Date(schedule.date);
-                return (
-                    scheduleDate.getFullYear() === today.getFullYear() &&
-                    scheduleDate.getMonth() === today.getMonth() &&
-                    scheduleDate.getDate() === today.getDate()
-                );
-            })
-            .sort((a, b) => {
-                return compareTime(a.start, b.start);
-            }) || [];
-
-    const getRecipientForSchedule = (schedule: Schedule): Recipient | undefined => {
-        const relationship = relationships.info?.find((relationship) => relationship.id === schedule.relationshipId);
-        if (relationship) {
-            const recipient = recipients.info?.find((recipient) => recipient.id === relationship.recipientId);
-            if (recipient) {
-                return recipient;
-            }
-        }
-        return undefined;
-    };
+    const openLog = useRecoilValue(openLogState);
+    const filteredSchedules = getFilteredSchedules(today);
 
     //"done" | "notEditable" | "new" | "error";
     //TODO: open log test

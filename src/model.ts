@@ -55,3 +55,13 @@ export const bottomSheetContentState = atom<JSX.Element | null>({
     key: "bottomSheetContentState",
     default: null,
 });
+
+export const openLogState = atom<Log | null>({
+    key: "openLogState",
+    default: null,
+});
+
+export const logoutCallbackState = atom<Set<() => void>>({
+    key: "logoutCallbackState",
+    default: new Set(),
+});

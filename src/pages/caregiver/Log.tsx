@@ -3,27 +3,18 @@ import React from "react";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
 import { getDateString } from "../../utils.ts";
 import { Button } from "../../components/Button.tsx";
+import useQueryData from "../../hooks/useQueryData.ts";
+import { openLogState } from "../../model.ts";
+import { useRecoilValue } from "recoil";
 
 const DailySchedule: React.FC = () => {
-    const { recipients, relationships, logs } = useCaregiverModel();
-    const openLog = logs.info?.find((log) => !log.closed);
-
-    const getRecipientForLog = (log: Log): Recipient | undefined => {
-        const relationship = relationships.info?.find((relationship) => relationship.id === log.relationshipId);
-        if (relationship) {
-            const recipient = recipients.info?.find((recipient) => recipient.id === relationship.recipientId);
-            if (recipient) {
-                return recipient;
-            }
-        }
-        return undefined;
-    };
-
+    const { logs } = useCaregiverModel();
+    const { getRecipientForLog } = useQueryData();
+    const openLog = useRecoilValue(openLogState);
     const recipient = openLog ? getRecipientForLog(openLog) : undefined;
 
     const closeLog = () => {
         if (openLog) {
-            console.log("Closing log:", openLog);
             logs.edit({
                 id: openLog.id.toString(),
                 requestBody: {
@@ -43,7 +34,7 @@ const DailySchedule: React.FC = () => {
 
             <div className={styles.infoContainer}>
                 <div className={styles.title}>Általános Jegyzet</div>
-                {recipient?.caregiver_note}
+                {recipient?.caregiverNote}
                 <div className={styles.spacer} />
                 <div className={styles.title}>Teendők</div>
             </div>

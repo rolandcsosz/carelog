@@ -58,8 +58,8 @@ type Recipient = {
     email: string;
     phone: string;
     address: string;
-    four_hand_care_needed: boolean;
-    caregiver_note: string;
+    fourHandCareNeeded: boolean;
+    caregiverNote: string;
 };
 
 type Relationship = {
