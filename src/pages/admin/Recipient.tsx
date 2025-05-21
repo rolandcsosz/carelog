@@ -21,13 +21,9 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     const [email, setEmail] = useState<string>(recipient.email);
     const [address, setAddress] = useState<string>(recipient.address);
     const { relationships, caregivers, recipients } = useAdminModel();
-    const connection = relationships.list?.find((relationship) => relationship.recipientId === recipient.id);
-    const caregiver = caregivers.list?.find((caregiver) => caregiver.id === connection?.caregiverId);
+    const connections = relationships.list?.filter((relationship) => relationship.recipientId === recipient.id);
+    const caregiver = caregivers.list?.find((caregiver) => caregiver.id === connections?.[0]?.caregiverId);
     const [selectedCaregiver, setSelectedCaregiver] = useState<Caregiver | null>(caregiver || null);
-
-    const connectionCount = relationships.list?.filter(
-        (relationship) => relationship.recipientId === recipient.id,
-    ).length;
     const hasMounted = useRef(false);
 
     const caregiverIds = caregivers.list
@@ -40,20 +36,20 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
         .map((caregiver) => caregiver.id);
 
     useEffect(() => {
-        if (!connectionCount || connectionCount <= 1) {
+        if (!connections?.length || connections?.length <= 1) {
             return;
         }
 
         const recipientConnections = relationships.list?.filter((rel) => rel.recipientId === recipient.id) || [];
 
-        const idsToKeep = new Set([caregiverIds[0]]);
+        const idsToKeep = new Set([caregiverIds?.[0]]);
 
         recipientConnections.forEach((rel) => {
             if (!idsToKeep.has(rel.caregiverId)) {
-                relationships.delete({ id: rel.recipientId });
+                relationships.delete({ id: rel.id });
             }
         });
-    }, [connectionCount, recipient]);
+    }, [connections, recipient]);
 
     useEffect(() => {
         if (!hasMounted.current) {
@@ -68,8 +64,8 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                 email,
                 phone,
                 address,
-                fourHandCareNeeded: recipient.four_hand_care_needed,
-                caregiverNote: recipient.caregiver_note,
+                four_hand_care_needed: recipient.fourHandCareNeeded,
+                caregiver_note: recipient.caregiverNote,
             },
         });
     }, [name, phone, email, address]);
@@ -80,6 +76,8 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     };
 
     const handleSelectionChange = (nameSelected: string) => {
+        console.log("Selected caregiver:", nameSelected);
+
         const selectedCaregiver = caregivers.list?.find((c) => c.name === nameSelected);
         if (!selectedCaregiver) {
             setSelectedCaregiver(null);
@@ -88,22 +86,26 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
 
         const isRemove = nameSelected === "<<Üres>>";
         const connection = relationships.list?.find(
-            (rel) => rel.recipientId === recipient.id && rel.caregiverId === selectedCaregiver.id,
+            (rel) =>
+                Number(rel.recipientId) === Number(recipient.id) &&
+                Number(rel.caregiverId) === Number(selectedCaregiver.id),
         );
 
         if (connection) {
             if (isRemove) {
-                relationships.delete({ id: connection.recipientId });
+                relationships.delete({ id: Number(connection.id) });
                 setSelectedCaregiver(null);
             } else {
                 relationships.edit({
-                    id: connection.recipientId,
+                    id: Number(connection.recipientId),
                     requestBody: {
-                        recipientId: recipient.id,
-                        caregiverId: selectedCaregiver.id,
+                        recipientId: Number(recipient.id),
+                        caregiverId: Number(selectedCaregiver.id),
                     },
                 });
-                setSelectedCaregiver(caregivers.list?.find((c) => c.id === selectedCaregiver.id) || null);
+                setSelectedCaregiver(
+                    caregivers.list?.find((c) => Number(c.id) === Number(selectedCaregiver.id)) || null,
+                );
             }
             return;
         }
@@ -113,13 +115,17 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
             return;
         }
 
+        if ((connections?.length ?? 0) > 0) {
+            relationships.delete({ id: Number(connections?.[0]?.id) });
+        }
+
         relationships.add({
             requestBody: {
-                recipientId: recipient.id,
-                caregiverId: selectedCaregiver.id,
+                recipientId: Number(recipient.id),
+                caregiverId: Number(selectedCaregiver.id),
             },
         });
-        setSelectedCaregiver(caregivers.list?.find((c) => c.id === selectedCaregiver.id) || null);
+        setSelectedCaregiver(caregivers.list?.find((c) => Number(c.id) === Number(selectedCaregiver.id)) || null);
     };
 
     return (
@@ -134,7 +140,7 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                             <Dropdown
                                 selected={selectedCaregiver?.name || ""}
                                 options={
-                                    connectionCount === 0 ?
+                                    connections?.length === 0 ?
                                         ["<<Üres>>", ...(caregivers.list?.map((caregiver) => caregiver.name) || [])]
                                     :   [...(caregivers.list?.map((caregiver) => caregiver.name) || [])]
                                 }

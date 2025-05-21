@@ -67,10 +67,10 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         const fetchSchedules = async () => {
             if (userMode === "caregiver") {
                 const response = await schedules.fetchForCaregiver(request, userId);
-                setFetchedSchedules(response);
+                setFetchedSchedules(response.sort((a, b) => compareTime(b.start, a.start)));
             } else if (userMode === "recipient") {
                 const response = await schedules.fetchForRecipient(request, userId);
-                setFetchedSchedules(response);
+                setFetchedSchedules(response.sort((a, b) => compareTime(b.start, a.start)));
             }
         };
 
@@ -111,6 +111,10 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
     };*/
 
     const handleModifySchedule = async (schedule: NewScheduleData) => {
+        if (!schedule.selectedOption) {
+            return;
+        }
+
         let connection: Relationship | undefined = undefined;
 
         if (userMode === "caregiver") {
@@ -144,7 +148,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
                 relationship_id: connection.id,
                 start_time: schedule.start,
                 end_time: schedule.end,
-                date: selectedDate.toDateString(), //TODO check if this is correct
+                date: selectedDate.toDateString(),
             },
         });
 
@@ -165,14 +169,33 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         }
     };
 
-    const filteredSchedules = fetchedSchedules
-        .filter((schedule) => selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate))
-        .sort((a, b) => compareTime(a.start, b.start));
+    const filteredSchedules = fetchedSchedules.filter(
+        (schedule) => selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate),
+    );
 
     const dropdownOptions =
         userMode === "caregiver" ?
             recipients.list?.filter((r) => filteredIds?.includes(r.id)).map((r) => r.name)
         :   caregivers.list?.filter((c) => filteredIds?.includes(c.id)).map((c) => c.name);
+
+    const getNameByIdRelationship = React.useCallback(
+        (id: number): string => {
+            const relationship = relationships.list?.find((r) => Number(r.id) === Number(id));
+
+            if (!relationship) {
+                return "";
+            }
+
+            if (userMode === "caregiver") {
+                return recipients.list?.find((r) => Number(r.id) === Number(relationship?.recipientId))?.name || "";
+            } else if (userMode === "recipient") {
+                return caregivers.list?.find((c) => Number(c.id) === Number(relationship?.caregiverId))?.name || "";
+            }
+
+            return "";
+        },
+        [relationships.list, recipients.list, caregivers.list, userMode],
+    );
 
     return (
         <div className={styles.calendarContainer}>
@@ -184,18 +207,27 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
             <div className={styles.title}>{selectedDate ? getDateString(selectedDate) : getDateString(new Date())}</div>
 
             <div className={styles.scheduleContainer}>
-                {filteredSchedules.map((schedule) => (
-                    <ScheduleCard
-                        title={userMode === "caregiver" ? "Gondozott" : "Gondozó"}
-                        options={dropdownOptions}
-                        dropDownDisabled={userMode === "recipient"}
-                        onChange={handleModifySchedule}
-                        id={schedule.id}
-                        startTime={schedule.start}
-                        endTime={schedule.end}
-                    />
-                ))}
+                {filteredSchedules.map((schedule, idx, arr) => {
+                    const prevEndTime = idx > 0 ? arr[idx - 1].end : undefined;
+                    const startTimeInvalid = prevEndTime ? compareTime(schedule.start, prevEndTime) > 0 : false;
+                    return (
+                        <ScheduleCard
+                            key={`schedule-card${schedule.id}`}
+                            title={userMode === "caregiver" ? "Gondozott" : "Gondozó"}
+                            selectedOption={getNameByIdRelationship(schedule.relationshipId)}
+                            options={dropdownOptions}
+                            dropDownDisabled={userMode === "recipient"}
+                            onChange={handleModifySchedule}
+                            id={schedule.id}
+                            startTime={schedule.start}
+                            endTime={schedule.end}
+                            startTimeInvalid={startTimeInvalid}
+                        />
+                    );
+                })}
             </div>
+
+            <Button size="large" label="Újra rendezés" onClick={refetchSchedules} fillWidth />
 
             <Button
                 noText

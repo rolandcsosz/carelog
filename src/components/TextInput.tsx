@@ -8,6 +8,7 @@ interface TextInputProps {
     onChange: (value: string) => void;
     fillWidth?: boolean;
     height?: number;
+    invalid?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -17,11 +18,16 @@ const TextInput: React.FC<TextInputProps> = ({
     onChange,
     fillWidth = false,
     height = 32,
+    invalid = false,
 }) => {
     return (
         <input
             type={type}
-            className={`${styles.textInput} ${fillWidth ? styles.fill : ""}`}
+            className={`
+                ${styles.textInput} 
+                ${fillWidth ? styles.fill : ""} 
+                ${invalid ? styles.invalid : ""}
+            `}
             value={text}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}

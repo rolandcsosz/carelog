@@ -2,27 +2,31 @@ import React, { useEffect } from "react";
 import styles from "./ScheduleCard.module.scss";
 import Dropdown from "./Dropdown";
 import TextInput from "./TextInput";
+import { compareTime } from "../utils";
 
 interface ScheduleCardProps {
     id: number;
     title: string;
     options: string[];
+    selectedOption: string;
     onChange: (value: NewScheduleData) => void;
     startTime: string;
     endTime: string;
     dropDownDisabled?: boolean;
+    startTimeInvalid?: boolean;
 }
 
 const ScheduleCard: React.FC<ScheduleCardProps> = ({
     id,
     title,
     options,
+    selectedOption,
     onChange,
     startTime,
     endTime,
     dropDownDisabled = false,
+    startTimeInvalid = false,
 }) => {
-    const [selectedOption, setSelectedOption] = React.useState<string>(options[0]);
     const [selectedStartTime, setSelectedStartTime] = React.useState<string>(startTime);
     const [selectedEndTime, setSelectedEndTime] = React.useState<string>(endTime);
 
@@ -42,21 +46,41 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
                 <div className={styles.headerText}>{title}</div>
                 <Dropdown
                     disabled={dropDownDisabled}
-                    selected={title}
+                    selected={selectedOption}
                     options={options}
-                    onChange={setSelectedOption}
+                    onChange={(value) => {
+                        const newScheduleData: NewScheduleData = {
+                            id: id,
+                            selectedOption: value,
+                            start: selectedStartTime,
+                            end: selectedEndTime,
+                        };
+                        onChange(newScheduleData);
+                    }}
                     fillWidth={true}
                 ></Dropdown>
             </div>
             <div className={styles.row}>
                 <div className={styles.timeContainer}>
                     <div className={styles.text}>Kezdés</div>
-                    <TextInput text={startTime} type="time" onChange={setSelectedStartTime} fillWidth={true} />
+                    <TextInput
+                        text={selectedStartTime}
+                        type="time"
+                        onChange={setSelectedStartTime}
+                        fillWidth={true}
+                        invalid={startTimeInvalid || compareTime(selectedStartTime, selectedEndTime) < 0}
+                    />
                 </div>
                 <div />
                 <div className={styles.timeContainer}>
                     <div className={styles.text}>Véd</div>
-                    <TextInput text={endTime} type="time" onChange={setSelectedEndTime} fillWidth={true} />
+                    <TextInput
+                        text={selectedEndTime}
+                        type="time"
+                        onChange={setSelectedEndTime}
+                        fillWidth={true}
+                        invalid={compareTime(selectedStartTime, selectedEndTime) < 0}
+                    />
                 </div>
             </div>
         </div>
