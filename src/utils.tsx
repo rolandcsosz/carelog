@@ -5,11 +5,11 @@ import ErrorModal from "./components/popup-contents/ErrorModal";
 import Success from "./components/popup-contents/Success";
 import { FetchResponse, Id, PopupActionResult, PopupProps, Schedule } from "./types";
 
-export const getDateString = (date: Date): string => {
+export const getDateString = (date: Date, delimeter: string = "/"): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
-    return `${year}/${month}/${day}`;
+    return `${year}${delimeter}${month}${delimeter}${day}`;
 };
 
 export const convertToGlobalUTC = (dateToConvert: Date): string => {

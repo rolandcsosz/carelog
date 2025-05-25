@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useApi } from "./useApi";
 import {
     DeleteTodosByIdData,
@@ -324,6 +325,7 @@ export const useCaregiverModel = () => {
     const { request } = useApi();
     const { user } = useAuth();
     const setOpenLog = useSetRecoilState(openLogState);
+    const queryClient = useQueryClient();
 
     const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Caregiver | null>({
         queryKey: ["logedInCaregiverUser"],
@@ -436,12 +438,13 @@ export const useCaregiverModel = () => {
             return;
         }
         const relationshipsForUser = relationships.filter((relationship) => {
-            return relationship.caregiverId === Number(user.id);
+            return Number(relationship.caregiverId) === Number(user.id);
         });
 
         const openLog = logs.find(
             (log) =>
-                !log.finished && relationshipsForUser.some((relationship) => relationship.id === log.relationshipId),
+                !log.finished &&
+                relationshipsForUser.some((relationship) => Number(relationship.id) === Number(log.relationshipId)),
         );
         setOpenLog(openLog || null);
     }, [logs, relationships, user?.role, setOpenLog]);

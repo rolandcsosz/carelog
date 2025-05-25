@@ -67,13 +67,17 @@ const useQueryData = () => {
 
     // Caregiver helper
     const getLogsForRecipient = useCallback(
-        (recipient: Recipient): Log[] | undefined => {
-            return logs.info?.filter((log) =>
+        (recipient: Recipient, finishedStatus: boolean | null = null): Log[] | undefined => {
+            let filteredLogs = logs.info?.filter((log) =>
                 caregiverRelationShips.info?.some(
                     (relationship) =>
                         relationship.id === log.relationshipId && relationship.recipientId === recipient.id,
                 ),
             );
+            if (finishedStatus !== null) {
+                filteredLogs = filteredLogs?.filter((log) => log.finished === finishedStatus);
+            }
+            return filteredLogs;
         },
         [logs.info, caregiverRelationShips.info],
     );

@@ -120,7 +120,7 @@ type SubTask = {
 export type PopupProps = {
     content: ReactNode | null;
     onConfirm: () => Promise<PopupActionResult> | void;
-    onCancel: () => void;
+    onCancel: () => Promise<PopupActionResult> | void;
     confirmButtonText?: string;
     cancelButtonText?: string;
     title: string;
@@ -129,8 +129,10 @@ export type PopupProps = {
 
 export type PopupActionResult = {
     ok: boolean;
+    loading?: boolean;
     message: string;
     quitUpdate: boolean;
+    autoCloseAfterTimeout?: number;
 };
 
 export type FetchResponse<T> = {

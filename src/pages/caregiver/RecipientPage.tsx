@@ -25,7 +25,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const { recipients, taskTypes, subTasks } = useCaregiverModel();
     const [note, setNote] = useState<string>(recipient.caregiverNote);
     const { getLogsForRecipient, getTaskIdByName } = useQueryData();
-    const logsForRecipient = getLogsForRecipient(recipient);
+    const logsForRecipient = getLogsForRecipient(recipient, true);
     const { openPopup, closePopup } = usePopup();
     const [newTask, setNewTask] = useState<NewSubTypeData | null>(null);
 

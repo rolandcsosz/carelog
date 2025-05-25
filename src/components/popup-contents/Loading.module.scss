@@ -1,0 +1,78 @@
+@use "sass:math";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--white, #fff);
+    gap: 20px;
+}
+
+.wrap {
+    height: 100px;
+    width: 100px;
+}
+
+.title {
+    z-index: 0;
+    gap: 10px;
+    font-size: 18px;
+    color: var(--gray-700, #2d3748);
+    font-weight: 700;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+svg {
+    display: inline-block;
+    transition: 0.3s;
+    border-radius: 5px;
+}
+
+.loaderA .loadAA,
+.loaderA .loadAB,
+.loaderA .loadAC {
+    transform-origin: 50% 50%;
+    animation-iteration-count: infinite;
+}
+.loaderA .loadAA path,
+.loaderA .loadAB path,
+.loaderA .loadAC path {
+    box-shadow: 2px 2px 0 #fff inset;
+}
+.loaderA .loadAA {
+    animation-name: ro41;
+    animation-duration: 1s;
+}
+.loaderA .loadAB {
+    animation-name: ro42;
+    animation-duration: 1s;
+    animation-delay: 0.5s;
+}
+.loaderA .loadAC {
+    animation-name: ro43;
+    animation-duration: 1s;
+    animation-delay: 1s;
+}
+
+@keyframes ro41 {
+    100% {
+        transform: rotate(360deg) translate(0, 0);
+    }
+}
+@keyframes ro42 {
+    100% {
+        transform: rotate(360deg) translate(0, 0);
+    }
+}
+@keyframes ro43 {
+    100% {
+        transform: rotate(360deg) translate(0, 0);
+    }
+}
