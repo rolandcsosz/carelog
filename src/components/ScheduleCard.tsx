@@ -74,13 +74,13 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
                 </div>
                 <div />
                 <div className={styles.timeContainer}>
-                    <div className={styles.text}>Véd</div>
+                    <div className={styles.text}>Vég</div>
                     <TextInput
                         text={selectedEndTime}
                         type="time"
                         onChange={setSelectedEndTime}
                         fillWidth={true}
-                        invalid={compareTime(selectedStartTime, selectedEndTime) < 0}
+                        invalid={compareTime(selectedStartTime, selectedEndTime) > 0}
                     />
                 </div>
             </div>

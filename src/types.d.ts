@@ -87,7 +87,7 @@ type TaskType = {
 };
 
 type Task = {
-    subTaskId: string;
+    subTaskId: Id;
     startTime: string;
     endTime: string;
     done: boolean;
@@ -139,4 +139,13 @@ export type FetchResponse<T> = {
     ok: boolean;
     data?: T;
     error?: string | null;
+};
+
+export type SubTaskEditData = {
+    index: number;
+    title: string;
+    catregory: string;
+    startTime: string;
+    endTime: string;
+    done: boolean;
 };

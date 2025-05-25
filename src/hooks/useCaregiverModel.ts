@@ -2,6 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useApi } from "./useApi";
 import {
+    DeleteLogsByIdData,
+    DeleteLogsByIdResponse,
     DeleteTodosByIdData,
     DeleteTodosByIdResponse,
     GetCaregiversByIdData,
@@ -35,6 +37,7 @@ import {
 } from "../../api/types.gen";
 import { CancelablePromise } from "../../api/core/CancelablePromise";
 import {
+    deleteLogsById,
     deleteTodosById,
     getCaregiversById,
     getCaregiversByIdRecipients,
@@ -80,7 +83,7 @@ const fetchLogedInUser = async (
     }
 
     return {
-        id: response.data?.id ?? -1,
+        id: Number(response.data?.id) ?? -1,
         name: response.data?.name ?? "",
         email: response.data?.email ?? "",
         phone: response.data?.phone ?? "",
@@ -306,7 +309,7 @@ const fetchLogs = async (
                             closed: log?.closed || false,
                             tasks:
                                 log?.tasks?.map((task) => ({
-                                    subTaskId: task?.subTaskId || "",
+                                    subTaskId: Number(task?.subTaskId) || "",
                                     startTime: task?.startTime || "",
                                     endTime: task?.endTime || "",
                                     done: task?.done || false,
@@ -427,6 +430,17 @@ export const useCaregiverModel = () => {
         },
     });
 
+    const { mutate: deleteLog } = useMutation({
+        mutationFn: (body: DeleteLogsByIdData) =>
+            request<DeleteLogsByIdData, DeleteLogsByIdResponse>(deleteLogsById, body),
+        onSuccess: () => {
+            refetchLogs();
+        },
+        onError: (error: any) => {
+            console.error("Error editing log:", error);
+        },
+    });
+
     useEffect(() => {
         if (user?.role === "caregiver" && relationships) {
             refetchRecipients();
@@ -482,6 +496,7 @@ export const useCaregiverModel = () => {
             add: addLog,
             refetch: refetchLogs,
             edit: editLog,
+            delete: deleteLog,
         },
         todo: {
             fetch: fetchTodosForRelationshipId,

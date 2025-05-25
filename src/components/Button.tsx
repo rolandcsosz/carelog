@@ -7,6 +7,7 @@ export interface ButtonProps {
     label?: string;
     onClick?: () => void;
     fillWidth?: boolean;
+    flexGrowIsOne?: boolean;
     type?: "button" | "submit" | "reset";
     noText?: boolean;
     icon?: string;
@@ -30,6 +31,7 @@ export const Button = ({
     size = "medium",
     label = "",
     fillWidth = false,
+    flexGrowIsOne = false,
     onClick = () => {},
     type = "button",
     noText = false,
@@ -57,6 +59,7 @@ export const Button = ({
                 ${mode}
                 ${noText ? styles.noText : ""}
                 ${fillWidth ? styles.fillWidth : ""}
+                ${flexGrowIsOne ? styles.flexGrowIsOne : ""}
             `}
             onClick={(e) => {
                 const rect = (e.target as HTMLButtonElement).getBoundingClientRect();

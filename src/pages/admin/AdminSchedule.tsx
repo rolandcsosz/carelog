@@ -210,7 +210,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
             <div className={styles.scheduleContainer}>
                 {filteredSchedules.map((schedule, idx, arr) => {
                     const prevEndTime = idx > 0 ? arr[idx - 1].end : undefined;
-                    const startTimeInvalid = prevEndTime ? compareTime(schedule.start, prevEndTime) > 0 : false;
+                    const startTimeInvalid = prevEndTime ? compareTime(schedule.start, prevEndTime) < 0 : false;
                     return (
                         <ScheduleCard
                             key={`schedule-card${schedule.id}`}

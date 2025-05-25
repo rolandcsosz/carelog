@@ -9,7 +9,6 @@
     overflow: hidden;
     position: relative;
     flex-shrink: 0;
-    flex-grow: 1;
 }
 
 .primary {
@@ -41,6 +40,10 @@
 
 .fillWidth {
     width: 100%;
+}
+
+.flexGrowIsOne {
+    flex-grow: 1;
 }
 
 .ripple {

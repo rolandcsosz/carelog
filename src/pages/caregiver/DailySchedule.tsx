@@ -7,8 +7,8 @@ import Recipient from "./RecipientPage.tsx";
 import { getDateString } from "../../utils.tsx";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import useQueryData from "../../hooks/useQueryData.ts";
-import { openLogState } from "../../model.ts";
-import { useRecoilValue } from "recoil";
+import { actualLogTasksState, openLogState } from "../../model.ts";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { PopupActionResult, Schedule } from "../../types";
 import usePopup from "../../hooks/usePopup.tsx";
 
@@ -21,6 +21,7 @@ const DailySchedule: React.FC = () => {
     const openLog = useRecoilValue(openLogState);
     const filteredSchedules = getFilteredSchedules(today);
     const { openPopup } = usePopup();
+    const setSubTasks = useSetRecoilState(actualLogTasksState);
 
     useEffect(() => {
         logs.info?.forEach((log, index) => {
@@ -44,6 +45,8 @@ const DailySchedule: React.FC = () => {
     };
 
     const handleNewLog = (schedule: Schedule) => {
+        setSubTasks([]);
+
         const add = (): Promise<PopupActionResult> => {
             return new Promise<PopupActionResult>((resolve) => {
                 logs.add(
@@ -72,6 +75,14 @@ const DailySchedule: React.FC = () => {
                                 autoCloseAfterTimeout: 2000,
                             });
                         },
+                        onError: (error) => {
+                            resolve({
+                                ok: false,
+                                loading: false,
+                                message: error.message,
+                                quitUpdate: true,
+                            });
+                        },
                     },
                 );
             });
@@ -82,7 +93,7 @@ const DailySchedule: React.FC = () => {
             confirmButtonText: "Másolás",
             cancelButtonText: "Új napló",
             content: <div>Az utolsó mentet naplót használnád újra vagy üres naplót kezdenél?</div>,
-            onConfirm: add,
+            onConfirm: add, // TODO: implement copy log
             onCancel: add,
         });
     };

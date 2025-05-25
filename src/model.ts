@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { ReactNode } from "react";
-import { Log, PopupProps, User } from "./types";
+import { Log, PopupProps, User, SubTaskEditData } from "./types";
 
 export const userState = atom<User | null>({
     key: "userState",
@@ -60,4 +60,9 @@ export const logoutCallbackState = atom<Set<() => void>>({
 export const isModalClosing = atom<boolean>({
     key: "isModalClosing",
     default: false,
+});
+
+export const actualLogTasksState = atom<Omit<SubTaskEditData, "index">[]>({
+    key: "actualLogTasksStat",
+    default: [],
 });

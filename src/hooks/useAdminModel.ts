@@ -74,7 +74,7 @@ const fetchCaregivers = async (
     return response.data.map(
         (caregiver) =>
             ({
-                id: caregiver?.id || "",
+                id: Number(caregiver?.id) || -1,
                 name: caregiver?.name || "",
                 phone: caregiver?.phone || "",
                 email: caregiver?.email || "",
@@ -93,7 +93,7 @@ const fetchRecipients = async (
     return response.data.map(
         (recipient) =>
             ({
-                id: recipient?.id || "",
+                id: Number(recipient?.id) || -1,
                 name: recipient?.name || "",
                 email: recipient?.email || "",
                 phone: recipient?.phone || "",
@@ -114,7 +114,7 @@ const fetchLogedInUser = async (
     }
 
     return {
-        id: response.data?.id || -1,
+        id: Number(response.data?.id) || -1,
         name: response.data?.name || "",
         email: response.data?.email || "",
     };
@@ -131,9 +131,9 @@ const fetchRelationships = async (
     const relationships = response.data.map(
         (relationship) =>
             ({
-                id: relationship?.relationship_id || -1,
-                caregiverId: relationship?.caregiver_id || -1,
-                recipientId: relationship?.recipient_id || -1,
+                id: Number(relationship?.relationship_id) || -1,
+                caregiverId: Number(relationship?.caregiver_id) || -1,
+                recipientId: Number(relationship?.recipient_id) || -1,
             }) as Relationship,
     );
 
@@ -158,8 +158,8 @@ const fetchSchedulesForRecipient = async (
     return response.data.map(
         (schedule) =>
             ({
-                id: schedule?.id || -1,
-                relationshipId: schedule.relationship_id || -1,
+                id: Number(schedule?.id) || -1,
+                relationshipId: Number(schedule.relationship_id) || -1,
                 start: schedule.start_time || "00:00:00",
                 end: schedule.end_time || "00:00:00",
                 date: schedule.date || new Date(),
@@ -178,10 +178,10 @@ const addSchedule = async (
     }
 
     return {
-        relationshipId: (response as any)?.relationship_id || -1,
-        start: (response as any)?.start_time || "00:00",
-        end: (response as any)?.end_time || "00:00",
-        date: (response as any)?.date || new Date(),
+        relationshipId: Number(response.data.relationship_id) || -1,
+        start: response.data.start_time || "00:00",
+        end: response.data.end_time || "00:00",
+        date: response.data.date || new Date(),
     } as Schedule;
 };
 

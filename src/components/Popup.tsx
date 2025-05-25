@@ -46,6 +46,7 @@ const Popup: React.FC<PopupProps> = ({
                             onClick={onCancel}
                             primary={false}
                             fillWidth={false}
+                            flexGrowIsOne={true}
                         />
                     )}
                     <Button
@@ -54,6 +55,7 @@ const Popup: React.FC<PopupProps> = ({
                         onClick={onConfirm}
                         primary={true}
                         fillWidth={false}
+                        flexGrowIsOne={true}
                     />
                 </div>
             </div>
