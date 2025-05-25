@@ -57,17 +57,18 @@ import {
     putSchedulesById,
 } from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
-import { fetchSchedulesForCaregiver } from "../utils";
+import { fetchSchedulesForCaregiver, throwIfError } from "../utils";
+import { Admin, Caregiver, FetchResponse, Id, Ok, Recipient, Relationship, Schedule } from "../types";
 
 const fetchCaregivers = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
 ): Promise<Caregiver[]> => {
     const response = await request<void, GetCaregiversResponse>(getCaregivers, undefined);
-    if (!response) {
+    if (!response || !response.ok || !response.data || response.data.length === 0) {
         return [] as Caregiver[];
     }
 
-    return response.map(
+    return response.data.map(
         (caregiver) =>
             ({
                 id: caregiver?.id || "",
@@ -79,14 +80,14 @@ const fetchCaregivers = async (
 };
 
 const fetchRecipients = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
 ): Promise<Recipient[]> => {
     const response = await request<void, GetRecipientsResponse>(getRecipients, undefined);
-    if (!response) {
+    if (!response || !response.ok || !response.data || response.data.length === 0) {
         return [] as Recipient[];
     }
 
-    return response.map(
+    return response.data.map(
         (recipient) =>
             ({
                 id: recipient?.id || "",
@@ -101,30 +102,30 @@ const fetchRecipients = async (
 };
 
 const fetchLogedInUser = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     id: number,
 ): Promise<Admin | null> => {
     const response = await request<GetAdminsByIdData, GetAdminsByIdResponse>(getAdminsById, { id: id });
-    if (!response) {
+    if (!response || !response.ok || !response.data) {
         return null;
     }
 
     return {
-        id: response?.id || -1,
-        name: response?.name || "",
-        email: response?.email || "",
+        id: response.data?.id || -1,
+        name: response.data?.name || "",
+        email: response.data?.email || "",
     };
 };
 
 const fetchRelationships = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
 ): Promise<Relationship[]> => {
     const response = await request<void, GetRelationshipsResponse>(getRelationships, undefined);
-    if (!response || response.length === 0) {
+    if (!response || !response.ok || !response.data || response.data.length === 0) {
         return [];
     }
 
-    const relationships = response.map(
+    const relationships = response.data.map(
         (relationship) =>
             ({
                 id: relationship?.relationship_id || -1,
@@ -137,21 +138,21 @@ const fetchRelationships = async (
 };
 
 const fetchSchedulesForRecipient = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     recipientId: Id,
 ): Promise<Schedule[]> => {
-    const schedules = await request<GetSchedulesRecipientByRecipientIdData, GetSchedulesRecipientByRecipientIdResponse>(
+    const response = await request<GetSchedulesRecipientByRecipientIdData, GetSchedulesRecipientByRecipientIdResponse>(
         getSchedulesRecipientByRecipientId,
         {
             recipientId: recipientId,
         },
     );
 
-    if (!schedules || schedules.length === 0) {
+    if (!response || !response.ok || !response.data || response.data.length === 0) {
         return [];
     }
 
-    return schedules.map(
+    return response.data.map(
         (schedule) =>
             ({
                 id: schedule?.id || -1,
@@ -164,11 +165,12 @@ const fetchSchedulesForRecipient = async (
 };
 
 const addSchedule = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     data: PostSchedulesData,
 ): Promise<Schedule | null> => {
     const response = await request<PostSchedulesData, PostSchedulesResponse>(postSchedules, data);
-    if (!response) {
+
+    if (!response || !response.ok || !response.data) {
         return null;
     }
 
@@ -181,7 +183,7 @@ const addSchedule = async (
 };
 
 const editSchedule = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     data: PutSchedulesByIdData,
 ): Promise<Ok | null> => {
     const response = await request<PutSchedulesByIdData, PutSchedulesByIdResponse>(putSchedulesById, data);
@@ -189,7 +191,7 @@ const editSchedule = async (
 };
 
 const deleteSchedule = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     data: DeleteSchedulesByIdData,
 ): Promise<Ok | null> => {
     const response = await request<DeleteSchedulesByIdData, DeleteSchedulesByIdResponse>(deleteSchedulesById, data);
@@ -226,8 +228,14 @@ export const useAdminModel = () => {
     });
 
     const { mutate: addNewCaregiver } = useMutation({
-        mutationFn: (body: PostCaregiversData) =>
-            request<PostCaregiversData, PostCaregiversResponse>(postCaregivers, body),
+        mutationFn: async (body: PostCaregiversData) => {
+            try {
+                const response = await request<PostCaregiversData, PostCaregiversResponse>(postCaregivers, body);
+                throwIfError(response, "Hiba történt az új gondozó hozzáadása során.");
+            } catch (error: any) {
+                throw error;
+            }
+        },
         onSuccess: () => {
             refetchCaregivers();
         },
@@ -237,8 +245,14 @@ export const useAdminModel = () => {
     });
 
     const { mutate: addNewRecipient } = useMutation({
-        mutationFn: (body: PostRecipientsData) =>
-            request<PostRecipientsData, PostRecipientsResponse>(postRecipients, body),
+        mutationFn: async (body: PostRecipientsData) => {
+            try {
+                const response = await request<PostRecipientsData, PostRecipientsResponse>(postRecipients, body);
+                throwIfError(response, "Hiba történt az új gondozott hozzáadása során.");
+            } catch (error: any) {
+                throw error;
+            }
+        },
         onSuccess: () => {
             refetchRecipients();
         },
@@ -248,8 +262,17 @@ export const useAdminModel = () => {
     });
 
     const { mutate: editCaregiver } = useMutation({
-        mutationFn: (body: PutCaregiversByIdData) =>
-            request<PutCaregiversByIdData, PutCaregiversByIdResponse>(putCaregiversById, body),
+        mutationFn: async (body: PutCaregiversByIdData) => {
+            try {
+                const response = await request<PutCaregiversByIdData, PutCaregiversByIdResponse>(
+                    putCaregiversById,
+                    body,
+                );
+                throwIfError(response, "Hiba történt a gondozó szerkesztése során.");
+            } catch (error: any) {
+                throw error;
+            }
+        },
         onSuccess: () => {
             refetchCaregivers();
         },
@@ -259,8 +282,17 @@ export const useAdminModel = () => {
     });
 
     const { mutate: editRecipient } = useMutation({
-        mutationFn: (body: PutRecipientsByIdData) =>
-            request<PutRecipientsByIdData, PutRecipientsByIdResponse>(putRecipientsById, body),
+        mutationFn: async (body: PutRecipientsByIdData) => {
+            try {
+                const response = await request<PutRecipientsByIdData, PutRecipientsByIdResponse>(
+                    putRecipientsById,
+                    body,
+                );
+                throwIfError(response, "Hiba történt az gondozott szerkesztése során.");
+            } catch (error: any) {
+                throw error;
+            }
+        },
         onSuccess: () => {
             refetchRecipients();
         },
@@ -270,8 +302,17 @@ export const useAdminModel = () => {
     });
 
     const { mutate: deleteCaregiver } = useMutation({
-        mutationFn: (body: DeleteCaregiversByIdData) =>
-            request<DeleteCaregiversByIdData, DeleteCaregiversByIdResponse>(deleteCaregiversById, body),
+        mutationFn: async (body: DeleteCaregiversByIdData) => {
+            try {
+                const response = await request<DeleteCaregiversByIdData, DeleteCaregiversByIdResponse>(
+                    deleteCaregiversById,
+                    body,
+                );
+                throwIfError(response, "Hiba történt a gondozó törlése során.");
+            } catch (error: any) {
+                throw error;
+            }
+        },
         onSuccess: () => {
             refetchCaregivers();
         },
@@ -281,8 +322,17 @@ export const useAdminModel = () => {
     });
 
     const { mutate: deleteRecipient } = useMutation({
-        mutationFn: (body: DeleteRecipientsByIdData) =>
-            request<DeleteRecipientsByIdData, DeleteRecipientsByIdResponse>(deleteRecipientsById, body),
+        mutationFn: async (body: DeleteRecipientsByIdData) => {
+            try {
+                const response = await request<DeleteRecipientsByIdData, DeleteRecipientsByIdResponse>(
+                    deleteRecipientsById,
+                    body,
+                );
+                throwIfError(response, "Hiba történt a gondozott törlése során.");
+            } catch (error: any) {
+                throw error;
+            }
+        },
         onSuccess: () => {
             refetchRecipients();
         },
@@ -292,7 +342,14 @@ export const useAdminModel = () => {
     });
 
     const { mutate: updateLogedInUser } = useMutation({
-        mutationFn: (body: PutAdminsByIdData) => request<PutAdminsByIdData, PutAdminsByIdResponse>(putAdminsById, body),
+        mutationFn: async (body: PutAdminsByIdData) => {
+            try {
+                const response = await request<PutAdminsByIdData, PutAdminsByIdResponse>(putAdminsById, body);
+                throwIfError(response, "Hiba történt az adminisztrátor adatok szerkesztése során.");
+            } catch (error: any) {
+                throw error;
+            }
+        },
         onSuccess: () => {
             refetchLogedInUser();
         },

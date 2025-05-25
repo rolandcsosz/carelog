@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Popup.module.scss";
 import close from "../assets/close.svg";
 import { Button } from "./Button";
 import IconButton from "./IconButton";
+import { useRecoilValue } from "recoil";
+import { bottomSheetOpenState, isModalClosing } from "../model";
 
 type PopupProps = {
     cancelButtonText?: string;
@@ -25,9 +27,11 @@ const Popup: React.FC<PopupProps> = ({
     title,
     children,
 }) => {
+    const isClosing = useRecoilValue(isModalClosing);
+
     return (
         <div className={styles.overlay}>
-            <div className={styles.modal}>
+            <div className={`${styles.modal} ${isClosing ? styles.closing : ""}`}>
                 <div className={styles.closeButton}>
                     <IconButton svgContent={close} ariaLabel="Close" onClick={onClose} isSmall={true} />
                 </div>
@@ -35,17 +39,17 @@ const Popup: React.FC<PopupProps> = ({
                 <div className={styles.modalHeader}>{title}</div>
                 <div className={styles.modalBody}>{children}</div>
                 <div className={styles.modalFooter}>
-                    {confirmOnly ? null : (
+                    {!confirmOnly && (
                         <Button
-                            size={"medium"}
-                            label={cancelButtonText === "" ? "Mégse" : cancelButtonText}
+                            size="medium"
+                            label={cancelButtonText || "Mégse"}
                             onClick={onCancel}
                             primary={false}
                             fillWidth={true}
                         />
                     )}
                     <Button
-                        size={"medium"}
+                        size="medium"
                         label={confirmButtonText}
                         onClick={onConfirm}
                         primary={true}

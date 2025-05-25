@@ -1,38 +1,68 @@
 import styles from "./Caregivers.module.scss";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import SearchTextInput from "../../components/SearchTextInput";
 import PersonCard from "../../components/PersonCard";
 import { Button } from "../../components/Button";
 import usePopup from "../../hooks/usePopup";
-import NewPersonFormRow from "../../components/admin/NewPersonFormRow";
+import NewPersonFormRow from "../../components/popup-contents/NewPersonFormRow";
 import useNavigation from "../../hooks/useNavigation";
 import { useAdminModel } from "../../hooks/useAdminModel";
-import Caregiver from "./Caregiver";
+import CaregiverPage from "./CaregiverPage";
 import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
+import { NewPersonData, PopupActionResult } from "../../types";
+import { getEmptyResponse } from "../../utils";
 
 const Caregivers: React.FC = () => {
-    const [searchText, setSearchText] = React.useState<string>("");
-    const [newPerson, setNewPerson] = React.useState<NewPersonData | null>(null);
+    const [searchText, setSearchText] = useState<string>("");
+    const [newPerson, setNewPerson] = useState<NewPersonData | null>(null);
     const newPersonRef = useRef<NewPersonData | null>(null);
     const { openPopup } = usePopup();
     const { addPageToStack } = useNavigation();
     const { caregivers } = useAdminModel();
 
-    const handleNewCaregiver = useCallback(() => {
-        if (!newPersonRef || !newPersonRef.current || newPersonRef.current.name.length === 0) {
-            console.log("Inalid data for new caregiver");
-            return;
+    const handleNewCaregiver = useCallback((): Promise<PopupActionResult> => {
+        const emptyResponse = getEmptyResponse();
+
+        if (
+            !newPersonRef ||
+            !newPersonRef.current ||
+            newPersonRef.current.name.length === 0 ||
+            newPersonRef.current.email.length === 0 ||
+            newPersonRef.current.phone.length === 0 ||
+            newPersonRef.current.password.length === 0
+        ) {
+            return Promise.resolve(emptyResponse);
         }
 
-        caregivers.add({
-            requestBody: {
-                name: newPersonRef.current.name,
-                email: newPersonRef.current.email,
-                phone: newPersonRef.current.phone,
-                password: newPersonRef.current.password,
-            },
+        return new Promise<PopupActionResult>((resolve) => {
+            caregivers.add(
+                {
+                    requestBody: {
+                        name: newPersonRef.current!.name,
+                        email: newPersonRef.current!.email,
+                        phone: newPersonRef.current!.phone,
+                        password: newPersonRef.current!.password,
+                    },
+                },
+                {
+                    onSuccess: () => {
+                        resolve({
+                            ok: true,
+                            message: "Gondozó sikeresen hozzáadva",
+                            quitUpdate: false,
+                        });
+                    },
+                    onError: (error: any) => {
+                        resolve({
+                            ok: false,
+                            message: error.message || "Ismeretlen hiba történt.",
+                            quitUpdate: false,
+                        });
+                    },
+                },
+            );
         });
-    }, [newPerson, caregivers]);
+    }, [caregivers, newPersonRef]);
 
     useEffect(() => {
         newPersonRef.current = newPerson;
@@ -53,7 +83,7 @@ const Caregivers: React.FC = () => {
                             key={index}
                             userName={caregiver.name}
                             onClick={() => {
-                                addPageToStack(<Caregiver caregiver={caregiver} />);
+                                addPageToStack(<CaregiverPage caregiver={caregiver} />);
                             }}
                         />
                     ))}

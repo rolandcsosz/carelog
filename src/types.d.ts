@@ -97,3 +97,25 @@ type Log = {
     closed: boolean;
     tasks: Task[];
 };
+
+export type PopupProps = {
+    content: ReactNode | null;
+    onConfirm: () => Promise<PopupActionResult> | void;
+    onCancel: () => void;
+    confirmButtonText?: string;
+    cancelButtonText?: string;
+    title: string;
+    confirmOnly?: boolean;
+};
+
+export type PopupActionResult = {
+    ok: boolean;
+    message: string;
+    quitUpdate: boolean;
+};
+
+export type FetchResponse<T> = {
+    ok: boolean;
+    data?: T;
+    error?: string | null;
+};

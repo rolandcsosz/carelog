@@ -1,4 +1,4 @@
-import styles from "./Caregiver.module.scss";
+import styles from "./CaregiverPage.module.scss";
 import React, { useEffect, useState } from "react";
 import { Button } from "../../components/Button";
 import useNavigation from "../../hooks/useNavigation";
@@ -7,20 +7,24 @@ import ButtonGroup from "../../components/ButtonGroup";
 import TextInput from "../../components/TextInput";
 import { useAdminModel } from "../../hooks/useAdminModel";
 import PersonCard from "../../components/PersonCard";
-import Recipient from "./Recipient";
+import RecipientPage from "./RecipientPage";
 import AdminSchedule from "./AdminSchedule";
+import { Caregiver, PopupActionResult } from "../../types";
+import usePopup from "../../hooks/usePopup";
+import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 
-interface CaregiverProps {
+interface CaregiverPageProps {
     caregiver: Caregiver;
 }
 
-const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
+const CaregiverPage: React.FC<CaregiverPageProps> = ({ caregiver }) => {
     const [menu, setMenu] = useState<string>("Adatok");
     const { addPageToStack, removeLastPageFromStack } = useNavigation();
     const [name] = useState<string>(caregiver.name);
     const [phone, setPhone] = useState<string>(caregiver.phone);
     const [email, setEmail] = useState<string>(caregiver.email);
     const { relationships, recipients, caregivers } = useAdminModel();
+    const { openPopup, closePopup } = usePopup();
 
     const recipientIds = recipients.list
         ?.filter((recipient) =>
@@ -31,20 +35,73 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
         )
         .map((recipient) => recipient.id);
 
-    useEffect(() => {
-        caregivers.edit({
-            id: Number(caregiver.id),
-            requestBody: {
-                name,
-                phone,
-                email,
-            },
+    const handleDelete = (): Promise<PopupActionResult> => {
+        return new Promise<PopupActionResult>((resolve) => {
+            caregivers.delete(
+                { id: Number(caregiver.id) },
+                {
+                    onSuccess: () => {
+                        resolve({
+                            ok: true,
+                            message: "Gondozó sikeresen eltávolítva",
+                            quitUpdate: false,
+                        });
+                        removeLastPageFromStack();
+                    },
+                    onError: (error: any) => {
+                        resolve({
+                            ok: false,
+                            message: error.message || "Ismeretlen hiba történt.",
+                            quitUpdate: false,
+                        });
+                    },
+                },
+            );
         });
-    }, [name, phone, email]);
+    };
 
-    const handleDeleteRecipient = () => {
-        caregivers.delete({ id: Number(caregiver.id) });
-        removeLastPageFromStack();
+    const handleDeleteRequest = () => {
+        openPopup({
+            content: <div className={styles.label}>Biztosan eltávolítod ezt a gondozót?</div>,
+            title: "Eltávolítás megerősítése",
+            confirmButtonText: "Eltávolítás",
+            cancelButtonText: "Mégsem",
+            confirmOnly: false,
+            onConfirm: handleDelete,
+            onCancel: closePopup,
+        });
+    };
+
+    const handleEdit = () => {
+        if (!name || !phone || !email) {
+            openPopup(getDefaultErrorModal("Sikertelen módosítás", "Kérjük, töltsd ki az összes mezőt.", closePopup));
+            return;
+        }
+
+        caregivers.edit(
+            {
+                id: Number(caregiver.id),
+                requestBody: {
+                    name,
+                    phone,
+                    email,
+                },
+            },
+            {
+                onSuccess: () => {
+                    openPopup(
+                        getDefaultSuccessModal(
+                            "Sikeres módosítás",
+                            "A gondozó adatai sikeresen frissítve lettek.",
+                            closePopup,
+                        ),
+                    );
+                },
+                onError: (error: any) => {
+                    openPopup(getDefaultErrorModal("Sikertelen módosítás", error.message, closePopup));
+                },
+            },
+        );
     };
 
     return (
@@ -64,13 +121,22 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
                         </div>
                     </div>
                     <div className={styles.dataSpacer} />
-                    <Button
-                        primary={true}
-                        size="large"
-                        label="Eltávolítás"
-                        onClick={handleDeleteRecipient}
-                        fillWidth={true}
-                    />
+                    <div className={styles.buttonContainer}>
+                        <Button
+                            primary={false}
+                            size="large"
+                            label="Adatok mentése"
+                            onClick={handleEdit}
+                            fillWidth={true}
+                        />
+                        <Button
+                            primary
+                            size="large"
+                            label="Eltávolítás"
+                            onClick={handleDeleteRequest}
+                            fillWidth={true}
+                        />
+                    </div>
                 </div>
             )}
 
@@ -99,7 +165,7 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
                                 key={i}
                                 userName={recipient.name}
                                 onClick={() => {
-                                    addPageToStack(<Recipient recipient={recipient} />);
+                                    addPageToStack(<RecipientPage recipient={recipient} />);
                                 }}
                             />
                         ))}
@@ -111,4 +177,4 @@ const Caregiver: React.FC<CaregiverProps> = ({ caregiver }) => {
     );
 };
 
-export default Caregiver;
+export default CaregiverPage;

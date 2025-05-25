@@ -33,37 +33,38 @@ import { fetchSchedulesForCaregiver } from "../utils";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { openLogState } from "../model";
+import { Caregiver, FetchResponse, Id, Log, Recipient, Relationship, Schedule, TaskType } from "../types";
 
 const fetchLogedInUser = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     id: number,
 ): Promise<Caregiver | null> => {
     const response = await request<GetCaregiversByIdData, GetCaregiversByIdResponse>(getCaregiversById, { id: id });
-    if (!response) {
+    if (!response || !response.ok || !response.data) {
         return null;
     }
 
     return {
-        id: response.id ?? -1,
-        name: response.name ?? "",
-        email: response.email ?? "",
-        phone: response.phone ?? "",
+        id: response.data?.id ?? -1,
+        name: response.data?.name ?? "",
+        email: response.data?.email ?? "",
+        phone: response.data?.phone ?? "",
     };
 };
 
 const fetchRelationships = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     caregiverId: Id,
 ): Promise<Relationship[]> => {
     const response = await request<GetCaregiversByIdRecipientsData, GetCaregiversByIdRecipientsResponse>(
         getCaregiversByIdRecipients,
         { id: caregiverId },
     );
-    if (!response || response.length === 0) {
+    if (!response || !response.ok || !response.data || response.data.length === 0) {
         return [];
     }
 
-    return response.map((relationship) => ({
+    return response.data.map((relationship) => ({
         id: Number(relationship?.relationship_id) || -1,
         caregiverId: Number(caregiverId) || -1,
         recipientId: Number(relationship?.id) || -1,
@@ -71,18 +72,19 @@ const fetchRelationships = async (
 };
 
 const fetchRecipients = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     caregiverId: Id,
 ): Promise<Recipient[]> => {
     const response = await request<GetCaregiversByIdRecipientsData, GetCaregiversByIdRecipientsResponse>(
         getCaregiversByIdRecipients,
         { id: caregiverId },
     );
-    if (!response || response.length === 0) {
+
+    if (!response || !response.ok || !response.data || response.data.length === 0) {
         return [];
     }
 
-    return response.map(
+    return response.data.map(
         (recipient) =>
             ({
                 id: Number(recipient?.id) || "",
@@ -97,29 +99,29 @@ const fetchRecipients = async (
 };
 
 const fetchSchedules = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     caregiverId: Id,
 ): Promise<Schedule[]> => {
     return await fetchSchedulesForCaregiver(request, caregiverId);
 };
 
 const fetchTaskType = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
 ): Promise<TaskType[]> => {
     const response = await request<void, GetTasktypesResponse>(getTasktypes, undefined);
 
-    if (!response || response.length === 0) {
+    if (!response || !response.ok || !response.data || response.data.length === 0) {
         return [];
     }
 
-    return response.map((taskType) => ({
+    return response.data.map((taskType) => ({
         id: Number(taskType?.id) || -1,
         name: taskType?.type || "",
     })) as TaskType[];
 };
 
 const fetchLogs = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     caregiverId: Id,
     recipientIds: Id[],
 ): Promise<Log[]> => {
@@ -133,11 +135,11 @@ const fetchLogs = async (
                     getLogsRelationshipByRecipientIdByCaregiverId,
                     { recipientId: recipientId.toString(), caregiverId: caregiverId.toString() }, // TODO check if this is correct
                 );
-                if (!response || response.length === 0) {
+                if (!response || !response.ok || !response.data || response.data.length === 0) {
                     return [];
                 }
 
-                return response.map(
+                return response.data.map(
                     (log) =>
                         ({
                             id: log?.id || "",

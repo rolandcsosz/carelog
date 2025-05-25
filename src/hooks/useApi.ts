@@ -1,27 +1,49 @@
 import { useCallback } from "react";
 import type { CancelablePromise } from "../../api/core/CancelablePromise";
 import { useAuth } from "./useAuth";
+import { FetchResponse } from "../types";
 
 export function useApi() {
     const { logout } = useAuth();
 
     const request = useCallback(
-        async <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P): Promise<R | null> => {
+        async <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P): Promise<FetchResponse<R | null>> => {
             try {
                 const response = await apiCall(params);
-                if (!response) {
-                    console.error("API Error: No response received for request:", apiCall.name);
-                    return null;
-                }
-                return response;
+                return {
+                    ok: !!response,
+                    error: !response ? "A szerver nem küldött választ." : null,
+                    data: !response ? null : (response as R),
+                };
             } catch (error: any) {
-                if (error.status) {
-                    console.error(`API Error: ${error.status} - ${error.message}`);
-                    if (error.status === 401) {
-                        logout();
+                console.log("API Error:", error);
+
+                if (error?.status === 401) {
+                    logout();
+                }
+
+                let errorMessage = "Hiba történt a kérés feldolgozása során.";
+                let errorDetails: any = null;
+
+                // Try to get actual error response body if present
+                if (error?.body) {
+                    try {
+                        errorDetails = typeof error.body === "string" ? JSON.parse(error.body) : error.body;
+
+                        // Optional: override the default errorMessage if backend sends a nice message
+                        if (errorDetails?.error) {
+                            errorMessage = errorDetails.error;
+                        }
+                    } catch (parseError) {
+                        console.warn("Failed to parse error body", parseError);
                     }
                 }
-                return null;
+
+                return {
+                    ok: false,
+                    data: null,
+                    error: errorMessage,
+                };
             }
         },
         [logout],

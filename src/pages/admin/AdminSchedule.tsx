@@ -7,6 +7,7 @@ import { useAdminModel } from "../../hooks/useAdminModel";
 import { useApi } from "../../hooks/useApi";
 import { compareTime, convertToGlobalUTC, getDateString } from "../../utils";
 import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
+import { NewScheduleData, Relationship, Schedule } from "../../types";
 
 interface AdminScheduleProps {
     userId: number;
@@ -161,7 +162,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
                             start: schedule.start,
                             end: schedule.end,
                             date: selectedDate,
-                            relationshipId: connection!.id,
+                            relationshipId: Number(connection?.id),
                         }
                     :   s,
                 ),

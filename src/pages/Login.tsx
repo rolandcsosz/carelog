@@ -6,6 +6,7 @@ import { Button } from "../components/Button";
 import { useApi } from "../hooks/useApi";
 import { postLogin } from "../../api/sdk.gen";
 import { PostLoginData, PostLoginResponse } from "../../api/types.gen";
+import { UserRole } from "../types";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -19,21 +20,21 @@ const Login: React.FC = () => {
             requestBody: { email, password },
         });
 
-        if (!response) {
+        if (!response || !response.ok || !response.data) {
             return;
         }
 
         login({
-            id: response.user?.id ?? -1,
-            role: (response?.role as UserRole) ?? "invalid",
-            token: response.token ?? "",
+            id: response.data.user?.id ?? -1,
+            role: (response.data?.role as UserRole) ?? "invalid",
+            token: response.data?.token ?? "",
         });
     };
 
     return (
         <div className={styles.panel}>
             <h1 className={styles.title}>Bejelentkezés</h1>
-            <p className={styles.subtitle}>Írd be az email címed és a jelszavad</p>
+            <p className={styles.subtitle}>Írd be az email címed és a jelszavad.</p>
             <form className={styles.loginForm} onSubmit={handleSubmit}>
                 <TextInput text={email} placeholder="Email" onChange={setEmail} fillWidth={true} />
                 <TextInput
@@ -43,6 +44,7 @@ const Login: React.FC = () => {
                     onChange={setPassword}
                     fillWidth={true}
                 />
+                <div />
                 <Button primary={true} type="submit" size="large" label="Belépés" fillWidth={true} />
             </form>
             <div className={styles.spacer} />

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styles from "./Button.module.scss";
 
 export interface ButtonProps {
@@ -34,16 +35,41 @@ export const Button = ({
     noText = false,
     icon = "",
 }: ButtonProps) => {
+    const [coords, setCoords] = useState({ x: -1, y: -1 });
+    const [isRippling, setIsRippling] = useState(false);
+    useEffect(() => {
+        if (coords.x !== -1 && coords.y !== -1) {
+            setIsRippling(true);
+            setTimeout(() => setIsRippling(false), 300);
+        } else setIsRippling(false);
+    }, [coords]);
+    useEffect(() => {
+        if (!isRippling) setCoords({ x: -1, y: -1 });
+    }, [isRippling]);
+
     const mode = primary ? styles.primary : styles.secondary;
     return (
         <button
             type={type}
             className={`${styles.button} ${getSize(size)} ${mode} ${noText ? styles.noText : ""}`}
             style={{ width: fillWidth ? "100%" : "auto" }}
-            onClick={onClick}
+            onClick={(e) => {
+                const rect = (e.target as HTMLButtonElement).getBoundingClientRect();
+                setCoords({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+                onClick();
+            }}
         >
             {icon && <img src={icon} alt="" className={styles.icon} />}
             {!noText && label}
+            {isRippling && (
+                <div
+                    className={styles.ripple}
+                    style={{
+                        left: coords.x,
+                        top: coords.y,
+                    }}
+                />
+            )}
         </button>
     );
 };

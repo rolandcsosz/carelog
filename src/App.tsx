@@ -34,6 +34,7 @@ import usePersistedUser from "./hooks/usePersistedUser";
 import { useRecoilValue } from "recoil";
 import { openLogState } from "./model";
 import useQueryData from "./hooks/useQueryData";
+import { MenuConfig } from "./types";
 
 setupIonicReact();
 

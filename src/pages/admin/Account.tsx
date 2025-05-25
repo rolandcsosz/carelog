@@ -18,11 +18,18 @@ import {
     PutCaregiversByIdPasswordResponse,
 } from "../../../api/types.gen";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
+import { Admin, Caregiver, NewPasswordData, PopupActionResult } from "../../types";
+import {
+    getDefaultErrorModal,
+    getDefaultSuccessModal,
+    getErrorMessageFromAny,
+    isErrorMessageInResponse,
+} from "../../utils";
 
 const Account: React.FC = () => {
     const { request } = useApi();
     const { logout, user } = useAuth();
-    const { openPopup } = usePopup();
+    const { openPopup, closePopup } = usePopup();
     const { user: adminUser } = useAdminModel();
     const { user: caregiverUser } = useCaregiverModel();
     const logedInUser: Admin | Caregiver | null =
@@ -44,40 +51,69 @@ const Account: React.FC = () => {
         logout();
     };
 
-    useEffect(() => {
-        if (!logedInUser || email === "" || (user?.role === "caregiver" && phone === "")) return;
+    const handleDataUpdate = () => {
+        if (!logedInUser || email === "" || (user?.role === "caregiver" && phone === "")) {
+            openPopup(
+                getDefaultErrorModal("Sikertelen módosítás", "Töltse ki az összes mezőt megfelelően.", closePopup),
+            );
+        }
+
+        const options = {
+            onSuccess: () => {
+                openPopup(
+                    getDefaultSuccessModal(
+                        "Sikeres módosítás",
+                        "A felhasználói adatok sikeresen frissítve.",
+                        closePopup,
+                    ),
+                );
+            },
+            onError: (error: any) => {
+                openPopup(getDefaultErrorModal("Sikertelen módosítás", error.message, closePopup));
+            },
+        };
 
         if (user?.role === "admin") {
             const updatedUser: PutAdminsByIdData = {
-                id: Number(logedInUser.id) ?? -1,
+                id: Number(logedInUser?.id) ?? -1,
                 requestBody: {
-                    name: logedInUser.name ?? "",
+                    name: logedInUser?.name ?? "",
                     email,
                 },
             };
-            adminUser.update(updatedUser);
+            adminUser.update(updatedUser, options);
         } else if (user?.role === "caregiver") {
             const updatedUser: PutCaregiversByIdData = {
-                id: Number(logedInUser.id) ?? -1,
+                id: Number(logedInUser?.id) ?? -1,
                 requestBody: {
-                    name: logedInUser.name ?? "",
+                    name: logedInUser?.name ?? "",
                     email,
                     phone: phone ?? "",
                 },
             };
-            caregiverUser.update(updatedUser);
+            caregiverUser.update(updatedUser, options);
         }
-    }, [email, logedInUser, phone]);
+    };
 
     useEffect(() => {
         setEmail(user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.info?.email ?? ""));
         setPhone(caregiverUser.info?.phone ?? "");
     }, [logedInUser, user?.role]);
 
-    const handleSave = async () => {
-        if (!latestPasswords.current || !logedInUser || !user) return;
+    const handlePasswordSet = async (): Promise<PopupActionResult> => {
+        if (
+            !latestPasswords.current ||
+            !logedInUser ||
+            !user ||
+            latestPasswords.current.old === "" ||
+            latestPasswords.current.new === ""
+        ) {
+            return { ok: false, message: "", quitUpdate: true };
+        }
+
+        let response: PutAdminsByIdPasswordResponse | PutCaregiversByIdPasswordResponse | undefined;
         if (user?.role === "admin") {
-            await request<PutAdminsByIdPasswordData, PutAdminsByIdPasswordResponse>(putAdminsByIdPassword, {
+            response = await request<PutAdminsByIdPasswordData, PutAdminsByIdPasswordResponse>(putAdminsByIdPassword, {
                 id: Number(logedInUser?.id) ?? -1,
                 requestBody: {
                     currentPassword: latestPasswords.current?.old ?? "",
@@ -85,13 +121,26 @@ const Account: React.FC = () => {
                 },
             });
         } else if (user?.role === "caregiver") {
-            await request<PutCaregiversByIdPasswordData, PutCaregiversByIdPasswordResponse>(putCaregiversByIdPassword, {
-                id: Number(logedInUser?.id) ?? -1,
-                requestBody: {
-                    currentPassword: latestPasswords.current?.old ?? "",
-                    newPassword: latestPasswords.current?.new ?? "",
+            response = await request<PutCaregiversByIdPasswordData, PutCaregiversByIdPasswordResponse>(
+                putCaregiversByIdPassword,
+                {
+                    id: Number(logedInUser?.id) ?? -1,
+                    requestBody: {
+                        currentPassword: latestPasswords.current?.old ?? "",
+                        newPassword: latestPasswords.current?.new ?? "",
+                    },
                 },
-            });
+            );
+        }
+
+        if (!response) {
+            return { ok: false, message: "Ismeretlen hiba történt.", quitUpdate: false };
+        }
+
+        if (!isErrorMessageInResponse(response)) {
+            return { ok: true, message: "Jelszó sikeresen frissítve.", quitUpdate: false };
+        } else {
+            return { ok: false, message: getErrorMessageFromAny(response), quitUpdate: false };
         }
     };
 
@@ -104,13 +153,20 @@ const Account: React.FC = () => {
                     <Button
                         primary={false}
                         size="large"
-                        label="Új jelszó"
+                        label="Adatok mentése"
+                        onClick={handleDataUpdate}
+                        fillWidth={true}
+                    />
+                    <Button
+                        primary={false}
+                        size="large"
+                        label="Új jelszó beállítása"
                         onClick={() => {
                             openPopup({
                                 title: "Új Jelszó megadása",
                                 confirmButtonText: "Mentés",
                                 content: <NewPasswordForm onChange={setLatestPasswords} />,
-                                onConfirm: handleSave,
+                                onConfirm: handlePasswordSet,
                                 onCancel: () => {},
                             });
                         }}

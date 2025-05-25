@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 import { ReactNode } from "react";
+import { Log, PopupProps, User } from "./types";
 
 export const userState = atom<User | null>({
     key: "userState",
@@ -20,16 +21,6 @@ export const navigationBufferAddedState = atom<boolean>({
     key: "navigationBufferAddedState",
     default: false,
 });
-
-export type PopupProps = {
-    content: ReactNode | null;
-    onConfirm: () => void;
-    onCancel: () => void;
-    confirmButtonText?: string;
-    cancelButtonText?: string;
-    title: string;
-    confirmOnly?: boolean;
-};
 
 export const popupIsOpenState = atom<boolean>({
     key: "popupIsOpenState",
@@ -64,4 +55,9 @@ export const openLogState = atom<Log | null>({
 export const logoutCallbackState = atom<Set<() => void>>({
     key: "logoutCallbackState",
     default: new Set(),
+});
+
+export const isModalClosing = atom<boolean>({
+    key: "isModalClosing",
+    default: false,
 });

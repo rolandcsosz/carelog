@@ -1,6 +1,7 @@
 import styles from "./NewPersonFormRow.module.scss";
 import React, { useEffect } from "react";
 import TextInput from "../TextInput";
+import { NewPersonData } from "../../types";
 
 interface NewPersonFormRowProps {
     AddressVisible?: boolean;

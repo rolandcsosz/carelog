@@ -8,6 +8,7 @@ import DateCard from "../../components/DateCard";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import DragAndDrop from "./DragAndDrop";
 import useQueryData from "../../hooks/useQueryData";
+import { Recipient } from "../../types";
 
 interface RecipientsProps {
     recipient: Recipient;

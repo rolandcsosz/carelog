@@ -1,6 +1,9 @@
 import { CancelablePromise } from "../api/core/CancelablePromise";
 import { getSchedulesCaregiverByCaregiverId } from "../api/sdk.gen";
 import { GetSchedulesCaregiverByCaregiverIdData, GetSchedulesCaregiverByCaregiverIdResponse } from "../api/types.gen";
+import ErrorModal from "./components/popup-contents/ErrorModal";
+import Success from "./components/popup-contents/Success";
+import { FetchResponse, Id, PopupActionResult, PopupProps, Schedule } from "./types";
 
 export const getDateString = (date: Date): string => {
     const year = date.getFullYear();
@@ -23,7 +26,7 @@ export const convertToGlobalUTC = (dateToConvert: Date): string => {
 };
 
 export const fetchSchedulesForCaregiver = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<R | null>,
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     caregiverId: Id,
 ): Promise<Schedule[]> => {
     const schedules = await request<GetSchedulesCaregiverByCaregiverIdData, GetSchedulesCaregiverByCaregiverIdResponse>(
@@ -33,11 +36,11 @@ export const fetchSchedulesForCaregiver = async (
         },
     );
 
-    if (!schedules || schedules.length === 0) {
+    if (!schedules || !schedules.data || schedules.data.length === 0) {
         return [];
     }
 
-    return schedules.map(
+    return schedules.data.map(
         (schedule) =>
             ({
                 id: Number(schedule.id) || -1,
@@ -70,4 +73,55 @@ export const compareTime = (a: string, b: string) => {
     } else {
         return 0;
     }
+};
+
+export const getErrorMessageFromAny = (error: any): string => {
+    if (error && typeof error === "object" && "error" in error && typeof error.error === "string") {
+        return error.error || "Ismeretlen hiba történt.";
+    }
+
+    return "Ismeretlen hiba történt.";
+};
+
+export const isErrorMessageInResponse = (response: any): boolean => {
+    return response && typeof response === "object" && "error" in response && typeof response.error === "string";
+};
+
+export const getDefaultErrorModal = (title: string, message: string, onFinish: () => void): PopupProps => {
+    return {
+        content: <ErrorModal title={title} message={message} />,
+        title: "",
+        confirmButtonText: "Rendben",
+        cancelButtonText: "",
+        confirmOnly: true,
+        onConfirm: onFinish,
+        onCancel: onFinish,
+    };
+};
+
+export const getDefaultSuccessModal = (title: string, message: string, onFinish: () => void): PopupProps => {
+    return {
+        content: <Success title={title} message={message} />,
+        title: "",
+        confirmButtonText: "Rendben",
+        cancelButtonText: "",
+        confirmOnly: true,
+        onConfirm: onFinish,
+        onCancel: onFinish,
+    };
+};
+
+export const getEmptyResponse = (): PopupActionResult => {
+    return {
+        ok: false,
+        message: "",
+        quitUpdate: true,
+    };
+};
+
+export const throwIfError = (response: FetchResponse<any>, errorMessage: string): void => {
+    if (!response || !response.ok || !response.data) {
+        throw new Error(response?.error || errorMessage);
+    }
+    return response.data;
 };

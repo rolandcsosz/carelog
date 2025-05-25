@@ -25,12 +25,18 @@
     padding: 24px;
     gap: 24px;
     margin: 24px;
+    animation: slideUp 0.3s ease-in-out forwards;
+}
+
+.closing {
+    animation: slideDown 0.3s ease-in-out forwards;
 }
 
 .closeButton {
     position: absolute;
     right: 16px;
     top: 16px;
+    z-index: 1;
 }
 
 .modalHeader {
@@ -66,4 +72,27 @@
     white-space: nowrap;
     justify-content: center;
     gap: 20px;
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    from {
+        transform: translateY(10%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideDown {
+    to {
+        transform: translateY(10%);
+        opacity: 0;
+    }
+
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

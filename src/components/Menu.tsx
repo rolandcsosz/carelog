@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect } from "react";
 import styles from "./Menu.module.scss";
 import IconButton from "./IconButton";
+import { MenuConfig } from "../types";
 
 type MenuProps = {
     config: MenuConfig;

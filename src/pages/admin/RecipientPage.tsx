@@ -1,5 +1,5 @@
-import styles from "./Recipient.module.scss";
-import React, { useEffect, useRef, useState } from "react";
+import styles from "./RecipientPage.module.scss";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/Button";
 import useNavigation from "../../hooks/useNavigation";
 import UserProfile from "../UserProfile";
@@ -8,12 +8,16 @@ import TextInput from "../../components/TextInput";
 import Dropdown from "../../components/Dropdown";
 import { useAdminModel } from "../../hooks/useAdminModel";
 import AdminSchedule from "./AdminSchedule";
+import { Caregiver, PopupActionResult, Recipient } from "../../types";
+import usePopup from "../../hooks/usePopup";
+import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
+import Switch from "../../components/Switch";
 
-interface RecipientsProps {
+interface RecipientPageProps {
     recipient: Recipient;
 }
 
-const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
+const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const [menu, setMenu] = useState<string>("Adatok");
     const { removeLastPageFromStack } = useNavigation();
     const [name] = useState<string>(recipient.name);
@@ -24,7 +28,8 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     const connections = relationships.list?.filter((relationship) => relationship.recipientId === recipient.id);
     const caregiver = caregivers.list?.find((caregiver) => caregiver.id === connections?.[0]?.caregiverId);
     const [selectedCaregiver, setSelectedCaregiver] = useState<Caregiver | null>(caregiver || null);
-    const hasMounted = useRef(false);
+    const [replacement, setReplacement] = useState<boolean>(false);
+    const { openPopup, closePopup } = usePopup();
 
     const caregiverIds = caregivers.list
         ?.filter((caregiver) =>
@@ -51,33 +56,79 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
         });
     }, [connections, recipient]);
 
-    useEffect(() => {
-        if (!hasMounted.current) {
-            hasMounted.current = true;
+    const handleDelete = (): Promise<PopupActionResult> => {
+        return new Promise<PopupActionResult>((resolve) => {
+            recipients.delete(
+                { id: Number(recipient.id) },
+                {
+                    onSuccess: () => {
+                        resolve({
+                            ok: true,
+                            message: "Gondozott sikeresen eltávolítva",
+                            quitUpdate: false,
+                        });
+                        removeLastPageFromStack();
+                    },
+                    onError: (error: any) => {
+                        resolve({
+                            ok: false,
+                            message: error.message || "Ismeretlen hiba történt.",
+                            quitUpdate: false,
+                        });
+                    },
+                },
+            );
+        });
+    };
+
+    const handleDeleteRequest = () => {
+        openPopup({
+            content: <div className={styles.label}>Biztosan eltávolítod ezt a gondozottat?</div>,
+            title: "Eltávolítás megerősítése",
+            confirmButtonText: "Eltávolítás",
+            cancelButtonText: "Mégsem",
+            confirmOnly: false,
+            onConfirm: handleDelete,
+            onCancel: closePopup,
+        });
+    };
+
+    const handleEdit = () => {
+        if (!name || !phone || !email || !address) {
+            openPopup(getDefaultErrorModal("Sikertelen módosítás", "Kérjük, töltsd ki az összes mezőt.", closePopup));
             return;
         }
 
-        recipients.edit({
-            id: Number(recipient.id),
-            requestBody: {
-                name,
-                email,
-                phone,
-                address,
-                four_hand_care_needed: recipient.fourHandCareNeeded,
-                caregiver_note: recipient.caregiverNote,
+        recipients.edit(
+            {
+                id: Number(recipient.id),
+                requestBody: {
+                    name,
+                    email,
+                    phone,
+                    address,
+                    four_hand_care_needed: recipient.fourHandCareNeeded,
+                    caregiver_note: recipient.caregiverNote,
+                },
             },
-        });
-    }, [name, phone, email, address]);
-
-    const handleDeleteRecipient = () => {
-        recipients.delete({ id: Number(recipient.id) });
-        removeLastPageFromStack();
+            {
+                onSuccess: () => {
+                    openPopup(
+                        getDefaultSuccessModal(
+                            "Sikeres módosítás",
+                            "A gondozott adatai sikeresen frissítve lettek.",
+                            closePopup,
+                        ),
+                    );
+                },
+                onError: (error: any) => {
+                    openPopup(getDefaultErrorModal("Sikertelen módosítás", error.message, closePopup));
+                },
+            },
+        );
     };
 
     const handleSelectionChange = (nameSelected: string) => {
-        console.log("Selected caregiver:", nameSelected);
-
         const selectedCaregiver = caregivers.list?.find((c) => c.name === nameSelected);
         if (!selectedCaregiver) {
             setSelectedCaregiver(null);
@@ -128,6 +179,16 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
         setSelectedCaregiver(caregivers.list?.find((c) => Number(c.id) === Number(selectedCaregiver.id)) || null);
     };
 
+    const showMissingFeatureModal = () => {
+        openPopup(
+            getDefaultErrorModal(
+                "Hiányzó funkció",
+                "A helyettesítés funkció jelenleg nem elérhető. Szerkesztés jelenleg nincs hatással semmire.",
+                closePopup,
+            ),
+        );
+    };
+
     return (
         <UserProfile userName={name} backButtonOnClick={removeLastPageFromStack}>
             <ButtonGroup menus={["Adatok", "Beosztás"]} onChange={setMenu} />
@@ -148,20 +209,26 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                                 fillWidth={true}
                             />
                         </div>
-                        {/*<div className={styles.formRow}>
+                        <div className={styles.formRow}>
                             <div className={styles.formLabel}>Helyettesítés</div>
-                            <Switch initialState={replacement} onToggle={setReplacement} />
+                            <Switch
+                                initialState={replacement}
+                                onToggle={(isOn) => {
+                                    setReplacement(isOn);
+                                    showMissingFeatureModal();
+                                }}
+                            />
                         </div>
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Helyettes gondozó</div>
                             <Dropdown
                                 selected={selectedCaregiver?.name || ""}
                                 disabled={!replacement}
-                                options={["<<Üres>>", ...caregivers.list?.map((caregiver) => caregiver.name)]}
-                                onChange={() => {}}
+                                options={[selectedCaregiver?.name || "<<Üres>>"]}
+                                onChange={showMissingFeatureModal}
                                 fillWidth={true}
                             />
-                        </div>*/}
+                        </div>
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Telefon</div>
                             <TextInput text={phone} placeholder="Telefonszám" onChange={setPhone} fillWidth={true} />
@@ -175,13 +242,22 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
                             <TextInput text={email} placeholder="Email" onChange={setEmail} fillWidth={true} />
                         </div>
                     </div>
-                    <Button
-                        primary={true}
-                        size="large"
-                        label="Eltávolítás"
-                        onClick={handleDeleteRecipient}
-                        fillWidth={true}
-                    />
+                    <div className={styles.buttonContainer}>
+                        <Button
+                            primary={false}
+                            size="large"
+                            label="Adatok mentése"
+                            onClick={handleEdit}
+                            fillWidth={true}
+                        />
+                        <Button
+                            primary
+                            size="large"
+                            label="Eltávolítás"
+                            onClick={handleDeleteRequest}
+                            fillWidth={true}
+                        />
+                    </div>
                 </div>
             )}
 
@@ -190,4 +266,4 @@ const Recipients: React.FC<RecipientsProps> = ({ recipient }) => {
     );
 };
 
-export default Recipients;
+export default RecipientPage;
