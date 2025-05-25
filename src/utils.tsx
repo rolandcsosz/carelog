@@ -66,9 +66,9 @@ export const compareTime = (a: string, b: string) => {
     const startA = normalizeTime(a);
     const startB = normalizeTime(b);
 
-    if (startA < startB) {
+    if (startA > startB) {
         return 1;
-    } else if (startA > startB) {
+    } else if (startA < startB) {
         return -1;
     } else {
         return 0;

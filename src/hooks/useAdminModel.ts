@@ -25,6 +25,8 @@ import {
     PostSchedulesData,
     PostSchedulesResponse,
     PutAdminsByIdData,
+    PutAdminsByIdPasswordData,
+    PutAdminsByIdPasswordResponse,
     PutAdminsByIdResponse,
     PutCaregiversByIdData,
     PutCaregiversByIdResponse,
@@ -51,6 +53,7 @@ import {
     postRecipients,
     postSchedules,
     putAdminsById,
+    putAdminsByIdPassword,
     putCaregiversById,
     putRecipientsById,
     putRelationshipsById,
@@ -185,17 +188,49 @@ const addSchedule = async (
 const editSchedule = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     data: PutSchedulesByIdData,
-): Promise<Ok | null> => {
+): Promise<FetchResponse<null>> => {
     const response = await request<PutSchedulesByIdData, PutSchedulesByIdResponse>(putSchedulesById, data);
-    return response ? {} : null;
+    if (!response || !response.ok) {
+        return {
+            ok: false,
+            data: null,
+            error: response?.error || "Ismeretlen hiba történt a beosztás szerkesztése során.",
+        };
+    }
+
+    return { ok: true, data: null, error: null };
 };
 
 const deleteSchedule = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     data: DeleteSchedulesByIdData,
-): Promise<Ok | null> => {
+): Promise<FetchResponse<null>> => {
     const response = await request<DeleteSchedulesByIdData, DeleteSchedulesByIdResponse>(deleteSchedulesById, data);
-    return response ? {} : null;
+    if (!response || !response.ok) {
+        return { ok: false, data: null, error: response?.error || "Ismeretlen hiba történt a beosztás törlése során." };
+    }
+
+    return { ok: true, data: null, error: null };
+};
+
+const setPassword = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
+    body: PutAdminsByIdPasswordData,
+): Promise<FetchResponse<null>> => {
+    const response = await request<PutAdminsByIdPasswordData, PutAdminsByIdPasswordResponse>(
+        putAdminsByIdPassword,
+        body,
+    );
+
+    if (!response || !response.ok) {
+        return {
+            ok: false,
+            data: null,
+            error: response?.error || "Ismeretlen hiba történt a jelszó beállítása során.",
+        };
+    }
+
+    return { ok: true, data: null, error: null };
 };
 
 export const useAdminModel = () => {
@@ -425,6 +460,7 @@ export const useAdminModel = () => {
         user: {
             info: logedInUser,
             update: updateLogedInUser,
+            setPassword: setPassword,
         },
         refetchData,
     };

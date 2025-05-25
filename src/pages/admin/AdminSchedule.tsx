@@ -68,10 +68,10 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         const fetchSchedules = async () => {
             if (userMode === "caregiver") {
                 const response = await schedules.fetchForCaregiver(request, userId);
-                setFetchedSchedules(response.sort((a, b) => compareTime(b.start, a.start)));
+                setFetchedSchedules(response.sort((a, b) => compareTime(a.start, b.start)));
             } else if (userMode === "recipient") {
                 const response = await schedules.fetchForRecipient(request, userId);
-                setFetchedSchedules(response.sort((a, b) => compareTime(b.start, a.start)));
+                setFetchedSchedules(response.sort((a, b) => compareTime(a.start, b.start)));
             }
         };
 

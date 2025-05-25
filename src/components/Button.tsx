@@ -51,8 +51,13 @@ export const Button = ({
     return (
         <button
             type={type}
-            className={`${styles.button} ${getSize(size)} ${mode} ${noText ? styles.noText : ""}`}
-            style={{ width: fillWidth ? "100%" : "auto" }}
+            className={`
+                ${styles.button}
+                ${getSize(size)}
+                ${mode}
+                ${noText ? styles.noText : ""}
+                ${fillWidth ? styles.fillWidth : ""}
+            `}
             onClick={(e) => {
                 const rect = (e.target as HTMLButtonElement).getBoundingClientRect();
                 setCoords({ x: e.clientX - rect.left, y: e.clientY - rect.top });

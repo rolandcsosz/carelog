@@ -627,3 +627,76 @@ export type GetSubtasksTasktypeByTaskTypeIdResponse = Array<{
     title?: string;
     tasktypeId?: number;
 }>;
+
+export type GetTodosResponse = Array<{
+    id?: number;
+    subtaskId?: number;
+    relationshipId?: number;
+    sequenceNumber?: number;
+    done?: boolean;
+}>;
+
+export type PostTodosData = {
+    requestBody: {
+        subtaskId: number;
+        relationshipId: number;
+        sequenceNumber: number;
+        done?: boolean;
+    };
+};
+
+export type PostTodosResponse = {
+    id?: number;
+    subtaskId?: number;
+    relationshipId?: number;
+    sequenceNumber?: number;
+    done?: boolean;
+};
+
+export type GetTodosByIdData = {
+    id: number;
+};
+
+export type GetTodosByIdResponse = {
+    id?: number;
+    subtaskId?: number;
+    relationshipId?: number;
+    sequenceNumber?: number;
+    done?: boolean;
+};
+
+export type PutTodosByIdData = {
+    /**
+     * Todo ID
+     */
+    id: number;
+    requestBody: {
+        subtaskId: number;
+        relationshipId: number;
+        sequenceNumber: number;
+        done: boolean;
+    };
+};
+
+export type PutTodosByIdResponse = unknown;
+
+export type DeleteTodosByIdData = {
+    /**
+     * Todo ID
+     */
+    id: number;
+};
+
+export type DeleteTodosByIdResponse = unknown;
+
+export type GetTodosRelationshipByRelationshipIdData = {
+    relationshipId: number;
+};
+
+export type GetTodosRelationshipByRelationshipIdResponse = Array<{
+    id?: number;
+    subtaskId?: number;
+    relationshipId?: number;
+    sequenceNumber?: number;
+    done?: boolean;
+}>;

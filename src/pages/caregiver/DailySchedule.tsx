@@ -3,7 +3,7 @@ import React from "react";
 import useNavigation from "../../hooks/useNavigation.ts";
 import TimeTableRow from "../../components/TimeTableRow.tsx";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
-import Recipient from "./Recipient.tsx";
+import Recipient from "./RecipientPage.tsx";
 import { getDateString } from "../../utils.tsx";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import useQueryData from "../../hooks/useQueryData.ts";

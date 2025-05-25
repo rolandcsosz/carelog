@@ -45,6 +45,11 @@ interface NewPersonData {
     address?: string;
 }
 
+interface NewSubTypeData {
+    name: string;
+    task: string;
+}
+
 type Caregiver = {
     id: Id;
     name: string;
@@ -96,6 +101,20 @@ type Log = {
     finished: boolean;
     closed: boolean;
     tasks: Task[];
+};
+
+type Todo = {
+    id: Id;
+    subtaskId: Id;
+    relationshipId: Id;
+    sequence: number;
+    done: boolean;
+};
+
+type SubTask = {
+    id: Id;
+    name: string;
+    taskTypeId: Id;
 };
 
 export type PopupProps = {

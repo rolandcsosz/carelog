@@ -3,6 +3,7 @@ import styles from "./ScheduleCard.module.scss";
 import Dropdown from "./Dropdown";
 import TextInput from "./TextInput";
 import { compareTime } from "../utils";
+import { NewScheduleData } from "../types";
 
 interface ScheduleCardProps {
     id: number;

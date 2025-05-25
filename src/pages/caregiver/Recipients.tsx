@@ -3,7 +3,7 @@ import React from "react";
 import SearchTextInput from "../../components/SearchTextInput";
 import PersonCard from "../../components/PersonCard";
 import useNavigation from "../../hooks/useNavigation";
-import Recipient from "./Recipient";
+import Recipient from "./RecipientPage";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 
 const Recipients: React.FC = () => {

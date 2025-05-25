@@ -27,7 +27,8 @@ const TodoItem: React.FC<TodoItemProps> = ({
         <div className={styles.container}>
             <div className={styles.contentRow}>
                 <div className={styles.text}>{name}</div>
-                <Dropdown selected={selectedItem} options={options} onChange={onSelectedChanged} />
+                <Dropdown selected={selectedItem} options={options} onChange={onSelectedChanged} disabled />{" "}
+                {/* TODO: remove disabled*/}
                 <IconButton svgContent={deleteIcon} isSmall />
             </div>
         </div>

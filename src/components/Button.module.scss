@@ -9,6 +9,7 @@
     overflow: hidden;
     position: relative;
     flex-shrink: 0;
+    flex-grow: 1;
 }
 
 .primary {
@@ -36,6 +37,10 @@
 
 .noText {
     padding: 5px 24px;
+}
+
+.fillWidth {
+    width: 100%;
 }
 
 .ripple {

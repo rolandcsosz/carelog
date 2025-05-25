@@ -45,7 +45,7 @@ const Popup: React.FC<PopupProps> = ({
                             label={cancelButtonText || "Mégse"}
                             onClick={onCancel}
                             primary={false}
-                            fillWidth={true}
+                            fillWidth={false}
                         />
                     )}
                     <Button
@@ -53,7 +53,7 @@ const Popup: React.FC<PopupProps> = ({
                         label={confirmButtonText}
                         onClick={onConfirm}
                         primary={true}
-                        fillWidth={true}
+                        fillWidth={false}
                     />
                 </div>
             </div>

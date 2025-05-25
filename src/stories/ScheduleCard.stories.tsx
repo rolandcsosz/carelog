@@ -18,5 +18,6 @@ export const Default: Story = {
         onChange: (value) => console.log(value),
         startTime: "08:50",
         endTime: "17:00",
+        selectedOption: "Option 1",
     },
 };

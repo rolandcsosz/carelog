@@ -18,7 +18,7 @@ import {
     PutCaregiversByIdPasswordResponse,
 } from "../../../api/types.gen";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
-import { Admin, Caregiver, NewPasswordData, PopupActionResult } from "../../types";
+import { Admin, Caregiver, FetchResponse, NewPasswordData, PopupActionResult } from "../../types";
 import {
     getDefaultErrorModal,
     getDefaultSuccessModal,
@@ -111,37 +111,30 @@ const Account: React.FC = () => {
             return { ok: false, message: "", quitUpdate: true };
         }
 
-        let response: PutAdminsByIdPasswordResponse | PutCaregiversByIdPasswordResponse | undefined;
+        let result: FetchResponse<null> | undefined;
         if (user?.role === "admin") {
-            response = await request<PutAdminsByIdPasswordData, PutAdminsByIdPasswordResponse>(putAdminsByIdPassword, {
+            result = await adminUser.setPassword(request, {
                 id: Number(logedInUser?.id) ?? -1,
                 requestBody: {
-                    currentPassword: latestPasswords.current?.old ?? "",
-                    newPassword: latestPasswords.current?.new ?? "",
+                    currentPassword: latestPasswords.current.old ?? "",
+                    newPassword: latestPasswords.current.new ?? "",
                 },
             });
         } else if (user?.role === "caregiver") {
-            response = await request<PutCaregiversByIdPasswordData, PutCaregiversByIdPasswordResponse>(
-                putCaregiversByIdPassword,
-                {
-                    id: Number(logedInUser?.id) ?? -1,
-                    requestBody: {
-                        currentPassword: latestPasswords.current?.old ?? "",
-                        newPassword: latestPasswords.current?.new ?? "",
-                    },
+            result = await caregiverUser.setPassword(request, {
+                id: Number(logedInUser?.id) ?? -1,
+                requestBody: {
+                    currentPassword: latestPasswords.current.old ?? "",
+                    newPassword: latestPasswords.current.new ?? "",
                 },
-            );
+            });
         }
 
-        if (!response) {
-            return { ok: false, message: "Ismeretlen hiba történt.", quitUpdate: false };
+        if (!result || !result.ok) {
+            return { ok: false, message: result?.error || "Ismeretlen hiba történt.", quitUpdate: false };
         }
 
-        if (!isErrorMessageInResponse(response)) {
-            return { ok: true, message: "Jelszó sikeresen frissítve.", quitUpdate: false };
-        } else {
-            return { ok: false, message: getErrorMessageFromAny(response), quitUpdate: false };
-        }
+        return { ok: true, message: "Jelszó sikeresen frissítve.", quitUpdate: false };
     };
 
     return (

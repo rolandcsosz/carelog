@@ -199,9 +199,9 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Gondozó</div>
                             <Dropdown
-                                selected={selectedCaregiver?.name || ""}
+                                selected={selectedCaregiver?.name || "<<Üres>>"}
                                 options={
-                                    connections?.length === 0 ?
+                                    !connections || connections?.length === 0 ?
                                         ["<<Üres>>", ...(caregivers.list?.map((caregiver) => caregiver.name) || [])]
                                     :   [...(caregivers.list?.map((caregiver) => caregiver.name) || [])]
                                 }
@@ -222,7 +222,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                         <div className={styles.formRow}>
                             <div className={styles.formLabel}>Helyettes gondozó</div>
                             <Dropdown
-                                selected={selectedCaregiver?.name || ""}
+                                selected={selectedCaregiver?.name || "<<Üres>>"}
                                 disabled={!replacement}
                                 options={[selectedCaregiver?.name || "<<Üres>>"]}
                                 onChange={showMissingFeatureModal}

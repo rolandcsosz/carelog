@@ -5,7 +5,7 @@ import { getDateString } from "../../utils";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import TimeTableRow from "../../components/TimeTableRow";
 import useNavigation from "../../hooks/useNavigation";
-import Recipient from "./Recipient";
+import Recipient from "./RecipientPage";
 import useQueryData from "../../hooks/useQueryData";
 
 const CalendarSchedule: React.FC = () => {

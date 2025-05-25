@@ -15,7 +15,7 @@ import listFilled from "./assets/list-filled.svg";
 import listOutline from "./assets/list-outline.svg";
 import Caregivers from "./pages/admin/Caregivers";
 import AdminRecipients from "./pages/admin/Recipients";
-import Recipients from "./pages/caregiver/Recipients";
+import CaregiverRecipients from "./pages/caregiver/Recipients";
 import Account from "./pages/admin/Account";
 import Popup from "./components/Popup";
 import usePopup from "./hooks/usePopup";
@@ -35,6 +35,7 @@ import { useRecoilValue } from "recoil";
 import { openLogState } from "./model";
 import useQueryData from "./hooks/useQueryData";
 import { MenuConfig } from "./types";
+import Recipients from "./pages/admin/Recipients";
 
 setupIonicReact();
 
@@ -76,7 +77,7 @@ const caregiverMenuConfig: MenuConfig = {
         selectedIcon: listFilled,
         unselectedIcon: listOutline,
         alt: "List view",
-        component: Recipients,
+        component: CaregiverRecipients,
     },
     account: {
         selectedIcon: accountFilled,

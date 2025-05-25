@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useCaregiverModel } from "./useCaregiverModel";
 import { compareTime, convertToGlobalUTC } from "../utils";
+import { Log, Recipient, Schedule } from "../types";
 
 const useQueryData = () => {
     const {
@@ -8,6 +9,7 @@ const useQueryData = () => {
         relationships: caregiverRelationShips,
         logs,
         schedules: caregiverSchadules,
+        taskTypes,
     } = useCaregiverModel();
 
     // Caregiver helper
@@ -76,7 +78,30 @@ const useQueryData = () => {
         [logs.info, caregiverRelationShips.info],
     );
 
-    return { getRecipientForLog, getFilteredSchedules, getRecipientForSchedule, getLogsForRecipient };
+    const getTaskNameById = useCallback(
+        (taskId: number): string => {
+            const taskType = taskTypes.info?.find((task) => Number(task.id) === Number(taskId));
+            return taskType ? taskType.name : "Ismeretlen feladat";
+        },
+        [taskTypes.info],
+    );
+
+    const getTaskIdByName = useCallback(
+        (taskName: string): number | undefined => {
+            const taskType = taskTypes.info?.find((task) => task.name === taskName);
+            return taskType ? taskType.id : undefined;
+        },
+        [taskTypes.info],
+    );
+
+    return {
+        getRecipientForLog,
+        getFilteredSchedules,
+        getRecipientForSchedule,
+        getLogsForRecipient,
+        getTaskNameById,
+        getTaskIdByName,
+    };
 };
 
 export default useQueryData;

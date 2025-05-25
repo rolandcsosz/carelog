@@ -89,6 +89,17 @@ import type {
     GetSubtasksByIdResponse,
     GetSubtasksTasktypeByTaskTypeIdData,
     GetSubtasksTasktypeByTaskTypeIdResponse,
+    GetTodosResponse,
+    PostTodosData,
+    PostTodosResponse,
+    GetTodosByIdData,
+    GetTodosByIdResponse,
+    PutTodosByIdData,
+    PutTodosByIdResponse,
+    DeleteTodosByIdData,
+    DeleteTodosByIdResponse,
+    GetTodosRelationshipByRelationshipIdData,
+    GetTodosRelationshipByRelationshipIdResponse,
 } from "./types.gen";
 
 /**
@@ -1080,6 +1091,131 @@ export const getSubtasksTasktypeByTaskTypeId = (
         },
         errors: {
             404: "No subtasks found",
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Get all todos
+ * @returns unknown List of all todos
+ * @throws ApiError
+ */
+export const getTodos = (): CancelablePromise<GetTodosResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/todos",
+        errors: {
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Create a new todo
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Todo created
+ * @throws ApiError
+ */
+export const postTodos = (data: PostTodosData): CancelablePromise<PostTodosResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/todos",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing required fields",
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Get a specific todo by ID
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Todo details
+ * @throws ApiError
+ */
+export const getTodosById = (data: GetTodosByIdData): CancelablePromise<GetTodosByIdResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/todos/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Subtask not found",
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Update a todo by ID
+ * @param data The data for the request.
+ * @param data.id Todo ID
+ * @param data.requestBody
+ * @returns unknown Todo updated
+ * @throws ApiError
+ */
+export const putTodosById = (data: PutTodosByIdData): CancelablePromise<PutTodosByIdResponse> => {
+    return __request(OpenAPI, {
+        method: "PUT",
+        url: "/todos/{id}",
+        path: {
+            id: data.id,
+        },
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing required fields",
+            404: "Todo not found",
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Delete a todo by ID
+ * @param data The data for the request.
+ * @param data.id Todo ID
+ * @returns unknown Todo deleted
+ * @throws ApiError
+ */
+export const deleteTodosById = (data: DeleteTodosByIdData): CancelablePromise<DeleteTodosByIdResponse> => {
+    return __request(OpenAPI, {
+        method: "DELETE",
+        url: "/todos/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Todo not found",
+            500: "Server error",
+        },
+    });
+};
+
+/**
+ * Get a todos for a relationship
+ * @param data The data for the request.
+ * @param data.relationshipId
+ * @returns unknown List of todos for a relationship
+ * @throws ApiError
+ */
+export const getTodosRelationshipByRelationshipId = (
+    data: GetTodosRelationshipByRelationshipIdData,
+): CancelablePromise<GetTodosRelationshipByRelationshipIdResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/todos/relationship/{relationshipId}",
+        path: {
+            relationshipId: data.relationshipId,
+        },
+        errors: {
+            400: "Missing required field",
             500: "Server error",
         },
     });
