@@ -1,6 +1,7 @@
 import styles from "./NewPasswordForm.module.scss";
 import React, { useEffect } from "react";
 import TextInput from "./TextInput";
+import { NewPasswordData } from "../types";
 
 interface NewPasswordFormProps {
     onChange: (info: NewPasswordData) => void;

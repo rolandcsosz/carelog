@@ -35,7 +35,6 @@ import { useRecoilValue } from "recoil";
 import { openLogState } from "./model";
 import useQueryData from "./hooks/useQueryData";
 import { MenuConfig } from "./types";
-import Recipients from "./pages/admin/Recipients";
 
 setupIonicReact();
 

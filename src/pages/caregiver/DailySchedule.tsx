@@ -1,5 +1,5 @@
 import styles from "./DailySchedule.module.scss";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useNavigation from "../../hooks/useNavigation.ts";
 import TimeTableRow from "../../components/TimeTableRow.tsx";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";

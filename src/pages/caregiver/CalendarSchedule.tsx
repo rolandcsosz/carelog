@@ -7,7 +7,6 @@ import TimeTableRow from "../../components/TimeTableRow";
 import useNavigation from "../../hooks/useNavigation";
 import Recipient from "./RecipientPage";
 import useQueryData from "../../hooks/useQueryData";
-import usePopup from "../../hooks/usePopup";
 
 const CalendarSchedule: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());

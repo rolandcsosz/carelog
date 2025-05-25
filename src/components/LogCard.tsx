@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./LogCard.module.scss";
 import TextInput from "./TextInput";
 import { compareTime } from "../utils";

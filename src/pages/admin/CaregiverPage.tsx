@@ -1,5 +1,5 @@
 import styles from "./CaregiverPage.module.scss";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "../../components/Button";
 import useNavigation from "../../hooks/useNavigation";
 import UserProfile from "../UserProfile";

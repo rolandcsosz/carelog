@@ -24,6 +24,7 @@ const TodoList: React.FC<TodoListProps> = ({
 }) => {
     const { getTaskNameById } = useQueryData();
     function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
+        void event;
         //onReorder(event.detail.from, event.detail.to);
         //event.detail.complete();
     }

@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
 import { useApi } from "./useApi";
 import {
     DeleteLogsByIdData,
@@ -328,7 +327,6 @@ export const useCaregiverModel = () => {
     const { request } = useApi();
     const { user } = useAuth();
     const setOpenLog = useSetRecoilState(openLogState);
-    const queryClient = useQueryClient();
 
     const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Caregiver | null>({
         queryKey: ["logedInCaregiverUser"],

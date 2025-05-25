@@ -2,6 +2,7 @@ import { useRecoilState } from "recoil";
 import { logoutCallbackState, userState } from "../model";
 import { OpenAPI } from "../../api/core/OpenAPI";
 import usePersistedUser from "./usePersistedUser";
+import { User } from "../types";
 
 export function useAuth() {
     const { storeUser, clearUser } = usePersistedUser();

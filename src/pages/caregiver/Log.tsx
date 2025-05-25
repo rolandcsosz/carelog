@@ -1,7 +1,7 @@
 import styles from "./Log.module.scss";
 import React from "react";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
-import { getDateString, getDefaultErrorModal } from "../../utils.tsx";
+import { getDateString } from "../../utils.tsx";
 import { Button } from "../../components/Button.tsx";
 import useQueryData from "../../hooks/useQueryData.ts";
 import { actualLogTasksState, openLogState } from "../../model.ts";

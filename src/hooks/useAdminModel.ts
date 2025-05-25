@@ -61,7 +61,7 @@ import {
 } from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
 import { fetchSchedulesForCaregiver, throwIfError } from "../utils";
-import { Admin, Caregiver, FetchResponse, Id, Ok, Recipient, Relationship, Schedule } from "../types";
+import { Admin, Caregiver, FetchResponse, Id, Recipient, Relationship, Schedule } from "../types";
 
 const fetchCaregivers = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,

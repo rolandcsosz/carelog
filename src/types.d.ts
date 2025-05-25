@@ -9,8 +9,6 @@ type MenuConfig = {
 
 type Id = number;
 
-type Ok = {};
-
 type UserRole = "admin" | "caregiver" | "invalid";
 
 interface NewScheduleData {

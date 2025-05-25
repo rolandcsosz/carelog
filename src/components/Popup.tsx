@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./Popup.module.scss";
 import close from "../assets/close.svg";
 import { Button } from "./Button";
 import IconButton from "./IconButton";
 import { useRecoilValue } from "recoil";
-import { bottomSheetOpenState, isModalClosing } from "../model";
+import { isModalClosing } from "../model";
 
 type PopupProps = {
     cancelButtonText?: string;

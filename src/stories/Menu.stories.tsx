@@ -12,6 +12,7 @@ import caregiverFilled from "../assets/caregiver-filled.svg";
 import caregiverOutline from "../assets/caregiver-outline.svg";
 import recipientFilled from "../assets/recipient-filled.svg";
 import recipientOutline from "../assets/recipient-outline.svg";
+import { MenuConfig } from "../types";
 
 const meta = {
     component: Menu,

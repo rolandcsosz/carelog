@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../model";
 import { OpenAPI } from "../../api/core/OpenAPI";
+import { User } from "../types";
 
 const usePersistedUser = () => {
     const setUser = useSetRecoilState(userState);

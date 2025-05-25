@@ -8,23 +8,10 @@ import { useAdminModel } from "../../hooks/useAdminModel";
 import usePopup from "../../hooks/usePopup";
 import NewPasswordForm from "../../components/NewPasswordForm";
 import { useApi } from "../../hooks/useApi";
-import { putAdminsByIdPassword, putCaregiversByIdPassword } from "../../../api/sdk.gen";
-import {
-    PutAdminsByIdData,
-    PutAdminsByIdPasswordData,
-    PutAdminsByIdPasswordResponse,
-    PutCaregiversByIdData,
-    PutCaregiversByIdPasswordData,
-    PutCaregiversByIdPasswordResponse,
-} from "../../../api/types.gen";
+import { PutAdminsByIdData, PutCaregiversByIdData } from "../../../api/types.gen";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import { Admin, Caregiver, FetchResponse, NewPasswordData, PopupActionResult } from "../../types";
-import {
-    getDefaultErrorModal,
-    getDefaultSuccessModal,
-    getErrorMessageFromAny,
-    isErrorMessageInResponse,
-} from "../../utils";
+import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 
 const Account: React.FC = () => {
     const { request } = useApi();

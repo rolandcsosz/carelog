@@ -27,7 +27,6 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const { getLogsForRecipient, getTaskIdByName } = useQueryData();
     const logsForRecipient = getLogsForRecipient(recipient, true);
     const { openPopup, closePopup } = usePopup();
-    const [newTask, setNewTask] = useState<NewSubTypeData | null>(null);
 
     const handleNoteSave = (): string | null => {
         let errorMessage = null;
