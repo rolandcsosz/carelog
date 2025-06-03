@@ -18,7 +18,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ title, message }) => {
                     <circle className={styles.checkmark_circle_error} cx="26" cy="26" r="25" fill="none" />
                     <path
                         className={styles.checkmark_check}
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                         fill="none"
                         d="M16 16 36 36 M36 16 16 36
             "

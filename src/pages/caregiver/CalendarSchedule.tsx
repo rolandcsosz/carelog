@@ -23,7 +23,7 @@ const CalendarSchedule: React.FC = () => {
             <div className={styles.calendarContainer}>
                 <Calendar
                     onDateChange={setSelectedDate}
-                    highlightedDates={schedules.info?.map((schedule) => new Date(schedule.date))}
+                    highlightedDates={schedules.list?.map((schedule) => new Date(schedule.date))}
                 />
             </div>
 

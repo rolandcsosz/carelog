@@ -1,5 +1,5 @@
 import styles from "./Log.module.scss";
-import React from "react";
+import React, { useEffect } from "react";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
 import { getDateString } from "../../utils.tsx";
 import { Button } from "../../components/Button.tsx";
@@ -9,12 +9,12 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import usePopup from "../../hooks/usePopup.tsx";
 import Loading from "../../components/popup-contents/Loading.tsx";
-import { NewSubTypeData, PopupActionResult, SubTaskEditData } from "../../types";
+import { NewSubTypeData, PopupActionResult, SubTaskEditData, Todo } from "../../types";
 import LogCard from "../../components/LogCard.tsx";
 import NewSubTaskFormRow from "../../components/popup-contents/NewSubTaskFormRow.tsx";
 
 const DailySchedule: React.FC = () => {
-    const { logs, taskTypes } = useCaregiverModel();
+    const { logs } = useCaregiverModel();
     const { getRecipientForLog } = useQueryData();
     const openLog = useRecoilValue(openLogState);
     const recipient = openLog ? getRecipientForLog(openLog) : undefined;
@@ -26,6 +26,8 @@ const DailySchedule: React.FC = () => {
         const now = new Date();
         return now.toTimeString().slice(0, 5);
     };
+
+    const [fetchedTodos, setFetchedTodos] = React.useState<Todo[]>([]);
 
     const closeLog = () => {
         if (openLog) {
@@ -75,7 +77,7 @@ const DailySchedule: React.FC = () => {
                     onChange={(task) => {
                         localTaskRef.current = task;
                     }}
-                    taskOptions={taskTypes.info?.map((task) => task.name || "") || []}
+                    taskOptions={/*taskTypes.list?.map((task) => task.name || "") || */ []}
                 />
             ),
             onConfirm: () => {

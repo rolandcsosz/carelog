@@ -24,15 +24,15 @@ const DailySchedule: React.FC = () => {
     const setSubTasks = useSetRecoilState(actualLogTasksState);
 
     useEffect(() => {
-        logs.info?.forEach((log, index) => {
-            console.log("Log at index:", index, log.finished);
+        logs.list?.forEach((log, index) => {
+            //console.log("Log at index:", index, log.finished);
         });
-    }, [logs.info]); // rerender when logs.info changes
+    }, [logs.list]); // rerender when logs.list changes
 
     //"done" | "notEditable" | "new" | "error";
     //TODO: open log test
     const getStatusForSchedule = (schedule: Schedule) => {
-        const log = logs.info?.find((log) => log.relationshipId === schedule.relationshipId);
+        const log = logs.list?.find((log) => log.relationshipId === schedule.relationshipId);
         if (!log) {
             return openLog ? "notEditable" : "new";
         }

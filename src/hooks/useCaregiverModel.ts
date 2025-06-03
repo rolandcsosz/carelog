@@ -17,6 +17,7 @@ import {
     GetTasktypesResponse,
     GetTodosRelationshipByRelationshipIdData,
     GetTodosRelationshipByRelationshipIdResponse,
+    GetTodosResponse,
     PostLogsData,
     PostLogsResponse,
     PostSubtasksData,
@@ -44,6 +45,7 @@ import {
     getRecipientsById,
     getSubtasks,
     getTasktypes,
+    getTodos,
     getTodosRelationshipByRelationshipId,
     postLogs,
     postSubtasks,
@@ -192,12 +194,12 @@ const fetchSubTasks = async (
 
 const fetchTodosForRelationshipId = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    relationshipId: Id,
+    body: GetTodosRelationshipByRelationshipIdData,
 ): Promise<Todo[]> => {
     const response = await request<
         GetTodosRelationshipByRelationshipIdData,
         GetTodosRelationshipByRelationshipIdResponse
-    >(getTodosRelationshipByRelationshipId, { relationshipId: relationshipId });
+    >(getTodosRelationshipByRelationshipId, body);
 
     if (!response || !response.ok || !response.data || response.data.length === 0) {
         return [];
@@ -322,6 +324,25 @@ const fetchLogs = async (
 
     return logs;
 };
+const fetchTodos = async (
+    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
+): Promise<Todo[]> => {
+    const response = await request<void, GetTodosResponse>(getTodos, undefined);
+    if (!response || !response.ok || !response.data || response.data.length === 0) {
+        return [];
+    }
+
+    return response.data.map(
+        (todo) =>
+            ({
+                id: Number(todo?.id) || -1,
+                subtaskId: Number((todo as any)?.subtaskid) || -1, //TODO: backend typo
+                relationshipId: Number((todo as any)?.relationshipid) || -1,
+                sequence: Number((todo as any)?.sequencenumber) || -1,
+                done: todo?.done || false,
+            }) as Todo,
+    );
+};
 
 export const useCaregiverModel = () => {
     const { request } = useApi();
@@ -371,6 +392,13 @@ export const useCaregiverModel = () => {
     const { data: logs, refetch: refetchLogs } = useQuery<Log[]>({
         queryKey: ["logs", user?.id, recipients?.map((c) => c.id).join(",")],
         queryFn: () => fetchLogs(request, user?.id ?? -1, recipients?.map((c) => c.id) || []),
+        enabled: !!user?.id && user?.role === "caregiver",
+        staleTime: 0,
+    });
+
+    const { data: todos, refetch: refetchTodos } = useQuery<Todo[]>({
+        queryKey: ["todo", user?.id, recipients?.map((c) => c.id).join(",")],
+        queryFn: () => fetchTodos(request),
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
     });
@@ -439,6 +467,37 @@ export const useCaregiverModel = () => {
         },
     });
 
+    const { mutate: addTodo } = useMutation({
+        mutationFn: (body: PostTodosData) => request<PostTodosData, PostTodosResponse>(postTodos, body),
+        onSuccess: () => {
+            refetchTodos();
+        },
+        onError: (error: any) => {
+            console.error("Error adding todo:", error);
+        },
+    });
+
+    const { mutateAsync: editTodo } = useMutation({
+        mutationFn: (body: PutTodosByIdData) => request<PutTodosByIdData, PutTodosByIdResponse>(putTodosById, body),
+        onSuccess: () => {
+            refetchTodos();
+        },
+        onError: (error: any) => {
+            console.error("Error editing todo:", error);
+        },
+    });
+
+    const { mutate: deleteTodo } = useMutation({
+        mutationFn: (body: DeleteTodosByIdData) =>
+            request<DeleteTodosByIdData, DeleteTodosByIdResponse>(deleteTodosById, body),
+        onSuccess: () => {
+            refetchTodos();
+        },
+        onError: (error: any) => {
+            console.error("Error deleting todo:", error);
+        },
+    });
+
     useEffect(() => {
         if (user?.role === "caregiver" && relationships) {
             refetchRecipients();
@@ -463,44 +522,45 @@ export const useCaregiverModel = () => {
 
     return {
         user: {
-            info: logedInUser,
+            list: logedInUser,
             update: updateLogedInUser,
             setPassword: setPassword,
         },
         recipients: {
-            info: recipients,
+            list: recipients,
             edit: editRecipient,
             refetch: refetchRecipients,
         },
         schedules: {
-            info: schedule,
+            list: schedule,
             refetch: refetchSchedules,
         },
         relationships: {
-            info: relationships,
+            list: relationships,
             refetch: refetchRelationships,
         },
         taskTypes: {
-            info: taskTypes,
+            list: taskTypes,
             refetch: refetchTaskTypes,
         },
         subTasks: {
-            info: subTasks,
+            list: subTasks,
             add: addSubTask,
             refetch: refetchTaskTypes,
         },
         logs: {
-            info: logs,
+            list: logs,
             add: addLog,
             refetch: refetchLogs,
             edit: editLog,
             delete: deleteLog,
         },
-        todo: {
-            fetch: fetchTodosForRelationshipId,
-            edit: setTodo,
+        todos: {
+            list: todos,
+            edit: editTodo,
             add: addTodo,
             delete: deleteTodo,
+            refetch: refetchTodos,
         },
     };
 };

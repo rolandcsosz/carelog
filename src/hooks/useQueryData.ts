@@ -10,16 +10,17 @@ const useQueryData = () => {
         logs,
         schedules: caregiverSchadules,
         taskTypes,
+        subTasks,
     } = useCaregiverModel();
 
     // Caregiver helper
     const getRecipientForLog = useCallback(
         (log: Log): Recipient | undefined => {
-            const relationship = caregiverRelationShips.info?.find(
+            const relationship = caregiverRelationShips.list?.find(
                 (relationship) => relationship.id === log.relationshipId,
             );
             if (relationship) {
-                const recipient = caregiverRecipients.info?.find(
+                const recipient = caregiverRecipients.list?.find(
                     (recipient) => recipient.id === relationship.recipientId,
                 );
                 if (recipient) {
@@ -28,17 +29,17 @@ const useQueryData = () => {
             }
             return undefined;
         },
-        [caregiverRelationShips.info, caregiverRecipients.info],
+        [caregiverRelationShips.list, caregiverRecipients.list],
     );
 
     // Caregiver helper
     const getRecipientForSchedule = useCallback(
         (schedule: Schedule): Recipient | undefined => {
-            const relationship = caregiverRelationShips.info?.find(
+            const relationship = caregiverRelationShips.list?.find(
                 (relationship) => relationship.id === schedule.relationshipId,
             );
             if (relationship) {
-                const recipient = caregiverRecipients.info?.find(
+                const recipient = caregiverRecipients.list?.find(
                     (recipient) => recipient.id === relationship.recipientId,
                 );
                 if (recipient) {
@@ -47,14 +48,14 @@ const useQueryData = () => {
             }
             return undefined;
         },
-        [caregiverRelationShips.info, caregiverRecipients.info],
+        [caregiverRelationShips.list, caregiverRecipients.list],
     );
 
     // Caregiver helper
     const getFilteredSchedules = useCallback(
         (selectedDate: Date): Schedule[] => {
             return (
-                caregiverSchadules.info
+                caregiverSchadules.list
                     ?.filter(
                         (schedule) =>
                             selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate),
@@ -62,14 +63,14 @@ const useQueryData = () => {
                     .sort((a, b) => compareTime(a.start, b.start)) || []
             );
         },
-        [caregiverSchadules.info],
+        [caregiverSchadules.list],
     );
 
     // Caregiver helper
     const getLogsForRecipient = useCallback(
         (recipient: Recipient, finishedStatus: boolean | null = null): Log[] | undefined => {
-            let filteredLogs = logs.info?.filter((log) =>
-                caregiverRelationShips.info?.some(
+            let filteredLogs = logs.list?.filter((log) =>
+                caregiverRelationShips.list?.some(
                     (relationship) =>
                         relationship.id === log.relationshipId && relationship.recipientId === recipient.id,
                 ),
@@ -79,23 +80,23 @@ const useQueryData = () => {
             }
             return filteredLogs;
         },
-        [logs.info, caregiverRelationShips.info],
+        [logs.list, caregiverRelationShips.list],
     );
 
     const getTaskNameById = useCallback(
         (taskId: number): string => {
-            const taskType = taskTypes.info?.find((task) => Number(task.id) === Number(taskId));
-            return taskType ? taskType.name : "Ismeretlen feladat";
+            const subTask = subTasks.list?.find((task) => Number(task.id) === Number(taskId));
+            return subTask ? subTask.name : "Ismeretlen feladat";
         },
-        [taskTypes.info],
+        [taskTypes.list],
     );
 
     const getTaskIdByName = useCallback(
         (taskName: string): number | undefined => {
-            const taskType = taskTypes.info?.find((task) => task.name === taskName);
+            const taskType = taskTypes.list?.find((task) => task.name === taskName);
             return taskType ? taskType.id : undefined;
         },
-        [taskTypes.info],
+        [taskTypes.list],
     );
 
     return {

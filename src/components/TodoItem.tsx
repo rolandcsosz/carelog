@@ -5,31 +5,34 @@ import deleteIcon from "../assets/delete.svg";
 import Dropdown from "./Dropdown";
 
 interface TodoItemProps {
-    name: string;
+    // name: string;
     selectedItem: string;
     options: string[];
     index: number;
     onSelectedChanged?: (selected: string) => void;
+    onDelete?: () => void;
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({
-    name,
+    //name,
     selectedItem,
     options,
     index,
     onSelectedChanged = (item: string) => {
         void item;
     }, // TODO
+
+    onDelete = () => {},
 }) => {
     void onSelectedChanged; //TODO
     void index; //TODO
     return (
         <div className={styles.container}>
             <div className={styles.contentRow}>
-                <div className={styles.text}>{name}</div>
-                <Dropdown selected={selectedItem} options={options} onChange={onSelectedChanged} disabled />{" "}
+                {/* TODO: add name for todo later, <div className={styles.text}>{name}</div>*/}
+                <Dropdown selected={selectedItem} options={options} onChange={onSelectedChanged} />{" "}
                 {/* TODO: remove disabled*/}
-                <IconButton svgContent={deleteIcon} isSmall />
+                <IconButton svgContent={deleteIcon} isSmall onClick={onDelete} />
             </div>
         </div>
     );

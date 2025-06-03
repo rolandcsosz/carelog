@@ -20,7 +20,7 @@ const Success: React.FC<SuccessProps> = ({ title, message }) => {
                         className={styles.checkmark_check}
                         fill="none"
                         d="M14.1 27.2l7.1 7.2 16.7-16.8"
-                        stroke-linecap="round"
+                        strokeLinecap="round"
                     />
                 </svg>
             </div>

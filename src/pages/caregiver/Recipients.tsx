@@ -17,7 +17,7 @@ const Recipients: React.FC = () => {
             <SearchTextInput text={searchText} fillWidth={true} placeholder="Keresés..." onChange={setSearchText} />
             <div />
             <div className={styles.caregiversContainer}>
-                {recipients.info
+                {recipients.list
                     ?.filter((recipient) => {
                         return recipient.name.toLowerCase().includes(searchText.toLowerCase());
                     })

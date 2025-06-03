@@ -20,11 +20,11 @@ const Account: React.FC = () => {
     const { user: adminUser } = useAdminModel();
     const { user: caregiverUser } = useCaregiverModel();
     const logedInUser: Admin | Caregiver | null =
-        user?.role === "admin" ? (adminUser.info ?? null) : (caregiverUser.info ?? null);
+        user?.role === "admin" ? (adminUser.list ?? null) : (caregiverUser.list ?? null);
     const [email, setEmail] = useState<string>(
-        user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.info?.email ?? ""),
+        user?.role === "admin" ? (adminUser.list?.email ?? "") : (caregiverUser.list?.email ?? ""),
     );
-    const [phone, setPhone] = useState<string>(caregiverUser.info?.phone ?? "");
+    const [phone, setPhone] = useState<string>(caregiverUser.list?.phone ?? "");
     const latestPasswords = useRef<NewPasswordData | null>(null);
 
     const setLatestPasswords = (passwords: NewPasswordData) => {
@@ -83,8 +83,8 @@ const Account: React.FC = () => {
     };
 
     useEffect(() => {
-        setEmail(user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.info?.email ?? ""));
-        setPhone(caregiverUser.info?.phone ?? "");
+        setEmail(user?.role === "admin" ? (adminUser.list?.email ?? "") : (caregiverUser.list?.email ?? ""));
+        setPhone(caregiverUser.list?.phone ?? "");
     }, [logedInUser, user?.role]);
 
     const handlePasswordSet = async (): Promise<PopupActionResult> => {

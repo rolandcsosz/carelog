@@ -1,5 +1,5 @@
 import styles from "./RecipientPage.module.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useNavigation from "../../hooks/useNavigation";
 import UserProfile from "../UserProfile";
 import ButtonGroup from "../../components/ButtonGroup";
@@ -7,26 +7,48 @@ import DateCard from "../../components/DateCard";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import TodoList from "./TodoList";
 import useQueryData from "../../hooks/useQueryData";
-import { NewSubTypeData, PopupActionResult, Recipient } from "../../types";
+import { PopupActionResult, Recipient, Todo } from "../../types";
 import { Button } from "../../components/Button";
 import plusButton from "../../assets/add-button-icon-secondary.svg";
 import usePopup from "../../hooks/usePopup";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 import TextArea from "../../components/TextArea";
-import NewSubTaskFormRow from "../../components/popup-contents/NewSubTaskFormRow";
+import { useApi } from "../../hooks/useApi";
 
 interface RecipientPageProps {
     recipient: Recipient;
 }
 
+const moveItem = (arr: Todo[], fromIndex: number, toIndex: number): Todo[] => {
+    const newArr = [...arr];
+    const [item] = newArr.splice(fromIndex, 1); // remove the item at fromIndex
+    newArr.splice(toIndex, 0, item); // insert the item at toIndex
+    return newArr;
+};
+
 const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const [menu, setMenu] = useState<string>("Adatok");
     const { removeLastPageFromStack } = useNavigation();
-    const { recipients, taskTypes, subTasks } = useCaregiverModel();
+    const { user, recipients, todos, subTasks, relationships } = useCaregiverModel();
     const [note, setNote] = useState<string>(recipient.caregiverNote);
-    const { getLogsForRecipient, getTaskIdByName } = useQueryData();
+    const { getLogsForRecipient } = useQueryData();
     const logsForRecipient = getLogsForRecipient(recipient, true);
     const { openPopup, closePopup } = usePopup();
+    const connection = relationships.list?.find(
+        (relationship) => relationship.recipientId === recipient.id && relationship.caregiverId === user.list?.id,
+    );
+
+    const [localTodos, setLocalTodos] = useState<Todo[]>([]);
+
+    useEffect(() => {
+        if (todos?.list && connection) {
+            const filtered = todos.list
+                .filter((todo) => !todo.relationshipId || todo.relationshipId === connection.id)
+                .sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0));
+
+            setLocalTodos(filtered);
+        }
+    }, [todos?.list, connection]);
 
     const handleNoteSave = (): string | null => {
         let errorMessage = null;
@@ -52,8 +74,32 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
         return errorMessage;
     };
 
-    const handleAddSubTask = () => {
-        let localTask: NewSubTypeData | null = null;
+    const handleAddTodo = () => {
+        if (!connection || !subTasks.list || subTasks.list.length === 0) {
+            openPopup(
+                getDefaultErrorModal(
+                    "Teendő hozzáadás sikertelen",
+                    "Nem sikerült teendőt hozzáadni, mert nincs elérhető kapcsolat a gondozó és gondozott között vagy teendő típusok nem elérhetőek.",
+                    closePopup,
+                ),
+            );
+            return;
+        }
+
+        const maxSequenceNumber =
+            localTodos && localTodos.length > 0 ? Math.max(...localTodos.map((todo) => todo.sequence ?? 0)) : 0;
+
+        todos.add({
+            requestBody: {
+                done: false,
+                sequenceNumber: Math.max(maxSequenceNumber + 1, 0),
+                subtaskId: subTasks.list[0].id, // Default to the first subtask type
+                relationshipId: connection.id,
+            },
+        });
+
+        //TODO: Use this implementation when name can be added to the todo
+        /*let localTask: NewSubTypeData | null = null;
 
         openPopup({
             title: "Új Teendő hozzáadása",
@@ -63,7 +109,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                     onChange={(task) => {
                         localTask = task;
                     }}
-                    taskOptions={taskTypes.info ? taskTypes.info.map((task) => task.name || "") : []}
+                    taskOptions={subTasks.list ? subTasks.list.map((task) => task.name || "") : []}
                 />
             ),
             onConfirm: (): Promise<PopupActionResult> => {
@@ -102,8 +148,31 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                     );
                 });
             },
-            onCancel: () => {},
-        });
+            onCancel: () => { },
+        });*/
+    };
+
+    const handleReorder = async (from: number, to: number) => {
+        if (localTodos && localTodos.length > 0) {
+            const updatedTodos = moveItem(localTodos, from, to);
+
+            await Promise.all(
+                updatedTodos.map((todo, index) => {
+                    return todos.edit(
+                        {
+                            id: todo.id,
+                            requestBody: {
+                                ...todo,
+                                sequenceNumber: index + 1,
+                            },
+                        },
+                        { onSuccess: () => {} },
+                    );
+                }),
+            );
+
+            todos.refetch();
+        }
     };
 
     return (
@@ -188,15 +257,47 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                     <div className={styles.spacer} />
                     <div className={styles.title}>Teendők</div>
                     <TodoList
-                        dropdownOptions={taskTypes?.info?.map((type) => type.name) || []}
-                        items={subTasks.info || []}
+                        dropdownOptions={subTasks?.list?.map((type) => type.name) || []}
+                        items={localTodos || []}
+                        onEdit={(todo) => {
+                            const subTask = subTasks?.list?.find((option) => option.id === todo.subtaskId);
+                            if (subTask) {
+                                todos.edit({
+                                    id: todo.id,
+                                    requestBody: {
+                                        ...todo,
+                                        sequenceNumber: todo.sequence ?? 0,
+                                        subtaskId: subTask.id,
+                                    },
+                                });
+                            }
+                        }}
+                        onDelete={(todoId) => {
+                            openPopup({
+                                title: "Teendő törlése",
+                                confirmButtonText: "Törlés",
+                                cancelButtonText: "Mégsem",
+                                content: "Biztosan törölni szeretnéd ezt a teendőt?",
+                                onConfirm: async (): Promise<PopupActionResult> => {
+                                    await todos.delete({ id: todoId });
+                                    localTodos.filter((todo) => todo.id !== todoId);
+                                    return {
+                                        ok: true,
+                                        message: "Teendő sikeresen törölve.",
+                                        quitUpdate: false,
+                                    };
+                                },
+                                onCancel: () => {},
+                            });
+                        }}
+                        onReorder={handleReorder}
                     />
                     <Button
                         primary={false}
                         size="large"
                         noText
                         icon={plusButton}
-                        onClick={handleAddSubTask}
+                        onClick={handleAddTodo}
                         fillWidth={true}
                     />
                 </div>

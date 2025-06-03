@@ -42,7 +42,10 @@
 .contentRow {
     display: flex;
     align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
     width: 100%;
     gap: 15px;
     padding-right: 15px;
+    padding-left: 15px;
 }
