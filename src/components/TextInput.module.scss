@@ -37,8 +37,15 @@
 
 input[type="time"] {
     height: 32px;
-    width: 50px;
+    width: 68px;
     position: relative;
+    width: 100%;
+}
+
+@media (max-width: 400px) {
+    input[type="time"] {
+        width: 40px !important;
+    }
 }
 
 input[type="time"]::-webkit-calendar-picker-indicator {

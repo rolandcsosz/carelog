@@ -31,3 +31,7 @@
 4. Set  `ANDROID_HOME` environment variable to your android sdk path. Usually it is *C:\Users\user\AppData\Local\Android\Sdk* on windows after installing android studio.
 4. In the android/ directory, run `./gradlew assembleRelease` to build the app.
 5. The release apk will be generated in the *android/app/build/outputs/apk/release/* directory. The file name will be `app-release-unsigned.apk`. It is unsigned, so you need to sign it before distributing it because android does not allow unsigned apks to be installed on devices. To sign the apk, you need to modify the `build.gradle` file in the android/app/ directory and then run the `./gradlew assembleRelease` command again. You can find the instructions to sign the apk: [https://developer.android.com/studio/publish/app](https://developer.android.com/studio/publish/app).
+
+## Known issues
+
+- [ ]  Transition on navigation is not smooth on desktop view. `useNavigation.ts` change requered. Low priority issue. ⬇️

@@ -53,91 +53,56 @@ const Calendar: React.FC<CalendarProps> = ({ onDateChange, highlightedDates = []
 
     return (
         <div className={styles.calendarContainer}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateCalendar
-                    slots={{ day: (props) => renderDay(props.day, [], props) }}
-                    value={selectedDate}
-                    defaultValue={dayjs()}
-                    disablePast={false}
-                    onChange={handleDateChange}
-                    sx={{
-                        width: "100%",
-                        height: "100%",
-
-                        "& .MuiPickersCalendarHeader-root": {
-                            matginBottom: "30px",
-                        },
-
-                        "& .MuiDateCalendar-root": {
-                            maxHeight: "none",
-                            display: "flex",
+            <div className={styles.calendarBox}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateCalendar
+                        slots={{ day: (props) => renderDay(props.day, [], props) }}
+                        value={selectedDate}
+                        defaultValue={dayjs()}
+                        disablePast={false}
+                        onChange={handleDateChange}
+                        sx={{
                             width: "100%",
-                            height: "100%",
-                            flexDirection: "column",
-                        },
-
-                        "& .MuiDayCalendar-monthContainer": {
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                            height: "100%",
-                        },
-
-                        "& .MuiPickersSlideTransition-root": {
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                            height: "100%",
-                            alignContent: "space-between",
-                        },
-
-                        "& .MuiPickersFadeTransitionGroup-root": {
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                            height: "100%",
-                        },
-
-                        "& .MuiDayCalendar-day": {
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: "100%",
-                            height: "100%",
-                        },
-                        "& .MuiTypography-root": {
-                            width: "100%",
-                            height: "100%",
-                            textAlign: "center",
-                        },
-                        "& .MuiDayCalendar-root": {
-                            height: "100%",
-                        },
-                        "& .MuiDayCalendar-weekContainer": {
-                            display: "flex",
-                            flex: 1,
-                            justifyContent: "space-between",
-                        },
-                        "& .MuiPickersDay-root": {
-                            aspectRatio: "1/1",
-                            flex: 1,
-                            margin: 0,
-                            maxWidth: "100%",
-                            height: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        },
-                        "& .MuiPickersDay-root.Mui-selected": {
-                            backgroundColor: "#3182ce;",
-                            color: "#FFFFFF",
-                            "&:hover": {
-                                backgroundColor: "#3182ce;",
+                            aspectRatio: "unset",
+                            "& .MuiPickersDay-root": {
+                                flex: 1,
+                                height: "40px",
+                                borderRadius: "20px",
+                                margin: 0,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                             },
-                        },
-                    }}
-                />
-            </LocalizationProvider>
+                            "& .MuiDayCalendar-weekContainer": {
+                                display: "flex",
+                                justifyContent: "space-between",
+                            },
+                            "& .MuiPickersDay-root.Mui-selected": {
+                                backgroundColor: "#3182ce;",
+                                color: "#FFFFFF",
+                                "&:hover": {
+                                    backgroundColor: "#3182ce;",
+                                },
+                            },
+
+                            "& .MuiDayCalendar-header": {
+                                display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                padding: "16px 0",
+                            },
+
+                            "& .MuiYearCalendar-button.Mui-selected": {
+                                backgroundColor: "#3182ce;",
+                                color: "#FFFFFF",
+                                "&:hover": {
+                                    backgroundColor: "#3182ce;",
+                                },
+                            },
+                        }}
+                    />
+                </LocalizationProvider>
+            </div>
         </div>
     );
 };

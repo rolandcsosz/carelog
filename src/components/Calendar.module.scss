@@ -1,14 +1,18 @@
 .calendarContainer {
     background-color: white;
     display: flex;
-    justify-content: start;
-    align-items: start;
+    justify-content: center;
+    align-items: center;
     flex-direction: row;
     border-radius: 15px;
     border: 1px solid #e1e1e1;
     width: calc(100% - 40px);
     padding: 20px;
-    aspect-ratio: 1;
+}
+
+.calendarBox {
+    width: 100%;
+    max-width: 800px;
 }
 
 :global(.MuiDateCalendar-root) {

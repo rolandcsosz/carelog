@@ -68,8 +68,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
                         text={selectedStartTime}
                         type="time"
                         onChange={setSelectedStartTime}
-                        fillWidth={true}
-                        invalid={startTimeInvalid || compareTime(selectedStartTime, selectedEndTime) < 0}
+                        invalid={startTimeInvalid || compareTime(selectedStartTime, selectedEndTime) > 0}
                     />
                 </div>
                 <div />
@@ -79,7 +78,6 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
                         text={selectedEndTime}
                         type="time"
                         onChange={setSelectedEndTime}
-                        fillWidth={true}
                         invalid={compareTime(selectedStartTime, selectedEndTime) > 0}
                     />
                 </div>
