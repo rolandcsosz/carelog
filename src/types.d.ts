@@ -123,6 +123,7 @@ export type PopupProps = {
     cancelButtonText?: string;
     title: string;
     confirmOnly?: boolean;
+    timeout?: number;
 };
 
 export type PopupActionResult = {
@@ -142,7 +143,7 @@ export type FetchResponse<T> = {
 export type SubTaskEditData = {
     index: number;
     title: string;
-    catregory: string;
+    //catregory: string;
     startTime: string;
     endTime: string;
     done: boolean;

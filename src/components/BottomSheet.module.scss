@@ -46,5 +46,7 @@
 
     .bottomSheetContent {
         height: calc(100% - 20px);
+        overflow-y: auto;
+        padding-bottom: 100px;
     }
 }

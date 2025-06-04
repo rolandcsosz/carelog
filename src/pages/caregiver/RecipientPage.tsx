@@ -1,5 +1,5 @@
 import styles from "./RecipientPage.module.scss";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useNavigation from "../../hooks/useNavigation";
 import UserProfile from "../UserProfile";
 import ButtonGroup from "../../components/ButtonGroup";
@@ -13,7 +13,6 @@ import plusButton from "../../assets/add-button-icon-secondary.svg";
 import usePopup from "../../hooks/usePopup";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 import TextArea from "../../components/TextArea";
-import { useApi } from "../../hooks/useApi";
 
 interface RecipientPageProps {
     recipient: Recipient;
@@ -37,18 +36,10 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const connection = relationships.list?.find(
         (relationship) => relationship.recipientId === recipient.id && relationship.caregiverId === user.list?.id,
     );
-
-    const [localTodos, setLocalTodos] = useState<Todo[]>([]);
-
-    useEffect(() => {
-        if (todos?.list && connection) {
-            const filtered = todos.list
-                .filter((todo) => !todo.relationshipId || todo.relationshipId === connection.id)
-                .sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0));
-
-            setLocalTodos(filtered);
-        }
-    }, [todos?.list, connection]);
+    const localTodos =
+        todos?.list
+            ?.filter((todo) => !todo.relationshipId || todo.relationshipId === connection?.id)
+            .sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0)) || [];
 
     const handleNoteSave = (): string | null => {
         let errorMessage = null;

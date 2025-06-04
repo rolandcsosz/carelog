@@ -4,7 +4,7 @@ import useNavigation from "../../hooks/useNavigation.ts";
 import TimeTableRow from "../../components/TimeTableRow.tsx";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
 import Recipient from "./RecipientPage.tsx";
-import { getDateString } from "../../utils.tsx";
+import { getHourAndMinuteTimeString, getDateString } from "../../utils.tsx";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import useQueryData from "../../hooks/useQueryData.ts";
 import { actualLogTasksState, openLogState } from "../../model.ts";
@@ -12,9 +12,15 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { PopupActionResult, Schedule } from "../../types";
 import usePopup from "../../hooks/usePopup.tsx";
 
+type TaskDescription = {
+    subtaskId: number;
+    startTime: string | null;
+    endTime: string | null;
+};
+
 const DailySchedule: React.FC = () => {
     const { addPageToStack } = useNavigation();
-    const { logs } = useCaregiverModel();
+    const { logs, todos } = useCaregiverModel();
     const { openSheet } = useBottomSheet();
     const { getFilteredSchedules, getRecipientForSchedule } = useQueryData();
     const today = new Date();
@@ -47,7 +53,32 @@ const DailySchedule: React.FC = () => {
     const handleNewLog = (schedule: Schedule) => {
         setSubTasks([]);
 
-        const add = (): Promise<PopupActionResult> => {
+        const copyTodos: TaskDescription[] =
+            todos?.list
+                ?.filter((todo) => !todo.relationshipId || todo.relationshipId === schedule.relationshipId)
+                .sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0))
+                .map(
+                    (todo) =>
+                        ({
+                            subtaskId: todo.id,
+                            startTime: null,
+                            endTime: null,
+                        }) as TaskDescription,
+                ) || [];
+        const prevTodos: TaskDescription[] =
+            logs?.list
+                ?.filter((log) => log.relationshipId === schedule.relationshipId)
+                ?.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())?.[0]
+                ?.tasks.map(
+                    (task) =>
+                        ({
+                            subtaskId: Number(task.subTaskId),
+                            startTime: task.startTime || null,
+                            endTime: task.endTime || null,
+                        }) as TaskDescription,
+                ) || [];
+        const currentTime = getHourAndMinuteTimeString(today);
+        const add = (mode: "copy" | "new"): Promise<PopupActionResult> => {
             return new Promise<PopupActionResult>((resolve) => {
                 logs.add(
                     {
@@ -57,7 +88,13 @@ const DailySchedule: React.FC = () => {
                             relationshipId: schedule.relationshipId.toString(),
                             finished: false,
                             closed: false,
-                            tasks: [],
+                            tasks: (mode === "new" || prevTodos.length === 0 ? copyTodos : prevTodos).map((todo) => ({
+                                subTaskId: String(todo.subtaskId),
+                                startTime: todo.startTime || currentTime,
+                                endTime: todo.endTime || currentTime,
+                                done: false,
+                                note: "",
+                            })),
                         },
                     },
                     {
@@ -93,8 +130,8 @@ const DailySchedule: React.FC = () => {
             confirmButtonText: "Másolás",
             cancelButtonText: "Új napló",
             content: <div>Az utolsó mentet naplót használnád újra vagy üres naplót kezdenél?</div>,
-            onConfirm: add, // TODO: implement copy log
-            onCancel: add,
+            onConfirm: () => add("copy"),
+            onCancel: () => add("new"),
         });
     };
 

@@ -5,7 +5,7 @@ import useBottomSheet from "../hooks/useBottomSheet";
 import Log from "../pages/caregiver/Log";
 
 enum SheetSize {
-    FULL = 0.05 * window.innerHeight,
+    FULL = 0.15 * window.innerHeight,
     HALF = window.innerHeight * 0.5,
     CLOSED = window.innerHeight,
 }

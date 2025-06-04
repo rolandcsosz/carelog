@@ -20,9 +20,9 @@ const Account: React.FC = () => {
     const { user: adminUser } = useAdminModel();
     const { user: caregiverUser } = useCaregiverModel();
     const logedInUser: Admin | Caregiver | null =
-        user?.role === "admin" ? (adminUser.list ?? null) : (caregiverUser.list ?? null);
+        user?.role === "admin" ? (adminUser.info ?? null) : (caregiverUser.list ?? null);
     const [email, setEmail] = useState<string>(
-        user?.role === "admin" ? (adminUser.list?.email ?? "") : (caregiverUser.list?.email ?? ""),
+        user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.list?.email ?? ""),
     );
     const [phone, setPhone] = useState<string>(caregiverUser.list?.phone ?? "");
     const latestPasswords = useRef<NewPasswordData | null>(null);
@@ -83,7 +83,7 @@ const Account: React.FC = () => {
     };
 
     useEffect(() => {
-        setEmail(user?.role === "admin" ? (adminUser.list?.email ?? "") : (caregiverUser.list?.email ?? ""));
+        setEmail(user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.list?.email ?? ""));
         setPhone(caregiverUser.list?.phone ?? "");
     }, [logedInUser, user?.role]);
 

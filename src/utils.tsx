@@ -2,6 +2,7 @@ import { CancelablePromise } from "../api/core/CancelablePromise";
 import { getSchedulesCaregiverByCaregiverId } from "../api/sdk.gen";
 import { GetSchedulesCaregiverByCaregiverIdData, GetSchedulesCaregiverByCaregiverIdResponse } from "../api/types.gen";
 import ErrorModal from "./components/popup-contents/ErrorModal";
+import Loading from "./components/popup-contents/Loading";
 import Success from "./components/popup-contents/Success";
 import { FetchResponse, Id, PopupActionResult, PopupProps, Schedule } from "./types";
 
@@ -23,6 +24,10 @@ export const convertToGlobalUTC = (dateToConvert: Date): string => {
         "T" +
         "00:00:00"
     );
+};
+
+export const getHourAndMinuteTimeString = (date: Date): string => {
+    return date.toTimeString().split(" ")[0].slice(0, 5) + ":00"; // Returns HH:mm:ss format
 };
 
 export const fetchSchedulesForCaregiver = async (
@@ -57,6 +62,16 @@ const normalizeTime = (time: string) => {
         return time.slice(0, 5);
     }
     if (/^\d{2}:\d{2}$/.test(time)) {
+        return time;
+    }
+    return time;
+};
+
+export const denormalizeTime = (time: string) => {
+    if (/^\d{2}:\d{2}$/.test(time)) {
+        return `${time}:00`;
+    }
+    if (/^\d{2}:\d{2}:\d{2}$/.test(time)) {
         return time;
     }
     return time;
@@ -108,6 +123,24 @@ export const getDefaultSuccessModal = (title: string, message: string, onFinish:
         confirmOnly: true,
         onConfirm: onFinish,
         onCancel: onFinish,
+    };
+};
+
+export const getDefaultLoadModal = (
+    title: string,
+    message: string,
+    onFinish: () => void,
+    timeout: number,
+): PopupProps => {
+    return {
+        content: <Loading title={title} message={message} />,
+        title: "",
+        confirmButtonText: "Rendben",
+        cancelButtonText: "",
+        confirmOnly: true,
+        onConfirm: onFinish,
+        onCancel: onFinish,
+        timeout: timeout || 0,
     };
 };
 

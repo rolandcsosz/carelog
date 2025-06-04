@@ -10,7 +10,7 @@ interface NewSubTaskFormRowProps {
 }
 
 const NewSubTaskFormRow: React.FC<NewSubTaskFormRowProps> = ({ taskOptions, onChange }) => {
-    const [name, setName] = React.useState<string>("");
+    const [name, setName] = React.useState<string>("empty");
     const [task, setTask] = React.useState<string>(taskOptions[0] || "");
 
     useEffect(() => {
@@ -19,10 +19,10 @@ const NewSubTaskFormRow: React.FC<NewSubTaskFormRowProps> = ({ taskOptions, onCh
 
     return (
         <>
-            <div className={styles.formRow}>
+            {/*<div className={styles.formRow}> // TODO: if there will be a name field, uncomment this
                 <div className={styles.formLabel}>Megnevezés</div>
                 <TextInput text={name} placeholder="Megnevezés" onChange={setName} fillWidth={true} />
-            </div>
+            </div>*/}
             <div className={styles.formRow}>
                 <div className={styles.formLabel}>Kategória</div>
                 <Dropdown options={taskOptions} selected={task} onChange={setTask} fillWidth={true} />

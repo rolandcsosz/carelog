@@ -1,33 +1,31 @@
 import styles from "./Log.module.scss";
-import React, { useEffect } from "react";
+import React from "react";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
-import { getDateString } from "../../utils.tsx";
+import { denormalizeTime, getDateString, getDefaultErrorModal } from "../../utils.tsx";
 import { Button } from "../../components/Button.tsx";
 import useQueryData from "../../hooks/useQueryData.ts";
-import { actualLogTasksState, openLogState } from "../../model.ts";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { openLogState } from "../../model.ts";
+import { useRecoilValue } from "recoil";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import usePopup from "../../hooks/usePopup.tsx";
-import Loading from "../../components/popup-contents/Loading.tsx";
-import { NewSubTypeData, PopupActionResult, SubTaskEditData, Todo } from "../../types";
+import { NewSubTypeData, PopupActionResult, Task } from "../../types";
 import LogCard from "../../components/LogCard.tsx";
 import NewSubTaskFormRow from "../../components/popup-contents/NewSubTaskFormRow.tsx";
+import useLoader from "../../hooks/useLoader.tsx";
 
-const DailySchedule: React.FC = () => {
-    const { logs } = useCaregiverModel();
-    const { getRecipientForLog } = useQueryData();
+const Log: React.FC = () => {
+    const { logs, subTasks } = useCaregiverModel();
+    const { openLoader } = useLoader();
+    const { getRecipientForLog, getTaskIdByName } = useQueryData();
     const openLog = useRecoilValue(openLogState);
     const recipient = openLog ? getRecipientForLog(openLog) : undefined;
     const { closeSheet } = useBottomSheet();
     const { openPopup, closePopup } = usePopup();
-    const [subTasks, setSubTasks] = useRecoilState(actualLogTasksState);
     const localTaskRef = React.useRef<NewSubTypeData | null>(null);
     const getCurrentTime = () => {
         const now = new Date();
         return now.toTimeString().slice(0, 5);
     };
-
-    const [fetchedTodos, setFetchedTodos] = React.useState<Todo[]>([]);
 
     const closeLog = () => {
         if (openLog) {
@@ -40,28 +38,15 @@ const DailySchedule: React.FC = () => {
                 },
                 {
                     onSuccess: () => {
-                        setTimeout(() => {
-                            logs.refetch();
-                            closeSheet();
-                        }, 2000);
-
-                        openPopup({
-                            content: (
-                                <Loading
-                                    title="Feldolgozás folyamatban..."
-                                    message={"Új napló mentés folyamatban..."}
-                                />
-                            ),
-                            title: "",
-                            confirmButtonText: "Bezárás",
-                            cancelButtonText: "",
-                            confirmOnly: true,
-                            onConfirm: closePopup,
-                            onCancel: closePopup,
+                        openLoader({
+                            title: "Feldolgozás folyamatban...",
+                            message: "Új napló bezárás folyamatban...",
+                            timeout: 2000,
+                            callback: () => {
+                                closePopup();
+                                closeSheet();
+                            },
                         });
-                        setTimeout(() => {
-                            closePopup();
-                        }, 2000);
                     },
                 },
             );
@@ -77,24 +62,25 @@ const DailySchedule: React.FC = () => {
                     onChange={(task) => {
                         localTaskRef.current = task;
                     }}
-                    taskOptions={/*taskTypes.list?.map((task) => task.name || "") || */ []}
+                    taskOptions={subTasks.list?.map((task) => task.name || "") || []}
                 />
             ),
-            onConfirm: () => {
+            onConfirm: (): Promise<PopupActionResult> | void => {
                 const task = localTaskRef.current;
-                if (!task || !task.name || !task.task) {
+                if (!task || task.task === "") {
                     return Promise.resolve({ ok: false, quitUpdate: true, message: "" });
                 }
 
-                const newSubTask: Omit<SubTaskEditData, "index"> = {
-                    title: task.name,
-                    catregory: task.task,
+                const newTask: Task = {
+                    subTaskId: getTaskIdByName(task.task) || -1,
                     startTime: getCurrentTime(),
                     endTime: getCurrentTime(),
                     done: false,
+                    note: "",
                 };
 
-                setSubTasks((prev) => [...prev, newSubTask]);
+                saveTask(newTask);
+                return Promise.resolve({ ok: true, quitUpdate: true, message: "" });
             },
             onCancel: () => {},
         });
@@ -144,6 +130,83 @@ const DailySchedule: React.FC = () => {
         });
     };
 
+    const saveTask = (task: Task | null, index: number | null = null) => {
+        if (!openLog) {
+            return;
+        }
+
+        let updatedTasks = openLog?.tasks;
+
+        if (index === null) {
+            updatedTasks = [...openLog.tasks, task].filter((item) => item !== null);
+        } else {
+            updatedTasks = updatedTasks
+                .map((data, i) => {
+                    if (i === index) {
+                        if (!task) {
+                            return null;
+                        }
+                        return { ...data, ...task };
+                    }
+                    return data;
+                })
+                .filter((item) => item !== null);
+        }
+
+        if (updatedTasks.length === openLog.tasks.length && index === null) {
+            return;
+        }
+
+        logs.edit(
+            {
+                id: openLog?.id.toString(),
+                requestBody: {
+                    tasks: updatedTasks.map((task) => ({
+                        subTaskId: task.subTaskId.toString(),
+                        startTime: denormalizeTime(task.startTime),
+                        endTime: denormalizeTime(task.endTime),
+                        done: task.done,
+                        note: task.note,
+                    })),
+                },
+            },
+            {
+                onSuccess: () => {
+                    if (task !== null && index === null) {
+                        openLoader({
+                            title: "Feldolgozás folyamatban...",
+                            message: "Teendő hozzáadása folyamatban...",
+                            timeout: 2000,
+                            callback: () => {
+                                logs.refetch();
+                            },
+                        });
+                    } else if (task === null && index !== null) {
+                        openLoader({
+                            title: "Feldolgozás folyamatban...",
+                            message: "Teendő törlése folyamatban...",
+                            timeout: 2000,
+                            callback: () => {
+                                logs.refetch();
+                            },
+                        });
+                    }
+                },
+                onError: (error) => {
+                    openPopup(
+                        getDefaultErrorModal(
+                            "Sikertelen módosítás",
+                            error?.message || "Ismeretlen hiba történt a napló mentése során.",
+                            closePopup,
+                        ),
+                    );
+
+                    Promise.resolve(null);
+                },
+            },
+        );
+    };
+
     return (
         <div className={styles.page}>
             <div className={styles.headerColumn}>
@@ -157,27 +220,25 @@ const DailySchedule: React.FC = () => {
                 {recipient?.caregiverNote}
                 <div className={styles.spacer} />
                 <div className={styles.title}>Teendők</div>
-                {subTasks.map((subTask, index) => (
-                    <LogCard
-                        key={"log-card" + index}
-                        index={index}
-                        title={subTask.title}
-                        catregory={subTask.catregory}
-                        startTime={subTask.startTime}
-                        endTime={subTask.endTime}
-                        done={subTask.done}
-                        onChange={(data) => {
-                            setSubTasks((prevSubTasks) => {
-                                const updated = [...prevSubTasks];
-                                updated[index] = data;
-                                return updated;
-                            });
-                        }}
-                        onDelete={() => {
-                            setSubTasks((prevSubTasks) => prevSubTasks.filter((_, i) => i !== index));
-                        }}
-                    />
-                ))}
+                {openLog?.tasks.map((subTask, index) => {
+                    // Check if previous card's endTime is later than this card's startTime
+                    let prevEndTimeLater = false;
+                    if (index > 0) {
+                        const prevEnd = openLog.tasks[index - 1].endTime;
+                        const currStart = subTask.startTime;
+                        prevEndTimeLater = prevEnd > currStart;
+                    }
+                    return (
+                        <LogCard
+                            key={"log-card" + index}
+                            index={index}
+                            task={subTask}
+                            startTimeInvalid={prevEndTimeLater}
+                            onChange={saveTask}
+                            onDelete={() => saveTask(null, index)}
+                        />
+                    );
+                })}
             </div>
 
             <div className={styles.buttonConatainer}>
@@ -189,10 +250,10 @@ const DailySchedule: React.FC = () => {
                     fillWidth={true}
                 />
                 <Button primary={false} label="Napló törlése" size="large" onClick={deleteLog} fillWidth={true} />
-                <Button primary={true} label="Mentés" size="large" onClick={closeLog} fillWidth={true} />
+                <Button primary={true} label="Mentés és bezárás" size="large" onClick={closeLog} fillWidth={true} />
             </div>
         </div>
     );
 };
 
-export default DailySchedule;
+export default Log;

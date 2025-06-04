@@ -57,7 +57,7 @@ import {
     putTodosById,
 } from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
-import { fetchSchedulesForCaregiver } from "../utils";
+import { fetchSchedulesForCaregiver, throwIfError } from "../utils";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { openLogState } from "../model";
@@ -402,10 +402,11 @@ export const useCaregiverModel = () => {
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
     });
-
     const { mutate: addSubTask } = useMutation({
-        mutationFn: (updateInfo: PostSubtasksData) =>
-            request<PostSubtasksData, PostSubtasksResponse>(postSubtasks, updateInfo),
+        mutationFn: async (updateInfo: PostSubtasksData) => {
+            const response = await request<PostSubtasksData, PostSubtasksResponse>(postSubtasks, updateInfo);
+            throwIfError(response, "Hiba történt a részfeladat hozzáadásakor.");
+        },
         onSuccess: () => {
             refetchSubTasks();
         },
@@ -415,8 +416,13 @@ export const useCaregiverModel = () => {
     });
 
     const { mutate: updateLogedInUser } = useMutation({
-        mutationFn: (updateInfo: PutCaregiversByIdData) =>
-            request<PutCaregiversByIdData, PutCaregiversByIdResponse>(putCaregiversById, updateInfo),
+        mutationFn: async (updateInfo: PutCaregiversByIdData) => {
+            const response = await request<PutCaregiversByIdData, PutCaregiversByIdResponse>(
+                putCaregiversById,
+                updateInfo,
+            );
+            throwIfError(response, "Hiba történt a felhasználó frissítésekor.");
+        },
         onSuccess: () => {
             refetchLogedInUser();
         },
@@ -426,8 +432,10 @@ export const useCaregiverModel = () => {
     });
 
     const { mutate: editRecipient } = useMutation({
-        mutationFn: (body: PutRecipientsByIdData) =>
-            request<PutRecipientsByIdData, PutRecipientsByIdResponse>(putRecipientsById, body),
+        mutationFn: async (body: PutRecipientsByIdData) => {
+            const response = await request<PutRecipientsByIdData, PutRecipientsByIdResponse>(putRecipientsById, body);
+            throwIfError(response, "Hiba történt a kliens szerkesztésekor.");
+        },
         onSuccess: () => {
             refetchRecipients();
         },
@@ -437,17 +445,25 @@ export const useCaregiverModel = () => {
     });
 
     const { mutate: addLog } = useMutation({
-        mutationFn: (body: PostLogsData) => request<PostLogsData, PostLogsResponse>(postLogs, body),
+        mutationFn: async (body: PostLogsData) => {
+            const response = await request<PostLogsData, PostLogsResponse>(postLogs, body);
+            throwIfError(response, "Hiba történt a napló hozzáadásakor.");
+        },
         onSuccess: () => {
-            refetchLogs();
+            setTimeout(() => {
+                refetchLogs();
+            }, 2000);
         },
         onError: (error: any) => {
             console.error("Error adding log:", error);
         },
     });
 
-    const { mutate: editLog } = useMutation({
-        mutationFn: (body: PutLogsByIdData) => request<PutLogsByIdData, PutLogsByIdResponse>(putLogsById, body),
+    const { mutateAsync: editLog } = useMutation({
+        mutationFn: async (body: PutLogsByIdData) => {
+            const response = await request<PutLogsByIdData, PutLogsByIdResponse>(putLogsById, body);
+            throwIfError(response, "Hiba történt a napló szerkesztése során.");
+        },
         onSuccess: () => {
             refetchLogs();
         },
@@ -457,18 +473,23 @@ export const useCaregiverModel = () => {
     });
 
     const { mutate: deleteLog } = useMutation({
-        mutationFn: (body: DeleteLogsByIdData) =>
-            request<DeleteLogsByIdData, DeleteLogsByIdResponse>(deleteLogsById, body),
+        mutationFn: async (body: DeleteLogsByIdData) => {
+            const response = await request<DeleteLogsByIdData, DeleteLogsByIdResponse>(deleteLogsById, body);
+            throwIfError(response, "Hiba történt a napló törlése során.");
+        },
         onSuccess: () => {
             refetchLogs();
         },
         onError: (error: any) => {
-            console.error("Error editing log:", error);
+            console.error("Error deleting log:", error);
         },
     });
 
     const { mutate: addTodo } = useMutation({
-        mutationFn: (body: PostTodosData) => request<PostTodosData, PostTodosResponse>(postTodos, body),
+        mutationFn: async (body: PostTodosData) => {
+            const response = await request<PostTodosData, PostTodosResponse>(postTodos, body);
+            throwIfError(response, "Hiba történt a teendő hozzáadásakor.");
+        },
         onSuccess: () => {
             refetchTodos();
         },
@@ -478,7 +499,10 @@ export const useCaregiverModel = () => {
     });
 
     const { mutateAsync: editTodo } = useMutation({
-        mutationFn: (body: PutTodosByIdData) => request<PutTodosByIdData, PutTodosByIdResponse>(putTodosById, body),
+        mutationFn: async (body: PutTodosByIdData) => {
+            const response = await request<PutTodosByIdData, PutTodosByIdResponse>(putTodosById, body);
+            throwIfError(response, "Hiba történt a teendő szerkesztése során.");
+        },
         onSuccess: () => {
             refetchTodos();
         },
@@ -488,8 +512,10 @@ export const useCaregiverModel = () => {
     });
 
     const { mutate: deleteTodo } = useMutation({
-        mutationFn: (body: DeleteTodosByIdData) =>
-            request<DeleteTodosByIdData, DeleteTodosByIdResponse>(deleteTodosById, body),
+        mutationFn: async (body: DeleteTodosByIdData) => {
+            const response = await request<DeleteTodosByIdData, DeleteTodosByIdResponse>(deleteTodosById, body);
+            throwIfError(response, "Hiba történt a teendő törlése során.");
+        },
         onSuccess: () => {
             refetchTodos();
         },

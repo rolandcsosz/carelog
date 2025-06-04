@@ -93,8 +93,8 @@ const useQueryData = () => {
 
     const getTaskIdByName = useCallback(
         (taskName: string): number | undefined => {
-            const taskType = taskTypes.list?.find((task) => task.name === taskName);
-            return taskType ? taskType.id : undefined;
+            const subTask = subTasks.list?.find((task) => task.name === taskName);
+            return subTask ? subTask.id : undefined;
         },
         [taskTypes.list],
     );

@@ -2,45 +2,37 @@ import React, { useState } from "react";
 import styles from "./LogCard.module.scss";
 import TextInput from "./TextInput";
 import { compareTime } from "../utils";
-import { SubTaskEditData } from "../types";
+import { Task } from "../types";
 import deleteIcon from "../assets/delete.svg";
 import IconButton from "./IconButton";
+import useQueryData from "../hooks/useQueryData";
 
 interface LogCardProps {
     index: number;
-    title: string;
-    catregory: string;
-    startTime: string;
-    endTime: string;
-    done: boolean;
-    onChange?: (value: SubTaskEditData) => void;
-    onDelete?: (index: number) => void;
+    task: Task;
+    startTimeInvalid?: boolean;
+    onChange: (value: Task, index: number) => void;
+    onDelete: (index: number) => void;
 }
 
-const LogCard: React.FC<LogCardProps> = ({
-    index,
-    title,
-    catregory,
-    startTime,
-    endTime,
-    done,
-    onChange = () => {},
-    onDelete = () => {},
-}) => {
-    const [selectedStartTime, setSelectedStartTime] = useState(startTime);
-    const [selectedEndTime, setSelectedEndTime] = useState(endTime);
-    const [taskDone, setTaskDone] = useState(done);
+const LogCard: React.FC<LogCardProps> = ({ index, task, startTimeInvalid = false, onChange, onDelete }) => {
+    const [selectedStartTime, setSelectedStartTime] = useState(task.startTime);
+    const [selectedEndTime, setSelectedEndTime] = useState(task.endTime);
+    const [taskDone, setTaskDone] = useState(task.done);
+    const { getTaskNameById } = useQueryData();
 
     // Helper to call onChange with the latest internal state
-    const updateSubtask = (partial: Partial<SubTaskEditData> = {}) => {
-        onChange({
+    const updateSubtask = (partial: Partial<Task> = {}) => {
+        onChange(
+            {
+                ...task,
+                startTime: selectedStartTime,
+                endTime: selectedEndTime,
+                done: taskDone,
+                ...partial,
+            } as Task,
             index,
-            title,
-            catregory,
-            startTime: partial.startTime ?? selectedStartTime,
-            endTime: partial.endTime ?? selectedEndTime,
-            done: partial.done ?? taskDone,
-        });
+        );
     };
 
     return (
@@ -56,9 +48,9 @@ const LogCard: React.FC<LogCardProps> = ({
                         updateSubtask({ done: checked });
                     }}
                 />
-                <div className={styles.title}>{title}</div>
-                <div className={styles.categoryText}>•</div>
-                <div className={styles.categoryText}>{catregory}</div>
+                <div className={styles.title}>{getTaskNameById(task.subTaskId)}</div>
+                {/*<div className={styles.categoryText}>•</div>
+                <div className={styles.categoryText}>{catregory}</div>*/}
                 <div className={styles.spacer} />
                 <IconButton svgContent={deleteIcon} isSmall onClick={() => onDelete(index)} />
             </div>
@@ -73,6 +65,7 @@ const LogCard: React.FC<LogCardProps> = ({
                             updateSubtask({ startTime: value });
                         }}
                         fillWidth
+                        invalid={startTimeInvalid || compareTime(selectedStartTime, selectedEndTime) > 0}
                     />
                 </div>
                 <div />
