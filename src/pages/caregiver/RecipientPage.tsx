@@ -235,7 +235,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                             openPopup(
                                 getDefaultSuccessModal(
                                     "Sikeres módosítás",
-                                    "A jegyzet módosítása sikertelen volt.",
+                                    "A jegyzet módosítása sikeres volt.",
                                     closePopup,
                                 ),
                             );

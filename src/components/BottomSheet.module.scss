@@ -7,14 +7,14 @@
     background-color: white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -5px 40px rgba(0, 0, 0, 0.3);
 
     .handleArea {
-        height: 20px;
+        height: 60px;
         width: 100%;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: start;
         cursor: grab;
     }
 
@@ -23,6 +23,7 @@
         height: 6px;
         background-color: gray;
         border-radius: 3px;
+        margin-top: 15px;
     }
 
     .closeButton {

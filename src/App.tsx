@@ -112,7 +112,7 @@ const App: React.FC<AppProps> = ({ onLogedOut }) => {
     const prevActiveIndex = useRef<number>(-1);
     const { isAuthenticated, user, subscribeForLogout } = useAuth();
     const usedConfig = user?.role === "admin" ? adminMenuConfig : caregiverMenuConfig;
-    const { isOpen: isSheetOpen, openSheet } = useBottomSheet();
+    const { openSheet } = useBottomSheet();
     const openLog = useRecoilValue(openLogState);
     const { getRecipientForLog } = useQueryData();
     const recipient = openLog ? getRecipientForLog(openLog) : undefined;
@@ -240,8 +240,6 @@ const App: React.FC<AppProps> = ({ onLogedOut }) => {
                         children={content}
                     />
                 )}
-
-                {isSheetOpen && <div className={styles.darkOverlay} />}
                 <BottomSheet />
             </div>;
 };

@@ -1,0 +1,41 @@
+{
+    "short_name": "eNapló",
+    "name": "eNapló",
+    "description": "A simple application to help caregivers manage their daily tasks and activities.",
+    "version": "1.0.0",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fbfbfb",
+    "theme_color": "#fbfbfb",
+    "icons": [
+        {
+            "src": "/icon-192x192.jpg",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-512x512.jpg",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "screenshot-desktop.png",
+            "sizes": "1898x890",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "App Desktop"
+        },
+        {
+            "src": "screenshot-mobile.png",
+            "sizes": "390x844",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "App Mobile"
+        }
+    ],
+    "scope": "/",
+    "orientation": "portrait",
+    "lang": "hu"
+}
