@@ -92,7 +92,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
                 relationship_id: schedule.relationshipId,
                 start_time: schedule.start,
                 end_time: schedule.end,
-                date: schedule.date.toDateString(), //TODO check if this is correct
+                date: schedule.date.toDateString(),
             },
         });
 
@@ -101,7 +101,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         }
     };
 
-    /*const handleDeleteSchedule = async (id: number) => {
+    /*const handleDeleteSchedule = async (id: number) => { //TODO: implement delete schedule
         const response = await schedules.delete(request, {
             id: id,
         });

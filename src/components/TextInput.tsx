@@ -9,6 +9,7 @@ interface TextInputProps {
     fillWidth?: boolean;
     height?: number;
     invalid?: boolean;
+    disabled?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -19,6 +20,7 @@ const TextInput: React.FC<TextInputProps> = ({
     fillWidth = false,
     height = 32,
     invalid = false,
+    disabled = false,
 }) => {
     return (
         <input
@@ -32,6 +34,7 @@ const TextInput: React.FC<TextInputProps> = ({
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
             style={{ height: `${height}px` }}
+            disabled={disabled}
         />
     );
 };

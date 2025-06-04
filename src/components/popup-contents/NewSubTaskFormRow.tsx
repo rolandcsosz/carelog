@@ -1,6 +1,5 @@
 import styles from "./NewSubTaskFormRow.module.scss";
 import React, { useEffect } from "react";
-import TextInput from "../TextInput";
 import { NewSubTypeData } from "../../types";
 import Dropdown from "../Dropdown";
 
@@ -10,7 +9,7 @@ interface NewSubTaskFormRowProps {
 }
 
 const NewSubTaskFormRow: React.FC<NewSubTaskFormRowProps> = ({ taskOptions, onChange }) => {
-    const [name, setName] = React.useState<string>("empty");
+    const [name] = React.useState<string>("empty");
     const [task, setTask] = React.useState<string>(taskOptions[0] || "");
 
     useEffect(() => {

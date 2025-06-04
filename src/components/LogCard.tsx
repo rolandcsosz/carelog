@@ -11,11 +11,19 @@ interface LogCardProps {
     index: number;
     task: Task;
     startTimeInvalid?: boolean;
+    disabled?: boolean;
     onChange: (value: Task, index: number) => void;
     onDelete: (index: number) => void;
 }
 
-const LogCard: React.FC<LogCardProps> = ({ index, task, startTimeInvalid = false, onChange, onDelete }) => {
+const LogCard: React.FC<LogCardProps> = ({
+    index,
+    task,
+    startTimeInvalid = false,
+    disabled = false,
+    onChange,
+    onDelete,
+}) => {
     const [selectedStartTime, setSelectedStartTime] = useState(task.startTime);
     const [selectedEndTime, setSelectedEndTime] = useState(task.endTime);
     const [taskDone, setTaskDone] = useState(task.done);
@@ -38,21 +46,23 @@ const LogCard: React.FC<LogCardProps> = ({ index, task, startTimeInvalid = false
     return (
         <div className={styles.container}>
             <div className={styles.row}>
-                <input
-                    type="checkbox"
-                    checked={taskDone}
-                    className={styles.checkbox}
-                    onChange={(e) => {
-                        const checked = e.target.checked;
-                        setTaskDone(checked);
-                        updateSubtask({ done: checked });
-                    }}
-                />
+                {!disabled && (
+                    <input
+                        type="checkbox"
+                        checked={taskDone}
+                        className={styles.checkbox}
+                        onChange={(e) => {
+                            const checked = e.target.checked;
+                            setTaskDone(checked);
+                            updateSubtask({ done: checked });
+                        }}
+                    />
+                )}
                 <div className={styles.title}>{getTaskNameById(task.subTaskId)}</div>
                 {/*<div className={styles.categoryText}>•</div>
                 <div className={styles.categoryText}>{catregory}</div>*/}
                 <div className={styles.spacer} />
-                <IconButton svgContent={deleteIcon} isSmall onClick={() => onDelete(index)} />
+                {!disabled && <IconButton svgContent={deleteIcon} isSmall onClick={() => onDelete(index)} />}
             </div>
             <div className={styles.lowerRow}>
                 <div className={styles.timeContainer}>
@@ -66,6 +76,7 @@ const LogCard: React.FC<LogCardProps> = ({ index, task, startTimeInvalid = false
                         }}
                         fillWidth
                         invalid={startTimeInvalid || compareTime(selectedStartTime, selectedEndTime) > 0}
+                        disabled={disabled}
                     />
                 </div>
                 <div />
@@ -80,6 +91,7 @@ const LogCard: React.FC<LogCardProps> = ({ index, task, startTimeInvalid = false
                         }}
                         fillWidth
                         invalid={compareTime(selectedStartTime, selectedEndTime) > 0}
+                        disabled={disabled}
                     />
                 </div>
             </div>

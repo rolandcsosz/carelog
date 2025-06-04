@@ -13,6 +13,7 @@ import plusButton from "../../assets/add-button-icon-secondary.svg";
 import usePopup from "../../hooks/usePopup";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 import TextArea from "../../components/TextArea";
+import LogEdit from "./LogEdit";
 
 interface RecipientPageProps {
     recipient: Recipient;
@@ -27,11 +28,14 @@ const moveItem = (arr: Todo[], fromIndex: number, toIndex: number): Todo[] => {
 
 const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const [menu, setMenu] = useState<string>("Adatok");
-    const { removeLastPageFromStack } = useNavigation();
+    const { removeLastPageFromStack, addPageToStack } = useNavigation();
     const { user, recipients, todos, subTasks, relationships } = useCaregiverModel();
     const [note, setNote] = useState<string>(recipient.caregiverNote);
     const { getLogsForRecipient } = useQueryData();
-    const logsForRecipient = getLogsForRecipient(recipient, true);
+    const logsForRecipient =
+        getLogsForRecipient(recipient)?.sort((a, b) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }) || [];
     const { openPopup, closePopup } = usePopup();
     const connection = relationships.list?.find(
         (relationship) => relationship.recipientId === recipient.id && relationship.caregiverId === user.list?.id,
@@ -200,7 +204,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                             key={index}
                             date={log.date}
                             onClick={() => {
-                                // Handle date card click
+                                addPageToStack(<LogEdit log={log} />);
                             }}
                         />
                     ))}

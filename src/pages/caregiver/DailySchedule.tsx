@@ -1,10 +1,10 @@
 import styles from "./DailySchedule.module.scss";
-import React, { useEffect } from "react";
+import React from "react";
 import useNavigation from "../../hooks/useNavigation.ts";
 import TimeTableRow from "../../components/TimeTableRow.tsx";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
 import Recipient from "./RecipientPage.tsx";
-import { getHourAndMinuteTimeString, getDateString } from "../../utils.tsx";
+import { getHourAndMinuteTimeString, getDateString, convertToGlobalUTC } from "../../utils.tsx";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import useQueryData from "../../hooks/useQueryData.ts";
 import { actualLogTasksState, openLogState } from "../../model.ts";
@@ -29,25 +29,38 @@ const DailySchedule: React.FC = () => {
     const { openPopup } = usePopup();
     const setSubTasks = useSetRecoilState(actualLogTasksState);
 
-    useEffect(() => {
-        logs.list?.forEach((log, index) => {
-            //console.log("Log at index:", index, log.finished);
-        });
-    }, [logs.list]); // rerender when logs.list changes
-
-    //"done" | "notEditable" | "new" | "error";
-    //TODO: open log test
-    const getStatusForSchedule = (schedule: Schedule) => {
-        const log = logs.list?.find((log) => log.relationshipId === schedule.relationshipId);
-        if (!log) {
-            return openLog ? "notEditable" : "new";
+    const getStatusForSchedule = (index: number) => {
+        if (openLog) {
+            return "notEditable";
         }
 
-        if (log.finished) {
+        if (index < 0 || index >= filteredSchedules.length) {
+            return "notEditable";
+        }
+
+        const searchSchedule = filteredSchedules[index];
+
+        const schedules = filteredSchedules
+            .slice(0, index + 1)
+            .filter((schedule) => Number(schedule.relationshipId) === searchSchedule.relationshipId);
+
+        const filteredLogs =
+            logs.list?.filter(
+                (log) =>
+                    log.finished &&
+                    convertToGlobalUTC(log.date) === convertToGlobalUTC(today) &&
+                    log.relationshipId === searchSchedule?.relationshipId,
+            ) || [];
+
+        if (filteredLogs.length === 0 && schedules.length === 0) {
+            return "new";
+        }
+
+        if (filteredLogs.length === schedules.length || filteredLogs.length > schedules.length) {
             return "done";
         }
 
-        return openLog ? "notEditable" : "new";
+        return "new";
     };
 
     const handleNewLog = (schedule: Schedule) => {
@@ -60,7 +73,7 @@ const DailySchedule: React.FC = () => {
                 .map(
                     (todo) =>
                         ({
-                            subtaskId: todo.id,
+                            subtaskId: todo.subtaskId,
                             startTime: null,
                             endTime: null,
                         }) as TaskDescription,
@@ -68,7 +81,7 @@ const DailySchedule: React.FC = () => {
         const prevTodos: TaskDescription[] =
             logs?.list
                 ?.filter((log) => log.relationshipId === schedule.relationshipId)
-                ?.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())?.[0]
+                ?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())?.[0]
                 ?.tasks.map(
                     (task) =>
                         ({
@@ -148,7 +161,7 @@ const DailySchedule: React.FC = () => {
                     <div className={styles.timeCell}>Óra</div>
                     <div className={styles.dataCell}>Gondozott adatai</div>
                 </div>
-                {filteredSchedules.map((schedule) => {
+                {filteredSchedules.map((schedule, index) => {
                     const recipient = getRecipientForSchedule(schedule);
                     if (!recipient) {
                         return null;
@@ -160,7 +173,7 @@ const DailySchedule: React.FC = () => {
                             end={schedule.end}
                             userName={recipient.name}
                             address={recipient.address}
-                            type={getStatusForSchedule(schedule)}
+                            type={getStatusForSchedule(index)}
                             onOpen={() => {
                                 addPageToStack(<Recipient recipient={recipient} />);
                             }}

@@ -15,8 +15,6 @@ import {
     GetRecipientsByIdResponse,
     GetSubtasksResponse,
     GetTasktypesResponse,
-    GetTodosRelationshipByRelationshipIdData,
-    GetTodosRelationshipByRelationshipIdResponse,
     GetTodosResponse,
     PostLogsData,
     PostLogsResponse,
@@ -46,7 +44,6 @@ import {
     getSubtasks,
     getTasktypes,
     getTodos,
-    getTodosRelationshipByRelationshipId,
     postLogs,
     postSubtasks,
     postTodos,
@@ -192,75 +189,6 @@ const fetchSubTasks = async (
     })) as SubTask[];
 };
 
-const fetchTodosForRelationshipId = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    body: GetTodosRelationshipByRelationshipIdData,
-): Promise<Todo[]> => {
-    const response = await request<
-        GetTodosRelationshipByRelationshipIdData,
-        GetTodosRelationshipByRelationshipIdResponse
-    >(getTodosRelationshipByRelationshipId, body);
-
-    if (!response || !response.ok || !response.data || response.data.length === 0) {
-        return [];
-    }
-
-    return response.data.map((todo) => ({
-        id: Number(todo?.id) || -1,
-        subtaskId: Number(todo?.subtaskId) || "",
-        relationshipId: Number(todo?.relationshipId) || -1,
-        sequence: Number(todo?.sequenceNumber) || -1,
-        done: todo?.done || false,
-    })) as Todo[];
-};
-
-const setTodo = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    body: PutTodosByIdData,
-): Promise<FetchResponse<null>> => {
-    const response = await request<PutTodosByIdData, PutTodosByIdResponse>(putTodosById, body);
-
-    if (!response || !response.ok || !response.data) {
-        return {
-            ok: false,
-            data: null,
-            error: response?.error || "Ismeretlen hiba történt a teendő szerkesztése során.",
-        };
-    }
-
-    return { ok: true, data: null, error: null };
-};
-
-const addTodo = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    body: PostTodosData,
-): Promise<FetchResponse<null>> => {
-    const response = await request<PostTodosData, PostTodosResponse>(postTodos, body);
-
-    if (!response || !response.ok || !response.data) {
-        return {
-            ok: false,
-            data: null,
-            error: response?.error || "Ismeretlen hiba történt a teendő hozzáadása során.",
-        };
-    }
-
-    return { ok: true, data: null, error: null };
-};
-
-const deleteTodo = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    body: DeleteTodosByIdData,
-): Promise<FetchResponse<null>> => {
-    const response = await request<DeleteTodosByIdData, DeleteTodosByIdResponse>(deleteTodosById, body);
-
-    if (!response || !response.ok || !response.data) {
-        return { ok: false, data: null, error: response?.error || "Ismeretlen hiba történt a teendő törlése során." };
-    }
-
-    return { ok: true, data: null, error: null };
-};
-
 const setPassword = async (
     request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
     body: PutCaregiversByIdPasswordData,
@@ -292,10 +220,10 @@ const fetchLogs = async (
                 const response = await request<
                     GetLogsRelationshipByRecipientIdByCaregiverIdData,
                     GetLogsRelationshipByRecipientIdByCaregiverIdResponse
-                >(
-                    getLogsRelationshipByRecipientIdByCaregiverId,
-                    { recipientId: recipientId.toString(), caregiverId: caregiverId.toString() }, // TODO check if this is correct
-                );
+                >(getLogsRelationshipByRecipientIdByCaregiverId, {
+                    recipientId: recipientId.toString(),
+                    caregiverId: caregiverId.toString(),
+                });
                 if (!response || !response.ok || !response.data || response.data.length === 0) {
                     return [];
                 }

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import TodoItem from "./TodoItem";
+import TodoItem from "../components/TodoItem";
 
 const meta = {
     component: TodoItem,
@@ -12,10 +12,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        name: "name",
+        //name: "name",
         selectedItem: "selectedItem",
         options: [],
         index: 0,
-        onSelectedChanged: () => {},
+        onSelectedChanged: (selected: string) => {
+            void selected;
+        },
+        onDelete: () => {},
     },
 };

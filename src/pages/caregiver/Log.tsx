@@ -12,6 +12,7 @@ import { NewSubTypeData, PopupActionResult, Task } from "../../types";
 import LogCard from "../../components/LogCard.tsx";
 import NewSubTaskFormRow from "../../components/popup-contents/NewSubTaskFormRow.tsx";
 import useLoader from "../../hooks/useLoader.tsx";
+import plusButton from "../../assets/add-button-icon-secondary.svg";
 
 const Log: React.FC = () => {
     const { logs, subTasks } = useCaregiverModel();
@@ -43,6 +44,7 @@ const Log: React.FC = () => {
                             message: "Új napló bezárás folyamatban...",
                             timeout: 2000,
                             callback: () => {
+                                logs.refetch();
                                 closePopup();
                                 closeSheet();
                             },
@@ -244,8 +246,9 @@ const Log: React.FC = () => {
             <div className={styles.buttonConatainer}>
                 <Button
                     primary={false}
-                    label="Teendő hozzáadás"
                     size="large"
+                    noText
+                    icon={plusButton}
                     onClick={handleNewSubTask}
                     fillWidth={true}
                 />
