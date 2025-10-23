@@ -2,35 +2,39 @@
 
 ## Local dev setup
 1. Clone the repository
-2. Run `npm install`
-3. Setup backend url in `src/env.ts` file. By default, it is set to `http://localhost:8080`. You can change it to your backend url.
-4. Run `npm run dev` to start the app in development mode.
-5. Open your browser and go to `http://localhost:5173/` to see the app in action.
-6. Hot reloading is enabled, so any changes you make to the code will be reflected in the browser without needing to refresh the page.
+2. Open frontend directory by running `cd frontend`
+3. Run `npm install`
+4. Setup backend url in `src/env.ts` file. By default, it is set to `http://localhost:8080`. You can change it to your backend url.
+5. Run `npm run dev` to start the app in development mode.
+6. Open your browser and go to `http://localhost:5173/` to see the app in action.
+7. Hot reloading is enabled, so any changes you make to the code will be reflected in the browser without needing to refresh the page.
 
 ## Running the app in docker
 1. Clone the repository
-2. In docker-compose.yml file, set the BACKEND_URL in the environment section to your backend url.
-3. Run `docker-compose up -d` to start the app in docker.
-4. Open your browser and go to `http://localhost/` to see the app in action.
+2. Open the frontend directory.
+3. In docker-compose.yml file, set the BACKEND_URL in the environment section to your backend url.
+4. Run `docker-compose up -d` to start the app in docker.
+5. Open your browser and go to `http://localhost/` to see the app in action.
 
 ## Building IOS app
 1. Clone the repository
-2. Run `npm install`
-3. Run `npx cap add ios` to add the ios platform to the project.
-4. Run `npm run ios` to build the ios source code.
-5. Open the ios/ directory in Xcode.
-6. In Xcode, select the target device and click on the play button to run the app on the device or simulator.
-7. If you want to build the app for release, select the Generic iOS Device as the target device and then go to Product > Archive. This will create an archive of the app that you can distribute to the App Store or to your testers.
+2. Open frontend directory by running `cd frontend`
+3. Run `npm install`
+4. Run `npx cap add ios` to add the ios platform to the project.
+5. Run `npm run ios` to build the ios source code.
+6. Open the ios/ directory in Xcode.
+7. In Xcode, select the target device and click on the play button to run the app on the device or simulator.
+8. If you want to build the app for release, select the Generic iOS Device as the target device and then go to Product > Archive. This will create an archive of the app that you can distribute to the App Store or to your testers.
 
 ## Building android app
 1. Clone the repository
-2. Run `npm install`
-3. Run `npx cap add android` to add the android platform to the project.
-3. Run `npm run android` to build the android source code.
-4. Set  `ANDROID_HOME` environment variable to your android sdk path. Usually it is *C:\Users\user\AppData\Local\Android\Sdk* on windows after installing android studio.
-4. In the android/ directory, run `./gradlew assembleRelease` to build the app.
-5. The release apk will be generated in the *android/app/build/outputs/apk/release/* directory. The file name will be `app-release-unsigned.apk`. It is unsigned, so you need to sign it before distributing it because android does not allow unsigned apks to be installed on devices. To sign the apk, you need to modify the `build.gradle` file in the android/app/ directory and then run the `./gradlew assembleRelease` command again. You can find the instructions to sign the apk: [https://developer.android.com/studio/publish/app](https://developer.android.com/studio/publish/app).
+2. Open frontend directory by running `cd frontend`
+3. Run `npm install`
+4. Run `npx cap add android` to add the android platform to the project.
+5. Run `npm run android` to build the android source code.
+6. Set  `ANDROID_HOME` environment variable to your android sdk path. Usually it is *C:\Users\user\AppData\Local\Android\Sdk* on windows after installing android studio.
+7. In the android/ directory, run `./gradlew assembleRelease` to build the app.
+8. The release apk will be generated in the *android/app/build/outputs/apk/release/* directory. The file name will be `app-release-unsigned.apk`. It is unsigned, so you need to sign it before distributing it because android does not allow unsigned apks to be installed on devices. To sign the apk, you need to modify the `build.gradle` file in the android/app/ directory and then run the `./gradlew assembleRelease` command again. You can find the instructions to sign the apk: [https://developer.android.com/studio/publish/app](https://developer.android.com/studio/publish/app).
 
 ## Known issues
 

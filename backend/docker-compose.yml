@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - elasticsearch
+    networks:
+      - app-network
+
+
+  postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      INIT_PG_DATA: ${INIT_PG_DATA}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/scripts/init.sql
+      - ./init_data/example_data.sql:/scripts/example_data.sql
+      - ./entrypoint.sh:/docker-entrypoint-initdb.d/entrypoint.sh
+
+    networks:
+      - app-network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - app-network
+
+
+volumes:
+  pgdata:
+  esdata:
+
+networks:
+  app-network:
+    driver: bridge

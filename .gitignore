@@ -3,3 +3,6 @@ frontend/dist
 frontend/build
 frontend/android
 frontend/ios
+
+backend/node_modules
+backend/.env
