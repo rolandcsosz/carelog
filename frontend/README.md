@@ -1,4 +1,4 @@
-# Activity Log App
+# Activity Log App - Frontend
 
 ## Local dev setup
 1. Clone the repository
