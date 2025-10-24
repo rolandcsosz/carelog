@@ -20,7 +20,7 @@ app.use(cors());
 app.use(express.json());
 RegisterRoutes(app);
 
-const swaggerFilePath = path.join("swagger.json");
+const swaggerFilePath = path.join(process.cwd(), "dist", "swagger.json");
 app.use("/docs", swaggerUi.serve, async (_req: Request, res: Response, next: NextFunction) => {
     if (!fs.existsSync(swaggerFilePath)) return res.status(404).send("Swagger file not found");
 

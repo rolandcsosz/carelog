@@ -1,8 +1,16 @@
 import pkg from "pg";
 const { Pool } = pkg;
+import pgTypes from "pg-types";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+pgTypes.setTypeParser(pkg.types.builtins.INT2, (val) => parseInt(val, 10));
+pgTypes.setTypeParser(pkg.types.builtins.INT4, (val) => parseInt(val, 10));
+pgTypes.setTypeParser(pkg.types.builtins.INT8, (val) => parseInt(val, 10));
+pgTypes.setTypeParser(pkg.types.builtins.FLOAT4, (val) => parseFloat(val));
+pgTypes.setTypeParser(pkg.types.builtins.FLOAT8, (val) => parseFloat(val));
+pgTypes.setTypeParser(pkg.types.builtins.NUMERIC, (val) => parseFloat(val));
 
 const pool = new Pool({
     user: process.env.DB_USER,
