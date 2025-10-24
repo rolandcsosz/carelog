@@ -93,3 +93,8 @@ export interface SuccessResponse {
 export const successResponse: SuccessResponse = {
     message: "OK",
 };
+
+export interface LogedInUser {
+    id: number;
+    role: string;
+}

@@ -1,4 +1,4 @@
-import { Controller, Route, Get, Post, Put, Delete, Body, Path, Response, TsoaResponse, Tags } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Body, Path, Response, Tags } from "tsoa";
 import elasticClient from "../client.js";
 import db from "../db.js";
 import { getErrorMessage } from "../utils.js";

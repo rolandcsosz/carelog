@@ -1,11 +1,11 @@
 import { Post, Route, Tags, Body, Response, Controller } from "tsoa";
-import { Admin, ErrorResponse } from "../model.js";
+import { Admin, ErrorResponse, LogedInUser } from "../model.js";
 import db from "../db.js";
 import { getErrorMessage, parseRows } from "../utils.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const SECRET_KEY = process.env.SECRET_KEY || "secret";
+const SECRET_KEY = process.env.JWT_SECRET || "secret";
 
 interface LoginRequest {
     email: string;
@@ -38,7 +38,7 @@ export class LoginController extends Controller {
                     return { error: "Hibás jelszó", message: "" } as ErrorResponse;
                 }
 
-                const token = jwt.sign({ id: admin.id, role: "admin" }, SECRET_KEY, { expiresIn: "1d" });
+                const token = jwt.sign({ id: admin.id, role: "admin" } as LogedInUser, SECRET_KEY, { expiresIn: "1d" });
                 this.setStatus(200);
 
                 return {

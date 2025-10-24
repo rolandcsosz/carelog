@@ -4,10 +4,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import * as path from "path";
 import * as fs from "fs";
+import { ValidateError } from "tsoa";
+import { getErrorMessage } from "./utils.js";
+import { RegisterRoutes } from "./routes/routes.js";
 
 dotenv.config();
 
-import { RegisterRoutes } from "./routes/routes.js";
 import "./client.js";
 import "./db.js";
 
@@ -37,9 +39,22 @@ app.get("/", (_req: Request, res: Response) => {
     res.send("");
 });
 
-app.use((err: unknown, _req: Request, res: Response, _next: any) => {
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+    void _next;
+    if (err instanceof ValidateError) {
+        return res.status(400).json({
+            message: "Validációs hiba",
+            details: getErrorMessage(err),
+        });
+    }
+
+    if (err && typeof err === "object" && "status" in err && "message" in err) {
+        const e = err as { status: number; message: string };
+        return res.status(e.status).json({ message: e.message });
+    }
+
     console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal server error" });
 });
 
 app.listen(port, () => {

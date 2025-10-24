@@ -21,6 +21,8 @@ interface RelationshipRequest {
     caregiverId: number;
 }
 
+// TODO: Add strict typing to responses
+
 @Route("relationships")
 @Tags("Relationships")
 export class RelationshipController extends Controller {
