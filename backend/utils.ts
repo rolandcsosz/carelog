@@ -8,3 +8,15 @@ export const getErrorMessage = (error: unknown): string => {
     }
     return "Ismeretlen hiba történt";
 };
+
+export const parseRows = <T>(rows: unknown): T[] => {
+    if (!Array.isArray(rows)) {
+        return [];
+    }
+
+    try {
+        return rows.map((row) => ({ ...(row as T) }));
+    } catch {
+        return [];
+    }
+};

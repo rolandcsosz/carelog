@@ -15,11 +15,11 @@ const pool = new Pool({
 function connectWithRetry(): void {
     pool.connect()
         .then((client) => {
-            console.log("✅ Connected to PostgreSQL!");
+            console.log("✔ Connected to PostgreSQL!");
             client.release();
         })
         .catch((error) => {
-            console.error("❌ PostgreSQL connection failed:", error.message);
+            console.error("✖ PostgreSQL connection failed:", error.message);
             setTimeout(connectWithRetry, 5000);
         });
 }

@@ -1,3 +1,10 @@
+export interface User {
+    id: number;
+    role: string;
+    name: string;
+    email: string;
+}
+
 export interface Admin {
     id: number;
     name: string;
@@ -73,3 +80,16 @@ export interface LogEntry {
     closed: boolean;
     tasks: TaskLog[];
 }
+
+export interface ErrorResponse {
+    error: string;
+    message: string;
+}
+
+export interface SuccessResponse {
+    message: string;
+}
+
+export const successResponse: SuccessResponse = {
+    message: "OK",
+};
