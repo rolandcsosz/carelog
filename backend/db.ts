@@ -2,6 +2,8 @@ import pkg from "pg";
 const { Pool } = pkg;
 import pgTypes from "pg-types";
 import dotenv from "dotenv";
+import { seed, initAdminIfNeeded } from "./prisma/seed.js";
+import { getErrorMessage } from "./utils.js";
 
 dotenv.config();
 
@@ -13,23 +15,33 @@ pgTypes.setTypeParser(pkg.types.builtins.FLOAT8, (val) => parseFloat(val));
 pgTypes.setTypeParser(pkg.types.builtins.NUMERIC, (val) => parseFloat(val));
 
 const pool = new Pool({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
     host: process.env.DB_HOST || "postgres",
-    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 5432,
-    database: process.env.DB_NAME,
+    port: process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT, 10) : 5432,
+    database: process.env.POSTGRES_DB,
 });
 
-function connectWithRetry(): void {
-    pool.connect()
-        .then((client) => {
-            console.log("✔ Connected to PostgreSQL!");
-            client.release();
-        })
-        .catch((error) => {
-            console.error("✖ PostgreSQL connection failed:", error.message);
-            setTimeout(connectWithRetry, 5000);
-        });
+async function connectWithRetry(): Promise<void> {
+    try {
+        const client = await pool.connect();
+        console.log("✔ Connected to PostgreSQL!");
+        await initAdminIfNeeded();
+
+        if (process.env.INIT_PG_DATA === "true") {
+            try {
+                seed();
+                console.log("✔ Seeding completed successfully.");
+            } catch (seedError) {
+                console.error("✖ Seeding failed:", seedError);
+            }
+        }
+
+        client.release();
+    } catch (err) {
+        console.error("✖ PostgreSQL connection failed:", getErrorMessage(err));
+        setTimeout(connectWithRetry, 5000);
+    }
 }
 
 connectWithRetry();

@@ -7,31 +7,30 @@ services:
       - "8080:8080"
     env_file:
       - .env
+      - .env.prod
     depends_on:
-      - postgres
-      - elasticsearch
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
     networks:
       - app-network
-
 
   postgres:
     image: postgres:14
     restart: always
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-      INIT_PG_DATA: ${INIT_PG_DATA}
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./init.sql:/scripts/init.sql
-      - ./init_data/example_data.sql:/scripts/example_data.sql
-      - ./entrypoint.sh:/docker-entrypoint-initdb.d/entrypoint.sh
-
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      retries: 5
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
@@ -44,7 +43,10 @@ services:
       - esdata:/usr/share/elasticsearch/data
     networks:
       - app-network
-
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200 || exit 1"]
+      interval: 10s
+      retries: 5
 
 volumes:
   pgdata:

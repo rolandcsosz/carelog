@@ -12,16 +12,16 @@ import {
     Controller,
     Security,
 } from "tsoa";
-import { Admin, ErrorResponse, successResponse, SuccessResponse } from "../model.js";
-import db from "../db.js";
-import { getErrorMessage, parseRows } from "../utils.js";
+import { ErrorResponse, successResponse, SuccessResponse } from "../model.js";
+import { getErrorCode, getErrorMessage, parseRows } from "../utils.js";
 import bcrypt from "bcrypt";
+import { PrismaClient, Admin } from "@prisma/client";
 
-interface CreateAdminRequest {
-    name: string;
-    email: string;
-    password: string;
-}
+const prisma = new PrismaClient();
+
+type CreateAdminRequest = Omit<Admin, "id">;
+
+type AdminWithoutPassword = Omit<Admin, "password">;
 
 interface UpdateAdminPasswordRequest {
     currentPassword: string;
@@ -34,10 +34,13 @@ export class AdminController extends Controller {
     @Get("/")
     @Security("jwt", ["admin"])
     @Response<ErrorResponse>(500, "Database error")
-    public async getAdmins(): Promise<Admin[] | ErrorResponse> {
+    public async getAdmins(): Promise<AdminWithoutPassword[] | ErrorResponse> {
         try {
-            const result = await db.query("SELECT id, name, email FROM admins ORDER BY id ASC");
-            return parseRows<Admin>(result.rows);
+            const admins = await prisma.admin.findMany({
+                orderBy: { id: "asc" },
+                select: { id: true, name: true, email: true },
+            });
+            return admins as AdminWithoutPassword[];
         } catch (err) {
             this.setStatus(500);
             return { error: "Adatbázis hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -48,16 +51,19 @@ export class AdminController extends Controller {
     @Security("jwt", ["admin"])
     @Response<ErrorResponse>(404, "Admin not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getAdminById(@Path() id: number): Promise<Admin | ErrorResponse> {
+    public async getAdminById(@Path() id: string): Promise<AdminWithoutPassword | ErrorResponse> {
         try {
-            const result = await db.query("SELECT id, name, email FROM admins WHERE id=$1", [id]);
+            const admin = await prisma.admin.findUnique({
+                where: { id },
+                select: { id: true, name: true, email: true },
+            });
 
-            if (result.rows.length === 0) {
+            if (!admin) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen admin", message: "" } as ErrorResponse;
             }
 
-            return result.rows[0];
+            return admin as AdminWithoutPassword;
         } catch (err) {
             this.setStatus(500);
             return { error: "Adatbázis hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -69,7 +75,7 @@ export class AdminController extends Controller {
     @TsoaSuccessResponse("201", "Created")
     @Response<ErrorResponse>(400, "Missing fields")
     @Response<ErrorResponse>(500, "Database error")
-    public async createAdmin(@Body() body: CreateAdminRequest): Promise<Admin | ErrorResponse> {
+    public async createAdmin(@Body() body: CreateAdminRequest): Promise<AdminWithoutPassword | ErrorResponse> {
         if (!body.name || !body.email || !body.password) {
             this.setStatus(400);
             return { error: "Hiányzó mező", message: "" } as ErrorResponse;
@@ -77,21 +83,18 @@ export class AdminController extends Controller {
 
         try {
             const hashedPassword = await bcrypt.hash(body.password, 10);
-            const result = await db.query("INSERT INTO admins (name, email, password) VALUES ($1,$2,$3) RETURNING *", [
-                body.name,
-                body.email,
-                hashedPassword,
-            ]);
 
-            const rows = parseRows<Admin>(result.rows);
+            const admin = await prisma.admin.create({
+                data: {
+                    name: body.name,
+                    email: body.email,
+                    password: hashedPassword,
+                },
+                select: { id: true, name: true, email: true },
+            });
 
-            if (rows.length === 0) {
-                this.setStatus(500);
-                return { error: "Nem sikerült az admin létrehozása", message: "" } as ErrorResponse;
-            }
             this.setStatus(201);
-
-            return rows[0];
+            return admin as AdminWithoutPassword;
         } catch (err) {
             this.setStatus(500);
             return { error: "Hiba az admin létrehozásakor", message: getErrorMessage(err) } as ErrorResponse;
@@ -104,7 +107,7 @@ export class AdminController extends Controller {
     @Response<ErrorResponse>(404, "Admin not found")
     @Response<ErrorResponse>(500, "Database error")
     public async updateAdmin(
-        @Path() id: number,
+        @Path() id: string,
         @Body() body: { name: string; email: string },
     ): Promise<SuccessResponse | ErrorResponse> {
         if (!body.name || !body.email) {
@@ -113,19 +116,17 @@ export class AdminController extends Controller {
         }
 
         try {
-            const result = await db.query("UPDATE admins SET name=$1,email=$2 WHERE id=$3 RETURNING id,name,email", [
-                body.name,
-                body.email,
-                id,
-            ]);
-            if (!result.rows.length) {
+            const updated = await prisma.admin.update({
+                where: { id },
+                data: { name: body.name, email: body.email },
+            });
+
+            return successResponse;
+        } catch (err) {
+            if (getErrorCode(err) === "P2025") {
                 this.setStatus(404);
                 return { error: "Nincs ilyen admin", message: "" } as ErrorResponse;
             }
-
-            this.setStatus(200);
-            return successResponse;
-        } catch (err) {
             this.setStatus(500);
             return { error: "Hiba az admin frissítésekor", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -137,7 +138,7 @@ export class AdminController extends Controller {
     @Response<ErrorResponse>(404, "Admin not found")
     @Response<ErrorResponse>(500, "Database error")
     public async updateAdminPassword(
-        @Path() id: number,
+        @Path() id: string,
         @Body() body: UpdateAdminPasswordRequest,
     ): Promise<SuccessResponse | ErrorResponse> {
         const { currentPassword, newPassword } = body;
@@ -147,22 +148,26 @@ export class AdminController extends Controller {
         }
 
         try {
-            const result = await db.query("SELECT password FROM admins WHERE id=$1", [id]);
-            if (!result.rows.length) {
+            const admin = await prisma.admin.findUnique({ where: { id } });
+            if (!admin) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen admin", message: "" } as ErrorResponse;
             }
 
-            const storedHash = result.rows[0].password;
-            const isValid = await bcrypt.compare(currentPassword, storedHash);
+            if (!admin) {
+                this.setStatus(404);
+                return { error: "Nincs ilyen admin", message: "" } as ErrorResponse;
+            }
+
+            const isValid = await bcrypt.compare(currentPassword, admin.password);
             if (!isValid) {
                 this.setStatus(400);
                 return { error: "Helytelen régi jelszó", message: "" } as ErrorResponse;
             }
 
             const newHash = await bcrypt.hash(newPassword, 10);
-            await db.query("UPDATE admins SET password=$1 WHERE id=$2", [newHash, id]);
-            this.setStatus(200);
+            await prisma.admin.update({ where: { id }, data: { password: newHash } });
+
             return successResponse;
         } catch (err) {
             this.setStatus(500);
@@ -174,16 +179,15 @@ export class AdminController extends Controller {
     @Security("jwt", ["admin"])
     @Response<ErrorResponse>(404, "Admin not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async deleteAdmin(@Path() id: number): Promise<SuccessResponse | ErrorResponse> {
+    public async deleteAdmin(@Path() id: string): Promise<SuccessResponse | ErrorResponse> {
         try {
-            const result = await db.query("DELETE FROM admins WHERE id=$1 RETURNING id", [id]);
-            if (!result.rows.length) {
+            await prisma.admin.delete({ where: { id } });
+            return successResponse;
+        } catch (err) {
+            if (getErrorCode(err) === "P2025") {
                 this.setStatus(404);
                 return { error: "Nincs ilyen admin", message: "" } as ErrorResponse;
             }
-            this.setStatus(200);
-            return successResponse;
-        } catch (err) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }

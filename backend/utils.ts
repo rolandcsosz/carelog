@@ -9,6 +9,13 @@ export const getErrorMessage = (error: unknown): string => {
     return "Ismeretlen hiba történt";
 };
 
+export const getErrorCode = (error: unknown): string => {
+    if (typeof error === "object" && error !== null && "code" in error && typeof error.code === "string") {
+        return error.code;
+    }
+    return "";
+};
+
 export const parseRows = <T>(rows: unknown): T[] => {
     if (!Array.isArray(rows)) {
         return [];
