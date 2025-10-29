@@ -12,17 +12,19 @@ import {
     Controller,
     Security,
 } from "tsoa";
-import db from "../db.js";
-import { getErrorMessage, parseRows } from "../utils.js";
 import bcrypt from "bcrypt";
-import { Caregiver, ErrorResponse, successResponse, SuccessResponse } from "../model.js";
+import { PrismaClient } from "@prisma/client";
+import { CaregiverWithoutPassword, ErrorResponse, successResponse, SuccessResponse } from "../model.js";
+import { getErrorMessage, getErrorCode } from "../utils.js";
 
-interface CreateCaregiverRequest {
+const prisma = new PrismaClient();
+
+type CreateCaregiverRequest = {
     name: string;
     email: string;
     phone: string;
     password: string;
-}
+};
 
 interface UpdateCaregiverPasswordRequest {
     currentPassword: string;
@@ -35,10 +37,13 @@ export class CaregiverController extends Controller {
     @Get("/")
     @Security("jwt")
     @Response<ErrorResponse>(500, "Database error")
-    public async getCaregivers(): Promise<Caregiver[] | ErrorResponse> {
+    public async getCaregivers(): Promise<CaregiverWithoutPassword[] | ErrorResponse> {
         try {
-            const result = await db.query("SELECT id, name, phone, email FROM caregivers ORDER BY id ASC");
-            return parseRows<Caregiver>(result.rows);
+            const caregivers = await prisma.caregiver.findMany({
+                orderBy: { id: "asc" },
+                select: { id: true, name: true, email: true, phone: true },
+            });
+            return caregivers;
         } catch (err) {
             this.setStatus(500);
             return { error: "Adatbázis hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -49,14 +54,19 @@ export class CaregiverController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Caregiver not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getCaregiverById(@Path() id: number): Promise<Caregiver | ErrorResponse> {
+    public async getCaregiverById(@Path() id: string): Promise<CaregiverWithoutPassword | ErrorResponse> {
         try {
-            const result = await db.query("SELECT id, name, phone, email FROM caregivers WHERE id=$1", [id]);
-            if (!result.rows.length) {
+            const caregiver = await prisma.caregiver.findUnique({
+                where: { id },
+                select: { id: true, name: true, email: true, phone: true },
+            });
+
+            if (!caregiver) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozó", message: "" } as ErrorResponse;
             }
-            return parseRows<Caregiver>(result.rows)[0];
+
+            return caregiver;
         } catch (err) {
             this.setStatus(500);
             return { error: "Adatbázis hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -68,7 +78,9 @@ export class CaregiverController extends Controller {
     @TsoaSuccessResponse("201", "Created")
     @Response<ErrorResponse>(400, "Missing fields")
     @Response<ErrorResponse>(500, "Database error")
-    public async createCaregiver(@Body() body: CreateCaregiverRequest): Promise<Caregiver | ErrorResponse> {
+    public async createCaregiver(
+        @Body() body: CreateCaregiverRequest,
+    ): Promise<CaregiverWithoutPassword | ErrorResponse> {
         if (!body.name || !body.email || !body.phone || !body.password) {
             this.setStatus(400);
             return { error: "Hiányzó mező", message: "" } as ErrorResponse;
@@ -76,18 +88,18 @@ export class CaregiverController extends Controller {
 
         try {
             const hashedPassword = await bcrypt.hash(body.password, 10);
-            const result = await db.query(
-                "INSERT INTO caregivers (name, email, phone, password) VALUES ($1,$2,$3,$4) RETURNING *",
-                [body.name, body.email, body.phone, hashedPassword],
-            );
+            const caregiver = await prisma.caregiver.create({
+                data: {
+                    name: body.name,
+                    email: body.email,
+                    phone: body.phone,
+                    password: hashedPassword,
+                },
+                select: { id: true, name: true, email: true, phone: true },
+            });
 
-            const rows = parseRows<Caregiver>(result.rows);
-            if (!rows.length) {
-                this.setStatus(500);
-                return { error: "Nem sikerült a gondozó létrehozása", message: "" } as ErrorResponse;
-            }
             this.setStatus(201);
-            return rows[0];
+            return caregiver;
         } catch (err) {
             this.setStatus(500);
             return { error: "Hiba a gondozó létrehozásakor", message: getErrorMessage(err) } as ErrorResponse;
@@ -100,7 +112,7 @@ export class CaregiverController extends Controller {
     @Response<ErrorResponse>(404, "Caregiver not found")
     @Response<ErrorResponse>(500, "Database error")
     public async updateCaregiver(
-        @Path() id: number,
+        @Path() id: string,
         @Body() body: { name: string; email: string; phone: string },
     ): Promise<SuccessResponse | ErrorResponse> {
         if (!body.name || !body.email || !body.phone) {
@@ -109,17 +121,16 @@ export class CaregiverController extends Controller {
         }
 
         try {
-            const result = await db.query(
-                "UPDATE caregivers SET name=$1, email=$2, phone=$3 WHERE id=$4 RETURNING id, name, email, phone",
-                [body.name, body.email, body.phone, id],
-            );
-            if (!result.rows.length) {
+            await prisma.caregiver.update({
+                where: { id },
+                data: { name: body.name, email: body.email, phone: body.phone },
+            });
+            return successResponse;
+        } catch (err) {
+            if (getErrorCode(err) === "P2025") {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozó", message: "" } as ErrorResponse;
             }
-            this.setStatus(200);
-            return successResponse;
-        } catch (err) {
             this.setStatus(500);
             return { error: "Hiba a gondozó frissítésekor", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -131,7 +142,7 @@ export class CaregiverController extends Controller {
     @Response<ErrorResponse>(404, "Caregiver not found")
     @Response<ErrorResponse>(500, "Database error")
     public async updateCaregiverPassword(
-        @Path() id: number,
+        @Path() id: string,
         @Body() body: UpdateCaregiverPasswordRequest,
     ): Promise<SuccessResponse | ErrorResponse> {
         const { currentPassword, newPassword } = body;
@@ -141,22 +152,21 @@ export class CaregiverController extends Controller {
         }
 
         try {
-            const result = await db.query("SELECT password FROM caregivers WHERE id=$1", [id]);
-            if (!result.rows.length) {
+            const caregiver = await prisma.caregiver.findUnique({ where: { id } });
+            if (!caregiver) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozó", message: "" } as ErrorResponse;
             }
 
-            const storedHash = result.rows[0].password;
-            const isValid = await bcrypt.compare(currentPassword, storedHash);
+            const isValid = await bcrypt.compare(currentPassword, caregiver.password);
             if (!isValid) {
                 this.setStatus(400);
                 return { error: "Helytelen régi jelszó", message: "" } as ErrorResponse;
             }
 
             const newHash = await bcrypt.hash(newPassword, 10);
-            await db.query("UPDATE caregivers SET password=$1 WHERE id=$2", [newHash, id]);
-            this.setStatus(200);
+            await prisma.caregiver.update({ where: { id }, data: { password: newHash } });
+
             return { message: "Sikeres jelszó változtatás" } as SuccessResponse;
         } catch (err) {
             this.setStatus(500);
@@ -168,16 +178,15 @@ export class CaregiverController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Caregiver not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async deleteCaregiver(@Path() id: number): Promise<SuccessResponse | ErrorResponse> {
+    public async deleteCaregiver(@Path() id: string): Promise<SuccessResponse | ErrorResponse> {
         try {
-            const result = await db.query("DELETE FROM caregivers WHERE id=$1 RETURNING id", [id]);
-            if (!result.rows.length) {
+            await prisma.caregiver.delete({ where: { id } });
+            return successResponse;
+        } catch (err) {
+            if (getErrorCode(err) === "P2025") {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozó", message: "" } as ErrorResponse;
             }
-            this.setStatus(200);
-            return successResponse;
-        } catch (err) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }

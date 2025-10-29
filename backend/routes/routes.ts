@@ -37,16 +37,24 @@ const expressAuthenticationRecasted = expressAuthentication as (
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    Todo: {
-        dataType: "refObject",
-        properties: {
-            id: { dataType: "double", required: true },
-            subtaskId: { dataType: "double", required: true },
-            relationshipId: { dataType: "double", required: true },
-            sequenceNumber: { dataType: "double", required: true },
-            done: { dataType: "boolean", required: true },
+    "DefaultSelection_Prisma._36_TodoPayload_": {
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                done: { dataType: "boolean", required: true },
+                sequenceNumber: { dataType: "double", required: true },
+                relationshipId: { dataType: "string", required: true },
+                subtaskId: { dataType: "string", required: true },
+                id: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    Todo: {
+        dataType: "refAlias",
+        type: { ref: "DefaultSelection_Prisma._36_TodoPayload_", validators: {} },
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     ErrorResponse: {
@@ -58,13 +66,17 @@ const models: TsoaRoute.Models = {
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    CreateTodoRequest: {
+    CreateOrUpdateTodoRequest: {
         dataType: "refObject",
         properties: {
-            subtaskId: { dataType: "double", required: true },
-            relationshipId: { dataType: "double", required: true },
+            subtaskId: { dataType: "string", required: true },
+            relationshipId: {
+                dataType: "union",
+                subSchemas: [{ dataType: "string" }, { dataType: "enum", enums: [null] }],
+                required: true,
+            },
             sequenceNumber: { dataType: "double", required: true },
-            done: { dataType: "boolean" },
+            done: { dataType: "boolean", required: true },
         },
         additionalProperties: false,
     },
@@ -77,24 +89,21 @@ const models: TsoaRoute.Models = {
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    UpdateTodoRequest: {
-        dataType: "refObject",
-        properties: {
-            subtaskId: { dataType: "double", required: true },
-            relationshipId: { dataType: "double", required: true },
-            sequenceNumber: { dataType: "double", required: true },
-            done: { dataType: "boolean" },
+    "DefaultSelection_Prisma._36_TaskTypePayload_": {
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                type: { dataType: "string", required: true },
+                id: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     TaskType: {
-        dataType: "refObject",
-        properties: {
-            id: { dataType: "double", required: true },
-            type: { dataType: "string", required: true },
-        },
-        additionalProperties: false,
+        dataType: "refAlias",
+        type: { ref: "DefaultSelection_Prisma._36_TaskTypePayload_", validators: {} },
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     CreateTaskTypeRequest: {
@@ -105,109 +114,139 @@ const models: TsoaRoute.Models = {
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    SubTask: {
-        dataType: "refObject",
-        properties: {
-            id: { dataType: "double", required: true },
-            title: { dataType: "string", required: true },
-            taskTypeId: { dataType: "double", required: true },
+    "DefaultSelection_Prisma._36_SubtaskPayload_": {
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                taskTypeId: { dataType: "string", required: true },
+                title: { dataType: "string", required: true },
+                id: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    Subtask: {
+        dataType: "refAlias",
+        type: { ref: "DefaultSelection_Prisma._36_SubtaskPayload_", validators: {} },
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     CreateSubTaskRequest: {
         dataType: "refObject",
         properties: {
             title: { dataType: "string", required: true },
-            taskTypeId: { dataType: "double", required: true },
+            taskTypeId: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    Schedule: {
-        dataType: "refObject",
-        properties: {
-            id: { dataType: "double", required: true },
-            relationship_id: { dataType: "double", required: true },
-            date: { dataType: "string", required: true },
-            start_time: { dataType: "string", required: true },
-            end_time: { dataType: "string", required: true },
+    "DefaultSelection_Prisma._36_SchedulePayload_": {
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                endTime: { dataType: "datetime", required: true },
+                startTime: { dataType: "datetime", required: true },
+                date: { dataType: "datetime", required: true },
+                relationshipId: { dataType: "string", required: true },
+                id: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    Schedule: {
+        dataType: "refAlias",
+        type: { ref: "DefaultSelection_Prisma._36_SchedulePayload_", validators: {} },
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     ScheduleRequest: {
         dataType: "refObject",
         properties: {
-            relationshipId: { dataType: "double", required: true },
-            date: { dataType: "string", required: true },
-            startTime: { dataType: "string", required: true },
-            endTime: { dataType: "string", required: true },
+            date: { dataType: "datetime", required: true },
+            relationshipId: { dataType: "string", required: true },
+            startTime: { dataType: "datetime", required: true },
+            endTime: { dataType: "datetime", required: true },
         },
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    Relationship: {
-        dataType: "refObject",
-        properties: {
-            relationship_id: { dataType: "double", required: true },
-            recipient_id: { dataType: "double", required: true },
-            caregiver_id: { dataType: "double", required: true },
+    "DefaultSelection_Prisma._36_RecipientCaregiverRelationshipPayload_": {
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                caregiverId: { dataType: "string", required: true },
+                recipientId: { dataType: "string", required: true },
+                id: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    RecipientCaregiverRelationship: {
+        dataType: "refAlias",
+        type: { ref: "DefaultSelection_Prisma._36_RecipientCaregiverRelationshipPayload_", validators: {} },
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     RelationshipRequest: {
         dataType: "refObject",
         properties: {
-            recipientId: { dataType: "double", required: true },
-            caregiverId: { dataType: "double", required: true },
+            recipientId: { dataType: "string", required: true },
+            caregiverId: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    Caregiver: {
+    CaregiverWithoutPassword: {
         dataType: "refObject",
         properties: {
-            id: { dataType: "double", required: true },
+            id: { dataType: "string", required: true },
             name: { dataType: "string", required: true },
             email: { dataType: "string", required: true },
             phone: { dataType: "string", required: true },
-            password: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    Recipient: {
+    RecipientWithoutPassword: {
         dataType: "refObject",
         properties: {
-            id: { dataType: "double", required: true },
+            id: { dataType: "string", required: true },
             name: { dataType: "string", required: true },
             email: { dataType: "string", required: true },
             phone: { dataType: "string", required: true },
             address: { dataType: "string", required: true },
-            four_hand_care_needed: { dataType: "boolean", required: true },
-            caregiver_note: {
+            fourHandCareNeeded: { dataType: "boolean", required: true },
+            caregiverNote: {
                 dataType: "union",
                 subSchemas: [{ dataType: "string" }, { dataType: "enum", enums: [null] }],
+                required: true,
             },
-            password: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     CreateRecipientRequest: {
-        dataType: "refObject",
-        properties: {
-            name: { dataType: "string", required: true },
-            email: { dataType: "string", required: true },
-            phone: { dataType: "string", required: true },
-            address: { dataType: "string", required: true },
-            fourHandCareNeeded: { dataType: "boolean" },
-            note: { dataType: "string" },
-            password: { dataType: "string", required: true },
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                caregiverNote: {
+                    dataType: "union",
+                    subSchemas: [{ dataType: "string" }, { dataType: "enum", enums: [null] }],
+                    required: true,
+                },
+                fourHandCareNeeded: { dataType: "boolean", required: true },
+                address: { dataType: "string", required: true },
+                password: { dataType: "string", required: true },
+                phone: { dataType: "string", required: true },
+                email: { dataType: "string", required: true },
+                name: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     UpdateRecipientPasswordRequest: {
@@ -236,7 +275,7 @@ const models: TsoaRoute.Models = {
                 nestedProperties: {
                     email: { dataType: "string", required: true },
                     name: { dataType: "string", required: true },
-                    id: { dataType: "double", required: true },
+                    id: { dataType: "string", required: true },
                 },
                 required: true,
             },
@@ -257,16 +296,6 @@ const models: TsoaRoute.Models = {
         dataType: "refObject",
         properties: {
             id: { dataType: "string", required: true },
-        },
-        additionalProperties: false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    Error: {
-        dataType: "refObject",
-        properties: {
-            name: { dataType: "string", required: true },
-            message: { dataType: "string", required: true },
-            stack: { dataType: "string" },
         },
         additionalProperties: false,
     },
@@ -313,14 +342,17 @@ const models: TsoaRoute.Models = {
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     CreateCaregiverRequest: {
-        dataType: "refObject",
-        properties: {
-            name: { dataType: "string", required: true },
-            email: { dataType: "string", required: true },
-            phone: { dataType: "string", required: true },
-            password: { dataType: "string", required: true },
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                password: { dataType: "string", required: true },
+                phone: { dataType: "string", required: true },
+                email: { dataType: "string", required: true },
+                name: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     UpdateCaregiverPasswordRequest: {
@@ -332,25 +364,30 @@ const models: TsoaRoute.Models = {
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    Admin: {
-        dataType: "refObject",
-        properties: {
-            id: { dataType: "double", required: true },
-            name: { dataType: "string", required: true },
-            email: { dataType: "string", required: true },
-            password: { dataType: "string", required: true },
+    AdminWithoutPassword: {
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                email: { dataType: "string", required: true },
+                name: { dataType: "string", required: true },
+                id: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     CreateAdminRequest: {
-        dataType: "refObject",
-        properties: {
-            name: { dataType: "string", required: true },
-            email: { dataType: "string", required: true },
-            password: { dataType: "string", required: true },
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                password: { dataType: "string", required: true },
+                email: { dataType: "string", required: true },
+                name: { dataType: "string", required: true },
+            },
+            validators: {},
         },
-        additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     UpdateAdminPasswordRequest: {
@@ -411,7 +448,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsTodoController_createTodo: Record<string, TsoaRoute.ParameterSchema> = {
-        body: { in: "body", name: "body", required: true, ref: "CreateTodoRequest" },
+        body: { in: "body", name: "body", required: true, ref: "CreateOrUpdateTodoRequest" },
     };
     app.post(
         "/todos",
@@ -447,7 +484,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsTodoController_getTodoById: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/todos/:id",
@@ -483,8 +520,8 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsTodoController_updateTodo: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
-        body: { in: "body", name: "body", required: true, ref: "UpdateTodoRequest" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
+        body: { in: "body", name: "body", required: true, ref: "CreateOrUpdateTodoRequest" },
     };
     app.put(
         "/todos/:id",
@@ -520,7 +557,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsTodoController_deleteTodo: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/todos/:id",
@@ -556,7 +593,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsTodoController_getTodosByRelationship: Record<string, TsoaRoute.ParameterSchema> = {
-        relationshipId: { in: "path", name: "relationshipId", required: true, dataType: "double" },
+        relationshipId: { in: "path", name: "relationshipId", required: true, dataType: "string" },
     };
     app.get(
         "/todos/relationship/:relationshipId",
@@ -662,7 +699,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsTaskTypeController_getTaskTypeById: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/task_types/:id",
@@ -768,7 +805,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsSubTaskController_getSubTaskById: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/subtasks/:id",
@@ -804,7 +841,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsSubTaskController_getSubTasksByTaskType: Record<string, TsoaRoute.ParameterSchema> = {
-        taskTypeId: { in: "path", name: "taskTypeId", required: true, dataType: "double" },
+        taskTypeId: { in: "path", name: "taskTypeId", required: true, dataType: "string" },
     };
     app.get(
         "/subtasks/task-type/:taskTypeId",
@@ -910,7 +947,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsScheduleController_getScheduleById: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/schedules/:id",
@@ -946,7 +983,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsScheduleController_updateSchedule: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "ScheduleRequest" },
     };
     app.put(
@@ -983,7 +1020,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsScheduleController_deleteSchedule: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/schedules/:id",
@@ -1019,7 +1056,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsScheduleController_getSchedulesForCaregiver: Record<string, TsoaRoute.ParameterSchema> = {
-        caregiverId: { in: "path", name: "caregiverId", required: true, dataType: "double" },
+        caregiverId: { in: "path", name: "caregiverId", required: true, dataType: "string" },
     };
     app.get(
         "/schedules/caregiver/:caregiverId",
@@ -1059,7 +1096,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsScheduleController_getSchedulesForRecipient: Record<string, TsoaRoute.ParameterSchema> = {
-        recipientId: { in: "path", name: "recipientId", required: true, dataType: "double" },
+        recipientId: { in: "path", name: "recipientId", required: true, dataType: "string" },
     };
     app.get(
         "/schedules/recipient/:recipientId",
@@ -1099,8 +1136,8 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsScheduleController_getSchedulesForCaregiverAndRecipient: Record<string, TsoaRoute.ParameterSchema> = {
-        caregiverId: { in: "path", name: "caregiverId", required: true, dataType: "double" },
-        recipientId: { in: "path", name: "recipientId", required: true, dataType: "double" },
+        caregiverId: { in: "path", name: "caregiverId", required: true, dataType: "string" },
+        recipientId: { in: "path", name: "recipientId", required: true, dataType: "string" },
     };
     app.get(
         "/schedules/caregiver/:caregiverId/recipient/:recipientId",
@@ -1180,7 +1217,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRelationshipController_getCaregiversForRecipient: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/relationships/recipient/:id/caregivers",
@@ -1220,7 +1257,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRelationshipController_getRecipientsForCaregiver: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/relationships/caregiver/:id/recipients",
@@ -1294,7 +1331,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRelationshipController_updateRelationship: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "RelationshipRequest" },
     };
     app.put(
@@ -1331,7 +1368,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRelationshipController_deleteRelationship: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/relationships/:id",
@@ -1401,7 +1438,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRecipientController_getRecipientById: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/recipients/:id",
@@ -1473,7 +1510,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRecipientController_updateRecipient: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
         body: {
             in: "body",
             name: "body",
@@ -1523,7 +1560,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRecipientController_updateRecipientPassword: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "UpdateRecipientPasswordRequest" },
     };
     app.put(
@@ -1564,7 +1601,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRecipientController_deleteRecipient: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/recipients/:id",
@@ -1912,7 +1949,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsCaregiverController_getCaregiverById: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/caregivers/:id",
@@ -1984,7 +2021,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsCaregiverController_updateCaregiver: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
         body: {
             in: "body",
             name: "body",
@@ -2031,7 +2068,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsCaregiverController_updateCaregiverPassword: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "UpdateCaregiverPasswordRequest" },
     };
     app.put(
@@ -2072,7 +2109,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsCaregiverController_deleteCaregiver: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/caregivers/:id",
@@ -2142,7 +2179,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsAdminController_getAdminById: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/admins/:id",
@@ -2214,7 +2251,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsAdminController_updateAdmin: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
         body: {
             in: "body",
             name: "body",
@@ -2260,7 +2297,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsAdminController_updateAdminPassword: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "UpdateAdminPasswordRequest" },
     };
     app.put(
@@ -2297,7 +2334,7 @@ export function RegisterRoutes(app: Router) {
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsAdminController_deleteAdmin: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "double" },
+        id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/admins/:id",

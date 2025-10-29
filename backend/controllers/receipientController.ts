@@ -12,20 +12,22 @@ import {
     Controller,
     Security,
 } from "tsoa";
-import db from "../db.js";
-import { getErrorMessage, parseRows } from "../utils.js";
 import bcrypt from "bcrypt";
-import { Recipient, ErrorResponse, successResponse, SuccessResponse } from "../model.js";
+import { PrismaClient } from "@prisma/client";
+import { ErrorResponse, RecipientWithoutPassword, successResponse, SuccessResponse } from "../model.js";
+import { getErrorCode } from "../utils.js";
 
-interface CreateRecipientRequest {
+const prisma = new PrismaClient();
+
+type CreateRecipientRequest = {
     name: string;
     email: string;
     phone: string;
-    address: string;
-    fourHandCareNeeded?: boolean;
-    note?: string;
     password: string;
-}
+    address: string;
+    fourHandCareNeeded: boolean;
+    caregiverNote: string | null;
+};
 
 interface UpdateRecipientPasswordRequest {
     currentPassword: string;
@@ -38,16 +40,18 @@ export class RecipientController extends Controller {
     @Get("/")
     @Security("jwt")
     @Response<ErrorResponse>(500, "Database error")
-    public async getRecipients(): Promise<Recipient[] | ErrorResponse> {
+    public async getRecipients(): Promise<RecipientWithoutPassword[] | ErrorResponse> {
         try {
-            const result = await db.query(
-                `SELECT id, name, email, phone, address, four_hand_care_needed, caregiver_note 
-                 FROM recipients ORDER BY id ASC`,
-            );
-            return parseRows<Recipient>(result.rows);
+            const recipients = await prisma.recipient.findMany({
+                orderBy: { id: "asc" },
+            });
+            return recipients;
         } catch (err) {
             this.setStatus(500);
-            return { error: "Adatbázis hiba", message: getErrorMessage(err) } as ErrorResponse;
+            return {
+                error: "Adatbázis hiba",
+                message: err instanceof Error ? err.message : String(err),
+            } as ErrorResponse;
         }
     }
 
@@ -55,23 +59,20 @@ export class RecipientController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Recipient not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getRecipientById(@Path() id: number): Promise<Recipient | ErrorResponse> {
+    public async getRecipientById(@Path() id: string): Promise<RecipientWithoutPassword | ErrorResponse> {
         try {
-            const result = await db.query(
-                `SELECT id, name, email, phone, address, four_hand_care_needed, caregiver_note 
-                 FROM recipients WHERE id=$1`,
-                [id],
-            );
-
-            if (!result.rows.length) {
+            const recipient = await prisma.recipient.findUnique({ where: { id } });
+            if (!recipient) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozott", message: "" } as ErrorResponse;
             }
-
-            return parseRows<Recipient>(result.rows)[0];
+            return recipient;
         } catch (err) {
             this.setStatus(500);
-            return { error: "Adatbázis hiba", message: getErrorMessage(err) } as ErrorResponse;
+            return {
+                error: "Adatbázis hiba",
+                message: err instanceof Error ? err.message : String(err),
+            } as ErrorResponse;
         }
     }
 
@@ -80,40 +81,35 @@ export class RecipientController extends Controller {
     @TsoaSuccessResponse("201", "Created")
     @Response<ErrorResponse>(400, "Missing fields")
     @Response<ErrorResponse>(500, "Database error")
-    public async createRecipient(@Body() body: CreateRecipientRequest): Promise<Recipient | ErrorResponse> {
-        if (!body.name || !body.email || !body.phone || !body.address || !body.password) {
+    public async createRecipient(
+        @Body() body: CreateRecipientRequest,
+    ): Promise<RecipientWithoutPassword | ErrorResponse> {
+        if (!body.name || !body.email || !body.phone || !body.address || !body.password || !body.fourHandCareNeeded) {
             this.setStatus(400);
             return { error: "Hiányzó mező", message: "" } as ErrorResponse;
         }
 
         try {
             const hashedPassword = await bcrypt.hash(body.password, 10);
-            const result = await db.query(
-                `INSERT INTO recipients
-                 (name, email, phone, address, four_hand_care_needed, caregiver_note, password)
-                 VALUES ($1,$2,$3,$4,$5,$6,$7)
-                 RETURNING id, name, email, phone, address, four_hand_care_needed, caregiver_note`,
-                [
-                    body.name,
-                    body.email,
-                    body.phone,
-                    body.address,
-                    body.fourHandCareNeeded ?? false,
-                    body.note ?? null,
-                    hashedPassword,
-                ],
-            );
-
-            const rows = parseRows<Recipient>(result.rows);
-            if (!rows.length) {
-                this.setStatus(500);
-                return { error: "Nem sikerült a gondozott létrehozása", message: "" } as ErrorResponse;
-            }
+            const recipient = await prisma.recipient.create({
+                data: {
+                    name: body.name,
+                    email: body.email,
+                    phone: body.phone,
+                    address: body.address,
+                    fourHandCareNeeded: body.fourHandCareNeeded,
+                    caregiverNote: body.caregiverNote ?? null,
+                    password: hashedPassword,
+                },
+            });
             this.setStatus(201);
-            return rows[0];
+            return recipient;
         } catch (err) {
             this.setStatus(500);
-            return { error: "Hiba a gondozott létrehozásakor", message: getErrorMessage(err) } as ErrorResponse;
+            return {
+                error: "Hiba a gondozott létrehozásakor",
+                message: err instanceof Error ? err.message : String(err),
+            } as ErrorResponse;
         }
     }
 
@@ -123,7 +119,7 @@ export class RecipientController extends Controller {
     @Response<ErrorResponse>(404, "Recipient not found")
     @Response<ErrorResponse>(500, "Database error")
     public async updateRecipient(
-        @Path() id: number,
+        @Path() id: string,
         @Body()
         body: {
             name: string;
@@ -140,32 +136,28 @@ export class RecipientController extends Controller {
         }
 
         try {
-            const result = await db.query(
-                `UPDATE recipients
-                 SET name=$1, email=$2, phone=$3, address=$4, four_hand_care_needed=$5, caregiver_note=$6
-                 WHERE id=$7
-                 RETURNING id`,
-                [
-                    body.name,
-                    body.email,
-                    body.phone,
-                    body.address,
-                    body.fourHandCareNeeded ?? false,
-                    body.note ?? null,
-                    id,
-                ],
-            );
-
-            if (!result.rows.length) {
+            await prisma.recipient.update({
+                where: { id },
+                data: {
+                    name: body.name,
+                    email: body.email,
+                    phone: body.phone,
+                    address: body.address,
+                    fourHandCareNeeded: body.fourHandCareNeeded ?? false,
+                    caregiverNote: body.note ?? null,
+                },
+            });
+            return successResponse;
+        } catch (err: unknown) {
+            if (getErrorCode(err) === "P2025") {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozott", message: "" } as ErrorResponse;
             }
-
-            this.setStatus(200);
-            return successResponse;
-        } catch (err) {
             this.setStatus(500);
-            return { error: "Hiba a gondozott frissítésekor", message: getErrorMessage(err) } as ErrorResponse;
+            return {
+                error: "Hiba a gondozott frissítésekor",
+                message: err instanceof Error ? err.message : String(err),
+            } as ErrorResponse;
         }
     }
 
@@ -175,7 +167,7 @@ export class RecipientController extends Controller {
     @Response<ErrorResponse>(404, "Recipient not found")
     @Response<ErrorResponse>(500, "Database error")
     public async updateRecipientPassword(
-        @Path() id: number,
+        @Path() id: string,
         @Body() body: UpdateRecipientPasswordRequest,
     ): Promise<SuccessResponse | ErrorResponse> {
         const { currentPassword, newPassword } = body;
@@ -185,26 +177,25 @@ export class RecipientController extends Controller {
         }
 
         try {
-            const result = await db.query("SELECT password FROM recipients WHERE id=$1", [id]);
-            if (!result.rows.length) {
+            const recipient = await prisma.recipient.findUnique({ where: { id } });
+            if (!recipient) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozott", message: "" } as ErrorResponse;
             }
 
-            const storedHash = result.rows[0].password;
-            const isValid = await bcrypt.compare(currentPassword, storedHash);
+            const isValid = await bcrypt.compare(currentPassword, recipient.password);
             if (!isValid) {
                 this.setStatus(400);
                 return { error: "Helytelen régi jelszó", message: "" } as ErrorResponse;
             }
 
             const newHash = await bcrypt.hash(newPassword, 10);
-            await db.query("UPDATE recipients SET password=$1 WHERE id=$2", [newHash, id]);
-            this.setStatus(200);
+            await prisma.recipient.update({ where: { id }, data: { password: newHash } });
+
             return successResponse;
         } catch (err) {
             this.setStatus(500);
-            return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
+            return { error: "Hiba", message: err instanceof Error ? err.message : String(err) } as ErrorResponse;
         }
     }
 
@@ -212,18 +203,17 @@ export class RecipientController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Recipient not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async deleteRecipient(@Path() id: number): Promise<SuccessResponse | ErrorResponse> {
+    public async deleteRecipient(@Path() id: string): Promise<SuccessResponse | ErrorResponse> {
         try {
-            const result = await db.query("DELETE FROM recipients WHERE id=$1 RETURNING id", [id]);
-            if (!result.rows.length) {
+            await prisma.recipient.delete({ where: { id } });
+            return successResponse;
+        } catch (err: unknown) {
+            if (getErrorCode(err) === "P2025") {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozott", message: "" } as ErrorResponse;
             }
-            this.setStatus(200);
-            return successResponse;
-        } catch (err) {
             this.setStatus(500);
-            return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
+            return { error: "Hiba", message: err instanceof Error ? err.message : String(err) } as ErrorResponse;
         }
     }
 }

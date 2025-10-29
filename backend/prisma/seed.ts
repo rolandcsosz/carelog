@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 async function hasExistingData() {
     const counts = await Promise.all([
-        prisma.admin.count(),
         prisma.caregiver.count(),
         prisma.recipient.count(),
         prisma.recipientCaregiverRelationship.count(),
@@ -18,32 +17,6 @@ async function hasExistingData() {
 }
 
 async function main() {
-    await prisma.admin.createMany({
-        data: [
-            {
-                name: "Nagy Anna",
-                email: "nagy.anna@admin.hu",
-                password: "$2b$10$ZMt5cevB.aKs8mKwpR6qOOh5kGU6FnUcEiUiNyzVPA84cBRtrWhFa",
-            },
-            {
-                name: "Tóth László",
-                email: "toth.laszlo@admin.hu",
-                password: "$2b$10$ZMt5cevB.aKs8mKwpR6qOOh5kGU6FnUcEiUiNyzVPA84cBRtrWhFa",
-            },
-            {
-                name: "Szabó Katalin",
-                email: "szabo.katalin@admin.hu",
-                password: "$2b$10$ZMt5cevB.aKs8mKwpR6qOOh5kGU6FnUcEiUiNyzVPA84cBRtrWhFa",
-            },
-            {
-                name: "Farkas Gábor",
-                email: "farkas.gabor@admin.hu",
-                password: "$2b$10$ZMt5cevB.aKs8mKwpR6qOOh5kGU6FnUcEiUiNyzVPA84cBRtrWhFa",
-            },
-        ],
-        skipDuplicates: true,
-    });
-
     const caregivers = await Promise.all([
         prisma.caregiver.create({
             data: {

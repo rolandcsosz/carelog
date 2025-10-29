@@ -10,13 +10,21 @@ import {
     Controller,
     Security,
 } from "tsoa";
-import db from "../db.js";
-import { getErrorMessage, parseRows } from "../utils.js";
-import { SubTask, ErrorResponse } from "../model.js";
+import { PrismaClient } from "@prisma/client";
+import { ErrorResponse } from "../model.js";
+import { getErrorMessage } from "../utils.js";
+
+const prisma = new PrismaClient();
+
+interface Subtask {
+    id: string;
+    title: string;
+    taskTypeId: string | null;
+}
 
 interface CreateSubTaskRequest {
     title: string;
-    taskTypeId: number;
+    taskTypeId: string;
 }
 
 @Route("subtasks")
@@ -27,27 +35,17 @@ export class SubTaskController extends Controller {
     @TsoaSuccessResponse("201", "Created")
     @Response<ErrorResponse>(400, "Missing fields")
     @Response<ErrorResponse>(500, "Database error")
-    public async createSubTask(@Body() body: CreateSubTaskRequest): Promise<SubTask | ErrorResponse> {
+    public async createSubTask(@Body() body: CreateSubTaskRequest): Promise<Subtask | ErrorResponse> {
         if (!body.title || !body.taskTypeId) {
             this.setStatus(400);
             return { error: "Hiányzó kötelező mező", message: "" } as ErrorResponse;
         }
 
         try {
-            const result = await db.query("INSERT INTO subTasks (title, taskTypeId) VALUES ($1, $2) RETURNING *", [
-                body.title,
-                body.taskTypeId,
-            ]);
-
-            const rows = parseRows<SubTask>(result.rows);
-            if (!rows.length) {
-                this.setStatus(500);
-                return { error: "Nem sikerült a tevékenység létrehozása", message: "" } as ErrorResponse;
-            }
-
+            const subtask = await prisma.subtask.create({ data: body });
             this.setStatus(201);
-            return rows[0];
-        } catch (err) {
+            return subtask;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba a tevékenység létrehozásakor", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -56,11 +54,10 @@ export class SubTaskController extends Controller {
     @Get("/")
     @Security("jwt")
     @Response<ErrorResponse>(500, "Database error")
-    public async getSubTasks(): Promise<SubTask[] | ErrorResponse> {
+    public async getSubTasks(): Promise<Subtask[] | ErrorResponse> {
         try {
-            const result = await db.query("SELECT * FROM subTasks ORDER BY id ASC");
-            return parseRows<SubTask>(result.rows);
-        } catch (err) {
+            return await prisma.subtask.findMany({ orderBy: { title: "asc" } });
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -70,17 +67,15 @@ export class SubTaskController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Sub-task not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getSubTaskById(@Path() id: number): Promise<SubTask | ErrorResponse> {
+    public async getSubTaskById(@Path() id: string): Promise<Subtask | ErrorResponse> {
         try {
-            const result = await db.query("SELECT * FROM subTasks WHERE id = $1", [id]);
-            if (!result.rows.length) {
+            const subtask = await prisma.subtask.findUnique({ where: { id } });
+            if (!subtask) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen tevékenység", message: "" } as ErrorResponse;
             }
-
-            const rows = parseRows<SubTask>(result.rows);
-            return rows[0];
-        } catch (err) {
+            return subtask;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -90,16 +85,15 @@ export class SubTaskController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "No sub-tasks found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getSubTasksByTaskType(@Path() taskTypeId: number): Promise<SubTask[] | ErrorResponse> {
+    public async getSubTasksByTaskType(@Path() taskTypeId: string): Promise<Subtask[] | ErrorResponse> {
         try {
-            const result = await db.query("SELECT * FROM subTasks WHERE taskTypeId = $1", [taskTypeId]);
-            if (!result.rows.length) {
+            const subtasks = await prisma.subtask.findMany({ where: { taskTypeId } });
+            if (!subtasks.length) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen típusú tevékenység.", message: "" } as ErrorResponse;
             }
-
-            return parseRows<SubTask>(result.rows);
-        } catch (err) {
+            return subtasks;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }

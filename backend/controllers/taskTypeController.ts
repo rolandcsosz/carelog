@@ -10,9 +10,16 @@ import {
     Controller,
     Security,
 } from "tsoa";
-import db from "../db.js";
-import { getErrorMessage, parseRows } from "../utils.js";
-import { TaskType, ErrorResponse } from "../model.js";
+import { PrismaClient } from "@prisma/client";
+import { ErrorResponse } from "../model.js";
+import { getErrorMessage } from "../utils.js";
+
+const prisma = new PrismaClient();
+
+interface TaskType {
+    id: string;
+    type: string;
+}
 
 interface CreateTaskTypeRequest {
     type: string;
@@ -33,17 +40,10 @@ export class TaskTypeController extends Controller {
         }
 
         try {
-            const result = await db.query("INSERT INTO task_types (type) VALUES ($1) RETURNING *", [body.type]);
-            const rows = parseRows<TaskType>(result.rows);
-
-            if (!rows.length) {
-                this.setStatus(500);
-                return { error: "Nem sikerült a típus létrehozása", message: "" } as ErrorResponse;
-            }
-
+            const taskType = await prisma.taskType.create({ data: { type: body.type } });
             this.setStatus(201);
-            return rows[0];
-        } catch (err) {
+            return taskType;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba a típus létrehozásakor", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -54,9 +54,8 @@ export class TaskTypeController extends Controller {
     @Response<ErrorResponse>(500, "Database error")
     public async getTaskTypes(): Promise<TaskType[] | ErrorResponse> {
         try {
-            const result = await db.query("SELECT * FROM task_types ORDER BY id ASC");
-            return parseRows<TaskType>(result.rows);
-        } catch (err) {
+            return await prisma.taskType.findMany({ orderBy: { type: "asc" } });
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -66,17 +65,15 @@ export class TaskTypeController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Task type not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getTaskTypeById(@Path() id: number): Promise<TaskType | ErrorResponse> {
+    public async getTaskTypeById(@Path() id: string): Promise<TaskType | ErrorResponse> {
         try {
-            const result = await db.query("SELECT * FROM task_types WHERE id = $1", [id]);
-            if (!result.rows.length) {
+            const taskType = await prisma.taskType.findUnique({ where: { id } });
+            if (!taskType) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen típus", message: "" } as ErrorResponse;
             }
-
-            const rows = parseRows<TaskType>(result.rows);
-            return rows[0];
-        } catch (err) {
+            return taskType;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }

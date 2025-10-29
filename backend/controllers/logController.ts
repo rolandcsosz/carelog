@@ -1,8 +1,35 @@
 import { Controller, Route, Get, Post, Put, Delete, Body, Path, Response, Tags } from "tsoa";
 import elasticClient from "../client.js";
-import db from "../db.js";
 import { getErrorMessage } from "../utils.js";
-import { ErrorResponse, LogEntry, successResponse, SuccessResponse } from "../model.js";
+import { ErrorResponse, successResponse, SuccessResponse } from "../model.js";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+export interface TaskLog {
+    subTaskId: string;
+    startTime: string; // "HH:mm:ss"
+    endTime: string; // "HH:mm:ss"
+    done: boolean;
+    note?: string;
+}
+
+export interface LogEntry {
+    id: string;
+    date: string; // "yyyy-MM-dd"
+    relationshipId: string;
+    finished: boolean;
+    closed: boolean;
+    tasks: TaskLog[];
+}
+
+export interface UpdateLogEntry {
+    date: string; // "yyyy-MM-dd"
+    relationshipId: string;
+    finished: boolean;
+    closed: boolean;
+    tasks: TaskLog[];
+}
 
 interface LogCreateResponse {
     id: string;
@@ -12,7 +39,7 @@ interface LogCreateResponse {
 @Tags("Logs")
 export class LogController extends Controller {
     @Post()
-    @Response<Error>(500, "Server Error")
+    @Response<ErrorResponse>(500, "Server Error")
     public async createLog(@Body() logEntry: LogEntry): Promise<LogCreateResponse | ErrorResponse> {
         try {
             const result = await elasticClient.index({
@@ -36,7 +63,7 @@ export class LogController extends Controller {
     }
 
     @Get()
-    @Response<Error>(500, "Server Error")
+    @Response<ErrorResponse>(500, "Server Error")
     public async getLogs(): Promise<LogEntry[] | ErrorResponse> {
         try {
             const result = await elasticClient.search<LogEntry>({
@@ -53,8 +80,8 @@ export class LogController extends Controller {
     }
 
     @Get("{id}")
-    @Response<Error>(404, "Log not found")
-    @Response<Error>(500, "Server Error")
+    @Response<ErrorResponse>(404, "Log not found")
+    @Response<ErrorResponse>(500, "Server Error")
     public async getLogById(@Path() id: string): Promise<LogEntry | ErrorResponse> {
         try {
             const result = await elasticClient.search<LogEntry>({
@@ -76,12 +103,23 @@ export class LogController extends Controller {
     }
 
     @Put("{id}")
-    @Response<Error>(404, "Log not found")
-    @Response<Error>(500, "Server Error")
+    @Response<ErrorResponse>(404, "Log not found")
+    @Response<ErrorResponse>(500, "Server Error")
     public async updateLogById(
         @Path() id: string,
-        @Body() updatedFields: Partial<LogEntry>,
+        @Body() updatedFields: UpdateLogEntry,
     ): Promise<SuccessResponse | ErrorResponse> {
+        if (
+            updatedFields.closed === undefined ||
+            updatedFields.finished === undefined ||
+            !updatedFields.date ||
+            !updatedFields.relationshipId ||
+            !updatedFields.tasks
+        ) {
+            this.setStatus(400);
+            return { error: "Hiányzó mezők az frissítési kérésben", message: "" } as ErrorResponse;
+        }
+
         try {
             const result = await elasticClient.search<LogEntry>({
                 index: "logs",
@@ -108,8 +146,8 @@ export class LogController extends Controller {
     }
 
     @Delete("{id}")
-    @Response<Error>(404, "Log not found")
-    @Response<Error>(500, "Server Error")
+    @Response<ErrorResponse>(404, "Log not found")
+    @Response<ErrorResponse>(500, "Server Error")
     public async deleteLogById(@Path() id: string): Promise<SuccessResponse | ErrorResponse> {
         try {
             const result = await elasticClient.search<LogEntry>({
@@ -136,7 +174,7 @@ export class LogController extends Controller {
     }
 
     @Get("open")
-    @Response<Error>(500, "Server Error")
+    @Response<ErrorResponse>(500, "Server Error")
     public async getOpenLogs(): Promise<LogEntry[] | ErrorResponse> {
         try {
             const result = await elasticClient.search<LogEntry>({
@@ -152,31 +190,30 @@ export class LogController extends Controller {
     }
 
     @Get("relationship/{recipientId}/{caregiverId}")
-    @Response<Error>(404, "Relationship not found")
-    @Response<Error>(500, "Server Error")
+    @Response<ErrorResponse>(404, "Relationship not found")
+    @Response<ErrorResponse>(500, "Server Error")
     public async getLogsForRecipientCaregiver(
         @Path() recipientId: string,
         @Path() caregiverId: string,
     ): Promise<LogEntry[] | ErrorResponse> {
         try {
-            const pgResult = await db.query(
-                "SELECT relationship_id FROM recipients_caregivers WHERE recipient_id = $1 AND caregiver_id = $2",
-                [recipientId, caregiverId],
-            );
+            const relationship = await prisma.recipientCaregiverRelationship.findUnique({
+                where: {
+                    recipientId_caregiverId: { recipientId, caregiverId },
+                },
+            });
 
-            if (pgResult.rowCount === 0) {
+            if (!relationship) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen kapcsolat", message: "" } as ErrorResponse;
             }
 
-            const relationshipId = pgResult.rows[0].relationship_id;
-
             const result = await elasticClient.search<LogEntry>({
                 index: "logs",
-                query: { term: { relationshipId } },
+                query: { term: { relationshipId: relationship.id } },
             });
 
-            return result.hits.hits.map((hit) => hit._source).filter(Boolean) as LogEntry[];
+            return result.hits.hits.map((hit) => hit._source).filter((log): log is LogEntry => log !== undefined);
         } catch (err) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;

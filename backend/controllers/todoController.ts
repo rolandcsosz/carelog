@@ -12,22 +12,25 @@ import {
     Controller,
     Security,
 } from "tsoa";
-import db from "../db.js";
-import { getErrorMessage, parseRows } from "../utils.js";
-import { Todo, ErrorResponse, SuccessResponse, successResponse } from "../model.js";
+import { PrismaClient } from "@prisma/client";
+import { ErrorResponse, SuccessResponse, successResponse } from "../model.js";
+import { getErrorCode, getErrorMessage } from "../utils.js";
 
-interface CreateTodoRequest {
-    subtaskId: number;
-    relationshipId: number;
+const prisma = new PrismaClient();
+
+interface Todo {
+    id: string;
+    relationshipId: string | null;
+    subtaskId: string;
     sequenceNumber: number;
-    done?: boolean;
+    done: boolean;
 }
 
-interface UpdateTodoRequest {
-    subtaskId: number;
-    relationshipId: number;
+interface CreateOrUpdateTodoRequest {
+    subtaskId: string;
+    relationshipId: string | null;
     sequenceNumber: number;
-    done?: boolean;
+    done: boolean;
 }
 
 @Route("todos")
@@ -38,9 +41,9 @@ export class TodoController extends Controller {
     @Response<ErrorResponse>(500, "Database error")
     public async getTodos(): Promise<Todo[] | ErrorResponse> {
         try {
-            const result = await db.query("SELECT * FROM todo ORDER BY id ASC");
-            return parseRows<Todo>(result.rows);
-        } catch (err) {
+            const todos = await prisma.todo.findMany({ orderBy: { sequenceNumber: "asc" } });
+            return todos;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -51,7 +54,7 @@ export class TodoController extends Controller {
     @TsoaSuccessResponse("201", "Created")
     @Response<ErrorResponse>(400, "Missing fields")
     @Response<ErrorResponse>(500, "Database error")
-    public async createTodo(@Body() body: CreateTodoRequest): Promise<Todo | ErrorResponse> {
+    public async createTodo(@Body() body: CreateOrUpdateTodoRequest): Promise<Todo | ErrorResponse> {
         const { subtaskId, relationshipId, sequenceNumber, done } = body;
         if (!subtaskId || !relationshipId || !sequenceNumber) {
             this.setStatus(400);
@@ -59,21 +62,17 @@ export class TodoController extends Controller {
         }
 
         try {
-            const result = await db.query(
-                `INSERT INTO todo (subtaskId, relationshipId, sequenceNumber, done)
-                 VALUES ($1, $2, $3, $4) RETURNING *`,
-                [subtaskId, relationshipId, sequenceNumber, done ?? false],
-            );
-            const rows = parseRows<Todo>(result.rows);
-
-            if (!rows.length) {
-                this.setStatus(500);
-                return { error: "Nem sikerült a TODO létrehozása", message: "" } as ErrorResponse;
-            }
-
+            const todo = await prisma.todo.create({
+                data: {
+                    subtaskId,
+                    relationshipId,
+                    sequenceNumber,
+                    done: done ?? false,
+                },
+            });
             this.setStatus(201);
-            return rows[0];
-        } catch (err) {
+            return todo;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba a TODO létrehozásakor", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -83,17 +82,15 @@ export class TodoController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Todo not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getTodoById(@Path() id: number): Promise<Todo | ErrorResponse> {
+    public async getTodoById(@Path() id: string): Promise<Todo | ErrorResponse> {
         try {
-            const result = await db.query("SELECT * FROM todo WHERE id = $1", [id]);
-            if (!result.rows.length) {
+            const todo = await prisma.todo.findUnique({ where: { id } });
+            if (!todo) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen todo", message: "" } as ErrorResponse;
             }
-
-            const rows = parseRows<Todo>(result.rows);
-            return rows[0];
-        } catch (err) {
+            return todo;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -105,8 +102,8 @@ export class TodoController extends Controller {
     @Response<ErrorResponse>(404, "Todo not found")
     @Response<ErrorResponse>(500, "Database error")
     public async updateTodo(
-        @Path() id: number,
-        @Body() body: UpdateTodoRequest,
+        @Path() id: string,
+        @Body() body: CreateOrUpdateTodoRequest,
     ): Promise<SuccessResponse | ErrorResponse> {
         const { subtaskId, relationshipId, sequenceNumber, done } = body;
         if (!subtaskId || !relationshipId || !sequenceNumber) {
@@ -115,18 +112,16 @@ export class TodoController extends Controller {
         }
 
         try {
-            const result = await db.query(
-                "UPDATE todo SET subtaskId = $1, relationshipId = $2, sequenceNumber = $3, done = $4 WHERE id = $5 RETURNING *",
-                [subtaskId, relationshipId, sequenceNumber, done ?? false, id],
-            );
-
-            if (!result.rows.length) {
+            await prisma.todo.update({
+                where: { id },
+                data: { subtaskId, relationshipId, sequenceNumber, done: done ?? false },
+            });
+            return successResponse;
+        } catch (err: unknown) {
+            if (getErrorCode(err) === "P2025") {
                 this.setStatus(404);
                 return { error: "Nincs ilyen todo", message: "" } as ErrorResponse;
             }
-
-            return successResponse;
-        } catch (err) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -136,16 +131,15 @@ export class TodoController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Todo not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async deleteTodo(@Path() id: number): Promise<SuccessResponse | ErrorResponse> {
+    public async deleteTodo(@Path() id: string): Promise<SuccessResponse | ErrorResponse> {
         try {
-            const result = await db.query("DELETE FROM todo WHERE id = $1 RETURNING id", [id]);
-            if (!result.rows.length) {
+            await prisma.todo.delete({ where: { id } });
+            return successResponse;
+        } catch (err: unknown) {
+            if (getErrorCode(err) === "P2025") {
                 this.setStatus(404);
                 return { error: "Nincs ilyen todo", message: "" } as ErrorResponse;
             }
-
-            return successResponse;
-        } catch (err) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }
@@ -155,18 +149,19 @@ export class TodoController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(400, "Missing relationshipId")
     @Response<ErrorResponse>(500, "Database error")
-    public async getTodosByRelationship(@Path() relationshipId: number): Promise<Todo[] | ErrorResponse> {
+    public async getTodosByRelationship(@Path() relationshipId: string): Promise<Todo[] | ErrorResponse> {
         if (!relationshipId) {
             this.setStatus(400);
             return { error: "Hiányzó kötelező mező", message: "" } as ErrorResponse;
         }
 
         try {
-            const result = await db.query("SELECT * FROM todo WHERE relationshipId = $1 ORDER BY sequenceNumber", [
-                relationshipId,
-            ]);
-            return parseRows<Todo>(result.rows);
-        } catch (err) {
+            const todos = await prisma.todo.findMany({
+                where: { relationshipId },
+                orderBy: { sequenceNumber: "asc" },
+            });
+            return todos;
+        } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
         }

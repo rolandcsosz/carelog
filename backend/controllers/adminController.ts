@@ -13,15 +13,23 @@ import {
     Security,
 } from "tsoa";
 import { ErrorResponse, successResponse, SuccessResponse } from "../model.js";
-import { getErrorCode, getErrorMessage, parseRows } from "../utils.js";
+import { getErrorCode, getErrorMessage } from "../utils.js";
 import bcrypt from "bcrypt";
-import { PrismaClient, Admin } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-type CreateAdminRequest = Omit<Admin, "id">;
+type CreateAdminRequest = {
+    name: string;
+    email: string;
+    password: string;
+};
 
-type AdminWithoutPassword = Omit<Admin, "password">;
+type AdminWithoutPassword = {
+    id: string;
+    name: string;
+    email: string;
+};
 
 interface UpdateAdminPasswordRequest {
     currentPassword: string;
@@ -116,7 +124,7 @@ export class AdminController extends Controller {
         }
 
         try {
-            const updated = await prisma.admin.update({
+            await prisma.admin.update({
                 where: { id },
                 data: { name: body.name, email: body.email },
             });

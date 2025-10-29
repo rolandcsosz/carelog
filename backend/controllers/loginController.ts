@@ -1,10 +1,10 @@
 import { Post, Route, Tags, Body, Response, Controller } from "tsoa";
-import { Admin, ErrorResponse, LogedInUser } from "../model.js";
-import db from "../db.js";
-import { getErrorMessage, parseRows } from "../utils.js";
+import { ErrorResponse, LogedInUser } from "../model.js";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const prisma = new PrismaClient();
 const SECRET_KEY = process.env.JWT_SECRET || "secret";
 
 interface LoginRequest {
@@ -15,7 +15,7 @@ interface LoginRequest {
 interface LoginResponse {
     role: "admin" | "caregiver";
     token: string;
-    user: { id: number; name: string; email: string };
+    user: { id: string; name: string; email: string };
 }
 
 @Route("login")
@@ -28,10 +28,8 @@ export class LoginController extends Controller {
         const { email, password } = body;
 
         try {
-            const adminQuery = await db.query("SELECT * FROM admins WHERE email=$1", [email]);
-            const admins = parseRows<Admin>(adminQuery.rows);
-            if (admins.length > 0) {
-                const admin = admins[0];
+            const admin = await prisma.admin.findUnique({ where: { email } });
+            if (admin) {
                 const match = await bcrypt.compare(password, admin.password);
                 if (!match) {
                     this.setStatus(401);
@@ -39,8 +37,6 @@ export class LoginController extends Controller {
                 }
 
                 const token = jwt.sign({ id: admin.id, role: "admin" } as LogedInUser, SECRET_KEY, { expiresIn: "1d" });
-                this.setStatus(200);
-
                 return {
                     role: "admin",
                     token,
@@ -48,21 +44,17 @@ export class LoginController extends Controller {
                 } as LoginResponse;
             }
 
-            const caregiverQuery = await db.query("SELECT * FROM caregivers WHERE email=$1", [email]);
-
-            const caregivers = parseRows<Admin>(caregiverQuery.rows);
-
-            if (caregivers.length > 0) {
-                const caregiver = caregivers[0];
+            const caregiver = await prisma.caregiver.findUnique({ where: { email } });
+            if (caregiver) {
                 const match = await bcrypt.compare(password, caregiver.password);
                 if (!match) {
                     this.setStatus(401);
                     return { error: "Hibás jelszó", message: "" } as ErrorResponse;
                 }
 
-                const token = jwt.sign({ id: caregiver.id, role: "caregiver" }, SECRET_KEY, { expiresIn: "1d" });
-                this.setStatus(200);
-
+                const token = jwt.sign({ id: caregiver.id, role: "caregiver" } as LogedInUser, SECRET_KEY, {
+                    expiresIn: "1d",
+                });
                 return {
                     role: "caregiver",
                     token,
@@ -74,7 +66,7 @@ export class LoginController extends Controller {
             return { error: "Hibás jelszó", message: "" } as ErrorResponse;
         } catch (err) {
             this.setStatus(500);
-            return { error: "Szerverhiba", message: getErrorMessage(err) } as ErrorResponse;
+            return { error: "Szerverhiba", message: err instanceof Error ? err.message : String(err) } as ErrorResponse;
         }
     }
 }
