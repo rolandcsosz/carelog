@@ -105,7 +105,7 @@ export class LogController extends Controller {
     @Put("{id}")
     @Response<ErrorResponse>(404, "Log not found")
     @Response<ErrorResponse>(500, "Server Error")
-    public async updateLogById(
+    public async updateLog(
         @Path() id: string,
         @Body() updatedFields: UpdateLogEntry,
     ): Promise<SuccessResponse | ErrorResponse> {
@@ -148,7 +148,7 @@ export class LogController extends Controller {
     @Delete("{id}")
     @Response<ErrorResponse>(404, "Log not found")
     @Response<ErrorResponse>(500, "Server Error")
-    public async deleteLogById(@Path() id: string): Promise<SuccessResponse | ErrorResponse> {
+    public async deleteLog(@Path() id: string): Promise<SuccessResponse | ErrorResponse> {
         try {
             const result = await elasticClient.search<LogEntry>({
                 index: "logs",
@@ -192,7 +192,7 @@ export class LogController extends Controller {
     @Get("relationship/{recipientId}/{caregiverId}")
     @Response<ErrorResponse>(404, "Relationship not found")
     @Response<ErrorResponse>(500, "Server Error")
-    public async getLogsForRecipientCaregiver(
+    public async getLogsForRelationship(
         @Path() recipientId: string,
         @Path() caregiverId: string,
     ): Promise<LogEntry[] | ErrorResponse> {

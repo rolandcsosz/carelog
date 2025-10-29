@@ -82,7 +82,7 @@ export class TodoController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Todo not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getTodoById(@Path() id: string): Promise<Todo | ErrorResponse> {
+    public async getTodo(@Path() id: string): Promise<Todo | ErrorResponse> {
         try {
             const todo = await prisma.todo.findUnique({ where: { id } });
             if (!todo) {

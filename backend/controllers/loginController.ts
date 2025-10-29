@@ -12,7 +12,7 @@ interface LoginRequest {
     password: string;
 }
 
-interface LoginResponse {
+interface LoginSuccessResponse {
     role: "admin" | "caregiver";
     token: string;
     user: { id: string; name: string; email: string };
@@ -24,7 +24,7 @@ export class LoginController extends Controller {
     @Post("/")
     @Response<ErrorResponse>(401, "Unauthorized")
     @Response<ErrorResponse>(500, "Server error")
-    public async login(@Body() body: LoginRequest): Promise<LoginResponse | ErrorResponse> {
+    public async login(@Body() body: LoginRequest): Promise<LoginSuccessResponse | ErrorResponse> {
         const { email, password } = body;
 
         try {
@@ -41,7 +41,7 @@ export class LoginController extends Controller {
                     role: "admin",
                     token,
                     user: { id: admin.id, name: admin.name, email: admin.email },
-                } as LoginResponse;
+                } as LoginSuccessResponse;
             }
 
             const caregiver = await prisma.caregiver.findUnique({ where: { email } });
@@ -59,7 +59,7 @@ export class LoginController extends Controller {
                     role: "caregiver",
                     token,
                     user: { id: caregiver.id, name: caregiver.name, email: caregiver.email },
-                } as LoginResponse;
+                } as LoginSuccessResponse;
             }
 
             this.setStatus(401);

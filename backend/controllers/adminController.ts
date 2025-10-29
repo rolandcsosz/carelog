@@ -59,7 +59,7 @@ export class AdminController extends Controller {
     @Security("jwt", ["admin"])
     @Response<ErrorResponse>(404, "Admin not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getAdminById(@Path() id: string): Promise<AdminWithoutPassword | ErrorResponse> {
+    public async getAdmin(@Path() id: string): Promise<AdminWithoutPassword | ErrorResponse> {
         try {
             const admin = await prisma.admin.findUnique({
                 where: { id },

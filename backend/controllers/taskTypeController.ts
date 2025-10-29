@@ -65,7 +65,7 @@ export class TaskTypeController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Task type not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getTaskTypeById(@Path() id: string): Promise<TaskType | ErrorResponse> {
+    public async getTaskType(@Path() id: string): Promise<TaskType | ErrorResponse> {
         try {
             const taskType = await prisma.taskType.findUnique({ where: { id } });
             if (!taskType) {

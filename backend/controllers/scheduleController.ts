@@ -73,7 +73,7 @@ export class ScheduleController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Schedule not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getScheduleById(@Path() id: string): Promise<Schedule | ErrorResponse> {
+    public async getSchedule(@Path() id: string): Promise<Schedule | ErrorResponse> {
         try {
             const schedule = await prisma.schedule.findUnique({ where: { id } });
             if (!schedule) {

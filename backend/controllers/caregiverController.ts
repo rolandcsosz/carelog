@@ -54,7 +54,7 @@ export class CaregiverController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Caregiver not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getCaregiverById(@Path() id: string): Promise<CaregiverWithoutPassword | ErrorResponse> {
+    public async getCaregiver(@Path() id: string): Promise<CaregiverWithoutPassword | ErrorResponse> {
         try {
             const caregiver = await prisma.caregiver.findUnique({
                 where: { id },

@@ -67,7 +67,7 @@ export class SubTaskController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Sub-task not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getSubTaskById(@Path() id: string): Promise<Subtask | ErrorResponse> {
+    public async getSubTask(@Path() id: string): Promise<Subtask | ErrorResponse> {
         try {
             const subtask = await prisma.subtask.findUnique({ where: { id } });
             if (!subtask) {

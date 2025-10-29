@@ -59,7 +59,7 @@ export class RecipientController extends Controller {
     @Security("jwt")
     @Response<ErrorResponse>(404, "Recipient not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async getRecipientById(@Path() id: string): Promise<RecipientWithoutPassword | ErrorResponse> {
+    public async getRecipient(@Path() id: string): Promise<RecipientWithoutPassword | ErrorResponse> {
         try {
             const recipient = await prisma.recipient.findUnique({ where: { id } });
             if (!recipient) {
