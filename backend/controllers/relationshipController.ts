@@ -71,14 +71,15 @@ export class RelationshipController extends Controller {
     @Get("/recipient/{id}/caregivers")
     @Security("jwt")
     @Response<ErrorResponse>(500, "Database error")
-    public async getCaregiversForRecipient(@Path() id: string): Promise<CaregiverWithoutPassword[] | ErrorResponse> {
+    public async getRelationshipsForRecipient(
+        @Path() id: string,
+    ): Promise<RecipientCaregiverRelationship[] | ErrorResponse> {
         try {
             const relationships = await prisma.recipientCaregiverRelationship.findMany({
                 where: { recipientId: id },
-                include: { caregiver: true },
             });
 
-            return relationships.map((r) => r.caregiver);
+            return relationships;
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -88,14 +89,15 @@ export class RelationshipController extends Controller {
     @Get("/caregiver/{id}/recipients")
     @Security("jwt")
     @Response<ErrorResponse>(500, "Database error")
-    public async getRecipientsForCaregiver(@Path() id: string): Promise<RecipientWithoutPassword[] | ErrorResponse> {
+    public async getRelationshipsForCaregiver(
+        @Path() id: string,
+    ): Promise<RecipientCaregiverRelationship[] | ErrorResponse> {
         try {
             const relationships = await prisma.recipientCaregiverRelationship.findMany({
                 where: { caregiverId: id },
-                include: { recipient: true },
             });
 
-            return relationships.map((r) => r.recipient);
+            return relationships;
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
