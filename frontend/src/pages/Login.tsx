@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Button } from "../components/Button";
 import { useApi } from "../hooks/useApi";
-import { postLogin } from "../../api/sdk.gen";
-import { PostLoginData, PostLoginResponse } from "../../api/types.gen";
-import { UserRole } from "../types";
+import { login as loginRequest } from "../../api/sdk.gen";
+import { LoginData, LoginResponse, LoginSuccessResponse } from "../../api/types.gen";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -16,7 +15,7 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await request<PostLoginData, PostLoginResponse>(postLogin, {
+        const response = await request<LoginData, LoginResponse>(loginRequest, {
             requestBody: { email, password },
         });
 
@@ -24,10 +23,12 @@ const Login: React.FC = () => {
             return;
         }
 
+        const body = response.data as LoginSuccessResponse;
+
         login({
-            id: response.data.user?.id ?? -1,
-            role: (response.data?.role as UserRole) ?? "invalid",
-            token: response.data?.token ?? "",
+            id: body.user.id,
+            role: body.role,
+            token: body.token,
         });
     };
 

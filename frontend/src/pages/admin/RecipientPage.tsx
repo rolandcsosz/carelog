@@ -8,13 +8,14 @@ import TextInput from "../../components/TextInput";
 import Dropdown from "../../components/Dropdown";
 import { useAdminModel } from "../../hooks/useAdminModel";
 import AdminSchedule from "./AdminSchedule";
-import { Caregiver, PopupActionResult, Recipient } from "../../types";
+import { PopupActionResult } from "../../types";
 import usePopup from "../../hooks/usePopup";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 import Switch from "../../components/Switch";
+import { CaregiverWithoutPassword, RecipientWithoutPassword } from "../../../api/types.gen";
 
 interface RecipientPageProps {
-    recipient: Recipient;
+    recipient: RecipientWithoutPassword;
 }
 
 const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
@@ -27,7 +28,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const { relationships, caregivers, recipients } = useAdminModel();
     const connections = relationships.list?.filter((relationship) => relationship.recipientId === recipient.id);
     const caregiver = caregivers.list?.find((caregiver) => caregiver.id === connections?.[0]?.caregiverId);
-    const [selectedCaregiver, setSelectedCaregiver] = useState<Caregiver | null>(caregiver || null);
+    const [selectedCaregiver, setSelectedCaregiver] = useState<CaregiverWithoutPassword | null>(caregiver || null);
     const [replacement, setReplacement] = useState<boolean>(false);
     const { openPopup, closePopup } = usePopup();
 
@@ -51,15 +52,15 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
 
         recipientConnections.forEach((rel) => {
             if (!idsToKeep.has(rel.caregiverId)) {
-                relationships.delete({ id: rel.id });
+                relationships.remove({ id: rel.id });
             }
         });
     }, [connections, recipient]);
 
     const handleDelete = (): Promise<PopupActionResult> => {
         return new Promise<PopupActionResult>((resolve) => {
-            recipients.delete(
-                { id: Number(recipient.id) },
+            recipients.remove(
+                { id: recipient.id },
                 {
                     onSuccess: () => {
                         resolve({
@@ -101,14 +102,14 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
 
         recipients.edit(
             {
-                id: Number(recipient.id),
+                id: recipient.id,
                 requestBody: {
                     name,
                     email,
                     phone,
                     address,
-                    four_hand_care_needed: recipient.fourHandCareNeeded,
-                    caregiver_note: recipient.caregiverNote,
+                    fourHandCareNeeded: recipient.fourHandCareNeeded,
+                    note: recipient.caregiverNote || "",
                 },
             },
             {
@@ -137,26 +138,22 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
 
         const isRemove = nameSelected === "<<Üres>>";
         const connection = relationships.list?.find(
-            (rel) =>
-                Number(rel.recipientId) === Number(recipient.id) &&
-                Number(rel.caregiverId) === Number(selectedCaregiver.id),
+            (rel) => rel.recipientId === recipient.id && rel.caregiverId === selectedCaregiver.id,
         );
 
         if (connection) {
             if (isRemove) {
-                relationships.delete({ id: Number(connection.id) });
+                relationships.remove({ id: connection.id });
                 setSelectedCaregiver(null);
             } else {
                 relationships.edit({
-                    id: Number(connection.recipientId),
+                    id: connection.recipientId,
                     requestBody: {
-                        recipientId: Number(recipient.id),
-                        caregiverId: Number(selectedCaregiver.id),
+                        recipientId: recipient.id,
+                        caregiverId: selectedCaregiver.id,
                     },
                 });
-                setSelectedCaregiver(
-                    caregivers.list?.find((c) => Number(c.id) === Number(selectedCaregiver.id)) || null,
-                );
+                setSelectedCaregiver(caregivers.list?.find((c) => c.id === selectedCaregiver.id) || null);
             }
             return;
         }
@@ -166,17 +163,17 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
             return;
         }
 
-        if ((connections?.length ?? 0) > 0) {
-            relationships.delete({ id: Number(connections?.[0]?.id) });
+        if ((connections?.length ?? 0) > 0 && connections?.[0]?.id) {
+            relationships.remove({ id: connections?.[0]?.id });
         }
 
         relationships.add({
             requestBody: {
-                recipientId: Number(recipient.id),
-                caregiverId: Number(selectedCaregiver.id),
+                recipientId: recipient.id,
+                caregiverId: selectedCaregiver.id,
             },
         });
-        setSelectedCaregiver(caregivers.list?.find((c) => Number(c.id) === Number(selectedCaregiver.id)) || null);
+        setSelectedCaregiver(caregivers.list?.find((c) => c.id === selectedCaregiver.id) || null);
     };
 
     const showMissingFeatureModal = () => {

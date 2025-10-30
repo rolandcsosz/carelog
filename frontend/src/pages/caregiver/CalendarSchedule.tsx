@@ -5,7 +5,7 @@ import { getDateString } from "../../utils";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import TimeTableRow from "../../components/TimeTableRow";
 import useNavigation from "../../hooks/useNavigation";
-import Recipient from "./RecipientPage";
+import RecipientWithoutPassword from "./RecipientPage";
 import useQueryData from "../../hooks/useQueryData";
 
 const CalendarSchedule: React.FC = () => {
@@ -38,13 +38,13 @@ const CalendarSchedule: React.FC = () => {
                     return (
                         <TimeTableRow
                             key={"calendar-table-row" + schedule.id}
-                            start={schedule.start}
-                            end={schedule.end}
+                            start={schedule.startTime}
+                            end={schedule.endTime}
                             userName={recipient.name}
                             address={recipient.address}
                             type="notEditable"
                             onOpen={() => {
-                                addPageToStack(<Recipient recipient={recipient} />);
+                                addPageToStack(<RecipientWithoutPassword recipient={recipient} />);
                             }}
                         />
                     );

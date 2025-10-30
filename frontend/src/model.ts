@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import { ReactNode } from "react";
-import { Log, PopupProps, User, SubTaskEditData } from "./types";
+import { PopupProps, User, SubTaskEditData } from "./types";
+import { LogEntry } from "../api/types.gen";
 
 export const userState = atom<User | null>({
     key: "userState",
@@ -47,7 +48,7 @@ export const bottomSheetContentState = atom<JSX.Element | null>({
     default: null,
 });
 
-export const openLogState = atom<Log | null>({
+export const openLogState = atom<LogEntry | null>({
     key: "openLogState",
     default: null,
 });

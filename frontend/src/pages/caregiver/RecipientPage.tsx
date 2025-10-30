@@ -7,16 +7,17 @@ import DateCard from "../../components/DateCard";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 import TodoList from "./TodoList";
 import useQueryData from "../../hooks/useQueryData";
-import { PopupActionResult, Recipient, Todo } from "../../types";
+import { PopupActionResult } from "../../types";
 import { Button } from "../../components/Button";
 import plusButton from "../../assets/add-button-icon-secondary.svg";
 import usePopup from "../../hooks/usePopup";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 import TextArea from "../../components/TextArea";
 import LogEdit from "./LogEdit";
+import { RecipientWithoutPassword, Todo } from "../../../api/types.gen";
 
 interface RecipientPageProps {
-    recipient: Recipient;
+    recipient: RecipientWithoutPassword;
 }
 
 const moveItem = (arr: Todo[], fromIndex: number, toIndex: number): Todo[] => {
@@ -30,7 +31,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const [menu, setMenu] = useState<string>("Adatok");
     const { removeLastPageFromStack, addPageToStack } = useNavigation();
     const { user, recipients, todos, subTasks, relationships } = useCaregiverModel();
-    const [note, setNote] = useState<string>(recipient.caregiverNote);
+    const [note, setNote] = useState<string>(recipient.caregiverNote || "");
     const { getLogsForRecipient } = useQueryData();
     const logsForRecipient =
         getLogsForRecipient(recipient)?.sort((a, b) => {
@@ -43,7 +44,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const localTodos =
         todos?.list
             ?.filter((todo) => !todo.relationshipId || todo.relationshipId === connection?.id)
-            .sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0)) || [];
+            .sort((a, b) => (a.sequenceNumber ?? 0) - (b.sequenceNumber ?? 0)) || [];
 
     const handleNoteSave = (): string | null => {
         let errorMessage = null;
@@ -59,8 +60,8 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                 id: recipient.id,
                 requestBody: {
                     ...recipient,
-                    four_hand_care_needed: recipient.fourHandCareNeeded,
-                    caregiver_note: note,
+                    fourHandCareNeeded: recipient.fourHandCareNeeded,
+                    note: recipient?.caregiverNote || "",
                 },
             },
             options,
@@ -82,7 +83,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
         }
 
         const maxSequenceNumber =
-            localTodos && localTodos.length > 0 ? Math.max(...localTodos.map((todo) => todo.sequence ?? 0)) : 0;
+            localTodos && localTodos.length > 0 ? Math.max(...localTodos.map((todo) => todo.sequenceNumber ?? 0)) : 0;
 
         todos.add({
             requestBody: {
@@ -202,7 +203,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                     {logsForRecipient?.map((log, index) => (
                         <DateCard
                             key={index}
-                            date={log.date}
+                            date={new Date(log.date)}
                             onClick={() => {
                                 addPageToStack(<LogEdit log={log} />);
                             }}
@@ -252,7 +253,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                     <div className={styles.spacer} />
                     <div className={styles.title}>Teendők</div>
                     <TodoList
-                        dropdownOptions={subTasks?.list?.map((type) => type.name) || []}
+                        dropdownOptions={subTasks?.list?.map((type) => type.title) || []}
                         items={localTodos || []}
                         onEdit={(todo) => {
                             const subTask = subTasks?.list?.find((option) => option.id === todo.subtaskId);
@@ -261,7 +262,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                                     id: todo.id,
                                     requestBody: {
                                         ...todo,
-                                        sequenceNumber: todo.sequence ?? 0,
+                                        sequenceNumber: todo.sequenceNumber ?? 0,
                                         subtaskId: subTask.id,
                                     },
                                 });
@@ -274,7 +275,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                                 cancelButtonText: "Mégsem",
                                 content: "Biztosan törölni szeretnéd ezt a teendőt?",
                                 onConfirm: async (): Promise<PopupActionResult> => {
-                                    await todos.delete({ id: todoId });
+                                    await todos.remove({ id: todoId });
                                     localTodos.filter((todo) => todo.id !== todoId);
                                     return {
                                         ok: true,

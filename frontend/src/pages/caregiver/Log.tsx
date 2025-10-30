@@ -8,11 +8,12 @@ import { openLogState } from "../../model.ts";
 import { useRecoilValue } from "recoil";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import usePopup from "../../hooks/usePopup.tsx";
-import { NewSubTypeData, PopupActionResult, Task } from "../../types";
+import { NewSubTypeData, PopupActionResult } from "../../types";
 import LogCard from "../../components/LogCard.tsx";
 import NewSubTaskFormRow from "../../components/popup-contents/NewSubTaskFormRow.tsx";
 import useLoader from "../../hooks/useLoader.tsx";
 import plusButton from "../../assets/add-button-icon-secondary.svg";
+import { TaskLog } from "../../../api/types.gen.ts";
 
 const Log: React.FC = () => {
     const { logs, subTasks } = useCaregiverModel();
@@ -32,8 +33,12 @@ const Log: React.FC = () => {
         if (openLog) {
             logs.edit(
                 {
-                    id: openLog.id.toString(),
+                    id: openLog.id,
                     requestBody: {
+                        date: openLog.date,
+                        relationshipId: openLog.relationshipId,
+                        closed: openLog.closed,
+                        tasks: openLog.tasks,
                         finished: true,
                     },
                 },
@@ -64,7 +69,7 @@ const Log: React.FC = () => {
                     onChange={(task) => {
                         localTaskRef.current = task;
                     }}
-                    taskOptions={subTasks.list?.map((task) => task.name || "") || []}
+                    taskOptions={subTasks.list?.map((task) => task.title || "") || []}
                 />
             ),
             onConfirm: (): Promise<PopupActionResult> | void => {
@@ -73,8 +78,8 @@ const Log: React.FC = () => {
                     return Promise.resolve({ ok: false, quitUpdate: true, message: "" });
                 }
 
-                const newTask: Task = {
-                    subTaskId: getTaskIdByName(task.task) || -1,
+                const newTask: TaskLog = {
+                    subTaskId: getTaskIdByName(task.task) || "",
                     startTime: getCurrentTime(),
                     endTime: getCurrentTime(),
                     done: false,
@@ -99,7 +104,7 @@ const Log: React.FC = () => {
             confirmButtonText: "Törlés",
             cancelButtonText: "Mégse",
             onConfirm: (): Promise<PopupActionResult> | void => {
-                logs.delete(
+                logs.remove(
                     {
                         id: openLog.id,
                     },
@@ -132,7 +137,7 @@ const Log: React.FC = () => {
         });
     };
 
-    const saveTask = (task: Task | null, index: number | null = null) => {
+    const saveTask = (task: TaskLog | null, index: number | null = null) => {
         if (!openLog) {
             return;
         }
@@ -161,8 +166,13 @@ const Log: React.FC = () => {
 
         logs.edit(
             {
-                id: openLog?.id.toString(),
+                id: openLog.id,
                 requestBody: {
+                    date: openLog.date,
+                    relationshipId: openLog.relationshipId,
+                    finished: openLog.finished,
+                    closed: openLog.closed,
+
                     tasks: updatedTasks.map((task) => ({
                         subTaskId: task.subTaskId.toString(),
                         startTime: denormalizeTime(task.startTime),
@@ -213,7 +223,7 @@ const Log: React.FC = () => {
         <div className={styles.page}>
             <div className={styles.headerColumn}>
                 <div className={styles.mainTitle}>{recipient?.name}</div>
-                <div className={styles.date}>{getDateString(openLog?.date ?? new Date())}</div>
+                <div className={styles.date}>{getDateString(openLog?.date ? new Date(openLog?.date) : new Date())}</div>
             </div>
             <div />
 

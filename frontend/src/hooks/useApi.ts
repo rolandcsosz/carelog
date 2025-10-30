@@ -2,18 +2,40 @@ import { useCallback } from "react";
 import type { CancelablePromise } from "../../api/core/CancelablePromise";
 import { useAuth } from "./useAuth";
 import { FetchResponse } from "../types";
+import { ErrorResponse } from "../../api/types.gen";
 
 export function useApi() {
     const { logout } = useAuth();
 
     const request = useCallback(
-        async <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P): Promise<FetchResponse<R | null>> => {
+        async <P, R>(
+            apiCall: (params: P) => CancelablePromise<R | ErrorResponse>,
+            params: P,
+        ): Promise<FetchResponse<R | null>> => {
             try {
                 const response = await apiCall(params);
+
+                if (!response || typeof response !== "object") {
+                    return {
+                        ok: false,
+                        error:
+                            !response ? "A szerver nem küldött választ." : "Hiba történt a kérés feldolgozása során.",
+                        data: null,
+                    };
+                }
+
+                if ("error" in response && response.error && typeof response.error === "string") {
+                    return {
+                        ok: false,
+                        error: response.error,
+                        data: null,
+                    };
+                }
+
                 return {
-                    ok: !!response,
-                    error: !response ? "A szerver nem küldött választ." : null,
-                    data: !response ? null : (response as R),
+                    ok: true,
+                    error: null,
+                    data: response as R,
                 };
             } catch (error: any) {
                 console.log("API Error:", error);

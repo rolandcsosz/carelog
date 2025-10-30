@@ -1,10 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import { CancelablePromise } from "../api/core/CancelablePromise";
-import { getSchedulesCaregiverByCaregiverId } from "../api/sdk.gen";
-import { GetSchedulesCaregiverByCaregiverIdData, GetSchedulesCaregiverByCaregiverIdResponse } from "../api/types.gen";
+import { ErrorResponse, Schedule } from "../api/types.gen";
 import ErrorModal from "./components/popup-contents/ErrorModal";
 import Loading from "./components/popup-contents/Loading";
 import Success from "./components/popup-contents/Success";
-import { FetchResponse, Id, PopupActionResult, PopupProps, Schedule } from "./types";
+import { FetchResponse, PopupActionResult, PopupProps } from "./types";
+import { getSchedulesForCaregiver } from "../api/sdk.gen";
 
 export const getDateString = (date: Date, delimeter: string = "/"): string => {
     const year = date.getFullYear();
@@ -30,32 +31,87 @@ export const getHourAndMinuteTimeString = (date: Date): string => {
     return date.toTimeString().split(" ")[0].slice(0, 5) + ":00"; // Returns HH:mm:ss format
 };
 
-export const fetchSchedulesForCaregiver = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    caregiverId: Id,
-): Promise<Schedule[]> => {
-    const schedules = await request<GetSchedulesCaregiverByCaregiverIdData, GetSchedulesCaregiverByCaregiverIdResponse>(
-        getSchedulesCaregiverByCaregiverId,
-        {
-            caregiverId: caregiverId,
-        },
-    );
+export async function fetchData<P, R>(
+    request: <P_, R_>(
+        apiCall: (params: P_) => CancelablePromise<R_ | ErrorResponse>,
+        params: P_,
+    ) => Promise<FetchResponse<R_ | null>>,
+    apiCall: (params: P) => CancelablePromise<R | ErrorResponse>,
+    params: P,
+    defaultValue: R,
+): Promise<R> {
+    const response = await request<P, R>(apiCall, params);
+    return response && response.ok && response.data ? response.data : defaultValue;
+}
 
-    if (!schedules || !schedules.data || schedules.data.length === 0) {
-        return [];
+export async function fetchDataNullable<P, R>(
+    request: <P_, R_>(
+        apiCall: (params: P_) => CancelablePromise<R_ | ErrorResponse>,
+        params: P_,
+    ) => Promise<FetchResponse<R_ | null>>,
+    apiCall: (params: P) => CancelablePromise<R | ErrorResponse>,
+    params: P,
+    defaultValue: R | null,
+): Promise<R | null> {
+    const response = await request<P, R>(apiCall, params);
+    return response && response.ok && response.data ? response.data : defaultValue;
+}
+
+export async function fetchAction<P, R>(
+    request: <P_, R_>(
+        apiCall: (params: P_) => CancelablePromise<R_ | ErrorResponse>,
+        params: P_,
+    ) => Promise<FetchResponse<R_ | null>>,
+    apiCall: (params: P) => CancelablePromise<R | ErrorResponse>,
+    params: P,
+    errorMessage: string,
+): Promise<FetchResponse<null>> {
+    const response = await request<P, R>(apiCall, params);
+
+    if (!response || !response.ok) {
+        return {
+            ok: false,
+            data: null,
+            error: response?.error || errorMessage,
+        };
     }
 
-    return schedules.data.map(
-        (schedule) =>
-            ({
-                id: Number(schedule.id) || -1,
-                relationshipId: Number(schedule.relationship_id) || -1,
-                start: schedule.start_time || "00:00:00",
-                end: schedule.end_time || "00:00:00",
-                date: schedule.date ? new Date(schedule.date) : new Date(),
-            }) as Schedule,
-    );
-};
+    return { ok: true, data: null, error: null };
+}
+
+export type RequestFnType = <P, R>(
+    apiCall: (params: P) => CancelablePromise<R | ErrorResponse>,
+    params: P,
+) => Promise<FetchResponse<R | null>>;
+
+export interface UseApiMutationOptions<P, R> {
+    request: RequestFnType;
+    apiCall: (body: P) => CancelablePromise<R | ErrorResponse>;
+    throwMessage: string;
+    onSuccess?: () => void;
+    onError?: (error: any) => void;
+}
+
+export function useApiMutation<P, R>({
+    request,
+    apiCall,
+    throwMessage,
+    onSuccess,
+    onError,
+}: UseApiMutationOptions<P, R>) {
+    return useMutation({
+        mutationFn: async (body: P) => {
+            const response = await request<P, R>(apiCall, body);
+            throwIfError(response, throwMessage);
+            return response.data;
+        },
+        onSuccess,
+        onError,
+    });
+}
+
+export const fetchSchedulesForCaregiver = (request: RequestFnType, caregiverId: string) =>
+    fetchData(request, getSchedulesForCaregiver, { caregiverId }, [] as Schedule[]);
 
 const normalizeTime = (time: string) => {
     if (/^\d{2}:\d{2}:\d{2}$/.test(time)) {

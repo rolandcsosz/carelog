@@ -1,309 +1,192 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useApi } from "./useApi";
 import {
-    DeleteLogsByIdData,
-    DeleteLogsByIdResponse,
-    DeleteTodosByIdData,
-    DeleteTodosByIdResponse,
-    GetCaregiversByIdData,
-    GetCaregiversByIdRecipientsData,
-    GetCaregiversByIdRecipientsResponse,
-    GetCaregiversByIdResponse,
-    GetLogsRelationshipByRecipientIdByCaregiverIdData,
-    GetLogsRelationshipByRecipientIdByCaregiverIdResponse,
-    GetRecipientsByIdData,
-    GetRecipientsByIdResponse,
-    GetSubtasksResponse,
-    GetTasktypesResponse,
-    GetTodosResponse,
-    PostLogsData,
-    PostLogsResponse,
-    PostSubtasksData,
-    PostSubtasksResponse,
-    PostTodosData,
-    PostTodosResponse,
-    PutCaregiversByIdData,
-    PutCaregiversByIdPasswordData,
-    PutCaregiversByIdPasswordResponse,
-    PutCaregiversByIdResponse,
-    PutLogsByIdData,
-    PutLogsByIdResponse,
-    PutRecipientsByIdData,
-    PutRecipientsByIdResponse,
-    PutTodosByIdData,
-    PutTodosByIdResponse,
+    CaregiverWithoutPassword,
+    CreateLogData,
+    CreateLogResponse,
+    CreateSubTaskData,
+    CreateSubTaskResponse,
+    CreateTodoData,
+    CreateTodoResponse,
+    DeleteLogData,
+    DeleteLogResponse,
+    DeleteTodoData,
+    DeleteTodoResponse,
+    ErrorResponse,
+    GetLogsForRelationshipData,
+    GetLogsForRelationshipResponse,
+    GetRecipientData,
+    GetRecipientResponse,
+    GetRelationshipsForCaregiverData,
+    GetRelationshipsForCaregiverResponse,
+    LogEntry,
+    RecipientCaregiverRelationship,
+    RecipientWithoutPassword,
+    Schedule,
+    Subtask,
+    TaskType,
+    Todo,
+    UpdateCaregiverData,
+    UpdateCaregiverPasswordData,
+    UpdateCaregiverResponse,
+    UpdateLogData,
+    UpdateLogResponse,
+    UpdateRecipientData,
+    UpdateRecipientResponse,
+    UpdateTodoData,
+    UpdateTodoResponse,
 } from "../../api/types.gen";
 import { CancelablePromise } from "../../api/core/CancelablePromise";
 import {
-    deleteLogsById,
-    deleteTodosById,
-    getCaregiversById,
-    getCaregiversByIdRecipients,
-    getLogsRelationshipByRecipientIdByCaregiverId,
-    getRecipientsById,
-    getSubtasks,
-    getTasktypes,
+    deleteLog,
+    deleteTodo,
+    getLogsForRelationship,
+    getRecipient,
+    getSubTasks,
+    getTaskTypes,
     getTodos,
-    postLogs,
-    postSubtasks,
-    postTodos,
-    putCaregiversById,
-    putCaregiversByIdPassword,
-    putLogsById,
-    putRecipientsById,
-    putTodosById,
+    createLog,
+    createSubTask,
+    updateCaregiver,
+    updateCaregiverPassword,
+    updateLog,
+    updateRecipient,
+    updateTodo,
+    getCaregiver,
+    getRelationshipsForCaregiver,
+    createTodo,
 } from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
-import { fetchSchedulesForCaregiver, throwIfError } from "../utils";
+import {
+    fetchAction,
+    fetchData,
+    fetchDataNullable,
+    fetchSchedulesForCaregiver as fetchSchedules,
+    RequestFnType,
+    useApiMutation,
+} from "../utils";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { openLogState } from "../model";
-import {
-    Caregiver,
-    FetchResponse,
-    Id,
-    Log,
-    Recipient,
-    Relationship,
-    Schedule,
-    SubTask,
-    TaskType,
-    Todo,
-} from "../types";
-
-const fetchLogedInUser = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    id: number,
-): Promise<Caregiver | null> => {
-    const response = await request<GetCaregiversByIdData, GetCaregiversByIdResponse>(getCaregiversById, { id: id });
-    if (!response || !response.ok || !response.data) {
-        return null;
-    }
-
-    return {
-        id: Number(response.data?.id) ?? -1,
-        name: response.data?.name ?? "",
-        email: response.data?.email ?? "",
-        phone: response.data?.phone ?? "",
-    };
-};
-
-const fetchRelationships = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    caregiverId: Id,
-): Promise<Relationship[]> => {
-    const response = await request<GetCaregiversByIdRecipientsData, GetCaregiversByIdRecipientsResponse>(
-        getCaregiversByIdRecipients,
-        { id: caregiverId },
-    );
-    if (!response || !response.ok || !response.data || response.data.length === 0) {
-        return [];
-    }
-
-    return response.data.map((relationship) => ({
-        id: Number(relationship?.relationship_id) || -1,
-        caregiverId: Number(caregiverId) || -1,
-        recipientId: Number(relationship?.id) || -1,
-    })) as Relationship[];
-};
+import { FetchResponse } from "../types";
 
 const fetchRecipients = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    caregiverId: Id,
-): Promise<Recipient[]> => {
-    const response = await request<GetCaregiversByIdRecipientsData, GetCaregiversByIdRecipientsResponse>(
-        getCaregiversByIdRecipients,
+    request: <P, R>(
+        apiCall: (params: P) => CancelablePromise<R | ErrorResponse>,
+        params: P,
+    ) => Promise<FetchResponse<R | null>>,
+    caregiverId: string,
+): Promise<RecipientWithoutPassword[]> => {
+    const response = await request<GetRelationshipsForCaregiverData, GetRelationshipsForCaregiverResponse>(
+        getRelationshipsForCaregiver,
         { id: caregiverId },
     );
 
-    if (!response || !response.ok || !response.data || response.data.length === 0) {
+    if (!response || !response.ok || !response.data) {
         return [];
     }
 
+    const relationships = response.data as RecipientCaregiverRelationship[];
+
     const recipients = await Promise.all(
-        response.data.map(async (recipient) => {
-            if (!recipient?.id) {
+        relationships.map(async (relationship) => {
+            if (!relationship.recipientId) {
                 return null;
             }
 
-            const recipientResponse = await request<GetRecipientsByIdData, GetRecipientsByIdResponse>(
-                getRecipientsById,
-                { id: recipient.id },
-            );
+            const recipientResponse = await request<GetRecipientData, GetRecipientResponse>(getRecipient, {
+                id: relationship.recipientId,
+            });
 
             if (!recipientResponse || !recipientResponse.ok || !recipientResponse.data) {
                 return null;
             }
 
-            const r = recipientResponse.data;
-            return {
-                id: Number(r?.id) || -1,
-                name: r?.name || "",
-                email: r?.email || "",
-                phone: r?.phone || "",
-                address: r?.address || "",
-                fourHandCareNeeded: r?.four_hand_care_needed || false,
-                caregiverNote: r?.caregiver_note || "",
-            } as Recipient;
+            return recipientResponse.data as RecipientWithoutPassword;
         }),
     );
 
-    return recipients.filter((r): r is Recipient => r !== null);
-};
-
-const fetchSchedules = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    caregiverId: Id,
-): Promise<Schedule[]> => {
-    return await fetchSchedulesForCaregiver(request, caregiverId);
-};
-
-const fetchTaskType = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-): Promise<TaskType[]> => {
-    const response = await request<void, GetTasktypesResponse>(getTasktypes, undefined);
-
-    if (!response || !response.ok || !response.data || response.data.length === 0) {
-        return [];
-    }
-
-    return response.data.map((taskType) => ({
-        id: Number(taskType?.id) || -1,
-        name: taskType?.type || "",
-    })) as TaskType[];
-};
-
-const fetchSubTasks = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-): Promise<SubTask[]> => {
-    const response = await request<void, GetSubtasksResponse>(getSubtasks, undefined);
-
-    if (!response || !response.ok || !response.data || response.data.length === 0) {
-        return [];
-    }
-
-    return response.data.map((subtask) => ({
-        id: Number(subtask?.id) || -1,
-        name: subtask?.title || "",
-        taskTypeId: Number((subtask as any)?.tasktypeid ?? (subtask as any)?.tasktypeId ?? -1), // TODO: handle typo
-    })) as SubTask[];
-};
-
-const setPassword = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    body: PutCaregiversByIdPasswordData,
-): Promise<FetchResponse<null>> => {
-    const response = await request<PutCaregiversByIdPasswordData, PutCaregiversByIdPasswordResponse>(
-        putCaregiversByIdPassword,
-        body,
-    );
-
-    if (!response || !response.ok) {
-        return {
-            ok: false,
-            data: null,
-            error: response?.error || "Ismeretlen hiba történt a jelszó beállítása során.",
-        };
-    }
-
-    return { ok: true, data: null, error: null };
+    return recipients.filter((recipient): recipient is RecipientWithoutPassword => recipient !== null);
 };
 
 const fetchLogs = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-    caregiverId: Id,
-    recipientIds: Id[],
-): Promise<Log[]> => {
-    const logs: Log[] = (
+    request: <P, R>(
+        apiCall: (params: P) => CancelablePromise<R | ErrorResponse>,
+        params: P,
+    ) => Promise<FetchResponse<R | null>>,
+    caregiverId: string,
+    recipientIds: string[],
+): Promise<LogEntry[]> => {
+    const logs: LogEntry[] = (
         await Promise.all(
             recipientIds.map(async (recipientId) => {
-                const response = await request<
-                    GetLogsRelationshipByRecipientIdByCaregiverIdData,
-                    GetLogsRelationshipByRecipientIdByCaregiverIdResponse
-                >(getLogsRelationshipByRecipientIdByCaregiverId, {
-                    recipientId: recipientId.toString(),
-                    caregiverId: caregiverId.toString(),
-                });
-                if (!response || !response.ok || !response.data || response.data.length === 0) {
+                const response = await request<GetLogsForRelationshipData, GetLogsForRelationshipResponse>(
+                    getLogsForRelationship,
+                    {
+                        recipientId: recipientId.toString(),
+                        caregiverId: caregiverId.toString(),
+                    },
+                );
+
+                if (!response || !response.ok || !response.data) {
                     return [];
                 }
 
-                return response.data.map(
-                    (log) =>
-                        ({
-                            id: log?.id || "",
-                            date: log?.date ? new Date(log.date) : new Date(),
-                            relationshipId: Number(log?.relationshipId) || -1,
-                            finished: log?.finished || false,
-                            closed: log?.closed || false,
-                            tasks:
-                                log?.tasks?.map((task) => ({
-                                    subTaskId: Number(task?.subTaskId) || "",
-                                    startTime: task?.startTime || "",
-                                    endTime: task?.endTime || "",
-                                    done: task?.done || false,
-                                    note: task?.note || "",
-                                })) || [],
-                        }) as Log,
-                );
+                return response.data as LogEntry[];
             }),
         )
     ).flat();
 
     return logs;
 };
-const fetchTodos = async (
-    request: <P, R>(apiCall: (params: P) => CancelablePromise<R>, params: P) => Promise<FetchResponse<R | null>>,
-): Promise<Todo[]> => {
-    const response = await request<void, GetTodosResponse>(getTodos, undefined);
-    if (!response || !response.ok || !response.data || response.data.length === 0) {
-        return [];
-    }
 
-    return response.data.map(
-        (todo) =>
-            ({
-                id: Number(todo?.id) || -1,
-                subtaskId: Number((todo as any)?.subtaskid) || -1, //TODO: backend typo
-                relationshipId: Number((todo as any)?.relationshipid) || -1,
-                sequence: Number((todo as any)?.sequencenumber) || -1,
-                done: todo?.done || false,
-            }) as Todo,
-    );
-};
+const fetchLogedInUser = (request: RequestFnType, id: string) =>
+    fetchDataNullable(request, getCaregiver, { id }, null as CaregiverWithoutPassword | null);
+
+const fetchRelationships = (request: RequestFnType, id: string) =>
+    fetchData(request, getRelationshipsForCaregiver, { id }, [] as RecipientCaregiverRelationship[]);
+
+const fetchTaskType = (request: RequestFnType) => fetchData(request, getTaskTypes, undefined, [] as TaskType[]);
+
+const fetchSubTasks = (request: RequestFnType) => fetchData(request, getSubTasks, undefined, [] as Subtask[]);
+
+const setPassword = (request: RequestFnType, data: UpdateCaregiverPasswordData): Promise<FetchResponse<null>> =>
+    fetchAction(request, updateCaregiverPassword, data, "Ismeretlen hiba történt a jelszó beállítása során.");
+
+const fetchTodos = (request: RequestFnType) => fetchData(request, getTodos, undefined, [] as Todo[]);
 
 export const useCaregiverModel = () => {
     const { request } = useApi();
     const { user } = useAuth();
     const setOpenLog = useSetRecoilState(openLogState);
 
-    const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<Caregiver | null>({
+    const { data: logedInUser, refetch: refetchLogedInUser } = useQuery<CaregiverWithoutPassword | null>({
         queryKey: ["logedInCaregiverUser"],
-        queryFn: () => fetchLogedInUser(request, Number(user?.id) ?? -1),
+        queryFn: () => fetchLogedInUser(request, user?.id ?? ""),
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
     });
 
-    const { data: recipients, refetch: refetchRecipients } = useQuery<Recipient[]>({
+    const { data: recipients, refetch: refetchRecipients } = useQuery<RecipientWithoutPassword[]>({
         queryKey: ["caregiverRecipients", user?.id],
-        queryFn: () => fetchRecipients(request, user?.id ?? -1),
+        queryFn: () => fetchRecipients(request, user?.id ?? ""),
         enabled: !!user?.id && user.role === "caregiver",
     });
 
     const { data: schedule, refetch: refetchSchedules } = useQuery<Schedule[]>({
         queryKey: ["caregiverSchedules", user?.id],
-        queryFn: () => fetchSchedules(request, user?.id ?? -1),
+        queryFn: () => fetchSchedules(request, user?.id ?? ""),
         enabled: !!user?.id && user.role === "caregiver",
     });
 
-    const { data: relationships, refetch: refetchRelationships } = useQuery<Relationship[]>({
+    const { data: relationships, refetch: refetchRelationships } = useQuery<RecipientCaregiverRelationship[]>({
         queryKey: ["caregiverRelationships", user?.id],
-        queryFn: () => fetchRelationships(request, user?.id ?? -1),
+        queryFn: () => fetchRelationships(request, user?.id ?? ""),
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
     });
 
-    const { data: subTasks, refetch: refetchSubTasks } = useQuery<SubTask[]>({
+    const { data: subTasks, refetch: refetchSubTasks } = useQuery<Subtask[]>({
         queryKey: ["subTasks"],
         queryFn: () => fetchSubTasks(request),
         enabled: !!user?.id && user?.role === "caregiver",
@@ -317,9 +200,9 @@ export const useCaregiverModel = () => {
         staleTime: 0,
     });
 
-    const { data: logs, refetch: refetchLogs } = useQuery<Log[]>({
+    const { data: logs, refetch: refetchLogs } = useQuery<LogEntry[]>({
         queryKey: ["logs", user?.id, recipients?.map((c) => c.id).join(",")],
-        queryFn: () => fetchLogs(request, user?.id ?? -1, recipients?.map((c) => c.id) || []),
+        queryFn: () => fetchLogs(request, user?.id ?? "", recipients?.map((c) => c.id) || []),
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
     });
@@ -330,126 +213,81 @@ export const useCaregiverModel = () => {
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
     });
-    const { mutate: addSubTask } = useMutation({
-        mutationFn: async (updateInfo: PostSubtasksData) => {
-            const response = await request<PostSubtasksData, PostSubtasksResponse>(postSubtasks, updateInfo);
-            throwIfError(response, "Hiba történt a részfeladat hozzáadásakor.");
-        },
-        onSuccess: () => {
-            refetchSubTasks();
-        },
-        onError: (error: any) => {
-            console.error("Error adding subtask:", error);
-        },
+
+    const { mutate: addSubTask } = useApiMutation<CreateSubTaskData, CreateSubTaskResponse>({
+        request,
+        apiCall: createSubTask,
+        throwMessage: "Hiba történt a részfeladat hozzáadásakor.",
+        onSuccess: refetchSubTasks,
+        onError: (error) => console.error("Error adding subtask:", error),
     });
 
-    const { mutate: updateLogedInUser } = useMutation({
-        mutationFn: async (updateInfo: PutCaregiversByIdData) => {
-            const response = await request<PutCaregiversByIdData, PutCaregiversByIdResponse>(
-                putCaregiversById,
-                updateInfo,
-            );
-            throwIfError(response, "Hiba történt a felhasználó frissítésekor.");
-        },
-        onSuccess: () => {
-            refetchLogedInUser();
-        },
-        onError: (error: any) => {
-            console.error("Error updating user:", error);
-        },
+    const { mutate: updateLogedInUser } = useApiMutation<UpdateCaregiverData, UpdateCaregiverResponse>({
+        request,
+        apiCall: updateCaregiver,
+        throwMessage: "Hiba történt a felhasználó frissítésekor.",
+        onSuccess: refetchLogedInUser,
+        onError: (error) => console.error("Error updating user:", error),
     });
 
-    const { mutate: editRecipient } = useMutation({
-        mutationFn: async (body: PutRecipientsByIdData) => {
-            const response = await request<PutRecipientsByIdData, PutRecipientsByIdResponse>(putRecipientsById, body);
-            throwIfError(response, "Hiba történt a kliens szerkesztésekor.");
-        },
-        onSuccess: () => {
-            refetchRecipients();
-        },
-        onError: (error: any) => {
-            console.error("Error editing recipient:", error);
-        },
+    const { mutate: editRecipient } = useApiMutation<UpdateRecipientData, UpdateRecipientResponse>({
+        request,
+        apiCall: updateRecipient,
+        throwMessage: "Hiba történt a kliens szerkesztésekor.",
+        onSuccess: refetchRecipients,
+        onError: (error) => console.error("Error editing recipient:", error),
     });
 
-    const { mutate: addLog } = useMutation({
-        mutationFn: async (body: PostLogsData) => {
-            const response = await request<PostLogsData, PostLogsResponse>(postLogs, body);
-            throwIfError(response, "Hiba történt a napló hozzáadásakor.");
-        },
+    const { mutate: addLog } = useApiMutation<CreateLogData, CreateLogResponse>({
+        request,
+        apiCall: createLog,
+        throwMessage: "Hiba történt a napló hozzáadásakor.",
         onSuccess: () => {
             setTimeout(() => {
                 refetchLogs();
             }, 2000);
         },
-        onError: (error: any) => {
-            console.error("Error adding log:", error);
-        },
+        onError: (error) => console.error("Error adding log:", error),
     });
 
-    const { mutateAsync: editLog } = useMutation({
-        mutationFn: async (body: PutLogsByIdData) => {
-            const response = await request<PutLogsByIdData, PutLogsByIdResponse>(putLogsById, body);
-            throwIfError(response, "Hiba történt a napló szerkesztése során.");
-        },
-        onSuccess: () => {
-            refetchLogs();
-        },
-        onError: (error: any) => {
-            console.error("Error editing log:", error);
-        },
+    const { mutate: editLog } = useApiMutation<UpdateLogData, UpdateLogResponse>({
+        request,
+        apiCall: updateLog,
+        throwMessage: "Hiba történt a napló szerkesztése során.",
+        onSuccess: refetchLogs,
+        onError: (error) => console.error("Error editing log:", error),
     });
 
-    const { mutate: deleteLog } = useMutation({
-        mutationFn: async (body: DeleteLogsByIdData) => {
-            const response = await request<DeleteLogsByIdData, DeleteLogsByIdResponse>(deleteLogsById, body);
-            throwIfError(response, "Hiba történt a napló törlése során.");
-        },
-        onSuccess: () => {
-            refetchLogs();
-        },
-        onError: (error: any) => {
-            console.error("Error deleting log:", error);
-        },
+    const { mutate: removeLog } = useApiMutation<DeleteLogData, DeleteLogResponse>({
+        request,
+        apiCall: deleteLog,
+        throwMessage: "Hiba történt a napló törlése során.",
+        onSuccess: refetchLogs,
+        onError: (error) => console.error("Error deleting log:", error),
     });
 
-    const { mutate: addTodo } = useMutation({
-        mutationFn: async (body: PostTodosData) => {
-            const response = await request<PostTodosData, PostTodosResponse>(postTodos, body);
-            throwIfError(response, "Hiba történt a teendő hozzáadásakor.");
-        },
-        onSuccess: () => {
-            refetchTodos();
-        },
-        onError: (error: any) => {
-            console.error("Error adding todo:", error);
-        },
+    const { mutate: addTodo } = useApiMutation<CreateTodoData, CreateTodoResponse>({
+        request,
+        apiCall: createTodo,
+        throwMessage: "Hiba történt a teendő hozzáadásakor.",
+        onSuccess: refetchTodos,
+        onError: (error) => console.error("Error adding todo:", error),
     });
 
-    const { mutateAsync: editTodo } = useMutation({
-        mutationFn: async (body: PutTodosByIdData) => {
-            const response = await request<PutTodosByIdData, PutTodosByIdResponse>(putTodosById, body);
-            throwIfError(response, "Hiba történt a teendő szerkesztése során.");
-        },
-        onSuccess: () => {
-            refetchTodos();
-        },
-        onError: (error: any) => {
-            console.error("Error editing todo:", error);
-        },
+    const { mutate: editTodo } = useApiMutation<UpdateTodoData, UpdateTodoResponse>({
+        request,
+        apiCall: updateTodo,
+        throwMessage: "Hiba történt a teendő szerkesztése során.",
+        onSuccess: refetchTodos,
+        onError: (error) => console.error("Error editing todo:", error),
     });
 
-    const { mutate: deleteTodo } = useMutation({
-        mutationFn: async (body: DeleteTodosByIdData) => {
-            const response = await request<DeleteTodosByIdData, DeleteTodosByIdResponse>(deleteTodosById, body);
-            throwIfError(response, "Hiba történt a teendő törlése során.");
-        },
-        onSuccess: () => {
-            refetchTodos();
-        },
-        onError: (error: any) => {
-            console.error("Error deleting todo:", error);
-        },
+    const { mutate: removeTodo } = useApiMutation<DeleteTodoData, DeleteTodoResponse>({
+        request,
+        apiCall: deleteTodo,
+        throwMessage: "Hiba történt a teendő szerkesztése során.",
+        onSuccess: refetchTodos,
+        onError: (error) => console.error("Error deleting todo:", error),
     });
 
     useEffect(() => {
@@ -507,13 +345,13 @@ export const useCaregiverModel = () => {
             add: addLog,
             refetch: refetchLogs,
             edit: editLog,
-            delete: deleteLog,
+            remove: removeLog,
         },
         todos: {
             list: todos,
             edit: editTodo,
             add: addTodo,
-            delete: deleteTodo,
+            remove: removeTodo,
             refetch: refetchTodos,
         },
     };

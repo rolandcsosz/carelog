@@ -5,15 +5,16 @@ import { getDateString } from "../../utils.tsx";
 import { Button } from "../../components/Button.tsx";
 import useQueryData from "../../hooks/useQueryData.ts";
 import usePopup from "../../hooks/usePopup.tsx";
-import { Log, PopupActionResult } from "../../types";
+import { PopupActionResult } from "../../types";
 import LogCard from "../../components/LogCard.tsx";
 import IconButton from "../../components/IconButton.tsx";
 import useScroll from "../../hooks/useScroll.ts";
 import chevronLeft from "../../assets/chevron-left.svg";
 import useNavigation from "../../hooks/useNavigation.ts";
+import { LogEntry } from "../../../api/types.gen.ts";
 
 interface LogEditProps {
-    log: Log;
+    log: LogEntry;
 }
 
 const LogEdit: React.FC<LogEditProps> = ({ log }) => {
@@ -31,7 +32,7 @@ const LogEdit: React.FC<LogEditProps> = ({ log }) => {
             confirmButtonText: "Törlés",
             cancelButtonText: "Mégse",
             onConfirm: (): Promise<PopupActionResult> | void => {
-                logs.delete(
+                logs.remove(
                     {
                         id: log.id,
                     },
@@ -71,7 +72,7 @@ const LogEdit: React.FC<LogEditProps> = ({ log }) => {
             </div>
             <div className={styles.headerColumn}>
                 <div className={styles.profileHeaderText}>{recipient?.name}</div>
-                <div className={styles.date}>{getDateString(log.date)} tevékenységek</div>
+                <div className={styles.date}>{getDateString(new Date(log.date))} tevékenységek</div>
             </div>
             <div />
 

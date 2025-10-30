@@ -3,7 +3,7 @@ import React from "react";
 import SearchTextInput from "../../components/SearchTextInput";
 import PersonCard from "../../components/PersonCard";
 import useNavigation from "../../hooks/useNavigation";
-import Recipient from "./RecipientPage";
+import RecipientWithoutPassword from "./RecipientPage";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
 
 const Recipients: React.FC = () => {
@@ -26,7 +26,7 @@ const Recipients: React.FC = () => {
                             key={index}
                             userName={recipient.name}
                             onClick={() => {
-                                addPageToStack(<Recipient recipient={recipient} />);
+                                addPageToStack(<RecipientWithoutPassword recipient={recipient} />);
                             }}
                         />
                     ))}

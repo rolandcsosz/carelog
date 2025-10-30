@@ -3,17 +3,18 @@ import React from "react";
 import useNavigation from "../../hooks/useNavigation.ts";
 import TimeTableRow from "../../components/TimeTableRow.tsx";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
-import Recipient from "./RecipientPage.tsx";
+import RecipientWithoutPassword from "./RecipientPage.tsx";
 import { getHourAndMinuteTimeString, getDateString, convertToGlobalUTC } from "../../utils.tsx";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import useQueryData from "../../hooks/useQueryData.ts";
 import { actualLogTasksState, openLogState } from "../../model.ts";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { PopupActionResult, Schedule } from "../../types";
+import { PopupActionResult } from "../../types";
 import usePopup from "../../hooks/usePopup.tsx";
+import { Schedule } from "../../../api/types.gen.ts";
 
 type TaskDescription = {
-    subtaskId: number;
+    subtaskId: string;
     startTime: string | null;
     endTime: string | null;
 };
@@ -42,13 +43,13 @@ const DailySchedule: React.FC = () => {
 
         const schedules = filteredSchedules
             .slice(0, index + 1)
-            .filter((schedule) => Number(schedule.relationshipId) === searchSchedule.relationshipId);
+            .filter((schedule) => schedule.relationshipId === searchSchedule.relationshipId);
 
         const filteredLogs =
             logs.list?.filter(
                 (log) =>
                     log.finished &&
-                    convertToGlobalUTC(log.date) === convertToGlobalUTC(today) &&
+                    convertToGlobalUTC(new Date(log.date)) === convertToGlobalUTC(today) &&
                     log.relationshipId === searchSchedule?.relationshipId,
             ) || [];
 
@@ -69,7 +70,7 @@ const DailySchedule: React.FC = () => {
         const copyTodos: TaskDescription[] =
             todos?.list
                 ?.filter((todo) => !todo.relationshipId || todo.relationshipId === schedule.relationshipId)
-                .sort((a, b) => (a.sequence ?? 0) - (b.sequence ?? 0))
+                .sort((a, b) => (a.sequenceNumber ?? 0) - (b.sequenceNumber ?? 0))
                 .map(
                     (todo) =>
                         ({
@@ -85,7 +86,7 @@ const DailySchedule: React.FC = () => {
                 ?.tasks.map(
                     (task) =>
                         ({
-                            subtaskId: Number(task.subTaskId),
+                            subtaskId: task.subTaskId,
                             startTime: task.startTime || null,
                             endTime: task.endTime || null,
                         }) as TaskDescription,
@@ -169,13 +170,13 @@ const DailySchedule: React.FC = () => {
                     return (
                         <TimeTableRow
                             key={"time-table-row" + schedule.id}
-                            start={schedule.start}
-                            end={schedule.end}
+                            start={schedule.startTime}
+                            end={schedule.endTime}
                             userName={recipient.name}
                             address={recipient.address}
                             type={getStatusForSchedule(index)}
                             onOpen={() => {
-                                addPageToStack(<Recipient recipient={recipient} />);
+                                addPageToStack(<RecipientWithoutPassword recipient={recipient} />);
                             }}
                             onNewLog={() => {
                                 handleNewLog(schedule);

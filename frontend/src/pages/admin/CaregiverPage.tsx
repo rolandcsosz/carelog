@@ -9,12 +9,13 @@ import { useAdminModel } from "../../hooks/useAdminModel";
 import PersonCard from "../../components/PersonCard";
 import RecipientPage from "./RecipientPage";
 import AdminSchedule from "./AdminSchedule";
-import { Caregiver, PopupActionResult } from "../../types";
+import { PopupActionResult } from "../../types";
 import usePopup from "../../hooks/usePopup";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
+import { CaregiverWithoutPassword } from "../../../api/types.gen";
 
 interface CaregiverPageProps {
-    caregiver: Caregiver;
+    caregiver: CaregiverWithoutPassword;
 }
 
 const CaregiverPage: React.FC<CaregiverPageProps> = ({ caregiver }) => {
@@ -37,8 +38,8 @@ const CaregiverPage: React.FC<CaregiverPageProps> = ({ caregiver }) => {
 
     const handleDelete = (): Promise<PopupActionResult> => {
         return new Promise<PopupActionResult>((resolve) => {
-            caregivers.delete(
-                { id: Number(caregiver.id) },
+            caregivers.remove(
+                { id: caregiver.id },
                 {
                     onSuccess: () => {
                         resolve({
@@ -80,7 +81,7 @@ const CaregiverPage: React.FC<CaregiverPageProps> = ({ caregiver }) => {
 
         caregivers.edit(
             {
-                id: Number(caregiver.id),
+                id: caregiver.id,
                 requestBody: {
                     name,
                     phone,
@@ -149,7 +150,7 @@ const CaregiverPage: React.FC<CaregiverPageProps> = ({ caregiver }) => {
                             key={i}
                             userName={`Gondozott ${i}`}
                             onClick={() => {
-                                addPageToStack(<Recipient userName={`Gondozott ${i}`} />);
+                                addPageToStack(<RecipientWithoutPassword userName={`Gondozott ${i}`} />);
                             }}
                         />
                     ))

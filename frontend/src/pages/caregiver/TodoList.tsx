@@ -4,15 +4,15 @@ import { IonItem, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail }
 import TodoItem from "../../components/TodoItem.tsx";
 import IconButton from "../../components/IconButton.tsx";
 import dragIndicator from "..//../assets/drag-indicator.svg";
-import { Id, Todo } from "../../types";
 import useQueryData from "../../hooks/useQueryData.ts";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
+import { Todo } from "../../../api/types.gen.ts";
 
 type TodoListProps = {
     dropdownOptions: string[];
     items: Todo[];
     onReorder: (from: number, to: number) => void;
-    onDelete: (id: Id) => void;
+    onDelete: (id: string) => void;
     onEdit: (edited: Todo) => void;
 };
 
@@ -54,7 +54,7 @@ const TodoList: React.FC<TodoListProps> = ({ dropdownOptions, items, onReorder, 
                             options={dropdownOptions}
                             index={0}
                             onSelectedChanged={(selected) => {
-                                const subTask = subTasks?.list?.find((option) => option.name === selected);
+                                const subTask = subTasks?.list?.find((option) => option.title === selected);
 
                                 if (subTask) {
                                     onEdit({

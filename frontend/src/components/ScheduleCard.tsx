@@ -6,7 +6,7 @@ import { compareTime } from "../utils";
 import { NewScheduleData } from "../types";
 
 interface ScheduleCardProps {
-    id: number;
+    id: string;
     title: string;
     options: string[];
     selectedOption: string;

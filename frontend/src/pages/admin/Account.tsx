@@ -8,9 +8,16 @@ import { useAdminModel } from "../../hooks/useAdminModel";
 import usePopup from "../../hooks/usePopup";
 import NewPasswordForm from "../../components/NewPasswordForm";
 import { useApi } from "../../hooks/useApi";
-import { PutAdminsByIdData, PutCaregiversByIdData } from "../../../api/types.gen";
+import {
+    AdminWithoutPassword,
+    CaregiverWithoutPassword,
+    UpdateAdminData,
+    UpdateAdminPasswordData,
+    UpdateCaregiverData,
+    UpdateCaregiverPasswordData,
+} from "../../../api/types.gen";
 import { useCaregiverModel } from "../../hooks/useCaregiverModel";
-import { Admin, Caregiver, FetchResponse, NewPasswordData, PopupActionResult } from "../../types";
+import { FetchResponse, NewPasswordData, PopupActionResult } from "../../types";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 
 const Account: React.FC = () => {
@@ -19,7 +26,7 @@ const Account: React.FC = () => {
     const { openPopup, closePopup } = usePopup();
     const { user: adminUser } = useAdminModel();
     const { user: caregiverUser } = useCaregiverModel();
-    const logedInUser: Admin | Caregiver | null =
+    const logedInUser: AdminWithoutPassword | CaregiverWithoutPassword | null =
         user?.role === "admin" ? (adminUser.info ?? null) : (caregiverUser.list ?? null);
     const [email, setEmail] = useState<string>(
         user?.role === "admin" ? (adminUser.info?.email ?? "") : (caregiverUser.list?.email ?? ""),
@@ -61,8 +68,8 @@ const Account: React.FC = () => {
         };
 
         if (user?.role === "admin") {
-            const updatedUser: PutAdminsByIdData = {
-                id: Number(logedInUser?.id) ?? -1,
+            const updatedUser: UpdateAdminData = {
+                id: logedInUser?.id ?? "",
                 requestBody: {
                     name: logedInUser?.name ?? "",
                     email,
@@ -70,8 +77,8 @@ const Account: React.FC = () => {
             };
             adminUser.update(updatedUser, options);
         } else if (user?.role === "caregiver") {
-            const updatedUser: PutCaregiversByIdData = {
-                id: Number(logedInUser?.id) ?? -1,
+            const updatedUser: UpdateCaregiverData = {
+                id: logedInUser?.id ?? "",
                 requestBody: {
                     name: logedInUser?.name ?? "",
                     email,
@@ -101,20 +108,20 @@ const Account: React.FC = () => {
         let result: FetchResponse<null> | undefined;
         if (user?.role === "admin") {
             result = await adminUser.setPassword(request, {
-                id: Number(logedInUser?.id) ?? -1,
+                id: logedInUser?.id ?? "",
                 requestBody: {
                     currentPassword: latestPasswords.current.old ?? "",
                     newPassword: latestPasswords.current.new ?? "",
                 },
-            });
+            } as UpdateAdminPasswordData);
         } else if (user?.role === "caregiver") {
             result = await caregiverUser.setPassword(request, {
-                id: Number(logedInUser?.id) ?? -1,
+                id: logedInUser?.id ?? "",
                 requestBody: {
                     currentPassword: latestPasswords.current.old ?? "",
                     newPassword: latestPasswords.current.new ?? "",
                 },
-            });
+            } as UpdateCaregiverPasswordData);
         }
 
         if (!result || !result.ok) {

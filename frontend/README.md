@@ -20,21 +20,19 @@
 1. Clone the repository
 2. Open frontend directory by running `cd frontend`
 3. Run `npm install`
-4. Run `npx cap add ios` to add the ios platform to the project.
-5. Run `npm run ios` to build the ios source code.
-6. Open the ios/ directory in Xcode.
-7. In Xcode, select the target device and click on the play button to run the app on the device or simulator.
-8. If you want to build the app for release, select the Generic iOS Device as the target device and then go to Product > Archive. This will create an archive of the app that you can distribute to the App Store or to your testers.
+4. Run `npm run generate:ios` to build the ios source code.
+5. Open the ios/ directory in Xcode.
+6. In Xcode, select the target device and click on the play button to run the app on the device or simulator.
+7. If you want to build the app for release, select the Generic iOS Device as the target device and then go to Product > Archive. This will create an archive of the app that you can distribute to the App Store or to your testers.
 
 ## Building android app
 1. Clone the repository
 2. Open frontend directory by running `cd frontend`
 3. Run `npm install`
-4. Run `npx cap add android` to add the android platform to the project.
-5. Run `npm run android` to build the android source code.
-6. Set  `ANDROID_HOME` environment variable to your android sdk path. Usually it is *C:\Users\user\AppData\Local\Android\Sdk* on windows after installing android studio.
-7. In the android/ directory, run `./gradlew assembleRelease` to build the app.
-8. The release apk will be generated in the *android/app/build/outputs/apk/release/* directory. The file name will be `app-release-unsigned.apk`. It is unsigned, so you need to sign it before distributing it because android does not allow unsigned apks to be installed on devices. To sign the apk, you need to modify the `build.gradle` file in the android/app/ directory and then run the `./gradlew assembleRelease` command again. You can find the instructions to sign the apk: [https://developer.android.com/studio/publish/app](https://developer.android.com/studio/publish/app).
+4. Run `npm run generate:android` to build the android source code.
+5. Set  `ANDROID_HOME` environment variable to your android sdk path. Usually it is *C:\Users\user\AppData\Local\Android\Sdk* on windows after installing android studio.
+6. In the android/ directory, run `./gradlew assembleRelease` to build the app.
+7. The release apk will be generated in the *android/app/build/outputs/apk/release/* directory. The file name will be `app-release-unsigned.apk`. It is unsigned, so you need to sign it before distributing it because android does not allow unsigned apks to be installed on devices. To sign the apk, you need to modify the `build.gradle` file in the android/app/ directory and then run the `./gradlew assembleRelease` command again. You can find the instructions to sign the apk: [https://developer.android.com/studio/publish/app](https://developer.android.com/studio/publish/app).
 
 ## Known issues
 

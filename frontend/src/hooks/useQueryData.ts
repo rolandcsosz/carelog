@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useCaregiverModel } from "./useCaregiverModel";
 import { compareTime, convertToGlobalUTC } from "../utils";
-import { Log, Recipient, Schedule } from "../types";
+import { LogEntry, RecipientWithoutPassword, Schedule } from "../../api/types.gen";
 
 const useQueryData = () => {
     const {
@@ -15,7 +15,7 @@ const useQueryData = () => {
 
     // Caregiver helper
     const getRecipientForLog = useCallback(
-        (log: Log): Recipient | undefined => {
+        (log: LogEntry): RecipientWithoutPassword | undefined => {
             const relationship = caregiverRelationShips.list?.find(
                 (relationship) => relationship.id === log.relationshipId,
             );
@@ -34,7 +34,7 @@ const useQueryData = () => {
 
     // Caregiver helper
     const getRecipientForSchedule = useCallback(
-        (schedule: Schedule): Recipient | undefined => {
+        (schedule: Schedule): RecipientWithoutPassword | undefined => {
             const relationship = caregiverRelationShips.list?.find(
                 (relationship) => relationship.id === schedule.relationshipId,
             );
@@ -58,9 +58,10 @@ const useQueryData = () => {
                 caregiverSchadules.list
                     ?.filter(
                         (schedule) =>
-                            selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate),
+                            selectedDate &&
+                            convertToGlobalUTC(new Date(schedule.date)) === convertToGlobalUTC(new Date(selectedDate)),
                     )
-                    .sort((a, b) => compareTime(a.start, b.start)) || []
+                    .sort((a, b) => compareTime(a.startTime, b.startTime)) || []
             );
         },
         [caregiverSchadules.list],
@@ -68,7 +69,7 @@ const useQueryData = () => {
 
     // Caregiver helper
     const getLogsForRecipient = useCallback(
-        (recipient: Recipient): Log[] | undefined => {
+        (recipient: RecipientWithoutPassword): LogEntry[] | undefined => {
             let filteredLogs = logs.list?.filter((log) =>
                 caregiverRelationShips.list?.some(
                     (relationship) =>
@@ -81,16 +82,16 @@ const useQueryData = () => {
     );
 
     const getTaskNameById = useCallback(
-        (taskId: number): string => {
-            const subTask = subTasks.list?.find((task) => Number(task.id) === Number(taskId));
-            return subTask ? subTask.name : "Ismeretlen feladat";
+        (taskId: string): string => {
+            const subTask = subTasks.list?.find((task) => task.id === taskId);
+            return subTask ? subTask.title : "Ismeretlen feladat";
         },
         [taskTypes.list],
     );
 
     const getTaskIdByName = useCallback(
-        (taskName: string): number | undefined => {
-            const subTask = subTasks.list?.find((task) => task.name === taskName);
+        (taskName: string): string | undefined => {
+            const subTask = subTasks.list?.find((task) => task.title === taskName);
             return subTask ? subTask.id : undefined;
         },
         [taskTypes.list],

@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import styles from "./LogCard.module.scss";
 import TextInput from "./TextInput";
 import { compareTime } from "../utils";
-import { Task } from "../types";
 import deleteIcon from "../assets/delete.svg";
 import IconButton from "./IconButton";
 import useQueryData from "../hooks/useQueryData";
+import { TaskLog } from "../../api/types.gen";
 
 interface LogCardProps {
     index: number;
-    task: Task;
+    task: TaskLog;
     startTimeInvalid?: boolean;
     disabled?: boolean;
-    onChange: (value: Task, index: number) => void;
+    onChange: (value: TaskLog, index: number) => void;
     onDelete: (index: number) => void;
 }
 
@@ -30,7 +30,7 @@ const LogCard: React.FC<LogCardProps> = ({
     const { getTaskNameById } = useQueryData();
 
     // Helper to call onChange with the latest internal state
-    const updateSubtask = (partial: Partial<Task> = {}) => {
+    const updateSubtask = (partial: Partial<TaskLog> = {}) => {
         onChange(
             {
                 ...task,
@@ -38,7 +38,7 @@ const LogCard: React.FC<LogCardProps> = ({
                 endTime: selectedEndTime,
                 done: taskDone,
                 ...partial,
-            } as Task,
+            } as TaskLog,
             index,
         );
     };

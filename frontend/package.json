@@ -7,14 +7,13 @@
         "dev": "vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
-        "preview": "vite preview",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build",
         "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
-        "check-format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
-        "android": "vite build && npx cap sync android",
-        "ios": "vite build && npx cap sync ios",
-        "openapi-ts": "openapi-ts --input openapi.json --output api --client legacy/fetch"
+        "check:format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
+        "check:types": "tsc",
+        "generate:android": "vite build && cap add android && cap sync android",
+        "generate:ios": "vite build && cap add ios && cap sync ios",
+        "generate:openapi-ts": "openapi-ts --input openapi.json --output api --client legacy/fetch"
     },
     "dependencies": {
         "@capacitor/android": "^7.2.0",

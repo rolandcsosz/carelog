@@ -7,12 +7,13 @@ import { useAdminModel } from "../../hooks/useAdminModel";
 import { useApi } from "../../hooks/useApi";
 import { compareTime, convertToGlobalUTC, getDateString } from "../../utils";
 import addButtonIconPrimary from "../../assets/add-button-icon-primary.svg";
-import { NewScheduleData, Relationship, Schedule } from "../../types";
+import { NewScheduleData } from "../../types";
+import { RecipientCaregiverRelationship, Schedule } from "../../../api/types.gen";
 
 interface AdminScheduleProps {
-    userId: number;
-    caregiverIds?: number[];
-    recipientIds?: number[];
+    userId: string;
+    caregiverIds?: string[];
+    recipientIds?: string[];
 }
 
 type AdminScheduleMode = "caregiver" | "recipient" | null;
@@ -68,10 +69,10 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         const fetchSchedules = async () => {
             if (userMode === "caregiver") {
                 const response = await schedules.fetchForCaregiver(request, userId);
-                setFetchedSchedules(response.sort((a, b) => compareTime(a.start, b.start)));
+                setFetchedSchedules(response.sort((a, b) => compareTime(a.startTime, b.startTime)));
             } else if (userMode === "recipient") {
                 const response = await schedules.fetchForRecipient(request, userId);
-                setFetchedSchedules(response.sort((a, b) => compareTime(a.start, b.start)));
+                setFetchedSchedules(response.sort((a, b) => compareTime(a.startTime, b.startTime)));
             }
         };
 
@@ -89,10 +90,10 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
     const handleAddSchedule = async (schedule: Schedule) => {
         const response = await schedules.add(request, {
             requestBody: {
-                relationship_id: schedule.relationshipId,
-                start_time: schedule.start,
-                end_time: schedule.end,
-                date: schedule.date.toDateString(),
+                relationshipId: schedule.relationshipId,
+                startTime: schedule.startTime,
+                endTime: schedule.endTime,
+                date: schedule.date,
             },
         });
 
@@ -116,7 +117,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
             return;
         }
 
-        let connection: Relationship | undefined = undefined;
+        let connection: RecipientCaregiverRelationship | undefined = undefined;
 
         if (userMode === "caregiver") {
             const selectedRecipient = recipients.list?.find((r) => r.name === schedule.selectedOption);
@@ -146,10 +147,10 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         const response = await schedules.edit(request, {
             id: schedule.id,
             requestBody: {
-                relationship_id: connection.id,
-                start_time: schedule.start,
-                end_time: schedule.end,
-                date: selectedDate.toDateString(),
+                relationshipId: connection.id,
+                startTime: schedule.start,
+                endTime: schedule.end,
+                date: selectedDate.toISOString(),
             },
         });
 
@@ -159,10 +160,10 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
                     s.id === schedule.id ?
                         {
                             ...s,
-                            start: schedule.start,
-                            end: schedule.end,
-                            date: selectedDate,
-                            relationshipId: Number(connection?.id),
+                            startTime: schedule.start,
+                            endTime: schedule.end,
+                            date: selectedDate.toISOString(),
+                            relationshipId: connection.id,
                         }
                     :   s,
                 ),
@@ -171,7 +172,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
     };
 
     const filteredSchedules = fetchedSchedules.filter(
-        (schedule) => selectedDate && convertToGlobalUTC(schedule.date) === convertToGlobalUTC(selectedDate),
+        (schedule) => selectedDate && convertToGlobalUTC(new Date(schedule.date)) === convertToGlobalUTC(selectedDate),
     );
 
     const dropdownOptions =
@@ -180,17 +181,17 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         :   caregivers.list?.filter((c) => filteredIds?.includes(c.id)).map((c) => c.name);
 
     const getNameByIdRelationship = React.useCallback(
-        (id: number): string => {
-            const relationship = relationships.list?.find((r) => Number(r.id) === Number(id));
+        (id: string): string => {
+            const relationship = relationships.list?.find((r) => r.id === id);
 
             if (!relationship) {
                 return "";
             }
 
             if (userMode === "caregiver") {
-                return recipients.list?.find((r) => Number(r.id) === Number(relationship?.recipientId))?.name || "";
+                return recipients.list?.find((r) => r.id === relationship?.recipientId)?.name || "";
             } else if (userMode === "recipient") {
-                return caregivers.list?.find((c) => Number(c.id) === Number(relationship?.caregiverId))?.name || "";
+                return caregivers.list?.find((c) => c.id === relationship?.caregiverId)?.name || "";
             }
 
             return "";
@@ -209,8 +210,8 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
 
             <div className={styles.scheduleContainer}>
                 {filteredSchedules.map((schedule, idx, arr) => {
-                    const prevEndTime = idx > 0 ? arr[idx - 1].end : undefined;
-                    const startTimeInvalid = prevEndTime ? compareTime(schedule.start, prevEndTime) < 0 : false;
+                    const prevEndTime = idx > 0 ? arr[idx - 1].endTime : undefined;
+                    const startTimeInvalid = prevEndTime ? compareTime(schedule.startTime, prevEndTime) < 0 : false;
                     return (
                         <ScheduleCard
                             key={`schedule-card${schedule.id}`}
@@ -220,8 +221,8 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
                             dropDownDisabled={userMode === "recipient"}
                             onChange={handleModifySchedule}
                             id={schedule.id}
-                            startTime={schedule.start}
-                            endTime={schedule.end}
+                            startTime={schedule.startTime}
+                            endTime={schedule.endTime}
                             startTimeInvalid={startTimeInvalid}
                         />
                     );
@@ -237,11 +238,11 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
                 size="large"
                 onClick={() =>
                     handleAddSchedule({
-                        id: -1,
-                        relationshipId: Number(firstRelationshipForUser?.id) || -1,
-                        start: filteredSchedules.at(-1)?.end || "00:00:00",
-                        end: filteredSchedules.at(-1)?.end || "00:00:00",
-                        date: selectedDate,
+                        id: "",
+                        relationshipId: firstRelationshipForUser?.id || "",
+                        startTime: filteredSchedules.at(-1)?.endTime || "00:00:00",
+                        endTime: filteredSchedules.at(-1)?.endTime || "00:00:00",
+                        date: selectedDate.toISOString(),
                     })
                 }
                 fillWidth

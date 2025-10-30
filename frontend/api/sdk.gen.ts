@@ -4,573 +4,675 @@ import type { CancelablePromise } from "./core/CancelablePromise";
 import { OpenAPI } from "./core/OpenAPI";
 import { request as __request } from "./core/request";
 import type {
-    PostLoginData,
-    PostLoginResponse,
-    PostLogsData,
-    PostLogsResponse,
-    GetLogsResponse,
-    GetLogsByIdData,
-    GetLogsByIdResponse,
-    PutLogsByIdData,
-    PutLogsByIdResponse,
-    DeleteLogsByIdData,
-    DeleteLogsByIdResponse,
-    GetLogsOpenResponse,
-    GetLogsRelationshipByRecipientIdByCaregiverIdData,
-    GetLogsRelationshipByRecipientIdByCaregiverIdResponse,
-    GetAdminsResponse,
-    PostAdminsData,
-    PostAdminsResponse,
-    GetAdminsByIdData,
-    GetAdminsByIdResponse,
-    PutAdminsByIdData,
-    PutAdminsByIdResponse,
-    DeleteAdminsByIdData,
-    DeleteAdminsByIdResponse,
-    PutAdminsByIdPasswordData,
-    PutAdminsByIdPasswordResponse,
-    GetCaregiversResponse,
-    PostCaregiversData,
-    PostCaregiversResponse,
-    GetCaregiversByIdData,
-    GetCaregiversByIdResponse,
-    PutCaregiversByIdData,
-    PutCaregiversByIdResponse,
-    DeleteCaregiversByIdData,
-    DeleteCaregiversByIdResponse,
-    PutCaregiversByIdPasswordData,
-    PutCaregiversByIdPasswordResponse,
-    GetRecipientsResponse,
-    PostRecipientsData,
-    PostRecipientsResponse,
-    GetRecipientsByIdData,
-    GetRecipientsByIdResponse,
-    PutRecipientsByIdData,
-    PutRecipientsByIdResponse,
-    DeleteRecipientsByIdData,
-    DeleteRecipientsByIdResponse,
-    PutRecipientsByIdPasswordData,
-    PutRecipientsByIdPasswordResponse,
-    PostCaregiversRecipientsData,
-    PostCaregiversRecipientsResponse,
-    GetRecipientsByIdCaregiversData,
-    GetRecipientsByIdCaregiversResponse,
-    GetCaregiversByIdRecipientsData,
-    GetCaregiversByIdRecipientsResponse,
-    DeleteRelationshipsByIdData,
-    DeleteRelationshipsByIdResponse,
-    PutRelationshipsByIdData,
-    PutRelationshipsByIdResponse,
-    GetRelationshipsResponse,
-    PostSchedulesData,
-    PostSchedulesResponse,
-    GetSchedulesResponse,
-    GetSchedulesByIdData,
-    GetSchedulesByIdResponse,
-    PutSchedulesByIdData,
-    PutSchedulesByIdResponse,
-    DeleteSchedulesByIdData,
-    DeleteSchedulesByIdResponse,
-    GetSchedulesCaregiverByCaregiverIdData,
-    GetSchedulesCaregiverByCaregiverIdResponse,
-    GetSchedulesRecipientByRecipientIdData,
-    GetSchedulesRecipientByRecipientIdResponse,
-    GetSchedulesByCaregiverIdByRecipientIdData,
-    GetSchedulesByCaregiverIdByRecipientIdResponse,
-    PostTasktypesData,
-    PostTasktypesResponse,
-    GetTasktypesResponse,
-    GetTasktypesByIdData,
-    GetTasktypesByIdResponse,
-    PostSubtasksData,
-    PostSubtasksResponse,
-    GetSubtasksResponse,
-    GetSubtasksByIdData,
-    GetSubtasksByIdResponse,
-    GetSubtasksTasktypeByTaskTypeIdData,
-    GetSubtasksTasktypeByTaskTypeIdResponse,
     GetTodosResponse,
-    PostTodosData,
-    PostTodosResponse,
-    GetTodosByIdData,
-    GetTodosByIdResponse,
-    PutTodosByIdData,
-    PutTodosByIdResponse,
-    DeleteTodosByIdData,
-    DeleteTodosByIdResponse,
-    GetTodosRelationshipByRelationshipIdData,
-    GetTodosRelationshipByRelationshipIdResponse,
+    CreateTodoData,
+    CreateTodoResponse,
+    GetTodoData,
+    GetTodoResponse,
+    UpdateTodoData,
+    UpdateTodoResponse,
+    DeleteTodoData,
+    DeleteTodoResponse,
+    GetTodosByRelationshipData,
+    GetTodosByRelationshipResponse,
+    CreateTaskTypeData,
+    CreateTaskTypeResponse,
+    GetTaskTypesResponse,
+    GetTaskTypeData,
+    GetTaskTypeResponse,
+    CreateSubTaskData,
+    CreateSubTaskResponse,
+    GetSubTasksResponse,
+    GetSubTaskData,
+    GetSubTaskResponse,
+    GetSubTasksByTaskTypeData,
+    GetSubTasksByTaskTypeResponse,
+    CreateScheduleData,
+    CreateScheduleResponse,
+    GetSchedulesResponse,
+    GetScheduleData,
+    GetScheduleResponse,
+    UpdateScheduleData,
+    UpdateScheduleResponse,
+    DeleteScheduleData,
+    DeleteScheduleResponse,
+    GetSchedulesForCaregiverData,
+    GetSchedulesForCaregiverResponse,
+    GetSchedulesForRecipientData,
+    GetSchedulesForRecipientResponse,
+    GetSchedulesForCaregiverAndRecipientData,
+    GetSchedulesForCaregiverAndRecipientResponse,
+    AddRecipientToCaregiverData,
+    AddRecipientToCaregiverResponse,
+    GetAllRelationshipsResponse,
+    GetRelationshipsForRecipientData,
+    GetRelationshipsForRecipientResponse,
+    GetRelationshipsForCaregiverData,
+    GetRelationshipsForCaregiverResponse,
+    UpdateRelationshipData,
+    UpdateRelationshipResponse,
+    DeleteRelationshipData,
+    DeleteRelationshipResponse,
+    GetRecipientsResponse,
+    CreateRecipientData,
+    CreateRecipientResponse,
+    GetRecipientData,
+    GetRecipientResponse,
+    UpdateRecipientData,
+    UpdateRecipientResponse,
+    DeleteRecipientData,
+    DeleteRecipientResponse,
+    UpdateRecipientPasswordData,
+    UpdateRecipientPasswordResponse,
+    LoginData,
+    LoginResponse,
+    CreateLogData,
+    CreateLogResponse,
+    GetLogsResponse,
+    GetLogByIdData,
+    GetLogByIdResponse,
+    UpdateLogData,
+    UpdateLogResponse,
+    DeleteLogData,
+    DeleteLogResponse,
+    GetOpenLogsResponse,
+    GetLogsForRelationshipData,
+    GetLogsForRelationshipResponse,
+    GetCaregiversResponse,
+    CreateCaregiverData,
+    CreateCaregiverResponse,
+    GetCaregiverData,
+    GetCaregiverResponse,
+    UpdateCaregiverData,
+    UpdateCaregiverResponse,
+    DeleteCaregiverData,
+    DeleteCaregiverResponse,
+    UpdateCaregiverPasswordData,
+    UpdateCaregiverPasswordResponse,
+    GetAdminsResponse,
+    CreateAdminData,
+    CreateAdminResponse,
+    GetAdminData,
+    GetAdminResponse,
+    UpdateAdminData,
+    UpdateAdminResponse,
+    DeleteAdminData,
+    DeleteAdminResponse,
+    UpdateAdminPasswordData,
+    UpdateAdminPasswordResponse,
 } from "./types.gen";
 
 /**
- * User login
- * @param data The data for the request.
- * @param data.requestBody
- * @returns unknown Successful login, returns JWT and user data
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const postLogin = (data: PostLoginData): CancelablePromise<PostLoginResponse> => {
-    return __request(OpenAPI, {
-        method: "POST",
-        url: "/login",
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            401: "Invalid password",
-            404: "User not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Create a new log entry
- * @param data The data for the request.
- * @param data.requestBody
- * @returns unknown Log created successfully
- * @throws ApiError
- */
-export const postLogs = (data: PostLogsData): CancelablePromise<PostLogsResponse> => {
-    return __request(OpenAPI, {
-        method: "POST",
-        url: "/logs",
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            500: "Error creating log",
-        },
-    });
-};
-
-/**
- * Get all logs
- * @returns unknown List of logs
- * @throws ApiError
- */
-export const getLogs = (): CancelablePromise<GetLogsResponse> => {
+export const getTodos = (): CancelablePromise<GetTodosResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/logs",
+        url: "/todos",
         errors: {
-            500: "Error fetching logs",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Get a specific log by ID
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const createTodo = (data: CreateTodoData): CancelablePromise<CreateTodoResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/todos",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            500: "Database error",
+        },
+    });
+};
+
+/**
  * @param data The data for the request.
  * @param data.id
- * @returns unknown Log found
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getLogsById = (data: GetLogsByIdData): CancelablePromise<GetLogsByIdResponse> => {
+export const getTodo = (data: GetTodoData): CancelablePromise<GetTodoResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/logs/{id}",
+        url: "/todos/{id}",
         path: {
             id: data.id,
         },
         errors: {
-            404: "Log not found",
-            500: "Error fetching log",
+            404: "Todo not found",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Update a log entry by ID
  * @param data The data for the request.
  * @param data.id
  * @param data.requestBody
- * @returns unknown Log updated
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const putLogsById = (data: PutLogsByIdData): CancelablePromise<PutLogsByIdResponse> => {
+export const updateTodo = (data: UpdateTodoData): CancelablePromise<UpdateTodoResponse> => {
     return __request(OpenAPI, {
         method: "PUT",
-        url: "/logs/{id}",
+        url: "/todos/{id}",
         path: {
             id: data.id,
         },
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
-            404: "Log not found",
-            500: "Error updating log",
+            400: "Missing fields",
+            404: "Todo not found",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Delete a log by ID
  * @param data The data for the request.
  * @param data.id
- * @returns unknown Log deleted
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const deleteLogsById = (data: DeleteLogsByIdData): CancelablePromise<DeleteLogsByIdResponse> => {
+export const deleteTodo = (data: DeleteTodoData): CancelablePromise<DeleteTodoResponse> => {
     return __request(OpenAPI, {
         method: "DELETE",
-        url: "/logs/{id}",
+        url: "/todos/{id}",
         path: {
             id: data.id,
         },
         errors: {
-            404: "Log not found",
-            500: "Error deleting log",
+            404: "Todo not found",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Get all logs that are not closed
- * @returns unknown List of open logs
- * @throws ApiError
- */
-export const getLogsOpen = (): CancelablePromise<GetLogsOpenResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/logs/open",
-        errors: {
-            500: "Error fetching open logs",
-        },
-    });
-};
-
-/**
- * Get logs for a specific recipient-caregiver relationship
  * @param data The data for the request.
- * @param data.recipientId ID of the recipient
- * @param data.caregiverId ID of the caregiver
- * @returns unknown List of logs for the recipient-caregiver relationship
+ * @param data.relationshipId
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getLogsRelationshipByRecipientIdByCaregiverId = (
-    data: GetLogsRelationshipByRecipientIdByCaregiverIdData,
-): CancelablePromise<GetLogsRelationshipByRecipientIdByCaregiverIdResponse> => {
+export const getTodosByRelationship = (
+    data: GetTodosByRelationshipData,
+): CancelablePromise<GetTodosByRelationshipResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/logs/relationship/{recipientId}/{caregiverId}",
+        url: "/todos/relationship/{relationshipId}",
         path: {
-            recipientId: data.recipientId,
+            relationshipId: data.relationshipId,
+        },
+        errors: {
+            400: "Missing relationshipId",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const createTaskType = (data: CreateTaskTypeData): CancelablePromise<CreateTaskTypeResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/task_types",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getTaskTypes = (): CancelablePromise<GetTaskTypesResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/task_types",
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getTaskType = (data: GetTaskTypeData): CancelablePromise<GetTaskTypeResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/task_types/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Task type not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const createSubTask = (data: CreateSubTaskData): CancelablePromise<CreateSubTaskResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/subtasks",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSubTasks = (): CancelablePromise<GetSubTasksResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/subtasks",
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSubTask = (data: GetSubTaskData): CancelablePromise<GetSubTaskResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/subtasks/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Sub-task not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.taskTypeId
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSubTasksByTaskType = (
+    data: GetSubTasksByTaskTypeData,
+): CancelablePromise<GetSubTasksByTaskTypeResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/subtasks/task-type/{taskTypeId}",
+        path: {
+            taskTypeId: data.taskTypeId,
+        },
+        errors: {
+            404: "No sub-tasks found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const createSchedule = (data: CreateScheduleData): CancelablePromise<CreateScheduleResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/schedules",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSchedules = (): CancelablePromise<GetSchedulesResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/schedules",
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSchedule = (data: GetScheduleData): CancelablePromise<GetScheduleResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/schedules/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Schedule not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const updateSchedule = (data: UpdateScheduleData): CancelablePromise<UpdateScheduleResponse> => {
+    return __request(OpenAPI, {
+        method: "PUT",
+        url: "/schedules/{id}",
+        path: {
+            id: data.id,
+        },
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            404: "Schedule not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const deleteSchedule = (data: DeleteScheduleData): CancelablePromise<DeleteScheduleResponse> => {
+    return __request(OpenAPI, {
+        method: "DELETE",
+        url: "/schedules/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Schedule not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.caregiverId
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSchedulesForCaregiver = (
+    data: GetSchedulesForCaregiverData,
+): CancelablePromise<GetSchedulesForCaregiverResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/schedules/caregiver/{caregiverId}",
+        path: {
             caregiverId: data.caregiverId,
         },
         errors: {
+            404: "No schedules found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.recipientId
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSchedulesForRecipient = (
+    data: GetSchedulesForRecipientData,
+): CancelablePromise<GetSchedulesForRecipientResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/schedules/recipient/{recipientId}",
+        path: {
+            recipientId: data.recipientId,
+        },
+        errors: {
+            404: "No schedules found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.caregiverId
+ * @param data.recipientId
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSchedulesForCaregiverAndRecipient = (
+    data: GetSchedulesForCaregiverAndRecipientData,
+): CancelablePromise<GetSchedulesForCaregiverAndRecipientResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/schedules/caregiver/{caregiverId}/recipient/{recipientId}",
+        path: {
+            caregiverId: data.caregiverId,
+            recipientId: data.recipientId,
+        },
+        errors: {
+            404: "No schedules found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const addRecipientToCaregiver = (
+    data: AddRecipientToCaregiverData,
+): CancelablePromise<AddRecipientToCaregiverResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/relationships",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getAllRelationships = (): CancelablePromise<GetAllRelationshipsResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/relationships",
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getRelationshipsForRecipient = (
+    data: GetRelationshipsForRecipientData,
+): CancelablePromise<GetRelationshipsForRecipientResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/relationships/recipient/{id}/caregivers",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getRelationshipsForCaregiver = (
+    data: GetRelationshipsForCaregiverData,
+): CancelablePromise<GetRelationshipsForCaregiverResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/relationships/caregiver/{id}/recipients",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const updateRelationship = (data: UpdateRelationshipData): CancelablePromise<UpdateRelationshipResponse> => {
+    return __request(OpenAPI, {
+        method: "PUT",
+        url: "/relationships/{id}",
+        path: {
+            id: data.id,
+        },
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
             404: "Relationship not found",
-            500: "Server error",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Get all admins
- * @returns unknown A list of admins
- * @throws ApiError
- */
-export const getAdmins = (): CancelablePromise<GetAdminsResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/admins",
-        errors: {
-            401: "Invalid or no token",
-            403: "Not authorized",
-        },
-    });
-};
-
-/**
- * Create a new admin
  * @param data The data for the request.
- * @param data.requestBody
- * @returns unknown Admin created successfully
+ * @param data.id
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const postAdmins = (data: PostAdminsData): CancelablePromise<PostAdminsResponse> => {
-    return __request(OpenAPI, {
-        method: "POST",
-        url: "/admins",
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            400: "Missing required field",
-            401: "Invalid or no token",
-            403: "Not authorized",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get an admin by ID
- * @param data The data for the request.
- * @param data.id Admin ID
- * @returns unknown Admin data
- * @throws ApiError
- */
-export const getAdminsById = (data: GetAdminsByIdData): CancelablePromise<GetAdminsByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/admins/{id}",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            401: "Invalid or no token",
-            403: "Not authorized",
-            404: "Admin not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Update an admin's info
- * @param data The data for the request.
- * @param data.id Admin ID
- * @param data.requestBody
- * @returns unknown Admin updated
- * @throws ApiError
- */
-export const putAdminsById = (data: PutAdminsByIdData): CancelablePromise<PutAdminsByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "PUT",
-        url: "/admins/{id}",
-        path: {
-            id: data.id,
-        },
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            400: "Missing required field",
-            401: "Invalid or no token",
-            403: "Not authorized",
-            404: "Admin not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Delete an admin
- * @param data The data for the request.
- * @param data.id Admin ID
- * @returns unknown Admin deleted
- * @throws ApiError
- */
-export const deleteAdminsById = (data: DeleteAdminsByIdData): CancelablePromise<DeleteAdminsByIdResponse> => {
+export const deleteRelationship = (data: DeleteRelationshipData): CancelablePromise<DeleteRelationshipResponse> => {
     return __request(OpenAPI, {
         method: "DELETE",
-        url: "/admins/{id}",
+        url: "/relationships/{id}",
         path: {
             id: data.id,
         },
         errors: {
-            401: "Invalid or no token",
-            403: "Not authorized",
-            404: "Admin not found",
-            500: "Server error",
+            404: "Relationship not found",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Update an admins's password
- * @param data The data for the request.
- * @param data.id Admin ID
- * @param data.requestBody
- * @returns unknown Password updated
- * @throws ApiError
- */
-export const putAdminsByIdPassword = (
-    data: PutAdminsByIdPasswordData,
-): CancelablePromise<PutAdminsByIdPasswordResponse> => {
-    return __request(OpenAPI, {
-        method: "PUT",
-        url: "/admins/{id}/password",
-        path: {
-            id: data.id,
-        },
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            400: "Invalid current password or missing field",
-            401: "Invalid or no token",
-            403: "Not authorized",
-            404: "Admin not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get all caregivers
- * @returns unknown A list of caregivers
- * @throws ApiError
- */
-export const getCaregivers = (): CancelablePromise<GetCaregiversResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/caregivers",
-    });
-};
-
-/**
- * Create a new caregiver
- * @param data The data for the request.
- * @param data.requestBody
- * @returns unknown Caregiver created successfully
- * @throws ApiError
- */
-export const postCaregivers = (data: PostCaregiversData): CancelablePromise<PostCaregiversResponse> => {
-    return __request(OpenAPI, {
-        method: "POST",
-        url: "/caregivers",
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            400: "Missing required field",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get a caregiver by ID
- * @param data The data for the request.
- * @param data.id Caregiver ID
- * @returns unknown Caregiver data
- * @throws ApiError
- */
-export const getCaregiversById = (data: GetCaregiversByIdData): CancelablePromise<GetCaregiversByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/caregivers/{id}",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            404: "Caregiver not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Update a caregiver's info
- * @param data The data for the request.
- * @param data.id Caregiver ID
- * @param data.requestBody
- * @returns unknown Caregiver updated
- * @throws ApiError
- */
-export const putCaregiversById = (data: PutCaregiversByIdData): CancelablePromise<PutCaregiversByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "PUT",
-        url: "/caregivers/{id}",
-        path: {
-            id: data.id,
-        },
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            400: "Missing required field",
-            404: "Caregiver not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Delete a caregiver
- * @param data The data for the request.
- * @param data.id Caregiver ID
- * @returns unknown Caregiver deleted
- * @throws ApiError
- */
-export const deleteCaregiversById = (
-    data: DeleteCaregiversByIdData,
-): CancelablePromise<DeleteCaregiversByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "DELETE",
-        url: "/caregivers/{id}",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            404: "Caregiver not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Update a caregiver's password
- * @param data The data for the request.
- * @param data.id Caregiver ID
- * @param data.requestBody
- * @returns unknown Password updated
- * @throws ApiError
- */
-export const putCaregiversByIdPassword = (
-    data: PutCaregiversByIdPasswordData,
-): CancelablePromise<PutCaregiversByIdPasswordResponse> => {
-    return __request(OpenAPI, {
-        method: "PUT",
-        url: "/caregivers/{id}/password",
-        path: {
-            id: data.id,
-        },
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            400: "Invalid current password or missing field",
-            404: "Caregiver not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get all recipients
- * @returns unknown A list of recipients
+ * @returns unknown Ok
  * @throws ApiError
  */
 export const getRecipients = (): CancelablePromise<GetRecipientsResponse> => {
     return __request(OpenAPI, {
         method: "GET",
         url: "/recipients",
+        errors: {
+            500: "Database error",
+        },
     });
 };
 
 /**
- * Create a new recipient
  * @param data The data for the request.
  * @param data.requestBody
- * @returns unknown Recipient created successfully
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const postRecipients = (data: PostRecipientsData): CancelablePromise<PostRecipientsResponse> => {
+export const createRecipient = (data: CreateRecipientData): CancelablePromise<CreateRecipientResponse> => {
     return __request(OpenAPI, {
         method: "POST",
         url: "/recipients",
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
-            400: "Missing required field",
-            500: "Server error",
+            400: "Missing fields",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Get a recipient by ID
  * @param data The data for the request.
- * @param data.id Recipient ID
- * @returns unknown Recipient data
+ * @param data.id
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getRecipientsById = (data: GetRecipientsByIdData): CancelablePromise<GetRecipientsByIdResponse> => {
+export const getRecipient = (data: GetRecipientData): CancelablePromise<GetRecipientResponse> => {
     return __request(OpenAPI, {
         method: "GET",
         url: "/recipients/{id}",
@@ -579,20 +681,19 @@ export const getRecipientsById = (data: GetRecipientsByIdData): CancelablePromis
         },
         errors: {
             404: "Recipient not found",
-            500: "Server error",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Update a recipient's info
  * @param data The data for the request.
- * @param data.id Recipient ID
+ * @param data.id
  * @param data.requestBody
- * @returns unknown Recipient updated
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const putRecipientsById = (data: PutRecipientsByIdData): CancelablePromise<PutRecipientsByIdResponse> => {
+export const updateRecipient = (data: UpdateRecipientData): CancelablePromise<UpdateRecipientResponse> => {
     return __request(OpenAPI, {
         method: "PUT",
         url: "/recipients/{id}",
@@ -602,23 +703,20 @@ export const putRecipientsById = (data: PutRecipientsByIdData): CancelablePromis
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
-            400: "Missing required field",
+            400: "Missing fields",
             404: "Recipient not found",
-            500: "Server error",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Delete a recipient
  * @param data The data for the request.
- * @param data.id Recipient ID
- * @returns unknown Recipient deleted
+ * @param data.id
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const deleteRecipientsById = (
-    data: DeleteRecipientsByIdData,
-): CancelablePromise<DeleteRecipientsByIdResponse> => {
+export const deleteRecipient = (data: DeleteRecipientData): CancelablePromise<DeleteRecipientResponse> => {
     return __request(OpenAPI, {
         method: "DELETE",
         url: "/recipients/{id}",
@@ -627,22 +725,21 @@ export const deleteRecipientsById = (
         },
         errors: {
             404: "Recipient not found",
-            500: "Server error",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Update a recipient's password
  * @param data The data for the request.
- * @param data.id Recipient ID
+ * @param data.id
  * @param data.requestBody
- * @returns unknown Password updated
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const putRecipientsByIdPassword = (
-    data: PutRecipientsByIdPasswordData,
-): CancelablePromise<PutRecipientsByIdPasswordResponse> => {
+export const updateRecipientPassword = (
+    data: UpdateRecipientPasswordData,
+): CancelablePromise<UpdateRecipientPasswordResponse> => {
     return __request(OpenAPI, {
         method: "PUT",
         url: "/recipients/{id}/password",
@@ -652,571 +749,405 @@ export const putRecipientsByIdPassword = (
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
-            400: "Invalid current password or missing field",
+            400: "Missing fields or invalid password",
             404: "Recipient not found",
-            500: "Server error",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Assign a recipient to a caregiver
  * @param data The data for the request.
  * @param data.requestBody
- * @returns unknown Recipient assigned to caregiver
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const postCaregiversRecipients = (
-    data: PostCaregiversRecipientsData,
-): CancelablePromise<PostCaregiversRecipientsResponse> => {
+export const login = (data: LoginData): CancelablePromise<LoginResponse> => {
     return __request(OpenAPI, {
         method: "POST",
-        url: "/caregivers/recipients",
+        url: "/login",
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
+            401: "Unauthorized",
             500: "Server error",
         },
     });
 };
 
 /**
- * Get all caregivers assigned to a recipient
- * @param data The data for the request.
- * @param data.id Recipient ID
- * @returns unknown A list of caregivers
- * @throws ApiError
- */
-export const getRecipientsByIdCaregivers = (
-    data: GetRecipientsByIdCaregiversData,
-): CancelablePromise<GetRecipientsByIdCaregiversResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/recipients/{id}/caregivers",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get all recipients assigned to a caregiver
- * @param data The data for the request.
- * @param data.id Caregiver ID
- * @returns unknown A list of recipients
- * @throws ApiError
- */
-export const getCaregiversByIdRecipients = (
-    data: GetCaregiversByIdRecipientsData,
-): CancelablePromise<GetCaregiversByIdRecipientsResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/caregivers/{id}/recipients",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Delete a caregiver-recipient relationship
- * @param data The data for the request.
- * @param data.id Relationship ID
- * @returns unknown Relationship deleted successfully
- * @throws ApiError
- */
-export const deleteRelationshipsById = (
-    data: DeleteRelationshipsByIdData,
-): CancelablePromise<DeleteRelationshipsByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "DELETE",
-        url: "/relationships/{id}",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            404: "Relationship not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Update a caregiver-recipient relationship
- * @param data The data for the request.
- * @param data.id Relationship ID
- * @param data.requestBody
- * @returns unknown Relationship updated successfully
- * @throws ApiError
- */
-export const putRelationshipsById = (
-    data: PutRelationshipsByIdData,
-): CancelablePromise<PutRelationshipsByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "PUT",
-        url: "/relationships/{id}",
-        path: {
-            id: data.id,
-        },
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            404: "Relationship not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get all caregiver-recipient relationships
- * @returns unknown A list of relationships with caregiver and recipient details
- * @throws ApiError
- */
-export const getRelationships = (): CancelablePromise<GetRelationshipsResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/relationships",
-        errors: {
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Create a new schedule
  * @param data The data for the request.
  * @param data.requestBody
- * @returns unknown Schedule created
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const postSchedules = (data: PostSchedulesData): CancelablePromise<PostSchedulesResponse> => {
+export const createLog = (data: CreateLogData): CancelablePromise<CreateLogResponse> => {
     return __request(OpenAPI, {
         method: "POST",
-        url: "/schedules",
+        url: "/logs",
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
-            400: "Missing required fields",
-            500: "Server error",
+            500: "Server Error",
         },
     });
 };
 
 /**
- * Get all schedules
- * @returns unknown List of all schedules
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getSchedules = (): CancelablePromise<GetSchedulesResponse> => {
+export const getLogs = (): CancelablePromise<GetLogsResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/schedules",
+        url: "/logs",
         errors: {
-            500: "Server error",
+            500: "Server Error",
         },
     });
 };
 
 /**
- * Get schedule by ID
  * @param data The data for the request.
- * @param data.id Schedule ID
- * @returns unknown Schedule details
+ * @param data.id
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getSchedulesById = (data: GetSchedulesByIdData): CancelablePromise<GetSchedulesByIdResponse> => {
+export const getLogById = (data: GetLogByIdData): CancelablePromise<GetLogByIdResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/schedules/{id}",
+        url: "/logs/{id}",
         path: {
             id: data.id,
         },
         errors: {
-            404: "Schedule not found",
-            500: "Server error",
+            404: "Log not found",
+            500: "Server Error",
         },
     });
 };
 
 /**
- * Update a schedule by ID
  * @param data The data for the request.
- * @param data.id Schedule ID
+ * @param data.id
  * @param data.requestBody
- * @returns unknown Schedule updated
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const putSchedulesById = (data: PutSchedulesByIdData): CancelablePromise<PutSchedulesByIdResponse> => {
+export const updateLog = (data: UpdateLogData): CancelablePromise<UpdateLogResponse> => {
     return __request(OpenAPI, {
         method: "PUT",
-        url: "/schedules/{id}",
+        url: "/logs/{id}",
         path: {
             id: data.id,
         },
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
-            400: "Missing required fields",
-            404: "Schedule not found",
-            500: "Server error",
+            404: "Log not found",
+            500: "Server Error",
         },
     });
 };
 
 /**
- * Delete a schedule by ID
  * @param data The data for the request.
- * @param data.id Schedule ID
- * @returns unknown Schedule deleted
+ * @param data.id
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const deleteSchedulesById = (data: DeleteSchedulesByIdData): CancelablePromise<DeleteSchedulesByIdResponse> => {
+export const deleteLog = (data: DeleteLogData): CancelablePromise<DeleteLogResponse> => {
     return __request(OpenAPI, {
         method: "DELETE",
-        url: "/schedules/{id}",
+        url: "/logs/{id}",
         path: {
             id: data.id,
         },
         errors: {
-            404: "Schedule not found",
-            500: "Server error",
+            404: "Log not found",
+            500: "Server Error",
         },
     });
 };
 
 /**
- * Get all schedules for a specific caregiver
- * @param data The data for the request.
- * @param data.caregiverId ID of the caregiver
- * @returns unknown List of schedules for the caregiver
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getSchedulesCaregiverByCaregiverId = (
-    data: GetSchedulesCaregiverByCaregiverIdData,
-): CancelablePromise<GetSchedulesCaregiverByCaregiverIdResponse> => {
+export const getOpenLogs = (): CancelablePromise<GetOpenLogsResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/schedules/caregiver/{caregiverId}",
+        url: "/logs/open",
+        errors: {
+            500: "Server Error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.recipientId
+ * @param data.caregiverId
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getLogsForRelationship = (
+    data: GetLogsForRelationshipData,
+): CancelablePromise<GetLogsForRelationshipResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/logs/relationship/{recipientId}/{caregiverId}",
         path: {
+            recipientId: data.recipientId,
             caregiverId: data.caregiverId,
         },
         errors: {
-            404: "No schedules found for this caregiver",
-            500: "Server error",
+            404: "Relationship not found",
+            500: "Server Error",
         },
     });
 };
 
 /**
- * Get all schedules for a specific recipient
- * @param data The data for the request.
- * @param data.recipientId ID of the recipient
- * @returns unknown List of schedules for the recipient
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getSchedulesRecipientByRecipientId = (
-    data: GetSchedulesRecipientByRecipientIdData,
-): CancelablePromise<GetSchedulesRecipientByRecipientIdResponse> => {
+export const getCaregivers = (): CancelablePromise<GetCaregiversResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/schedules/recipient/{recipientId}",
-        path: {
-            recipientId: data.recipientId,
-        },
+        url: "/caregivers",
         errors: {
-            404: "No schedules found for this recipient",
-            500: "Server error",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Get all schedules between a caregiver and a recipient
- * @param data The data for the request.
- * @param data.caregiverId ID of the caregiver
- * @param data.recipientId ID of the recipient
- * @returns unknown List of schedules between the caregiver and recipient
- * @throws ApiError
- */
-export const getSchedulesByCaregiverIdByRecipientId = (
-    data: GetSchedulesByCaregiverIdByRecipientIdData,
-): CancelablePromise<GetSchedulesByCaregiverIdByRecipientIdResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/schedules/{caregiverId}/{recipientId}",
-        path: {
-            caregiverId: data.caregiverId,
-            recipientId: data.recipientId,
-        },
-        errors: {
-            404: "No schedules found for this caregiver-recipient pair",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Create a new task type
  * @param data The data for the request.
  * @param data.requestBody
- * @returns unknown Task type created
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const postTasktypes = (data: PostTasktypesData): CancelablePromise<PostTasktypesResponse> => {
+export const createCaregiver = (data: CreateCaregiverData): CancelablePromise<CreateCaregiverResponse> => {
     return __request(OpenAPI, {
         method: "POST",
-        url: "/tasktypes",
+        url: "/caregivers",
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
-            400: "Missing required field",
-            500: "Server error",
+            400: "Missing fields",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Get all task types
- * @returns unknown List of task types
- * @throws ApiError
- */
-export const getTasktypes = (): CancelablePromise<GetTasktypesResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/tasktypes",
-        errors: {
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get a specific task type by ID
  * @param data The data for the request.
  * @param data.id
- * @returns unknown Task type details
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getTasktypesById = (data: GetTasktypesByIdData): CancelablePromise<GetTasktypesByIdResponse> => {
+export const getCaregiver = (data: GetCaregiverData): CancelablePromise<GetCaregiverResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/tasktypes/{id}",
+        url: "/caregivers/{id}",
         path: {
             id: data.id,
         },
         errors: {
-            404: "Task type not found",
-            500: "Server error",
+            404: "Caregiver not found",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Create a new subtask
- * @param data The data for the request.
- * @param data.requestBody
- * @returns unknown Subtask created
- * @throws ApiError
- */
-export const postSubtasks = (data: PostSubtasksData): CancelablePromise<PostSubtasksResponse> => {
-    return __request(OpenAPI, {
-        method: "POST",
-        url: "/subtasks",
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            400: "Missing required fields",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get all subtasks
- * @returns unknown List of all subtasks
- * @throws ApiError
- */
-export const getSubtasks = (): CancelablePromise<GetSubtasksResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/subtasks",
-        errors: {
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get a specific subtask by ID
  * @param data The data for the request.
  * @param data.id
- * @returns unknown Subtask details
- * @throws ApiError
- */
-export const getSubtasksById = (data: GetSubtasksByIdData): CancelablePromise<GetSubtasksByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/subtasks/{id}",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            404: "Subtask not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get all subtasks by task type ID
- * @param data The data for the request.
- * @param data.taskTypeId
- * @returns unknown List of subtasks for the given task type
- * @throws ApiError
- */
-export const getSubtasksTasktypeByTaskTypeId = (
-    data: GetSubtasksTasktypeByTaskTypeIdData,
-): CancelablePromise<GetSubtasksTasktypeByTaskTypeIdResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/subtasks/tasktype/{taskTypeId}",
-        path: {
-            taskTypeId: data.taskTypeId,
-        },
-        errors: {
-            404: "No subtasks found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get all todos
- * @returns unknown List of all todos
- * @throws ApiError
- */
-export const getTodos = (): CancelablePromise<GetTodosResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/todos",
-        errors: {
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Create a new todo
- * @param data The data for the request.
  * @param data.requestBody
- * @returns unknown Todo created
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const postTodos = (data: PostTodosData): CancelablePromise<PostTodosResponse> => {
-    return __request(OpenAPI, {
-        method: "POST",
-        url: "/todos",
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            400: "Missing required fields",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Get a specific todo by ID
- * @param data The data for the request.
- * @param data.id
- * @returns unknown Todo details
- * @throws ApiError
- */
-export const getTodosById = (data: GetTodosByIdData): CancelablePromise<GetTodosByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/todos/{id}",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            404: "Subtask not found",
-            500: "Server error",
-        },
-    });
-};
-
-/**
- * Update a todo by ID
- * @param data The data for the request.
- * @param data.id Todo ID
- * @param data.requestBody
- * @returns unknown Todo updated
- * @throws ApiError
- */
-export const putTodosById = (data: PutTodosByIdData): CancelablePromise<PutTodosByIdResponse> => {
+export const updateCaregiver = (data: UpdateCaregiverData): CancelablePromise<UpdateCaregiverResponse> => {
     return __request(OpenAPI, {
         method: "PUT",
-        url: "/todos/{id}",
+        url: "/caregivers/{id}",
         path: {
             id: data.id,
         },
         body: data.requestBody,
         mediaType: "application/json",
         errors: {
-            400: "Missing required fields",
-            404: "Todo not found",
-            500: "Server error",
+            400: "Missing fields",
+            404: "Caregiver not found",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Delete a todo by ID
  * @param data The data for the request.
- * @param data.id Todo ID
- * @returns unknown Todo deleted
+ * @param data.id
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const deleteTodosById = (data: DeleteTodosByIdData): CancelablePromise<DeleteTodosByIdResponse> => {
+export const deleteCaregiver = (data: DeleteCaregiverData): CancelablePromise<DeleteCaregiverResponse> => {
     return __request(OpenAPI, {
         method: "DELETE",
-        url: "/todos/{id}",
+        url: "/caregivers/{id}",
         path: {
             id: data.id,
         },
         errors: {
-            404: "Todo not found",
-            500: "Server error",
+            404: "Caregiver not found",
+            500: "Database error",
         },
     });
 };
 
 /**
- * Get a todos for a relationship
  * @param data The data for the request.
- * @param data.relationshipId
- * @returns unknown List of todos for a relationship
+ * @param data.id
+ * @param data.requestBody
+ * @returns unknown Ok
  * @throws ApiError
  */
-export const getTodosRelationshipByRelationshipId = (
-    data: GetTodosRelationshipByRelationshipIdData,
-): CancelablePromise<GetTodosRelationshipByRelationshipIdResponse> => {
+export const updateCaregiverPassword = (
+    data: UpdateCaregiverPasswordData,
+): CancelablePromise<UpdateCaregiverPasswordResponse> => {
+    return __request(OpenAPI, {
+        method: "PUT",
+        url: "/caregivers/{id}/password",
+        path: {
+            id: data.id,
+        },
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields or invalid password",
+            404: "Caregiver not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getAdmins = (): CancelablePromise<GetAdminsResponse> => {
     return __request(OpenAPI, {
         method: "GET",
-        url: "/todos/relationship/{relationshipId}",
+        url: "/admins",
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const createAdmin = (data: CreateAdminData): CancelablePromise<CreateAdminResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/admins",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getAdmin = (data: GetAdminData): CancelablePromise<GetAdminResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/admins/{id}",
         path: {
-            relationshipId: data.relationshipId,
+            id: data.id,
         },
         errors: {
-            400: "Missing required field",
-            500: "Server error",
+            404: "Admin not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const updateAdmin = (data: UpdateAdminData): CancelablePromise<UpdateAdminResponse> => {
+    return __request(OpenAPI, {
+        method: "PUT",
+        url: "/admins/{id}",
+        path: {
+            id: data.id,
+        },
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            404: "Admin not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const deleteAdmin = (data: DeleteAdminData): CancelablePromise<DeleteAdminResponse> => {
+    return __request(OpenAPI, {
+        method: "DELETE",
+        url: "/admins/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Admin not found",
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const updateAdminPassword = (data: UpdateAdminPasswordData): CancelablePromise<UpdateAdminPasswordResponse> => {
+    return __request(OpenAPI, {
+        method: "PUT",
+        url: "/admins/{id}/password",
+        path: {
+            id: data.id,
+        },
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields or invalid password",
+            404: "Admin not found",
+            500: "Database error",
         },
     });
 };
