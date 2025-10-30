@@ -69,6 +69,7 @@ async function main() {
                 address: "Budapest, Bartók Béla út 5.",
                 fourHandCareNeeded: false,
                 password: "$2b$10$ZMt5cevB.aKs8mKwpR6qOOh5kGU6FnUcEiNyzVPA84cBRtrWhFa",
+                caregiverNote: "Idős, lassú mozgású.",
             },
         }),
         prisma.recipient.create({
@@ -90,6 +91,7 @@ async function main() {
                 address: "Budapest, Tisza Lajos körút 8.",
                 fourHandCareNeeded: false,
                 password: "$2b$10$ZMt5cevB.aKs8mKwpR6qOOh5kGU6FnUcEiNyzVPA84cBRtrWhFa",
+                caregiverNote: "Cukorbeteg, figyelni kell az étkezésére.",
             },
         }),
         prisma.recipient.create({
@@ -111,6 +113,7 @@ async function main() {
                 address: "Budapest, Szent István út 1.",
                 fourHandCareNeeded: false,
                 password: "$2b$10$ZMt5cevB.aKs8mKwpR6qOOh5kGU6FnUcEiNyzVPA84cBRtrWhFa",
+                caregiverNote: "",
             },
         }),
     ]);

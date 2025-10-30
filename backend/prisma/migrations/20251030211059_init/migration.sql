@@ -27,7 +27,7 @@ CREATE TABLE "Recipient" (
     "phone" VARCHAR(15) NOT NULL,
     "address" TEXT NOT NULL,
     "fourHandCareNeeded" BOOLEAN NOT NULL DEFAULT false,
-    "caregiverNote" TEXT,
+    "caregiverNote" TEXT NOT NULL,
     "password" TEXT NOT NULL,
 
     CONSTRAINT "Recipient_pkey" PRIMARY KEY ("id")
@@ -65,7 +65,7 @@ CREATE TABLE "TaskType" (
 CREATE TABLE "Subtask" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "taskTypeId" TEXT,
+    "taskTypeId" TEXT NOT NULL,
 
     CONSTRAINT "Subtask_pkey" PRIMARY KEY ("id")
 );
@@ -74,7 +74,7 @@ CREATE TABLE "Subtask" (
 CREATE TABLE "Todo" (
     "id" TEXT NOT NULL,
     "subtaskId" TEXT NOT NULL,
-    "relationshipId" TEXT,
+    "relationshipId" TEXT NOT NULL,
     "sequenceNumber" INTEGER NOT NULL,
     "done" BOOLEAN NOT NULL DEFAULT false,
 

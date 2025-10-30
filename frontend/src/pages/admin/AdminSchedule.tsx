@@ -236,15 +236,16 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
                 primary
                 icon={addButtonIconPrimary}
                 size="large"
-                onClick={() =>
+                onClick={() => {
+                    if (!firstRelationshipForUser?.id) return;
                     handleAddSchedule({
                         id: "",
                         relationshipId: firstRelationshipForUser?.id || "",
                         startTime: filteredSchedules.at(-1)?.endTime || "00:00:00",
                         endTime: filteredSchedules.at(-1)?.endTime || "00:00:00",
                         date: selectedDate.toISOString(),
-                    })
-                }
+                    });
+                }}
                 fillWidth
             />
         </div>

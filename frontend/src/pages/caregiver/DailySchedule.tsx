@@ -116,14 +116,14 @@ const DailySchedule: React.FC = () => {
                             setTimeout(() => {
                                 logs.refetch();
                                 openSheet();
-                            }, 2000);
+                            }, 1000);
 
                             resolve({
                                 ok: true,
                                 loading: true,
                                 message: "Új napló létrehozása folyamatban...",
                                 quitUpdate: false,
-                                autoCloseAfterTimeout: 2000,
+                                autoCloseAfterTimeout: 1000,
                             });
                         },
                         onError: (error) => {

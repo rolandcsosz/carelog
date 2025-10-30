@@ -12,7 +12,7 @@ import {
     Controller,
     Security,
 } from "tsoa";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Schedule as DbSchedule } from "@prisma/client";
 import { ErrorResponse, successResponse, SuccessResponse } from "../model.js";
 import { getErrorCode, getErrorMessage } from "../utils.js";
 
@@ -22,16 +22,36 @@ interface Schedule {
     id: string;
     date: Date;
     relationshipId: string;
-    startTime: Date;
-    endTime: Date;
+    startTime: string;
+    endTime: string;
 }
 
 interface ScheduleRequest {
     date: Date;
     relationshipId: string;
-    startTime: Date;
-    endTime: Date;
+    startTime: string;
+    endTime: string;
 }
+
+const getTimeString = (date: Date): string => {
+    return date.toTimeString().substring(0, 8);
+};
+
+const getClientScheduleFromDbSchedule = (dbSchedule: DbSchedule): Schedule => {
+    return {
+        ...dbSchedule,
+        startTime: getTimeString(dbSchedule.startTime),
+        endTime: getTimeString(dbSchedule.endTime),
+    };
+};
+
+const getDbScheduleFromClientSchedule = (schedule: ScheduleRequest): DbSchedule => {
+    return {
+        ...schedule,
+        startTime: new Date(`1970-01-01T${schedule.startTime}Z`),
+        endTime: new Date(`1970-01-01T${schedule.endTime}Z`),
+    } as DbSchedule;
+};
 
 @Route("schedules")
 @Tags("Schedules")
@@ -48,9 +68,9 @@ export class ScheduleController extends Controller {
         }
 
         try {
-            const schedule = await prisma.schedule.create({ data: body });
+            const schedule = await prisma.schedule.create({ data: getDbScheduleFromClientSchedule(body) });
             this.setStatus(201);
-            return schedule;
+            return getClientScheduleFromDbSchedule(schedule);
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba a beosztás létrehozásakor", message: getErrorMessage(err) } as ErrorResponse;
@@ -62,7 +82,8 @@ export class ScheduleController extends Controller {
     @Response<ErrorResponse>(500, "Database error")
     public async getSchedules(): Promise<Schedule[] | ErrorResponse> {
         try {
-            return await prisma.schedule.findMany({ orderBy: { date: "asc" } });
+            const schedules = await prisma.schedule.findMany({ orderBy: { date: "asc" } });
+            return schedules.map(getClientScheduleFromDbSchedule);
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -80,7 +101,7 @@ export class ScheduleController extends Controller {
                 this.setStatus(404);
                 return { error: "Nincs ilyen beosztás", message: "" } as ErrorResponse;
             }
-            return schedule;
+            return getClientScheduleFromDbSchedule(schedule);
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -102,7 +123,7 @@ export class ScheduleController extends Controller {
         }
 
         try {
-            await prisma.schedule.update({ where: { id }, data: body });
+            await prisma.schedule.update({ where: { id }, data: getDbScheduleFromClientSchedule(body) });
             return successResponse;
         } catch (err: unknown) {
             if (getErrorCode(err) === "P2025") {
@@ -141,7 +162,7 @@ export class ScheduleController extends Controller {
                 where: { relationship: { caregiverId } },
             });
 
-            return schedules;
+            return schedules.map(getClientScheduleFromDbSchedule);
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -157,7 +178,7 @@ export class ScheduleController extends Controller {
                 where: { relationship: { recipientId } },
             });
 
-            return schedules;
+            return schedules.map(getClientScheduleFromDbSchedule);
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -181,7 +202,7 @@ export class ScheduleController extends Controller {
                 },
             });
 
-            return schedules;
+            return schedules.map(getClientScheduleFromDbSchedule);
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;

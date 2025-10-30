@@ -45,6 +45,7 @@ export class LogController extends Controller {
             const result = await elasticClient.index({
                 index: "logs",
                 body: logEntry,
+                refresh: "wait_for",
             });
 
             const id = result._id;
@@ -53,6 +54,7 @@ export class LogController extends Controller {
                 index: "logs",
                 id,
                 body: { doc: { id } },
+                refresh: "wait_for",
             });
 
             return { id };
@@ -136,6 +138,7 @@ export class LogController extends Controller {
                 index: "logs",
                 id: hit._id,
                 doc: updatedFields,
+                refresh: "wait_for",
             });
 
             return successResponse;
@@ -164,6 +167,7 @@ export class LogController extends Controller {
             await elasticClient.delete({
                 index: "logs",
                 id: hit._id,
+                refresh: "wait_for",
             });
 
             return successResponse;

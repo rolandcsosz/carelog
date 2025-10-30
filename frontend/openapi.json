@@ -9,145 +9,74 @@
         "schemas": {
             "Todo": {
                 "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "relationshipId": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "subtaskId": {
-                        "type": "string"
-                    },
-                    "sequenceNumber": {
-                        "type": "number",
-                        "format": "double"
-                    },
-                    "done": {
-                        "type": "boolean"
-                    }
+                    "id": { "type": "string" },
+                    "relationshipId": { "type": "string", "nullable": true },
+                    "subtaskId": { "type": "string" },
+                    "sequenceNumber": { "type": "number", "format": "double" },
+                    "done": { "type": "boolean" }
                 },
                 "required": ["id", "relationshipId", "subtaskId", "sequenceNumber", "done"],
                 "type": "object",
                 "additionalProperties": false
             },
             "ErrorResponse": {
-                "properties": {
-                    "error": {
-                        "type": "string"
-                    },
-                    "message": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "error": { "type": "string" }, "message": { "type": "string" } },
                 "required": ["error", "message"],
                 "type": "object",
                 "additionalProperties": false
             },
             "CreateOrUpdateTodoRequest": {
                 "properties": {
-                    "subtaskId": {
-                        "type": "string"
-                    },
-                    "relationshipId": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "sequenceNumber": {
-                        "type": "number",
-                        "format": "double"
-                    },
-                    "done": {
-                        "type": "boolean"
-                    }
+                    "subtaskId": { "type": "string" },
+                    "relationshipId": { "type": "string", "nullable": true },
+                    "sequenceNumber": { "type": "number", "format": "double" },
+                    "done": { "type": "boolean" }
                 },
                 "required": ["subtaskId", "relationshipId", "sequenceNumber", "done"],
                 "type": "object",
                 "additionalProperties": false
             },
             "SuccessResponse": {
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "message": { "type": "string" } },
                 "required": ["message"],
                 "type": "object",
                 "additionalProperties": false
             },
             "TaskType": {
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "type": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "id": { "type": "string" }, "type": { "type": "string" } },
                 "required": ["id", "type"],
                 "type": "object",
                 "additionalProperties": false
             },
             "CreateTaskTypeRequest": {
-                "properties": {
-                    "type": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "type": { "type": "string" } },
                 "required": ["type"],
                 "type": "object",
                 "additionalProperties": false
             },
             "Subtask": {
                 "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "taskTypeId": {
-                        "type": "string",
-                        "nullable": true
-                    }
+                    "id": { "type": "string" },
+                    "title": { "type": "string" },
+                    "taskTypeId": { "type": "string", "nullable": true }
                 },
                 "required": ["id", "title", "taskTypeId"],
                 "type": "object",
                 "additionalProperties": false
             },
             "CreateSubTaskRequest": {
-                "properties": {
-                    "title": {
-                        "type": "string"
-                    },
-                    "taskTypeId": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "title": { "type": "string" }, "taskTypeId": { "type": "string" } },
                 "required": ["title", "taskTypeId"],
                 "type": "object",
                 "additionalProperties": false
             },
             "Schedule": {
                 "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "date": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "relationshipId": {
-                        "type": "string"
-                    },
-                    "startTime": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "endTime": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
+                    "id": { "type": "string" },
+                    "date": { "type": "string", "format": "date-time" },
+                    "relationshipId": { "type": "string" },
+                    "startTime": { "type": "string" },
+                    "endTime": { "type": "string" }
                 },
                 "required": ["id", "date", "relationshipId", "startTime", "endTime"],
                 "type": "object",
@@ -155,21 +84,10 @@
             },
             "ScheduleRequest": {
                 "properties": {
-                    "date": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "relationshipId": {
-                        "type": "string"
-                    },
-                    "startTime": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "endTime": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
+                    "date": { "type": "string", "format": "date-time" },
+                    "relationshipId": { "type": "string" },
+                    "startTime": { "type": "string" },
+                    "endTime": { "type": "string" }
                 },
                 "required": ["date", "relationshipId", "startTime", "endTime"],
                 "type": "object",
@@ -177,57 +95,29 @@
             },
             "RecipientCaregiverRelationship": {
                 "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "recipientId": {
-                        "type": "string"
-                    },
-                    "caregiverId": {
-                        "type": "string"
-                    }
+                    "id": { "type": "string" },
+                    "recipientId": { "type": "string" },
+                    "caregiverId": { "type": "string" }
                 },
                 "required": ["id", "recipientId", "caregiverId"],
                 "type": "object",
                 "additionalProperties": false
             },
             "RelationshipRequest": {
-                "properties": {
-                    "recipientId": {
-                        "type": "string"
-                    },
-                    "caregiverId": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "recipientId": { "type": "string" }, "caregiverId": { "type": "string" } },
                 "required": ["recipientId", "caregiverId"],
                 "type": "object",
                 "additionalProperties": false
             },
             "RecipientWithoutPassword": {
                 "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "phone": {
-                        "type": "string"
-                    },
-                    "address": {
-                        "type": "string"
-                    },
-                    "fourHandCareNeeded": {
-                        "type": "boolean"
-                    },
-                    "caregiverNote": {
-                        "type": "string",
-                        "nullable": true
-                    }
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "email": { "type": "string" },
+                    "phone": { "type": "string" },
+                    "address": { "type": "string" },
+                    "fourHandCareNeeded": { "type": "boolean" },
+                    "caregiverNote": { "type": "string", "nullable": true }
                 },
                 "required": ["id", "name", "email", "phone", "address", "fourHandCareNeeded", "caregiverNote"],
                 "type": "object",
@@ -235,65 +125,44 @@
             },
             "CreateRecipientRequest": {
                 "properties": {
-                    "caregiverNote": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "fourHandCareNeeded": {
-                        "type": "boolean"
-                    },
-                    "address": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "phone": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    }
+                    "caregiverNote": { "type": "string" },
+                    "fourHandCareNeeded": { "type": "boolean" },
+                    "address": { "type": "string" },
+                    "password": { "type": "string" },
+                    "phone": { "type": "string" },
+                    "email": { "type": "string" },
+                    "name": { "type": "string" }
                 },
                 "required": ["caregiverNote", "fourHandCareNeeded", "address", "password", "phone", "email", "name"],
                 "type": "object"
             },
-            "UpdateRecipientPasswordRequest": {
+            "UpdateRecipientRequest": {
                 "properties": {
-                    "currentPassword": {
-                        "type": "string"
-                    },
-                    "newPassword": {
-                        "type": "string"
-                    }
+                    "caregiverNote": { "type": "string" },
+                    "fourHandCareNeeded": { "type": "boolean" },
+                    "address": { "type": "string" },
+                    "phone": { "type": "string" },
+                    "email": { "type": "string" },
+                    "name": { "type": "string" }
                 },
+                "required": ["caregiverNote", "fourHandCareNeeded", "address", "phone", "email", "name"],
+                "type": "object"
+            },
+            "UpdateRecipientPasswordRequest": {
+                "properties": { "currentPassword": { "type": "string" }, "newPassword": { "type": "string" } },
                 "required": ["currentPassword", "newPassword"],
                 "type": "object",
                 "additionalProperties": false
             },
             "LoginSuccessResponse": {
                 "properties": {
-                    "role": {
-                        "type": "string",
-                        "enum": ["admin", "caregiver"]
-                    },
-                    "token": {
-                        "type": "string"
-                    },
+                    "role": { "type": "string", "enum": ["admin", "caregiver"] },
+                    "token": { "type": "string" },
                     "user": {
                         "properties": {
-                            "email": {
-                                "type": "string"
-                            },
-                            "name": {
-                                "type": "string"
-                            },
-                            "id": {
-                                "type": "string"
-                            }
+                            "email": { "type": "string" },
+                            "name": { "type": "string" },
+                            "id": { "type": "string" }
                         },
                         "required": ["email", "name", "id"],
                         "type": "object"
@@ -304,45 +173,24 @@
                 "additionalProperties": false
             },
             "LoginRequest": {
-                "properties": {
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "email": { "type": "string" }, "password": { "type": "string" } },
                 "required": ["email", "password"],
                 "type": "object",
                 "additionalProperties": false
             },
             "LogCreateResponse": {
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "id": { "type": "string" } },
                 "required": ["id"],
                 "type": "object",
                 "additionalProperties": false
             },
             "TaskLog": {
                 "properties": {
-                    "subTaskId": {
-                        "type": "string"
-                    },
-                    "startTime": {
-                        "type": "string"
-                    },
-                    "endTime": {
-                        "type": "string"
-                    },
-                    "done": {
-                        "type": "boolean"
-                    },
-                    "note": {
-                        "type": "string"
-                    }
+                    "subTaskId": { "type": "string" },
+                    "startTime": { "type": "string" },
+                    "endTime": { "type": "string" },
+                    "done": { "type": "boolean" },
+                    "note": { "type": "string" }
                 },
                 "required": ["subTaskId", "startTime", "endTime", "done"],
                 "type": "object",
@@ -350,27 +198,12 @@
             },
             "LogEntry": {
                 "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "date": {
-                        "type": "string"
-                    },
-                    "relationshipId": {
-                        "type": "string"
-                    },
-                    "finished": {
-                        "type": "boolean"
-                    },
-                    "closed": {
-                        "type": "boolean"
-                    },
-                    "tasks": {
-                        "items": {
-                            "$ref": "#/components/schemas/TaskLog"
-                        },
-                        "type": "array"
-                    }
+                    "id": { "type": "string" },
+                    "date": { "type": "string" },
+                    "relationshipId": { "type": "string" },
+                    "finished": { "type": "boolean" },
+                    "closed": { "type": "boolean" },
+                    "tasks": { "items": { "$ref": "#/components/schemas/TaskLog" }, "type": "array" }
                 },
                 "required": ["id", "date", "relationshipId", "finished", "closed", "tasks"],
                 "type": "object",
@@ -378,24 +211,11 @@
             },
             "UpdateLogEntry": {
                 "properties": {
-                    "date": {
-                        "type": "string"
-                    },
-                    "relationshipId": {
-                        "type": "string"
-                    },
-                    "finished": {
-                        "type": "boolean"
-                    },
-                    "closed": {
-                        "type": "boolean"
-                    },
-                    "tasks": {
-                        "items": {
-                            "$ref": "#/components/schemas/TaskLog"
-                        },
-                        "type": "array"
-                    }
+                    "date": { "type": "string" },
+                    "relationshipId": { "type": "string" },
+                    "finished": { "type": "boolean" },
+                    "closed": { "type": "boolean" },
+                    "tasks": { "items": { "$ref": "#/components/schemas/TaskLog" }, "type": "array" }
                 },
                 "required": ["date", "relationshipId", "finished", "closed", "tasks"],
                 "type": "object",
@@ -403,18 +223,10 @@
             },
             "CaregiverWithoutPassword": {
                 "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "phone": {
-                        "type": "string"
-                    }
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "email": { "type": "string" },
+                    "phone": { "type": "string" }
                 },
                 "required": ["id", "name", "email", "phone"],
                 "type": "object",
@@ -422,95 +234,48 @@
             },
             "CreateCaregiverRequest": {
                 "properties": {
-                    "password": {
-                        "type": "string"
-                    },
-                    "phone": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    }
+                    "password": { "type": "string" },
+                    "phone": { "type": "string" },
+                    "email": { "type": "string" },
+                    "name": { "type": "string" }
                 },
                 "required": ["password", "phone", "email", "name"],
                 "type": "object"
             },
             "UpdateCaregiverPasswordRequest": {
-                "properties": {
-                    "currentPassword": {
-                        "type": "string"
-                    },
-                    "newPassword": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "currentPassword": { "type": "string" }, "newPassword": { "type": "string" } },
                 "required": ["currentPassword", "newPassword"],
                 "type": "object",
                 "additionalProperties": false
             },
             "AdminWithoutPassword": {
                 "properties": {
-                    "email": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "id": {
-                        "type": "string"
-                    }
+                    "email": { "type": "string" },
+                    "name": { "type": "string" },
+                    "id": { "type": "string" }
                 },
                 "required": ["email", "name", "id"],
                 "type": "object"
             },
             "CreateAdminRequest": {
                 "properties": {
-                    "password": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    }
+                    "password": { "type": "string" },
+                    "email": { "type": "string" },
+                    "name": { "type": "string" }
                 },
                 "required": ["password", "email", "name"],
                 "type": "object"
             },
             "UpdateAdminPasswordRequest": {
-                "properties": {
-                    "currentPassword": {
-                        "type": "string"
-                    },
-                    "newPassword": {
-                        "type": "string"
-                    }
-                },
+                "properties": { "currentPassword": { "type": "string" }, "newPassword": { "type": "string" } },
                 "required": ["currentPassword", "newPassword"],
                 "type": "object",
                 "additionalProperties": false
             }
         },
-        "securitySchemes": {
-            "jwt": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
-            }
-        }
+        "securitySchemes": { "jwt": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" } }
     },
-    "info": {
-        "title": "activity-log-app-backend",
-        "version": "0.0.0",
-        "license": {
-            "name": "ISC"
-        },
-        "contact": {}
-    },
+    "info": { "title": "activity-log-app-backend", "version": "0.0.0", "license": { "name": "ISC" }, "contact": {} },
     "paths": {
         "/todos": {
             "get": {
@@ -522,15 +287,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Todo"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/Todo" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -539,20 +297,12 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Todos"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": []
             },
             "post": {
@@ -564,12 +314,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/Todo"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/Todo" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -578,39 +324,23 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Todos"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateOrUpdateTodoRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/CreateOrUpdateTodoRequest" } }
                     }
                 }
             }
@@ -625,12 +355,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/Todo"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/Todo" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -639,40 +365,19 @@
                     "404": {
                         "description": "Todo not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Todos"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             },
             "put": {
                 "operationId": "UpdateTodo",
@@ -683,12 +388,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -697,58 +398,29 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "404": {
                         "description": "Todo not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Todos"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateOrUpdateTodoRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/CreateOrUpdateTodoRequest" } }
                     }
                 }
             },
@@ -761,12 +433,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -775,40 +443,19 @@
                     "404": {
                         "description": "Todo not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Todos"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/todos/relationship/{relationshipId}": {
@@ -821,15 +468,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Todo"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/Todo" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -838,39 +478,20 @@
                     "400": {
                         "description": "Missing relationshipId",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Todos"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [
-                    {
-                        "in": "path",
-                        "name": "relationshipId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
+                    { "in": "path", "name": "relationshipId", "required": true, "schema": { "type": "string" } }
                 ]
             }
         },
@@ -884,12 +505,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/TaskType"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/TaskType" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -898,39 +515,23 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["TaskTypes"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateTaskTypeRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/CreateTaskTypeRequest" } }
                     }
                 }
             },
@@ -943,15 +544,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/TaskType"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/TaskType" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -960,20 +554,12 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["TaskTypes"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": []
             }
         },
@@ -987,12 +573,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/TaskType"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/TaskType" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1001,40 +583,19 @@
                     "404": {
                         "description": "Task type not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["TaskTypes"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/subtasks": {
@@ -1047,12 +608,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/Subtask"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/Subtask" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1061,39 +618,23 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["SubTasks"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateSubTaskRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/CreateSubTaskRequest" } }
                     }
                 }
             },
@@ -1106,15 +647,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Subtask"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/Subtask" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1123,20 +657,12 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["SubTasks"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": []
             }
         },
@@ -1150,12 +676,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/Subtask"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/Subtask" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1164,40 +686,19 @@
                     "404": {
                         "description": "Sub-task not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["SubTasks"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/subtasks/task-type/{taskTypeId}": {
@@ -1210,15 +711,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Subtask"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/Subtask" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1227,30 +721,13 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["SubTasks"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "taskTypeId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "taskTypeId", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/schedules": {
@@ -1263,12 +740,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/Schedule"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/Schedule" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1277,40 +750,22 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Schedules"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [],
                 "requestBody": {
                     "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ScheduleRequest"
-                            }
-                        }
-                    }
+                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ScheduleRequest" } } }
                 }
             },
             "get": {
@@ -1322,15 +777,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Schedule"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/Schedule" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1339,20 +787,12 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Schedules"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": []
             }
         },
@@ -1366,12 +806,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/Schedule"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/Schedule" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1380,40 +816,19 @@
                     "404": {
                         "description": "Schedule not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Schedules"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             },
             "put": {
                 "operationId": "UpdateSchedule",
@@ -1424,12 +839,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1438,59 +849,28 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "404": {
                         "description": "Schedule not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Schedules"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ScheduleRequest"
-                            }
-                        }
-                    }
+                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ScheduleRequest" } } }
                 }
             },
             "delete": {
@@ -1502,12 +882,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1516,40 +892,19 @@
                     "404": {
                         "description": "Schedule not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Schedules"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/schedules/caregiver/{caregiverId}": {
@@ -1562,15 +917,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Schedule"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/Schedule" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1579,29 +927,14 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Schedules"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [
-                    {
-                        "in": "path",
-                        "name": "caregiverId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
+                    { "in": "path", "name": "caregiverId", "required": true, "schema": { "type": "string" } }
                 ]
             }
         },
@@ -1615,15 +948,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Schedule"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/Schedule" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1632,29 +958,14 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Schedules"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [
-                    {
-                        "in": "path",
-                        "name": "recipientId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
+                    { "in": "path", "name": "recipientId", "required": true, "schema": { "type": "string" } }
                 ]
             }
         },
@@ -1668,15 +979,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/Schedule"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/Schedule" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1685,37 +989,15 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Schedules"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [
-                    {
-                        "in": "path",
-                        "name": "caregiverId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "in": "path",
-                        "name": "recipientId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
+                    { "in": "path", "name": "caregiverId", "required": true, "schema": { "type": "string" } },
+                    { "in": "path", "name": "recipientId", "required": true, "schema": { "type": "string" } }
                 ]
             }
         },
@@ -1729,12 +1011,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/RecipientCaregiverRelationship"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/RecipientCaregiverRelationship" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1743,29 +1021,17 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Relationships"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RelationshipRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/RelationshipRequest" } }
                     }
                 }
             },
@@ -1779,14 +1045,10 @@
                                 "schema": {
                                     "anyOf": [
                                         {
-                                            "items": {
-                                                "$ref": "#/components/schemas/RecipientCaregiverRelationship"
-                                            },
+                                            "items": { "$ref": "#/components/schemas/RecipientCaregiverRelationship" },
                                             "type": "array"
                                         },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1795,20 +1057,12 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Relationships"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": []
             }
         },
@@ -1823,14 +1077,10 @@
                                 "schema": {
                                     "anyOf": [
                                         {
-                                            "items": {
-                                                "$ref": "#/components/schemas/RecipientCaregiverRelationship"
-                                            },
+                                            "items": { "$ref": "#/components/schemas/RecipientCaregiverRelationship" },
                                             "type": "array"
                                         },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1839,30 +1089,13 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Relationships"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/relationships/caregiver/{id}/recipients": {
@@ -1876,14 +1109,10 @@
                                 "schema": {
                                     "anyOf": [
                                         {
-                                            "items": {
-                                                "$ref": "#/components/schemas/RecipientCaregiverRelationship"
-                                            },
+                                            "items": { "$ref": "#/components/schemas/RecipientCaregiverRelationship" },
                                             "type": "array"
                                         },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1892,30 +1121,13 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Relationships"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/relationships/{id}": {
@@ -1928,12 +1140,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -1942,48 +1150,23 @@
                     "404": {
                         "description": "Relationship not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Relationships"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RelationshipRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/RelationshipRequest" } }
                     }
                 }
             },
@@ -1996,12 +1179,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2010,40 +1189,19 @@
                     "404": {
                         "description": "Relationship not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Relationships"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/recipients": {
@@ -2057,14 +1215,10 @@
                                 "schema": {
                                     "anyOf": [
                                         {
-                                            "items": {
-                                                "$ref": "#/components/schemas/RecipientWithoutPassword"
-                                            },
+                                            "items": { "$ref": "#/components/schemas/RecipientWithoutPassword" },
                                             "type": "array"
                                         },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2073,20 +1227,12 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Recipients"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": []
             },
             "post": {
@@ -2098,12 +1244,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/RecipientWithoutPassword"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/RecipientWithoutPassword" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2112,39 +1254,23 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Recipients"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateRecipientRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/CreateRecipientRequest" } }
                     }
                 }
             }
@@ -2159,12 +1285,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/RecipientWithoutPassword"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/RecipientWithoutPassword" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2173,40 +1295,19 @@
                     "404": {
                         "description": "Recipient not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Recipients"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             },
             "put": {
                 "operationId": "UpdateRecipient",
@@ -2217,12 +1318,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2231,79 +1328,29 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "404": {
                         "description": "Recipient not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Recipients"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "note": {
-                                        "type": "string"
-                                    },
-                                    "fourHandCareNeeded": {
-                                        "type": "boolean"
-                                    },
-                                    "address": {
-                                        "type": "string"
-                                    },
-                                    "phone": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "name": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": ["address", "phone", "email", "name"],
-                                "type": "object"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/UpdateRecipientRequest" } }
                     }
                 }
             },
@@ -2316,12 +1363,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2330,40 +1373,19 @@
                     "404": {
                         "description": "Recipient not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Recipients"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/recipients/{id}/password": {
@@ -2376,12 +1398,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2390,57 +1408,30 @@
                     "400": {
                         "description": "Missing fields or invalid password",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "404": {
                         "description": "Recipient not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Recipients"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateRecipientPasswordRequest"
-                            }
+                            "schema": { "$ref": "#/components/schemas/UpdateRecipientPasswordRequest" }
                         }
                     }
                 }
@@ -2456,12 +1447,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/LoginSuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/LoginSuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2470,21 +1457,13 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Server error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
@@ -2493,13 +1472,7 @@
                 "parameters": [],
                 "requestBody": {
                     "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/LoginRequest"
-                            }
-                        }
-                    }
+                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } } }
                 }
             }
         },
@@ -2513,12 +1486,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/LogCreateResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/LogCreateResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2527,11 +1496,7 @@
                     "500": {
                         "description": "Server Error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
@@ -2540,13 +1505,7 @@
                 "parameters": [],
                 "requestBody": {
                     "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/LogEntry"
-                            }
-                        }
-                    }
+                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LogEntry" } } }
                 }
             },
             "get": {
@@ -2558,15 +1517,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/LogEntry"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/LogEntry" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2575,11 +1527,7 @@
                     "500": {
                         "description": "Server Error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
@@ -2598,12 +1546,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/LogEntry"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/LogEntry" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2612,36 +1556,19 @@
                     "404": {
                         "description": "Log not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Server Error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Logs"],
                 "security": [],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             },
             "put": {
                 "operationId": "UpdateLog",
@@ -2652,12 +1579,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2666,45 +1589,22 @@
                     "404": {
                         "description": "Log not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Server Error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Logs"],
                 "security": [],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateLogEntry"
-                            }
-                        }
-                    }
+                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UpdateLogEntry" } } }
                 }
             },
             "delete": {
@@ -2716,12 +1616,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2730,36 +1626,19 @@
                     "404": {
                         "description": "Log not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Server Error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Logs"],
                 "security": [],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/logs/open": {
@@ -2772,15 +1651,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/LogEntry"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/LogEntry" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2789,11 +1661,7 @@
                     "500": {
                         "description": "Server Error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
@@ -2812,15 +1680,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "items": {
-                                                "$ref": "#/components/schemas/LogEntry"
-                                            },
-                                            "type": "array"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "items": { "$ref": "#/components/schemas/LogEntry" }, "type": "array" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2829,43 +1690,21 @@
                     "404": {
                         "description": "Relationship not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Server Error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Logs"],
                 "security": [],
                 "parameters": [
-                    {
-                        "in": "path",
-                        "name": "recipientId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "in": "path",
-                        "name": "caregiverId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
+                    { "in": "path", "name": "recipientId", "required": true, "schema": { "type": "string" } },
+                    { "in": "path", "name": "caregiverId", "required": true, "schema": { "type": "string" } }
                 ]
             }
         },
@@ -2880,14 +1719,10 @@
                                 "schema": {
                                     "anyOf": [
                                         {
-                                            "items": {
-                                                "$ref": "#/components/schemas/CaregiverWithoutPassword"
-                                            },
+                                            "items": { "$ref": "#/components/schemas/CaregiverWithoutPassword" },
                                             "type": "array"
                                         },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2896,20 +1731,12 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Caregivers"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": []
             },
             "post": {
@@ -2921,12 +1748,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/CaregiverWithoutPassword"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/CaregiverWithoutPassword" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2935,39 +1758,23 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Caregivers"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
+                "security": [{ "jwt": [] }],
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateCaregiverRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/CreateCaregiverRequest" } }
                     }
                 }
             }
@@ -2982,12 +1789,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/CaregiverWithoutPassword"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/CaregiverWithoutPassword" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -2996,40 +1799,19 @@
                     "404": {
                         "description": "Caregiver not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Caregivers"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             },
             "put": {
                 "operationId": "UpdateCaregiver",
@@ -3040,12 +1822,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3054,65 +1832,34 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "404": {
                         "description": "Caregiver not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Caregivers"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "phone": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "name": {
-                                        "type": "string"
-                                    }
+                                    "phone": { "type": "string" },
+                                    "email": { "type": "string" },
+                                    "name": { "type": "string" }
                                 },
                                 "required": ["phone", "email", "name"],
                                 "type": "object"
@@ -3130,12 +1877,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3144,40 +1887,19 @@
                     "404": {
                         "description": "Caregiver not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Caregivers"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/caregivers/{id}/password": {
@@ -3190,12 +1912,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3204,57 +1922,30 @@
                     "400": {
                         "description": "Missing fields or invalid password",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "404": {
                         "description": "Caregiver not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Caregivers"],
-                "security": [
-                    {
-                        "jwt": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": [] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateCaregiverPasswordRequest"
-                            }
+                            "schema": { "$ref": "#/components/schemas/UpdateCaregiverPasswordRequest" }
                         }
                     }
                 }
@@ -3271,14 +1962,10 @@
                                 "schema": {
                                     "anyOf": [
                                         {
-                                            "items": {
-                                                "$ref": "#/components/schemas/AdminWithoutPassword"
-                                            },
+                                            "items": { "$ref": "#/components/schemas/AdminWithoutPassword" },
                                             "type": "array"
                                         },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3287,20 +1974,12 @@
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Admins"],
-                "security": [
-                    {
-                        "jwt": ["admin"]
-                    }
-                ],
+                "security": [{ "jwt": ["admin"] }],
                 "parameters": []
             },
             "post": {
@@ -3312,12 +1991,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/AdminWithoutPassword"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/AdminWithoutPassword" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3326,39 +2001,23 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Admins"],
-                "security": [
-                    {
-                        "jwt": ["admin"]
-                    }
-                ],
+                "security": [{ "jwt": ["admin"] }],
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateAdminRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/CreateAdminRequest" } }
                     }
                 }
             }
@@ -3373,12 +2032,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/AdminWithoutPassword"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/AdminWithoutPassword" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3387,40 +2042,19 @@
                     "404": {
                         "description": "Admin not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Admins"],
-                "security": [
-                    {
-                        "jwt": ["admin"]
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": ["admin"] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             },
             "put": {
                 "operationId": "UpdateAdmin",
@@ -3431,12 +2065,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3445,63 +2075,31 @@
                     "400": {
                         "description": "Missing fields",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "404": {
                         "description": "Admin not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Admins"],
-                "security": [
-                    {
-                        "jwt": ["admin"]
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": ["admin"] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "name": {
-                                        "type": "string"
-                                    }
-                                },
+                                "properties": { "email": { "type": "string" }, "name": { "type": "string" } },
                                 "required": ["email", "name"],
                                 "type": "object"
                             }
@@ -3518,12 +2116,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3532,40 +2126,19 @@
                     "404": {
                         "description": "Admin not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Admins"],
-                "security": [
-                    {
-                        "jwt": ["admin"]
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
+                "security": [{ "jwt": ["admin"] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }]
             }
         },
         "/admins/{id}/password": {
@@ -3578,12 +2151,8 @@
                             "application/json": {
                                 "schema": {
                                     "anyOf": [
-                                        {
-                                            "$ref": "#/components/schemas/SuccessResponse"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/ErrorResponse"
-                                        }
+                                        { "$ref": "#/components/schemas/SuccessResponse" },
+                                        { "$ref": "#/components/schemas/ErrorResponse" }
                                     ]
                                 }
                             }
@@ -3592,66 +2161,33 @@
                     "400": {
                         "description": "Missing fields or invalid password",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "404": {
                         "description": "Admin not found",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     },
                     "500": {
                         "description": "Database error",
                         "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
+                            "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
                         }
                     }
                 },
                 "tags": ["Admins"],
-                "security": [
-                    {
-                        "jwt": ["admin"]
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "security": [{ "jwt": ["admin"] }],
+                "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }],
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateAdminPasswordRequest"
-                            }
-                        }
+                        "application/json": { "schema": { "$ref": "#/components/schemas/UpdateAdminPasswordRequest" } }
                     }
                 }
             }
         }
     },
-    "servers": [
-        {
-            "url": "/"
-        }
-    ]
+    "servers": [{ "url": "/" }]
 }

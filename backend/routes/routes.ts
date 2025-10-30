@@ -131,8 +131,8 @@ const models: TsoaRoute.Models = {
             id: { dataType: "string", required: true },
             date: { dataType: "datetime", required: true },
             relationshipId: { dataType: "string", required: true },
-            startTime: { dataType: "datetime", required: true },
-            endTime: { dataType: "datetime", required: true },
+            startTime: { dataType: "string", required: true },
+            endTime: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
@@ -142,8 +142,8 @@ const models: TsoaRoute.Models = {
         properties: {
             date: { dataType: "datetime", required: true },
             relationshipId: { dataType: "string", required: true },
-            startTime: { dataType: "datetime", required: true },
-            endTime: { dataType: "datetime", required: true },
+            startTime: { dataType: "string", required: true },
+            endTime: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
@@ -190,14 +190,26 @@ const models: TsoaRoute.Models = {
         type: {
             dataType: "nestedObjectLiteral",
             nestedProperties: {
-                caregiverNote: {
-                    dataType: "union",
-                    subSchemas: [{ dataType: "string" }, { dataType: "enum", enums: [null] }],
-                    required: true,
-                },
+                caregiverNote: { dataType: "string", required: true },
                 fourHandCareNeeded: { dataType: "boolean", required: true },
                 address: { dataType: "string", required: true },
                 password: { dataType: "string", required: true },
+                phone: { dataType: "string", required: true },
+                email: { dataType: "string", required: true },
+                name: { dataType: "string", required: true },
+            },
+            validators: {},
+        },
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    UpdateRecipientRequest: {
+        dataType: "refAlias",
+        type: {
+            dataType: "nestedObjectLiteral",
+            nestedProperties: {
+                caregiverNote: { dataType: "string", required: true },
+                fourHandCareNeeded: { dataType: "boolean", required: true },
+                address: { dataType: "string", required: true },
                 phone: { dataType: "string", required: true },
                 email: { dataType: "string", required: true },
                 name: { dataType: "string", required: true },
@@ -1475,20 +1487,7 @@ export function RegisterRoutes(app: Router) {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsRecipientController_updateRecipient: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
-        body: {
-            in: "body",
-            name: "body",
-            required: true,
-            dataType: "nestedObjectLiteral",
-            nestedProperties: {
-                note: { dataType: "string" },
-                fourHandCareNeeded: { dataType: "boolean" },
-                address: { dataType: "string", required: true },
-                phone: { dataType: "string", required: true },
-                email: { dataType: "string", required: true },
-                name: { dataType: "string", required: true },
-            },
-        },
+        body: { in: "body", name: "body", required: true, ref: "UpdateRecipientRequest" },
     };
     app.put(
         "/recipients/:id",

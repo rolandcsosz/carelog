@@ -109,7 +109,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                     phone,
                     address,
                     fourHandCareNeeded: recipient.fourHandCareNeeded,
-                    note: recipient.caregiverNote || "",
+                    caregiverNote: recipient.caregiverNote,
                 },
             },
             {

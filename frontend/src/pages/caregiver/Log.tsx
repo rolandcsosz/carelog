@@ -47,7 +47,7 @@ const Log: React.FC = () => {
                         openLoader({
                             title: "Feldolgozás folyamatban...",
                             message: "Új napló bezárás folyamatban...",
-                            timeout: 2000,
+                            timeout: 1000,
                             callback: () => {
                                 logs.refetch();
                                 closePopup();
@@ -113,7 +113,7 @@ const Log: React.FC = () => {
                             setTimeout(() => {
                                 logs.refetch();
                                 closeSheet();
-                            }, 2000);
+                            }, 1000);
                         },
                         onError: (error) => {
                             return Promise.resolve({
@@ -130,7 +130,7 @@ const Log: React.FC = () => {
                     loading: true,
                     message: "Napló törlése folyamatban...",
                     quitUpdate: false,
-                    autoCloseAfterTimeout: 2000,
+                    autoCloseAfterTimeout: 1000,
                 });
             },
             onCancel: closePopup,
@@ -188,7 +188,7 @@ const Log: React.FC = () => {
                         openLoader({
                             title: "Feldolgozás folyamatban...",
                             message: "Teendő hozzáadása folyamatban...",
-                            timeout: 2000,
+                            timeout: 1000,
                             callback: () => {
                                 logs.refetch();
                             },
@@ -197,7 +197,7 @@ const Log: React.FC = () => {
                         openLoader({
                             title: "Feldolgozás folyamatban...",
                             message: "Teendő törlése folyamatban...",
-                            timeout: 2000,
+                            timeout: 1000,
                             callback: () => {
                                 logs.refetch();
                             },

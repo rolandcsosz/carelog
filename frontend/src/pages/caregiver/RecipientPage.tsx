@@ -55,13 +55,14 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
             },
         };
 
+        const { id, ...recipientWithoutId } = recipient;
+
         recipients.edit(
             {
-                id: recipient.id,
+                id,
                 requestBody: {
-                    ...recipient,
-                    fourHandCareNeeded: recipient.fourHandCareNeeded,
-                    note: recipient?.caregiverNote || "",
+                    ...recipientWithoutId,
+                    caregiverNote: note,
                 },
             },
             options,
@@ -89,63 +90,10 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
             requestBody: {
                 done: false,
                 sequenceNumber: Math.max(maxSequenceNumber + 1, 0),
-                subtaskId: subTasks.list[0].id, // Default to the first subtask type
+                subtaskId: subTasks.list[0].id,
                 relationshipId: connection.id,
             },
         });
-
-        //TODO: Use this implementation when name can be added to the todo
-        /*let localTask: NewSubTypeData | null = null;
-
-        openPopup({
-            title: "Új Teendő hozzáadása",
-            confirmButtonText: "Hozzáadás",
-            content: (
-                <NewSubTaskFormRow
-                    onChange={(task) => {
-                        localTask = task;
-                    }}
-                    taskOptions={subTasks.list ? subTasks.list.map((task) => task.name || "") : []}
-                />
-            ),
-            onConfirm: (): Promise<PopupActionResult> => {
-                if (!localTask || !localTask.name || !localTask.task) {
-                    return Promise.resolve({
-                        ok: false,
-                        message: "",
-                        quitUpdate: true,
-                    });
-                }
-
-                return new Promise<PopupActionResult>((resolve) => {
-                    subTasks.add(
-                        {
-                            requestBody: {
-                                title: localTask!.name,
-                                taskTypeId: getTaskIdByName(localTask!.task) ?? -1,
-                            },
-                        },
-                        {
-                            onSuccess: () => {
-                                resolve({
-                                    ok: true,
-                                    message: "Teendő sikeresen hozzáadva.",
-                                    quitUpdate: false,
-                                });
-                            },
-                            onError: (error: any) => {
-                                resolve({
-                                    ok: false,
-                                    message: error?.message || "Sikertelen teendő hozzáadás.",
-                                    quitUpdate: false,
-                                });
-                            },
-                        },
-                    );
-                });
-            },
-            onCancel: () => { },
-        });*/
     };
 
     const handleReorder = async (from: number, to: number) => {
@@ -154,11 +102,12 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
 
             await Promise.all(
                 updatedTodos.map((todo, index) => {
+                    const { id, ...todoWithoutId } = todo;
                     return todos.edit(
                         {
-                            id: todo.id,
+                            id,
                             requestBody: {
-                                ...todo,
+                                ...todoWithoutId,
                                 sequenceNumber: index + 1,
                             },
                         },
@@ -240,13 +189,6 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                                     closePopup,
                                 ),
                             );
-                            /* openPopup({
-                                 title: "Új Jelszó megadása",
-                                 confirmButtonText: "Mentés",
-                                 content: <NewPasswordForm onChange={setLatestPasswords} />,
-                                 onConfirm: handlePasswordSet,
-                                 onCancel: () => {},
-                             });*/
                         }}
                         fillWidth={true}
                     />
@@ -257,12 +199,14 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                         items={localTodos || []}
                         onEdit={(todo) => {
                             const subTask = subTasks?.list?.find((option) => option.id === todo.subtaskId);
+
                             if (subTask) {
+                                const { id, ...todoWithoutId } = todo;
                                 todos.edit({
-                                    id: todo.id,
+                                    id,
                                     requestBody: {
-                                        ...todo,
-                                        sequenceNumber: todo.sequenceNumber ?? 0,
+                                        ...todoWithoutId,
+                                        sequenceNumber: todoWithoutId.sequenceNumber ?? 0,
                                         subtaskId: subTask.id,
                                     },
                                 });

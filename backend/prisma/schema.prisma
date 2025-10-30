@@ -31,7 +31,7 @@ model Recipient {
   phone                  String  @db.VarChar(15)
   address                String
   fourHandCareNeeded     Boolean  @default(false)
-  caregiverNote          String?
+  caregiverNote          String
   password               String
 
   caregiverRelationships RecipientCaregiverRelationship[]
@@ -68,8 +68,8 @@ model TaskType {
 model Subtask {
   id         String   @id @default(uuid())
   title      String
-  taskType   TaskType? @relation(fields: [taskTypeId], references: [id], onDelete: SetNull)
-  taskTypeId String?
+  taskType   TaskType @relation(fields: [taskTypeId], references: [id], onDelete: SetNull)
+  taskTypeId String
   todos      Todo[]
 }
 
@@ -77,8 +77,8 @@ model Todo {
   id             String     @id @default(uuid())
   subtask        Subtask    @relation(fields: [subtaskId], references: [id], onDelete: Cascade)
   subtaskId      String
-  relationship   RecipientCaregiverRelationship? @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
-  relationshipId String?
+  relationship   RecipientCaregiverRelationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  relationshipId String
   sequenceNumber Int
   done           Boolean    @default(false)
 }

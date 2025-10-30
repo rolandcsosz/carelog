@@ -245,7 +245,7 @@ export const useCaregiverModel = () => {
         onSuccess: () => {
             setTimeout(() => {
                 refetchLogs();
-            }, 2000);
+            }, 1000);
         },
         onError: (error) => console.error("Error adding log:", error),
     });
@@ -301,13 +301,12 @@ export const useCaregiverModel = () => {
             return;
         }
         const relationshipsForUser = relationships.filter((relationship) => {
-            return Number(relationship.caregiverId) === Number(user.id);
+            return relationship.caregiverId === user.id;
         });
 
         const openLog = logs.find(
             (log) =>
-                !log.finished &&
-                relationshipsForUser.some((relationship) => Number(relationship.id) === Number(log.relationshipId)),
+                !log.finished && relationshipsForUser.some((relationship) => relationship.id === log.relationshipId),
         );
         setOpenLog(openLog || null);
     }, [logs, relationships, user?.role, setOpenLog]);

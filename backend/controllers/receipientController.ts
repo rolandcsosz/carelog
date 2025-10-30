@@ -26,7 +26,16 @@ type CreateRecipientRequest = {
     password: string;
     address: string;
     fourHandCareNeeded: boolean;
-    caregiverNote: string | null;
+    caregiverNote: string;
+};
+
+type UpdateRecipientRequest = {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    fourHandCareNeeded: boolean;
+    caregiverNote: string;
 };
 
 interface UpdateRecipientPasswordRequest {
@@ -44,6 +53,15 @@ export class RecipientController extends Controller {
         try {
             const recipients = await prisma.recipient.findMany({
                 orderBy: { id: "asc" },
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true,
+                    fourHandCareNeeded: true,
+                    caregiverNote: true,
+                },
             });
             return recipients;
         } catch (err) {
@@ -61,7 +79,18 @@ export class RecipientController extends Controller {
     @Response<ErrorResponse>(500, "Database error")
     public async getRecipient(@Path() id: string): Promise<RecipientWithoutPassword | ErrorResponse> {
         try {
-            const recipient = await prisma.recipient.findUnique({ where: { id } });
+            const recipient = await prisma.recipient.findUnique({
+                where: { id },
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true,
+                    fourHandCareNeeded: true,
+                    caregiverNote: true,
+                },
+            });
             if (!recipient) {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozott", message: "" } as ErrorResponse;
@@ -93,13 +122,17 @@ export class RecipientController extends Controller {
             const hashedPassword = await bcrypt.hash(body.password, 10);
             const recipient = await prisma.recipient.create({
                 data: {
-                    name: body.name,
-                    email: body.email,
-                    phone: body.phone,
-                    address: body.address,
-                    fourHandCareNeeded: body.fourHandCareNeeded,
-                    caregiverNote: body.caregiverNote ?? null,
+                    ...body,
                     password: hashedPassword,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true,
+                    fourHandCareNeeded: true,
+                    caregiverNote: true,
                 },
             });
             this.setStatus(201);
@@ -121,14 +154,7 @@ export class RecipientController extends Controller {
     public async updateRecipient(
         @Path() id: string,
         @Body()
-        body: {
-            name: string;
-            email: string;
-            phone: string;
-            address: string;
-            fourHandCareNeeded?: boolean;
-            note?: string;
-        },
+        body: UpdateRecipientRequest,
     ): Promise<SuccessResponse | ErrorResponse> {
         if (!body.name || !body.email || !body.phone || !body.address) {
             this.setStatus(400);
@@ -138,14 +164,7 @@ export class RecipientController extends Controller {
         try {
             await prisma.recipient.update({
                 where: { id },
-                data: {
-                    name: body.name,
-                    email: body.email,
-                    phone: body.phone,
-                    address: body.address,
-                    fourHandCareNeeded: body.fourHandCareNeeded ?? false,
-                    caregiverNote: body.note ?? null,
-                },
+                data: body,
             });
             return successResponse;
         } catch (err: unknown) {

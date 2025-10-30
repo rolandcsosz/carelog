@@ -34,7 +34,7 @@ export type CreateOrUpdateTodoRequest = {
 };
 
 export type CreateRecipientRequest = {
-    caregiverNote: string | null;
+    caregiverNote: string;
     fourHandCareNeeded: boolean;
     address: string;
     password: string;
@@ -100,7 +100,7 @@ export type RecipientWithoutPassword = {
     phone: string;
     address: string;
     fourHandCareNeeded: boolean;
-    caregiverNote: string | null;
+    caregiverNote: string;
 };
 
 export type RelationshipRequest = {
@@ -138,7 +138,7 @@ export type TaskLog = {
     startTime: string;
     endTime: string;
     done: boolean;
-    note?: string;
+    note: string;
 };
 
 export type TaskType = {
@@ -175,6 +175,15 @@ export type UpdateLogEntry = {
 export type UpdateRecipientPasswordRequest = {
     currentPassword: string;
     newPassword: string;
+};
+
+export type UpdateRecipientRequest = {
+    caregiverNote: string;
+    fourHandCareNeeded: boolean;
+    address: string;
+    phone: string;
+    email: string;
+    name: string;
 };
 
 export type GetTodosResponse = Array<Todo> | ErrorResponse;
@@ -339,14 +348,7 @@ export type GetRecipientResponse = RecipientWithoutPassword | ErrorResponse;
 
 export type UpdateRecipientData = {
     id: string;
-    requestBody: {
-        note?: string;
-        fourHandCareNeeded?: boolean;
-        address: string;
-        phone: string;
-        email: string;
-        name: string;
-    };
+    requestBody: UpdateRecipientRequest;
 };
 
 export type UpdateRecipientResponse = SuccessResponse | ErrorResponse;

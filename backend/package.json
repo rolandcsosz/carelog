@@ -15,7 +15,8 @@
         "generate:routes": "tsoa routes && node scripts/fixTsoaImports.js",
         "generate:migration": "dotenv -e .env.dev -- prisma migrate dev --name init",
         "generate:client": "dotenv -e .env.dev -- prisma generate",
-        "db:deploy": "dotenv -e .env.prod -- prisma migrate deploy"
+        "db:deploy": "dotenv -e .env.prod -- prisma migrate deploy",
+        "db:reset": "dotenv -e .env.dev -- prisma migrate reset"
     },
     "author": "",
     "license": "ISC",

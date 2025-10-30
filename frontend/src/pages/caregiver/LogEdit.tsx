@@ -41,7 +41,7 @@ const LogEdit: React.FC<LogEditProps> = ({ log }) => {
                             setTimeout(() => {
                                 logs.refetch();
                                 removeLastPageFromStack();
-                            }, 2000);
+                            }, 1000);
                         },
                         onError: (error) => {
                             return Promise.resolve({
@@ -58,7 +58,7 @@ const LogEdit: React.FC<LogEditProps> = ({ log }) => {
                     loading: true,
                     message: "Napló törlése folyamatban...",
                     quitUpdate: false,
-                    autoCloseAfterTimeout: 2000,
+                    autoCloseAfterTimeout: 1000,
                 });
             },
             onCancel: closePopup,
