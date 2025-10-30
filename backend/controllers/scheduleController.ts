@@ -134,18 +134,12 @@ export class ScheduleController extends Controller {
 
     @Get("/caregiver/{caregiverId}")
     @Security("jwt")
-    @Response<ErrorResponse>(404, "No schedules found")
     @Response<ErrorResponse>(500, "Database error")
     public async getSchedulesForCaregiver(@Path() caregiverId: string): Promise<Schedule[] | ErrorResponse> {
         try {
             const schedules = await prisma.schedule.findMany({
                 where: { relationship: { caregiverId } },
             });
-
-            if (!schedules.length) {
-                this.setStatus(404);
-                return { error: "Nincs beosztás ehhez a gondozóhoz", message: "" } as ErrorResponse;
-            }
 
             return schedules;
         } catch (err: unknown) {
@@ -156,18 +150,12 @@ export class ScheduleController extends Controller {
 
     @Get("/recipient/{recipientId}")
     @Security("jwt")
-    @Response<ErrorResponse>(404, "No schedules found")
     @Response<ErrorResponse>(500, "Database error")
     public async getSchedulesForRecipient(@Path() recipientId: string): Promise<Schedule[] | ErrorResponse> {
         try {
             const schedules = await prisma.schedule.findMany({
                 where: { relationship: { recipientId } },
             });
-
-            if (!schedules.length) {
-                this.setStatus(404);
-                return { error: "Nincs beosztás ehhez a gondozotthoz", message: "" } as ErrorResponse;
-            }
 
             return schedules;
         } catch (err: unknown) {
@@ -178,7 +166,6 @@ export class ScheduleController extends Controller {
 
     @Get("/caregiver/{caregiverId}/recipient/{recipientId}")
     @Security("jwt")
-    @Response<ErrorResponse>(404, "No schedules found")
     @Response<ErrorResponse>(500, "Database error")
     public async getSchedulesForCaregiverAndRecipient(
         @Path() caregiverId: string,
@@ -193,14 +180,6 @@ export class ScheduleController extends Controller {
                     },
                 },
             });
-
-            if (!schedules.length) {
-                this.setStatus(404);
-                return {
-                    error: "Ennnek a gondozónak nincs beosztása ehhez a gondozotthoz",
-                    message: "",
-                } as ErrorResponse;
-            }
 
             return schedules;
         } catch (err: unknown) {

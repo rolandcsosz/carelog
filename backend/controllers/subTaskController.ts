@@ -83,15 +83,10 @@ export class SubTaskController extends Controller {
 
     @Get("/task-type/{taskTypeId}")
     @Security("jwt")
-    @Response<ErrorResponse>(404, "No sub-tasks found")
     @Response<ErrorResponse>(500, "Database error")
     public async getSubTasksByTaskType(@Path() taskTypeId: string): Promise<Subtask[] | ErrorResponse> {
         try {
             const subtasks = await prisma.subtask.findMany({ where: { taskTypeId } });
-            if (!subtasks.length) {
-                this.setStatus(404);
-                return { error: "Nincs ilyen típusú tevékenység.", message: "" } as ErrorResponse;
-            }
             return subtasks;
         } catch (err: unknown) {
             this.setStatus(500);

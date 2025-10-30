@@ -343,7 +343,6 @@ export const getSubTasksByTaskType = (
             taskTypeId: data.taskTypeId,
         },
         errors: {
-            404: "No sub-tasks found",
             500: "Database error",
         },
     });
@@ -462,7 +461,6 @@ export const getSchedulesForCaregiver = (
             caregiverId: data.caregiverId,
         },
         errors: {
-            404: "No schedules found",
             500: "Database error",
         },
     });
@@ -484,7 +482,6 @@ export const getSchedulesForRecipient = (
             recipientId: data.recipientId,
         },
         errors: {
-            404: "No schedules found",
             500: "Database error",
         },
     });
@@ -508,7 +505,6 @@ export const getSchedulesForCaregiverAndRecipient = (
             recipientId: data.recipientId,
         },
         errors: {
-            404: "No schedules found",
             500: "Database error",
         },
     });

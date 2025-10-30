@@ -1224,16 +1224,6 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "No sub-tasks found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
                     "500": {
                         "description": "Database error",
                         "content": {
@@ -1586,16 +1576,6 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "No schedules found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
                     "500": {
                         "description": "Database error",
                         "content": {
@@ -1649,16 +1629,6 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "No schedules found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
                     "500": {
                         "description": "Database error",
                         "content": {
@@ -1708,16 +1678,6 @@
                                             "$ref": "#/components/schemas/ErrorResponse"
                                         }
                                     ]
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "No schedules found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
