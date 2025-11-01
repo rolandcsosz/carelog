@@ -72,3 +72,8 @@ export type FetchResponse<T> = {
     data?: T;
     error?: string | null;
 };
+
+export type RecordingInfo = {
+    audioUrl: string;
+    mimeType: string;
+};

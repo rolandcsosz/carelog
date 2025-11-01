@@ -8,12 +8,14 @@ import { openLogState } from "../../model.ts";
 import { useRecoilValue } from "recoil";
 import useBottomSheet from "../../hooks/useBottomSheet.ts";
 import usePopup from "../../hooks/usePopup.tsx";
-import { NewSubTypeData, PopupActionResult } from "../../types";
+import { NewSubTypeData, PopupActionResult, RecordingInfo } from "../../types";
 import LogCard from "../../components/LogCard.tsx";
 import NewSubTaskFormRow from "../../components/popup-contents/NewSubTaskFormRow.tsx";
 import useLoader from "../../hooks/useLoader.tsx";
 import plusButton from "../../assets/add-button-icon-secondary.svg";
 import { TaskLog } from "../../../api/types.gen.ts";
+import recordSmallButton from "../../assets/record-small-button.svg";
+import { AudioRecorderForm, AudioRecorderFormRef } from "../../components/AudioRecorderForm.tsx";
 
 const Log: React.FC = () => {
     const { logs, subTasks } = useCaregiverModel();
@@ -28,6 +30,12 @@ const Log: React.FC = () => {
         const now = new Date();
         return now.toTimeString().slice(0, 5);
     };
+
+    const recordingPromiseRef = React.useRef<{
+        resolve: (info: RecordingInfo) => void;
+        reject: (error: Error) => void;
+    } | null>(null);
+    const stopRecordingRef = React.useRef<AudioRecorderFormRef | null>(null);
 
     const closeLog = () => {
         if (openLog) {
@@ -231,9 +239,94 @@ const Log: React.FC = () => {
                 <div className={styles.title}>Általános Jegyzet</div>
                 {recipient?.caregiverNote}
                 <div className={styles.spacer} />
-                <div className={styles.title}>Teendők</div>
+                <div className={styles.recorderRow}>
+                    <div className={styles.title}>Teendők</div>
+                    <img
+                        src={recordSmallButton}
+                        alt="record icon"
+                        className={styles.recordIcon}
+                        onClick={() => {
+                            let recordingResolver: ((info: RecordingInfo) => void) | null = null;
+                            let recordingRejecter: ((error: Error) => void) | null = null;
+
+                            const recordingPromise = new Promise<RecordingInfo>((resolve, reject) => {
+                                recordingResolver = resolve;
+                                recordingRejecter = reject;
+                            });
+
+                            recordingPromiseRef.current = {
+                                resolve: recordingResolver!,
+                                reject: recordingRejecter!,
+                            };
+
+                            stopRecordingRef.current = null;
+
+                            openPopup({
+                                title: "Tevékenység diktálása",
+                                confirmButtonText: "Feldolgozás",
+                                cancelButtonText: "Mégse",
+                                content: (
+                                    <AudioRecorderForm
+                                        ref={stopRecordingRef}
+                                        onRecordingComplete={(info) => {
+                                            if (recordingPromiseRef.current) {
+                                                recordingPromiseRef.current.resolve(info);
+                                                recordingPromiseRef.current = null;
+                                            }
+                                        }}
+                                    />
+                                ),
+                                onConfirm: async () => {
+                                    try {
+                                        if (!stopRecordingRef.current) {
+                                            throw new Error(
+                                                "A felvétel eszköz még nem elérhető. Kérjük, próbálja újra.",
+                                            );
+                                        }
+
+                                        stopRecordingRef.current.stop();
+
+                                        const timeoutPromise = new Promise<never>((_, reject) => {
+                                            setTimeout(
+                                                () => reject(new Error("A felvétel leállítása túl sokáig tartott.")),
+                                                5000,
+                                            );
+                                        });
+
+                                        const recordingInfo = await Promise.race([recordingPromise, timeoutPromise]);
+                                        console.log("Recording completed with info:", JSON.stringify(recordingInfo));
+
+                                        return Promise.resolve({ ok: true, quitUpdate: false, message: "" });
+                                    } catch (error) {
+                                        console.error("Error recording:", error);
+
+                                        if (recordingPromiseRef.current) {
+                                            recordingPromiseRef.current = null;
+                                        }
+
+                                        return Promise.resolve({
+                                            ok: false,
+                                            quitUpdate: false,
+                                            message:
+                                                error instanceof Error ?
+                                                    error.message
+                                                :   "Hiba történt a felvétel során.",
+                                        });
+                                    }
+                                },
+                                onCancel: () => {
+                                    if (recordingPromiseRef.current) {
+                                        recordingPromiseRef.current.reject(new Error("Recording cancelled"));
+                                        recordingPromiseRef.current = null;
+                                    }
+                                },
+                                confirmOnly: false,
+                            });
+                        }}
+                    />
+                </div>
+
                 {openLog?.tasks.map((subTask, index) => {
-                    // Check if previous card's endTime is later than this card's startTime
                     let prevEndTimeLater = false;
                     if (index > 0) {
                         const prevEnd = openLog.tasks[index - 1].endTime;
