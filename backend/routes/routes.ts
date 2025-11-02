@@ -4,6 +4,10 @@
 import type { TsoaRoute } from "@tsoa/runtime";
 import { fetchMiddlewares, ExpressTemplateService } from "@tsoa/runtime";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { LogController } from "./../controllers/logController.js";
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { TController } from "./../controllers/voiceConverterController.js";
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TodoController } from "./../controllers/todoController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TaskTypeController } from "./../controllers/taskTypeController.js";
@@ -17,8 +21,6 @@ import { RelationshipController } from "./../controllers/relationshipController.
 import { RecipientController } from "./../controllers/receipientController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LoginController } from "./../controllers/loginController.js";
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { LogController } from "./../controllers/logController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CaregiverController } from "./../controllers/caregiverController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -37,6 +39,88 @@ const expressAuthenticationRecasted = expressAuthentication as (
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    LogCreateResponse: {
+        dataType: "refObject",
+        properties: {
+            id: { dataType: "string", required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    ErrorResponse: {
+        dataType: "refObject",
+        properties: {
+            error: { dataType: "string", required: true },
+            message: { dataType: "string", required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    TaskLog: {
+        dataType: "refObject",
+        properties: {
+            subTaskId: { dataType: "string", required: true },
+            startTime: { dataType: "string", required: true },
+            endTime: { dataType: "string", required: true },
+            done: { dataType: "boolean", required: true },
+            note: { dataType: "string" },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    LogEntry: {
+        dataType: "refObject",
+        properties: {
+            id: { dataType: "string", required: true },
+            date: { dataType: "string", required: true },
+            relationshipId: { dataType: "string", required: true },
+            finished: { dataType: "boolean", required: true },
+            closed: { dataType: "boolean", required: true },
+            tasks: { dataType: "array", array: { dataType: "refObject", ref: "TaskLog" }, required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    SuccessResponse: {
+        dataType: "refObject",
+        properties: {
+            message: { dataType: "string", required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    UpdateLogEntry: {
+        dataType: "refObject",
+        properties: {
+            date: { dataType: "string", required: true },
+            relationshipId: { dataType: "string", required: true },
+            finished: { dataType: "boolean", required: true },
+            closed: { dataType: "boolean", required: true },
+            tasks: { dataType: "array", array: { dataType: "refObject", ref: "TaskLog" }, required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    SupportedMimeType: {
+        dataType: "refObject",
+        properties: {
+            id: { dataType: "string", required: true },
+            type: { dataType: "string", required: true },
+            googleType: { dataType: "string", required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    VoiceConvertingRequest: {
+        dataType: "refObject",
+        properties: {
+            logId: { dataType: "string", required: true },
+            inputMimeType: { dataType: "string", required: true },
+            base64Audio: { dataType: "string", required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     Todo: {
         dataType: "refObject",
         properties: {
@@ -53,15 +137,6 @@ const models: TsoaRoute.Models = {
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    ErrorResponse: {
-        dataType: "refObject",
-        properties: {
-            error: { dataType: "string", required: true },
-            message: { dataType: "string", required: true },
-        },
-        additionalProperties: false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     CreateOrUpdateTodoRequest: {
         dataType: "refObject",
         properties: {
@@ -73,14 +148,6 @@ const models: TsoaRoute.Models = {
             },
             sequenceNumber: { dataType: "double", required: true },
             done: { dataType: "boolean", required: true },
-        },
-        additionalProperties: false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    SuccessResponse: {
-        dataType: "refObject",
-        properties: {
-            message: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
@@ -261,51 +328,6 @@ const models: TsoaRoute.Models = {
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    LogCreateResponse: {
-        dataType: "refObject",
-        properties: {
-            id: { dataType: "string", required: true },
-        },
-        additionalProperties: false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    TaskLog: {
-        dataType: "refObject",
-        properties: {
-            subTaskId: { dataType: "string", required: true },
-            startTime: { dataType: "string", required: true },
-            endTime: { dataType: "string", required: true },
-            done: { dataType: "boolean", required: true },
-            note: { dataType: "string" },
-        },
-        additionalProperties: false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    LogEntry: {
-        dataType: "refObject",
-        properties: {
-            id: { dataType: "string", required: true },
-            date: { dataType: "string", required: true },
-            relationshipId: { dataType: "string", required: true },
-            finished: { dataType: "boolean", required: true },
-            closed: { dataType: "boolean", required: true },
-            tasks: { dataType: "array", array: { dataType: "refObject", ref: "TaskLog" }, required: true },
-        },
-        additionalProperties: false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    UpdateLogEntry: {
-        dataType: "refObject",
-        properties: {
-            date: { dataType: "string", required: true },
-            relationshipId: { dataType: "string", required: true },
-            finished: { dataType: "boolean", required: true },
-            closed: { dataType: "boolean", required: true },
-            tasks: { dataType: "array", array: { dataType: "refObject", ref: "TaskLog" }, required: true },
-        },
-        additionalProperties: false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     CaregiverWithoutPassword: {
         dataType: "refObject",
         properties: {
@@ -389,6 +411,319 @@ export function RegisterRoutes(app: Router) {
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
 
+    const argsLogController_createLog: Record<string, TsoaRoute.ParameterSchema> = {
+        logEntry: { in: "body", name: "logEntry", required: true, ref: "LogEntry" },
+    };
+    app.post(
+        "/logs",
+        ...fetchMiddlewares<RequestHandler>(LogController),
+        ...fetchMiddlewares<RequestHandler>(LogController.prototype.createLog),
+
+        async function LogController_createLog(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsLogController_createLog,
+                    request,
+                    response,
+                });
+
+                const controller = new LogController();
+
+                await templateService.apiHandler({
+                    methodName: "createLog",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsLogController_getLogs: Record<string, TsoaRoute.ParameterSchema> = {};
+    app.get(
+        "/logs",
+        ...fetchMiddlewares<RequestHandler>(LogController),
+        ...fetchMiddlewares<RequestHandler>(LogController.prototype.getLogs),
+
+        async function LogController_getLogs(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsLogController_getLogs,
+                    request,
+                    response,
+                });
+
+                const controller = new LogController();
+
+                await templateService.apiHandler({
+                    methodName: "getLogs",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsLogController_getLogById: Record<string, TsoaRoute.ParameterSchema> = {
+        id: { in: "path", name: "id", required: true, dataType: "string" },
+    };
+    app.get(
+        "/logs/:id",
+        ...fetchMiddlewares<RequestHandler>(LogController),
+        ...fetchMiddlewares<RequestHandler>(LogController.prototype.getLogById),
+
+        async function LogController_getLogById(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsLogController_getLogById,
+                    request,
+                    response,
+                });
+
+                const controller = new LogController();
+
+                await templateService.apiHandler({
+                    methodName: "getLogById",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsLogController_updateLog: Record<string, TsoaRoute.ParameterSchema> = {
+        id: { in: "path", name: "id", required: true, dataType: "string" },
+        updatedFields: { in: "body", name: "updatedFields", required: true, ref: "UpdateLogEntry" },
+    };
+    app.put(
+        "/logs/:id",
+        ...fetchMiddlewares<RequestHandler>(LogController),
+        ...fetchMiddlewares<RequestHandler>(LogController.prototype.updateLog),
+
+        async function LogController_updateLog(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsLogController_updateLog,
+                    request,
+                    response,
+                });
+
+                const controller = new LogController();
+
+                await templateService.apiHandler({
+                    methodName: "updateLog",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsLogController_deleteLog: Record<string, TsoaRoute.ParameterSchema> = {
+        id: { in: "path", name: "id", required: true, dataType: "string" },
+    };
+    app.delete(
+        "/logs/:id",
+        ...fetchMiddlewares<RequestHandler>(LogController),
+        ...fetchMiddlewares<RequestHandler>(LogController.prototype.deleteLog),
+
+        async function LogController_deleteLog(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsLogController_deleteLog,
+                    request,
+                    response,
+                });
+
+                const controller = new LogController();
+
+                await templateService.apiHandler({
+                    methodName: "deleteLog",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsLogController_getOpenLogs: Record<string, TsoaRoute.ParameterSchema> = {};
+    app.get(
+        "/logs/open",
+        ...fetchMiddlewares<RequestHandler>(LogController),
+        ...fetchMiddlewares<RequestHandler>(LogController.prototype.getOpenLogs),
+
+        async function LogController_getOpenLogs(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsLogController_getOpenLogs,
+                    request,
+                    response,
+                });
+
+                const controller = new LogController();
+
+                await templateService.apiHandler({
+                    methodName: "getOpenLogs",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsLogController_getLogsForRelationship: Record<string, TsoaRoute.ParameterSchema> = {
+        recipientId: { in: "path", name: "recipientId", required: true, dataType: "string" },
+        caregiverId: { in: "path", name: "caregiverId", required: true, dataType: "string" },
+    };
+    app.get(
+        "/logs/relationship/:recipientId/:caregiverId",
+        ...fetchMiddlewares<RequestHandler>(LogController),
+        ...fetchMiddlewares<RequestHandler>(LogController.prototype.getLogsForRelationship),
+
+        async function LogController_getLogsForRelationship(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsLogController_getLogsForRelationship,
+                    request,
+                    response,
+                });
+
+                const controller = new LogController();
+
+                await templateService.apiHandler({
+                    methodName: "getLogsForRelationship",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsTController_getSupportedMimeTypes: Record<string, TsoaRoute.ParameterSchema> = {};
+    app.get(
+        "/mime-types",
+        authenticateMiddleware([{ jwt: [] }]),
+        ...fetchMiddlewares<RequestHandler>(TController),
+        ...fetchMiddlewares<RequestHandler>(TController.prototype.getSupportedMimeTypes),
+
+        async function TController_getSupportedMimeTypes(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsTController_getSupportedMimeTypes,
+                    request,
+                    response,
+                });
+
+                const controller = new TController();
+
+                await templateService.apiHandler({
+                    methodName: "getSupportedMimeTypes",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsTController_createTodo: Record<string, TsoaRoute.ParameterSchema> = {
+        body: { in: "body", name: "body", required: true, ref: "VoiceConvertingRequest" },
+    };
+    app.post(
+        "/",
+        authenticateMiddleware([{ jwt: [] }]),
+        ...fetchMiddlewares<RequestHandler>(TController),
+        ...fetchMiddlewares<RequestHandler>(TController.prototype.createTodo),
+
+        async function TController_createTodo(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsTController_createTodo,
+                    request,
+                    response,
+                });
+
+                const controller = new TController();
+
+                await templateService.apiHandler({
+                    methodName: "createTodo",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsTodoController_getTodos: Record<string, TsoaRoute.ParameterSchema> = {};
     app.get(
         "/todos",
@@ -1622,249 +1957,6 @@ export function RegisterRoutes(app: Router) {
 
                 await templateService.apiHandler({
                     methodName: "login",
-                    controller,
-                    response,
-                    next,
-                    validatedArgs,
-                    successStatus: undefined,
-                });
-            } catch (err) {
-                return next(err);
-            }
-        },
-    );
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLogController_createLog: Record<string, TsoaRoute.ParameterSchema> = {
-        logEntry: { in: "body", name: "logEntry", required: true, ref: "LogEntry" },
-    };
-    app.post(
-        "/logs",
-        ...fetchMiddlewares<RequestHandler>(LogController),
-        ...fetchMiddlewares<RequestHandler>(LogController.prototype.createLog),
-
-        async function LogController_createLog(request: ExRequest, response: ExResponse, next: any) {
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({
-                    args: argsLogController_createLog,
-                    request,
-                    response,
-                });
-
-                const controller = new LogController();
-
-                await templateService.apiHandler({
-                    methodName: "createLog",
-                    controller,
-                    response,
-                    next,
-                    validatedArgs,
-                    successStatus: undefined,
-                });
-            } catch (err) {
-                return next(err);
-            }
-        },
-    );
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLogController_getLogs: Record<string, TsoaRoute.ParameterSchema> = {};
-    app.get(
-        "/logs",
-        ...fetchMiddlewares<RequestHandler>(LogController),
-        ...fetchMiddlewares<RequestHandler>(LogController.prototype.getLogs),
-
-        async function LogController_getLogs(request: ExRequest, response: ExResponse, next: any) {
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({
-                    args: argsLogController_getLogs,
-                    request,
-                    response,
-                });
-
-                const controller = new LogController();
-
-                await templateService.apiHandler({
-                    methodName: "getLogs",
-                    controller,
-                    response,
-                    next,
-                    validatedArgs,
-                    successStatus: undefined,
-                });
-            } catch (err) {
-                return next(err);
-            }
-        },
-    );
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLogController_getLogById: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "string" },
-    };
-    app.get(
-        "/logs/:id",
-        ...fetchMiddlewares<RequestHandler>(LogController),
-        ...fetchMiddlewares<RequestHandler>(LogController.prototype.getLogById),
-
-        async function LogController_getLogById(request: ExRequest, response: ExResponse, next: any) {
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({
-                    args: argsLogController_getLogById,
-                    request,
-                    response,
-                });
-
-                const controller = new LogController();
-
-                await templateService.apiHandler({
-                    methodName: "getLogById",
-                    controller,
-                    response,
-                    next,
-                    validatedArgs,
-                    successStatus: undefined,
-                });
-            } catch (err) {
-                return next(err);
-            }
-        },
-    );
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLogController_updateLog: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "string" },
-        updatedFields: { in: "body", name: "updatedFields", required: true, ref: "UpdateLogEntry" },
-    };
-    app.put(
-        "/logs/:id",
-        ...fetchMiddlewares<RequestHandler>(LogController),
-        ...fetchMiddlewares<RequestHandler>(LogController.prototype.updateLog),
-
-        async function LogController_updateLog(request: ExRequest, response: ExResponse, next: any) {
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({
-                    args: argsLogController_updateLog,
-                    request,
-                    response,
-                });
-
-                const controller = new LogController();
-
-                await templateService.apiHandler({
-                    methodName: "updateLog",
-                    controller,
-                    response,
-                    next,
-                    validatedArgs,
-                    successStatus: undefined,
-                });
-            } catch (err) {
-                return next(err);
-            }
-        },
-    );
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLogController_deleteLog: Record<string, TsoaRoute.ParameterSchema> = {
-        id: { in: "path", name: "id", required: true, dataType: "string" },
-    };
-    app.delete(
-        "/logs/:id",
-        ...fetchMiddlewares<RequestHandler>(LogController),
-        ...fetchMiddlewares<RequestHandler>(LogController.prototype.deleteLog),
-
-        async function LogController_deleteLog(request: ExRequest, response: ExResponse, next: any) {
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({
-                    args: argsLogController_deleteLog,
-                    request,
-                    response,
-                });
-
-                const controller = new LogController();
-
-                await templateService.apiHandler({
-                    methodName: "deleteLog",
-                    controller,
-                    response,
-                    next,
-                    validatedArgs,
-                    successStatus: undefined,
-                });
-            } catch (err) {
-                return next(err);
-            }
-        },
-    );
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLogController_getOpenLogs: Record<string, TsoaRoute.ParameterSchema> = {};
-    app.get(
-        "/logs/open",
-        ...fetchMiddlewares<RequestHandler>(LogController),
-        ...fetchMiddlewares<RequestHandler>(LogController.prototype.getOpenLogs),
-
-        async function LogController_getOpenLogs(request: ExRequest, response: ExResponse, next: any) {
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({
-                    args: argsLogController_getOpenLogs,
-                    request,
-                    response,
-                });
-
-                const controller = new LogController();
-
-                await templateService.apiHandler({
-                    methodName: "getOpenLogs",
-                    controller,
-                    response,
-                    next,
-                    validatedArgs,
-                    successStatus: undefined,
-                });
-            } catch (err) {
-                return next(err);
-            }
-        },
-    );
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLogController_getLogsForRelationship: Record<string, TsoaRoute.ParameterSchema> = {
-        recipientId: { in: "path", name: "recipientId", required: true, dataType: "string" },
-        caregiverId: { in: "path", name: "caregiverId", required: true, dataType: "string" },
-    };
-    app.get(
-        "/logs/relationship/:recipientId/:caregiverId",
-        ...fetchMiddlewares<RequestHandler>(LogController),
-        ...fetchMiddlewares<RequestHandler>(LogController.prototype.getLogsForRelationship),
-
-        async function LogController_getLogsForRelationship(request: ExRequest, response: ExResponse, next: any) {
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({
-                    args: argsLogController_getLogsForRelationship,
-                    request,
-                    response,
-                });
-
-                const controller = new LogController();
-
-                await templateService.apiHandler({
-                    methodName: "getLogsForRelationship",
                     controller,
                     response,
                     next,

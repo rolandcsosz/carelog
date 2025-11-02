@@ -2,7 +2,7 @@ import pkg from "pg";
 const { Pool } = pkg;
 import pgTypes from "pg-types";
 import dotenv from "dotenv";
-import { seed, initAdminIfNeeded } from "./prisma/seed.js";
+import { seed, initAdminIfNeeded, initMimeTypesIfNeeded } from "./prisma/seed.js";
 import { getErrorMessage } from "./utils.js";
 
 dotenv.config();
@@ -27,6 +27,7 @@ async function connectWithRetry(): Promise<void> {
         const client = await pool.connect();
         console.log("✔ Connected to PostgreSQL!");
         await initAdminIfNeeded();
+        await initMimeTypesIfNeeded();
 
         if (process.env.INIT_PG_DATA === "true") {
             try {

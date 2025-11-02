@@ -82,3 +82,9 @@ model Todo {
   sequenceNumber Int
   done           Boolean    @default(false)
 }
+
+model MimeType {
+  id          String @id @default(uuid())
+  type        String
+  googleType  String
+}

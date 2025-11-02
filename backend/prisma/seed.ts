@@ -243,3 +243,13 @@ export const initAdminIfNeeded = async () => {
         console.log("Initial admin user created.");
     }
 };
+
+export const initMimeTypesIfNeeded = async () => {
+    const mimeTypeCount = await prisma.mimeType.count();
+    if (mimeTypeCount < 1) {
+        await prisma.mimeType.create({ data: { type: "audio/webm;codecs=opus", googleType: "WEBM_OPUS" } });
+        await prisma.mimeType.create({ data: { type: "audio/mp4", googleType: "MP4" } });
+        await prisma.mimeType.create({ data: { type: "audio/ogg;codecs=opus", googleType: "OGG_OPUS" } });
+        console.log("Initial mime types created.");
+    }
+};

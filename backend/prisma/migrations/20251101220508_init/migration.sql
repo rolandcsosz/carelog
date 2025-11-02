@@ -81,6 +81,15 @@ CREATE TABLE "Todo" (
     CONSTRAINT "Todo_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "MimeType" (
+    "id" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "googleType" TEXT NOT NULL,
+
+    CONSTRAINT "MimeType_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 

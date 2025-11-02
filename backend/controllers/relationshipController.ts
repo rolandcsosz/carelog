@@ -13,13 +13,7 @@ import {
     Security,
 } from "tsoa";
 import { PrismaClient } from "@prisma/client";
-import {
-    CaregiverWithoutPassword,
-    ErrorResponse,
-    RecipientWithoutPassword,
-    successResponse,
-    SuccessResponse,
-} from "../model.js";
+import { ErrorResponse, successResponse, SuccessResponse } from "../model.js";
 import { getErrorCode, getErrorMessage } from "../utils.js";
 
 const prisma = new PrismaClient();
