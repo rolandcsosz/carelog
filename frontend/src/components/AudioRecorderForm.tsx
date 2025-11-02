@@ -5,6 +5,7 @@ import recordButton from "../assets/record-button.svg";
 import resumeButton from "../assets/resume-button.svg";
 import exclamationButton from "../assets/exclamation-button.svg";
 import { RecordingInfo } from "../types";
+import { useCaregiverModel } from "../hooks/useCaregiverModel";
 
 interface AudioRecorderFormProps {
     onRecordingComplete: (info: RecordingInfo) => void;
@@ -37,8 +38,6 @@ const recordingReducer = (state: RecordingState, action: RecordingAction): Recor
     }
 };
 
-const supportedMimeTypes = ["audio/webm;codecs=opus", "audio/mp4", "audio/ogg;codecs=opus"];
-
 const blobToBase64 = async (blob: Blob): Promise<string> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -54,6 +53,7 @@ const blobToBase64 = async (blob: Blob): Promise<string> => {
 export const AudioRecorderForm = forwardRef<AudioRecorderFormRef, AudioRecorderFormProps>(
     ({ onRecordingComplete }, ref) => {
         const [state, dispatch] = useReducer(recordingReducer, "init");
+        const { mimeTypes } = useCaregiverModel();
 
         const [bars, setBars] = useState<number[]>(new Array(20).fill(10));
         const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -89,9 +89,9 @@ export const AudioRecorderForm = forwardRef<AudioRecorderFormRef, AudioRecorderF
 
                 let mimeType: null | string = null;
 
-                supportedMimeTypes.forEach((type) => {
-                    if (MediaRecorder.isTypeSupported(type) && !mimeType) {
-                        mimeType = type;
+                (mimeTypes || []).forEach((type) => {
+                    if (MediaRecorder.isTypeSupported(type.type) && !mimeType) {
+                        mimeType = type.type;
                     }
                 });
 
@@ -117,6 +117,8 @@ export const AudioRecorderForm = forwardRef<AudioRecorderFormRef, AudioRecorderF
                         return;
                     }
 
+                    await new Promise((resolve) => setTimeout(resolve, 100));
+
                     const chunks = allAudioChunksRef.current.filter((c) => c.size > 0);
 
                     // Always call onRecordingComplete, even if there are no chunks
@@ -128,9 +130,10 @@ export const AudioRecorderForm = forwardRef<AudioRecorderFormRef, AudioRecorderF
                         });
                     } else {
                         const finalBlob = new Blob(chunks, { type: recorder.mimeType });
+                        const base64Audio = await blobToBase64(finalBlob);
                         onRecordingComplete({
-                            audioUrl: await blobToBase64(finalBlob),
-                            mimeType: recorder.mimeType,
+                            audioUrl: base64Audio,
+                            mimeType: recorder.mimeType || "audio/webm",
                         });
                     }
 
@@ -320,7 +323,7 @@ export const AudioRecorderForm = forwardRef<AudioRecorderFormRef, AudioRecorderF
                 <div ref={waveformRef} className={styles.waveform}>
                     {state === "error" ?
                         <div className={styles.errorBar}>
-                            A hangfelvétel nem elérhető. Lehetséges okok:{errorMessage}
+                            A hangfelvétel nem elérhető. Lehetséges okok: {errorMessage}
                         </div>
                     :   bars.map((height, index) => (
                             <div key={index} className={styles.bar} style={{ height: `${height}px` }} />

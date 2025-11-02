@@ -4,6 +4,21 @@ import type { CancelablePromise } from "./core/CancelablePromise";
 import { OpenAPI } from "./core/OpenAPI";
 import { request as __request } from "./core/request";
 import type {
+    CreateLogData,
+    CreateLogResponse,
+    GetLogsResponse,
+    GetLogByIdData,
+    GetLogByIdResponse,
+    UpdateLogData,
+    UpdateLogResponse,
+    DeleteLogData,
+    DeleteLogResponse,
+    GetOpenLogsResponse,
+    GetLogsForRelationshipData,
+    GetLogsForRelationshipResponse,
+    GetSupportedMimeTypesResponse,
+    ProcessAudioData,
+    ProcessAudioResponse,
     GetTodosResponse,
     CreateTodoData,
     CreateTodoResponse,
@@ -66,18 +81,6 @@ import type {
     UpdateRecipientPasswordResponse,
     LoginData,
     LoginResponse,
-    CreateLogData,
-    CreateLogResponse,
-    GetLogsResponse,
-    GetLogByIdData,
-    GetLogByIdResponse,
-    UpdateLogData,
-    UpdateLogResponse,
-    DeleteLogData,
-    DeleteLogResponse,
-    GetOpenLogsResponse,
-    GetLogsForRelationshipData,
-    GetLogsForRelationshipResponse,
     GetCaregiversResponse,
     CreateCaregiverData,
     CreateCaregiverResponse,
@@ -101,6 +104,173 @@ import type {
     UpdateAdminPasswordData,
     UpdateAdminPasswordResponse,
 } from "./types.gen";
+
+/**
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const createLog = (data: CreateLogData): CancelablePromise<CreateLogResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/logs",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            500: "Server Error",
+        },
+    });
+};
+
+/**
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getLogs = (): CancelablePromise<GetLogsResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/logs",
+        errors: {
+            500: "Server Error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getLogById = (data: GetLogByIdData): CancelablePromise<GetLogByIdResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/logs/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Log not found",
+            500: "Server Error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const updateLog = (data: UpdateLogData): CancelablePromise<UpdateLogResponse> => {
+    return __request(OpenAPI, {
+        method: "PUT",
+        url: "/logs/{id}",
+        path: {
+            id: data.id,
+        },
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            404: "Log not found",
+            500: "Server Error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.id
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const deleteLog = (data: DeleteLogData): CancelablePromise<DeleteLogResponse> => {
+    return __request(OpenAPI, {
+        method: "DELETE",
+        url: "/logs/{id}",
+        path: {
+            id: data.id,
+        },
+        errors: {
+            404: "Log not found",
+            500: "Server Error",
+        },
+    });
+};
+
+/**
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getOpenLogs = (): CancelablePromise<GetOpenLogsResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/logs/open",
+        errors: {
+            500: "Server Error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.recipientId
+ * @param data.caregiverId
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getLogsForRelationship = (
+    data: GetLogsForRelationshipData,
+): CancelablePromise<GetLogsForRelationshipResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/logs/relationship/{recipientId}/{caregiverId}",
+        path: {
+            recipientId: data.recipientId,
+            caregiverId: data.caregiverId,
+        },
+        errors: {
+            404: "Relationship not found",
+            500: "Server Error",
+        },
+    });
+};
+
+/**
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getSupportedMimeTypes = (): CancelablePromise<GetSupportedMimeTypesResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/mime-types",
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const processAudio = (data: ProcessAudioData): CancelablePromise<ProcessAudioResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/process-audio",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            404: "Entity not found",
+            500: "Database error",
+        },
+    });
+};
 
 /**
  * @returns unknown Ok
@@ -767,139 +937,6 @@ export const login = (data: LoginData): CancelablePromise<LoginResponse> => {
         errors: {
             401: "Unauthorized",
             500: "Server error",
-        },
-    });
-};
-
-/**
- * @param data The data for the request.
- * @param data.requestBody
- * @returns unknown Ok
- * @throws ApiError
- */
-export const createLog = (data: CreateLogData): CancelablePromise<CreateLogResponse> => {
-    return __request(OpenAPI, {
-        method: "POST",
-        url: "/logs",
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            500: "Server Error",
-        },
-    });
-};
-
-/**
- * @returns unknown Ok
- * @throws ApiError
- */
-export const getLogs = (): CancelablePromise<GetLogsResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/logs",
-        errors: {
-            500: "Server Error",
-        },
-    });
-};
-
-/**
- * @param data The data for the request.
- * @param data.id
- * @returns unknown Ok
- * @throws ApiError
- */
-export const getLogById = (data: GetLogByIdData): CancelablePromise<GetLogByIdResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/logs/{id}",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            404: "Log not found",
-            500: "Server Error",
-        },
-    });
-};
-
-/**
- * @param data The data for the request.
- * @param data.id
- * @param data.requestBody
- * @returns unknown Ok
- * @throws ApiError
- */
-export const updateLog = (data: UpdateLogData): CancelablePromise<UpdateLogResponse> => {
-    return __request(OpenAPI, {
-        method: "PUT",
-        url: "/logs/{id}",
-        path: {
-            id: data.id,
-        },
-        body: data.requestBody,
-        mediaType: "application/json",
-        errors: {
-            404: "Log not found",
-            500: "Server Error",
-        },
-    });
-};
-
-/**
- * @param data The data for the request.
- * @param data.id
- * @returns unknown Ok
- * @throws ApiError
- */
-export const deleteLog = (data: DeleteLogData): CancelablePromise<DeleteLogResponse> => {
-    return __request(OpenAPI, {
-        method: "DELETE",
-        url: "/logs/{id}",
-        path: {
-            id: data.id,
-        },
-        errors: {
-            404: "Log not found",
-            500: "Server Error",
-        },
-    });
-};
-
-/**
- * @returns unknown Ok
- * @throws ApiError
- */
-export const getOpenLogs = (): CancelablePromise<GetOpenLogsResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/logs/open",
-        errors: {
-            500: "Server Error",
-        },
-    });
-};
-
-/**
- * @param data The data for the request.
- * @param data.recipientId
- * @param data.caregiverId
- * @returns unknown Ok
- * @throws ApiError
- */
-export const getLogsForRelationship = (
-    data: GetLogsForRelationshipData,
-): CancelablePromise<GetLogsForRelationshipResponse> => {
-    return __request(OpenAPI, {
-        method: "GET",
-        url: "/logs/relationship/{recipientId}/{caregiverId}",
-        path: {
-            recipientId: data.recipientId,
-            caregiverId: data.caregiverId,
-        },
-        errors: {
-            404: "Relationship not found",
-            500: "Server Error",
         },
     });
 };

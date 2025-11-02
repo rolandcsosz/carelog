@@ -13,11 +13,14 @@ import LogCard from "../../components/LogCard.tsx";
 import NewSubTaskFormRow from "../../components/popup-contents/NewSubTaskFormRow.tsx";
 import useLoader from "../../hooks/useLoader.tsx";
 import plusButton from "../../assets/add-button-icon-secondary.svg";
-import { TaskLog } from "../../../api/types.gen.ts";
+import { ProcessAudioData, ProcessAudioResponse, TaskLog } from "../../../api/types.gen.ts";
 import recordSmallButton from "../../assets/record-small-button.svg";
 import { AudioRecorderForm, AudioRecorderFormRef } from "../../components/AudioRecorderForm.tsx";
+import { useApi } from "../../hooks/useApi.ts";
+import { processAudio } from "../../../api/sdk.gen.ts";
 
 const Log: React.FC = () => {
+    const { request } = useApi();
     const { logs, subTasks } = useCaregiverModel();
     const { openLoader } = useLoader();
     const { getRecipientForLog, getTaskIdByName } = useQueryData();
@@ -294,9 +297,47 @@ const Log: React.FC = () => {
                                         });
 
                                         const recordingInfo = await Promise.race([recordingPromise, timeoutPromise]);
-                                        console.log("Recording completed with info:", JSON.stringify(recordingInfo));
 
-                                        return Promise.resolve({ ok: true, quitUpdate: false, message: "" });
+                                        if (!recordingInfo || !recordingInfo.audioUrl) {
+                                            throw new Error("A felvétel sikertelen. Kérjük, próbálja újra.");
+                                        }
+
+                                        if (!openLog) {
+                                            throw new Error("Napló nem található a felvétel feldolgozásához.");
+                                        }
+
+                                        const processingPromise = (async (): Promise<PopupActionResult | void> => {
+                                            const response = await request<ProcessAudioData, ProcessAudioResponse>(
+                                                processAudio,
+                                                {
+                                                    requestBody: {
+                                                        logId: openLog?.id || "",
+                                                        inputMimeType: recordingInfo.mimeType,
+                                                        base64Audio: recordingInfo.audioUrl,
+                                                    },
+                                                },
+                                            );
+
+                                            if (!response.ok) {
+                                                throw new Error(
+                                                    response.error || "Hiba történt a hang feldolgozása során.",
+                                                );
+                                            }
+
+                                            logs.refetch();
+
+                                            await new Promise((resolve) => setTimeout(resolve, 3000));
+
+                                            return undefined;
+                                        })();
+
+                                        return Promise.resolve({
+                                            ok: true,
+                                            loading: true,
+                                            quitUpdate: false,
+                                            message: "Hang feldolgozása...",
+                                            promise: processingPromise,
+                                        });
                                     } catch (error) {
                                         console.error("Error recording:", error);
 

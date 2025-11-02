@@ -218,14 +218,28 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                                 confirmButtonText: "Törlés",
                                 cancelButtonText: "Mégsem",
                                 content: "Biztosan törölni szeretnéd ezt a teendőt?",
-                                onConfirm: async (): Promise<PopupActionResult> => {
-                                    await todos.remove({ id: todoId });
-                                    localTodos.filter((todo) => todo.id !== todoId);
-                                    return {
+                                onConfirm: (): Promise<PopupActionResult> => {
+                                    const removePromise = new Promise<PopupActionResult | void>((resolve, reject) => {
+                                        todos.remove(
+                                            { id: todoId },
+                                            {
+                                                onSuccess: () => {
+                                                    resolve(undefined);
+                                                },
+                                                onError: (error) => {
+                                                    reject(error);
+                                                },
+                                            },
+                                        );
+                                    });
+
+                                    return Promise.resolve({
                                         ok: true,
-                                        message: "Teendő sikeresen törölve.",
+                                        loading: true,
                                         quitUpdate: false,
-                                    };
+                                        message: "Teendő törlése...",
+                                        promise: removePromise,
+                                    });
                                 },
                                 onCancel: () => {},
                             });

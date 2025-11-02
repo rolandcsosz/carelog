@@ -133,6 +133,12 @@ export type SuccessResponse = {
     message: string;
 };
 
+export type SupportedMimeType = {
+    id: string;
+    type: string;
+    googleType: string;
+};
+
 export type TaskLog = {
     subTaskId: string;
     startTime: string;
@@ -185,6 +191,56 @@ export type UpdateRecipientRequest = {
     email: string;
     name: string;
 };
+
+export type VoiceConvertingRequest = {
+    logId: string;
+    inputMimeType: string;
+    base64Audio: string;
+};
+
+export type CreateLogData = {
+    requestBody: LogEntry;
+};
+
+export type CreateLogResponse = LogCreateResponse | ErrorResponse;
+
+export type GetLogsResponse = Array<LogEntry> | ErrorResponse;
+
+export type GetLogByIdData = {
+    id: string;
+};
+
+export type GetLogByIdResponse = LogEntry | ErrorResponse;
+
+export type UpdateLogData = {
+    id: string;
+    requestBody: UpdateLogEntry;
+};
+
+export type UpdateLogResponse = SuccessResponse | ErrorResponse;
+
+export type DeleteLogData = {
+    id: string;
+};
+
+export type DeleteLogResponse = SuccessResponse | ErrorResponse;
+
+export type GetOpenLogsResponse = Array<LogEntry> | ErrorResponse;
+
+export type GetLogsForRelationshipData = {
+    caregiverId: string;
+    recipientId: string;
+};
+
+export type GetLogsForRelationshipResponse = Array<LogEntry> | ErrorResponse;
+
+export type GetSupportedMimeTypesResponse = Array<SupportedMimeType> | ErrorResponse;
+
+export type ProcessAudioData = {
+    requestBody: VoiceConvertingRequest;
+};
+
+export type ProcessAudioResponse = SuccessResponse | ErrorResponse;
 
 export type GetTodosResponse = Array<Todo> | ErrorResponse;
 
@@ -371,42 +427,6 @@ export type LoginData = {
 };
 
 export type LoginResponse = LoginSuccessResponse | ErrorResponse;
-
-export type CreateLogData = {
-    requestBody: LogEntry;
-};
-
-export type CreateLogResponse = LogCreateResponse | ErrorResponse;
-
-export type GetLogsResponse = Array<LogEntry> | ErrorResponse;
-
-export type GetLogByIdData = {
-    id: string;
-};
-
-export type GetLogByIdResponse = LogEntry | ErrorResponse;
-
-export type UpdateLogData = {
-    id: string;
-    requestBody: UpdateLogEntry;
-};
-
-export type UpdateLogResponse = SuccessResponse | ErrorResponse;
-
-export type DeleteLogData = {
-    id: string;
-};
-
-export type DeleteLogResponse = SuccessResponse | ErrorResponse;
-
-export type GetOpenLogsResponse = Array<LogEntry> | ErrorResponse;
-
-export type GetLogsForRelationshipData = {
-    caregiverId: string;
-    recipientId: string;
-};
-
-export type GetLogsForRelationshipResponse = Array<LogEntry> | ErrorResponse;
 
 export type GetCaregiversResponse = Array<CaregiverWithoutPassword> | ErrorResponse;
 

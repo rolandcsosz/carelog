@@ -24,6 +24,7 @@ import {
     RecipientWithoutPassword,
     Schedule,
     Subtask,
+    SupportedMimeType,
     TaskType,
     Todo,
     UpdateCaregiverData,
@@ -55,6 +56,7 @@ import {
     getCaregiver,
     getRelationshipsForCaregiver,
     createTodo,
+    getSupportedMimeTypes,
 } from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
 import {
@@ -155,6 +157,9 @@ const setPassword = (request: RequestFnType, data: UpdateCaregiverPasswordData):
 
 const fetchTodos = (request: RequestFnType) => fetchData(request, getTodos, undefined, [] as Todo[]);
 
+const fetchMimeTypes = (request: RequestFnType) =>
+    fetchData(request, getSupportedMimeTypes, undefined, [] as SupportedMimeType[]);
+
 export const useCaregiverModel = () => {
     const { request } = useApi();
     const { user } = useAuth();
@@ -212,6 +217,12 @@ export const useCaregiverModel = () => {
         queryFn: () => fetchTodos(request),
         enabled: !!user?.id && user?.role === "caregiver",
         staleTime: 0,
+    });
+
+    const { data: mimeTypes } = useQuery<SupportedMimeType[]>({
+        queryKey: ["mimeTypes"],
+        queryFn: () => fetchMimeTypes(request),
+        enabled: !!user?.id && user?.role === "caregiver",
     });
 
     const { mutate: addSubTask } = useApiMutation<CreateSubTaskData, CreateSubTaskResponse>({
@@ -353,5 +364,6 @@ export const useCaregiverModel = () => {
             remove: removeTodo,
             refetch: refetchTodos,
         },
+        mimeTypes: mimeTypes,
     };
 };

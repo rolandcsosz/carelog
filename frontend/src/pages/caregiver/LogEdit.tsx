@@ -79,7 +79,6 @@ const LogEdit: React.FC<LogEditProps> = ({ log }) => {
             <div className={styles.infoContainer}>
                 <div className={styles.spacer} />
                 {log.tasks.map((subTask, index) => {
-                    // Check if previous card's endTime is later than this card's startTime
                     let prevEndTimeLater = false;
                     if (index > 0) {
                         const prevEnd = log.tasks[index - 1].endTime;
