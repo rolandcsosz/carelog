@@ -1,6 +1,6 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { isModalClosing, popupIsOpenState, popupPropsState } from "../model";
-import { useCallback } from "react";
+import { useCallback, useRef, useEffect } from "react";
 import { PopupActionResult, PopupProps } from "../types";
 import ErrorModal from "../components/popup-contents/ErrorModal";
 import Success from "../components/popup-contents/Success";
@@ -10,6 +10,7 @@ const usePopup = () => {
     const [isOpen, setIsOpen] = useRecoilState(popupIsOpenState);
     const [popupProps, setPopupProps] = useRecoilState(popupPropsState);
     const setIsClosing = useSetRecoilState(isModalClosing);
+    const handleButtonClickRef = useRef<(response: void | PopupActionResult | undefined) => void>();
 
     const openPopup = useCallback(
         (props: PopupProps) => {
@@ -50,6 +51,34 @@ const usePopup = () => {
                     onCancel: closePopup,
                 });
 
+                if (response.promise) {
+                    response.promise
+                        .then((result) => {
+                            if (result) {
+                                handleButtonClickRef.current?.(result);
+                            } else {
+                                closePopup();
+                            }
+                        })
+                        .catch((error) => {
+                            openPopup({
+                                content: (
+                                    <ErrorModal
+                                        title="Sikertelen művelet"
+                                        message={error?.message || "Ismeretlen hiba történt."}
+                                    />
+                                ),
+                                title: "",
+                                confirmButtonText: "Rendben",
+                                cancelButtonText: "",
+                                confirmOnly: true,
+                                onConfirm: closePopup,
+                                onCancel: closePopup,
+                            });
+                        });
+                    return;
+                }
+
                 if (response.autoCloseAfterTimeout) {
                     setTimeout(() => {
                         closePopup();
@@ -89,6 +118,10 @@ const usePopup = () => {
         },
         [closePopup, openPopup],
     );
+
+    useEffect(() => {
+        handleButtonClickRef.current = handleButtonClick;
+    }, [handleButtonClick]);
 
     const onConfirm = useCallback(async () => {
         const response = await popupProps?.onConfirm?.();

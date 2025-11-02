@@ -65,6 +65,7 @@ export type PopupActionResult = {
     message: string;
     quitUpdate: boolean;
     autoCloseAfterTimeout?: number;
+    promise?: Promise<PopupActionResult | void>;
 };
 
 export type FetchResponse<T> = {

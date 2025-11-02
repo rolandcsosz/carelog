@@ -1,12 +1,15 @@
 import { useCallback } from "react";
 import Loading from "../components/popup-contents/Loading";
 import usePopup from "./usePopup";
+import { PopupActionResult } from "../types";
 
 type LoaderInfo = {
     title: string;
     message: string;
     timeout?: number;
-    callback: () => void;
+    callback: () => void | Promise<void> | Promise<PopupActionResult | void>;
+    onSuccess?: () => void;
+    onError?: (error: any) => void;
 };
 
 const useLoader = () => {
@@ -24,12 +27,37 @@ const useLoader = () => {
                 onCancel: closePopup,
             });
 
-            setTimeout(() => {
-                info.callback();
-                closePopup();
-            }, info.timeout);
+            const executeCallback = async () => {
+                try {
+                    const result = await info.callback();
+
+                    if (result && typeof result === "object" && "ok" in result) {
+                        return result;
+                    }
+
+                    if (info.onSuccess) {
+                        info.onSuccess();
+                    }
+                    closePopup();
+                } catch (error) {
+                    if (info.onError) {
+                        info.onError(error);
+                    } else {
+                        closePopup();
+                    }
+                    throw error;
+                }
+            };
+
+            if (info.timeout) {
+                setTimeout(() => {
+                    executeCallback();
+                }, info.timeout);
+            } else {
+                executeCallback();
+            }
         },
-        [openPopup],
+        [openPopup, closePopup],
     );
 
     return {

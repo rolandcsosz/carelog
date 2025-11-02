@@ -93,7 +93,7 @@ const DailySchedule: React.FC = () => {
                 ) || [];
         const currentTime = getHourAndMinuteTimeString(today);
         const add = (mode: "copy" | "new"): Promise<PopupActionResult> => {
-            return new Promise<PopupActionResult>((resolve) => {
+            const logPromise = new Promise<PopupActionResult | void>((resolve, reject) => {
                 logs.add(
                     {
                         requestBody: {
@@ -116,26 +116,22 @@ const DailySchedule: React.FC = () => {
                             setTimeout(() => {
                                 logs.refetch();
                                 openSheet();
+                                resolve();
                             }, 1000);
-
-                            resolve({
-                                ok: true,
-                                loading: true,
-                                message: "Új napló létrehozása folyamatban...",
-                                quitUpdate: false,
-                                autoCloseAfterTimeout: 1000,
-                            });
                         },
                         onError: (error) => {
-                            resolve({
-                                ok: false,
-                                loading: false,
-                                message: error.message,
-                                quitUpdate: true,
-                            });
+                            reject(new Error(error?.message || "Hiba történt a napló létrehozása során."));
                         },
                     },
                 );
+            });
+
+            return Promise.resolve({
+                ok: true,
+                loading: true,
+                message: "Új napló létrehozása folyamatban...",
+                quitUpdate: false,
+                promise: logPromise,
             });
         };
 
