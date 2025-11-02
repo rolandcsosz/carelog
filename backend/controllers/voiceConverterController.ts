@@ -95,6 +95,7 @@ export class VoiceConverterController extends Controller {
                 config: {
                     encoding: types[0].googleType,
                     languageCode: "hu-HU",
+                    sampleRateHertz: 48000,
                 },
                 audio: {
                     content: base64Audio,
@@ -119,8 +120,12 @@ export class VoiceConverterController extends Controller {
             }
 
             const googleData = await googleResponse.json();
-            console.log("google", googleData);
             const text = googleData.results?.[0]?.alternatives?.[0]?.transcript || "";
+
+            if (!text) {
+                this.setStatus(500);
+                return { error: "Nem sikerült szöveget kinyerni a hangfájlból", message: "" } as ErrorResponse;
+            }
 
             const openAiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
