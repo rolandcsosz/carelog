@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./LogCard.module.scss";
 import TextInput from "./TextInput";
 import { compareTime } from "../utils";
@@ -6,6 +6,8 @@ import deleteIcon from "../assets/delete.svg";
 import IconButton from "./IconButton";
 import useQueryData from "../hooks/useQueryData";
 import { TaskLog } from "../../api/types.gen";
+import TextArea from "./TextArea";
+import { useDebounce } from "../hooks/useDebounce";
 
 interface LogCardProps {
     index: number;
@@ -24,12 +26,19 @@ const LogCard: React.FC<LogCardProps> = ({
     onChange,
     onDelete,
 }) => {
+    const [note, setNote] = useState(task.note || "");
+    const debouncedNote = useDebounce(note, 500);
     const [selectedStartTime, setSelectedStartTime] = useState(task.startTime);
     const [selectedEndTime, setSelectedEndTime] = useState(task.endTime);
     const [taskDone, setTaskDone] = useState(task.done);
     const { getTaskNameById } = useQueryData();
 
-    // Helper to call onChange with the latest internal state
+    useEffect(() => {
+        if (debouncedNote.trim() !== "") {
+            updateSubtask({ note: debouncedNote });
+        }
+    }, [debouncedNote]);
+
     const updateSubtask = (partial: Partial<TaskLog> = {}) => {
         onChange(
             {
@@ -59,38 +68,48 @@ const LogCard: React.FC<LogCardProps> = ({
                     />
                 )}
                 <div className={styles.title}>{getTaskNameById(task.subTaskId)}</div>
-                {/*<div className={styles.categoryText}>•</div>
-                <div className={styles.categoryText}>{catregory}</div>*/}
                 <div className={styles.spacer} />
                 {!disabled && <IconButton svgContent={deleteIcon} isSmall onClick={() => onDelete(index)} />}
             </div>
             <div className={styles.lowerRow}>
-                <div className={styles.timeContainer}>
-                    <div className={styles.text}>Kezdés</div>
-                    <TextInput
-                        text={selectedStartTime}
-                        type="time"
-                        onChange={(value) => {
-                            setSelectedStartTime(value);
-                            updateSubtask({ startTime: value });
-                        }}
-                        fillWidth
-                        invalid={startTimeInvalid || compareTime(selectedStartTime, selectedEndTime) > 0}
-                        disabled={disabled}
-                    />
-                </div>
                 <div />
-                <div className={styles.timeContainer}>
-                    <div className={styles.text}>Vég</div>
-                    <TextInput
-                        text={selectedEndTime}
-                        type="time"
+                <div className={styles.timeRow}>
+                    <div className={styles.textLabel}>Időtartam</div>
+                    <div className={styles.row}>
+                        <TextInput
+                            text={selectedStartTime}
+                            type="time"
+                            onChange={(value) => {
+                                setSelectedStartTime(value);
+                                updateSubtask({ startTime: value });
+                            }}
+                            fillWidth
+                            invalid={startTimeInvalid || compareTime(selectedStartTime, selectedEndTime) > 0}
+                            disabled={disabled}
+                        />
+                        <div className={styles.text}>:</div>
+                        <TextInput
+                            text={selectedEndTime}
+                            type="time"
+                            onChange={(value) => {
+                                setSelectedEndTime(value);
+                                updateSubtask({ endTime: value });
+                            }}
+                            fillWidth
+                            invalid={compareTime(selectedStartTime, selectedEndTime) > 0}
+                            disabled={disabled}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.noteRow}>
+                    <div className={styles.textLabel}>Megjegyzés</div>
+                    <TextArea
+                        text={note}
                         onChange={(value) => {
-                            setSelectedEndTime(value);
-                            updateSubtask({ endTime: value });
+                            setNote(value);
                         }}
                         fillWidth
-                        invalid={compareTime(selectedStartTime, selectedEndTime) > 0}
                         disabled={disabled}
                     />
                 </div>

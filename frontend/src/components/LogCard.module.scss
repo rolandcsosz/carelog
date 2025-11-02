@@ -7,6 +7,7 @@
     border-radius: 10px;
     gap: 10px;
     width: 100%;
+    box-sizing: border-box;
     height: fit-content;
     padding: 15px;
     cursor: pointer;
@@ -35,17 +36,14 @@
 
 .lowerRow {
     display: flex;
-    flex-direction: row;
-    justify-content: end;
-    align-items: center;
+    flex-direction: column;
     width: 100%;
-    height: 100%;
     gap: 10px;
     word-break: keep-all;
 }
 
 .title {
-    font-size: 14px;
+    font-size: 16px;
     font-family: Roboto, sans-serif;
     font-weight: bold;
     color: #1c1b1f;
@@ -63,16 +61,35 @@
     flex-shrink: 0;
 }
 
-.timeContainer {
+.timeRow {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     width: fit-content;
     gap: 10px;
 }
 
+.noteRow {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    width: 100%;
+    height: fit-content;
+    gap: 10px;
+}
+
 .text {
+    font-size: 14px;
+    font-family: Roboto, sans-serif;
+    font-weight: normal;
+    color: #1c1b1f;
+    margin: 0;
+    padding: 0;
+}
+
+.textLabel {
+    flex-shrink: 0;
+    width: 80px;
     font-size: 14px;
     font-family: Roboto, sans-serif;
     font-weight: normal;
