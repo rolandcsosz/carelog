@@ -19,7 +19,7 @@ export interface RecipientWithoutPassword {
     phone: string;
     address: string;
     fourHandCareNeeded: boolean;
-    caregiverNote: string | null;
+    caregiverNote: string;
 }
 
 export interface ErrorResponse {

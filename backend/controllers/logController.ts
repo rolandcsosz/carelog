@@ -11,7 +11,7 @@ export interface TaskLog {
     startTime: string; // "HH:mm:ss"
     endTime: string; // "HH:mm:ss"
     done: boolean;
-    note?: string;
+    note: string;
 }
 
 export interface LogEntry {

@@ -6,7 +6,7 @@ import { fetchMiddlewares, ExpressTemplateService } from "@tsoa/runtime";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LogController } from "./../controllers/logController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TController } from "./../controllers/voiceConverterController.js";
+import { VoiceConverterController } from "./../controllers/voiceConverterController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TodoController } from "./../controllers/todoController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -63,7 +63,7 @@ const models: TsoaRoute.Models = {
             startTime: { dataType: "string", required: true },
             endTime: { dataType: "string", required: true },
             done: { dataType: "boolean", required: true },
-            note: { dataType: "string" },
+            note: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
@@ -243,11 +243,7 @@ const models: TsoaRoute.Models = {
             phone: { dataType: "string", required: true },
             address: { dataType: "string", required: true },
             fourHandCareNeeded: { dataType: "boolean", required: true },
-            caregiverNote: {
-                dataType: "union",
-                subSchemas: [{ dataType: "string" }, { dataType: "enum", enums: [null] }],
-                required: true,
-            },
+            caregiverNote: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
@@ -654,25 +650,29 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTController_getSupportedMimeTypes: Record<string, TsoaRoute.ParameterSchema> = {};
+    const argsVoiceConverterController_getSupportedMimeTypes: Record<string, TsoaRoute.ParameterSchema> = {};
     app.get(
         "/mime-types",
         authenticateMiddleware([{ jwt: [] }]),
-        ...fetchMiddlewares<RequestHandler>(TController),
-        ...fetchMiddlewares<RequestHandler>(TController.prototype.getSupportedMimeTypes),
+        ...fetchMiddlewares<RequestHandler>(VoiceConverterController),
+        ...fetchMiddlewares<RequestHandler>(VoiceConverterController.prototype.getSupportedMimeTypes),
 
-        async function TController_getSupportedMimeTypes(request: ExRequest, response: ExResponse, next: any) {
+        async function VoiceConverterController_getSupportedMimeTypes(
+            request: ExRequest,
+            response: ExResponse,
+            next: any,
+        ) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTController_getSupportedMimeTypes,
+                    args: argsVoiceConverterController_getSupportedMimeTypes,
                     request,
                     response,
                 });
 
-                const controller = new TController();
+                const controller = new VoiceConverterController();
 
                 await templateService.apiHandler({
                     methodName: "getSupportedMimeTypes",
@@ -688,30 +688,30 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTController_createTodo: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsVoiceConverterController_processAudio: Record<string, TsoaRoute.ParameterSchema> = {
         body: { in: "body", name: "body", required: true, ref: "VoiceConvertingRequest" },
     };
     app.post(
-        "/",
+        "/process-audio",
         authenticateMiddleware([{ jwt: [] }]),
-        ...fetchMiddlewares<RequestHandler>(TController),
-        ...fetchMiddlewares<RequestHandler>(TController.prototype.createTodo),
+        ...fetchMiddlewares<RequestHandler>(VoiceConverterController),
+        ...fetchMiddlewares<RequestHandler>(VoiceConverterController.prototype.processAudio),
 
-        async function TController_createTodo(request: ExRequest, response: ExResponse, next: any) {
+        async function VoiceConverterController_processAudio(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTController_createTodo,
+                    args: argsVoiceConverterController_processAudio,
                     request,
                     response,
                 });
 
-                const controller = new TController();
+                const controller = new VoiceConverterController();
 
                 await templateService.apiHandler({
-                    methodName: "createTodo",
+                    methodName: "processAudio",
                     controller,
                     response,
                     next,

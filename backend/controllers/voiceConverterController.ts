@@ -37,7 +37,7 @@ interface VoiceConvertingRequest {
 
 @Route("")
 @Tags("Voice Converter")
-export class TController extends Controller {
+export class VoiceConverterController extends Controller {
     @Get("/mime-types")
     @Security("jwt")
     @Response<ErrorResponse>(500, "Database error")
@@ -57,7 +57,7 @@ export class TController extends Controller {
     @Response<ErrorResponse>(400, "Missing fields")
     @Response<ErrorResponse>(404, "Entity not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async createTodo(@Body() body: VoiceConvertingRequest): Promise<SuccessResponse | ErrorResponse> {
+    public async processAudio(@Body() body: VoiceConvertingRequest): Promise<SuccessResponse | ErrorResponse> {
         const { logId, inputMimeType, base64Audio } = body;
         if (!logId || !inputMimeType || !base64Audio) {
             this.setStatus(400);
