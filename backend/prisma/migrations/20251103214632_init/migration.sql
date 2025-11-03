@@ -90,6 +90,18 @@ CREATE TABLE "MimeType" (
     CONSTRAINT "MimeType_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Message" (
+    "id" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
+    "senderRole" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 
@@ -122,3 +134,6 @@ ALTER TABLE "Todo" ADD CONSTRAINT "Todo_subtaskId_fkey" FOREIGN KEY ("subtaskId"
 
 -- AddForeignKey
 ALTER TABLE "Todo" ADD CONSTRAINT "Todo_relationshipId_fkey" FOREIGN KEY ("relationshipId") REFERENCES "RecipientCaregiverRelationship"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Message" ADD CONSTRAINT "Message_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Caregiver"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -22,6 +22,8 @@ import { RecipientController } from "./../controllers/receipientController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LoginController } from "./../controllers/loginController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ChatController } from "./../controllers/chatController.js";
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CaregiverController } from "./../controllers/caregiverController.js";
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdminController } from "./../controllers/adminController.js";
@@ -320,6 +322,40 @@ const models: TsoaRoute.Models = {
         properties: {
             email: { dataType: "string", required: true },
             password: { dataType: "string", required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    Message: {
+        dataType: "refObject",
+        properties: {
+            id: { dataType: "string", required: true },
+            status: { dataType: "string", required: true },
+            senderRole: { dataType: "string", required: true },
+            content: { dataType: "string", required: true },
+            time: { dataType: "datetime", required: true },
+            userId: { dataType: "string", required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    MessagePageInfo: {
+        dataType: "refObject",
+        properties: {
+            page: { dataType: "double", required: true },
+            pageSize: { dataType: "double", required: true },
+            totalMessages: { dataType: "double", required: true },
+            totalPages: { dataType: "double", required: true },
+            messages: { dataType: "array", array: { dataType: "refObject", ref: "Message" }, required: true },
+        },
+        additionalProperties: false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    SendMessageBody: {
+        dataType: "refObject",
+        properties: {
+            caregiverId: { dataType: "string", required: true },
+            content: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
@@ -1957,6 +1993,80 @@ export function RegisterRoutes(app: Router) {
 
                 await templateService.apiHandler({
                     methodName: "login",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsChatController_getChatHistory: Record<string, TsoaRoute.ParameterSchema> = {
+        caregiverId: { in: "path", name: "caregiverId", required: true, dataType: "string" },
+        page: { default: 1, in: "query", name: "page", dataType: "double" },
+        pageSize: { default: 20, in: "query", name: "pageSize", dataType: "double" },
+    };
+    app.get(
+        "/chat/:caregiverId",
+        authenticateMiddleware([{ jwt: [] }]),
+        ...fetchMiddlewares<RequestHandler>(ChatController),
+        ...fetchMiddlewares<RequestHandler>(ChatController.prototype.getChatHistory),
+
+        async function ChatController_getChatHistory(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsChatController_getChatHistory,
+                    request,
+                    response,
+                });
+
+                const controller = new ChatController();
+
+                await templateService.apiHandler({
+                    methodName: "getChatHistory",
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            } catch (err) {
+                return next(err);
+            }
+        },
+    );
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsChatController_sendMessage: Record<string, TsoaRoute.ParameterSchema> = {
+        body: { in: "body", name: "body", required: true, ref: "SendMessageBody" },
+    };
+    app.post(
+        "/chat",
+        authenticateMiddleware([{ jwt: [] }]),
+        ...fetchMiddlewares<RequestHandler>(ChatController),
+        ...fetchMiddlewares<RequestHandler>(ChatController.prototype.sendMessage),
+
+        async function ChatController_sendMessage(request: ExRequest, response: ExResponse, next: any) {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({
+                    args: argsChatController_sendMessage,
+                    request,
+                    response,
+                });
+
+                const controller = new ChatController();
+
+                await templateService.apiHandler({
+                    methodName: "sendMessage",
                     controller,
                     response,
                     next,
