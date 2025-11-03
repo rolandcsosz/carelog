@@ -1,6 +1,8 @@
 import styles from "./App.module.scss";
 import React, { useEffect, useRef } from "react";
 import Menu from "./components/Menu";
+import chatFilled from "./assets/chat-filled.svg";
+import chatOutline from "./assets/chat-outline.svg";
 import accountFilled from "./assets/account-filled.svg";
 import accountOutline from "./assets/account-outline.svg";
 import caregiverFilled from "./assets/caregiver-filled.svg";
@@ -35,6 +37,7 @@ import { useRecoilValue } from "recoil";
 import { openLogState } from "./model";
 import useQueryData from "./hooks/useQueryData";
 import { MenuConfig } from "./types";
+import ChatPage from "./pages/caregiver/ChatPage";
 
 setupIonicReact();
 
@@ -77,6 +80,12 @@ const caregiverMenuConfig: MenuConfig = {
         unselectedIcon: listOutline,
         alt: "List view",
         component: CaregiverRecipients,
+    },
+    chat: {
+        selectedIcon: chatFilled,
+        unselectedIcon: chatOutline,
+        alt: "Chat",
+        component: ChatPage,
     },
     account: {
         selectedIcon: accountFilled,

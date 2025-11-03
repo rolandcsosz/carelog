@@ -1,0 +1,169 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: #fbfbfb;
+    overflow: hidden;
+}
+
+.messagesList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.emptyState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #a0aec0;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    padding: 32px;
+}
+
+.messageWrapper {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &.currentUser {
+        justify-content: flex-end;
+
+        .messageBubble {
+            max-width: 70%;
+        }
+    }
+
+    &.otherUser {
+        justify-content: flex-start;
+
+        .messageBubble {
+            max-width: 70%;
+        }
+    }
+
+    &.consecutiveBottom:not(.differentDay) {
+        margin-bottom: 2px;
+    }
+
+    &.differentDay {
+        margin-bottom: 12px !important;
+        margin-top: 12px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+}
+
+.messageBubble {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 14px;
+    border-radius: 18px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    word-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
+    width: fit-content;
+}
+
+.messageWrapper.currentUser .messageBubble {
+    background-color: #bee3f8;
+    color: #1a202c;
+}
+
+.messageWrapper.otherUser .messageBubble {
+    background-color: #edf2f7;
+    color: #1a202c;
+}
+
+.messageWrapper.otherUser.standalone .messageBubble {
+    border-bottom-left-radius: 4px;
+}
+
+.messageWrapper.otherUser.consecutiveTop .messageBubble {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.messageWrapper.otherUser.consecutiveBottom .messageBubble {
+    border-bottom-left-radius: 4px;
+}
+
+.messageWrapper.otherUser.consecutiveTop.consecutiveBottom .messageBubble {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.messageWrapper.currentUser.standalone .messageBubble {
+    border-bottom-right-radius: 4px;
+}
+
+.messageWrapper.currentUser.consecutiveTop .messageBubble {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.messageWrapper.currentUser.consecutiveBottom .messageBubble {
+    border-bottom-right-radius: 4px;
+}
+
+.messageWrapper.currentUser.consecutiveTop.consecutiveBottom .messageBubble {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.senderName {
+    font-family: Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: #888e9a;
+}
+
+.messageText {
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: inherit;
+    white-space: pre-wrap;
+    margin-bottom: 4px;
+}
+
+.time {
+    font-family: Roboto, sans-serif;
+    font-size: 11px;
+    margin-top: 2px;
+    opacity: 0.7;
+    align-self: flex-end;
+}
+
+.messageWrapper.currentUser .timestamp {
+    color: #888e9a;
+}
+
+.messageWrapper.otherUser .timestamp {
+    color: #888e9a;
+}
