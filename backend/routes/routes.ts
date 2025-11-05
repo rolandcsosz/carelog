@@ -339,18 +339,6 @@ const models: TsoaRoute.Models = {
         additionalProperties: false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    MessagePageInfo: {
-        dataType: "refObject",
-        properties: {
-            page: { dataType: "double", required: true },
-            pageSize: { dataType: "double", required: true },
-            totalMessages: { dataType: "double", required: true },
-            totalPages: { dataType: "double", required: true },
-            messages: { dataType: "array", array: { dataType: "refObject", ref: "Message" }, required: true },
-        },
-        additionalProperties: false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     SendMessageBody: {
         dataType: "refObject",
         properties: {
@@ -2007,8 +1995,9 @@ export function RegisterRoutes(app: Router) {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsChatController_getChatHistory: Record<string, TsoaRoute.ParameterSchema> = {
         caregiverId: { in: "path", name: "caregiverId", required: true, dataType: "string" },
-        page: { default: 1, in: "query", name: "page", dataType: "double" },
-        pageSize: { default: 20, in: "query", name: "pageSize", dataType: "double" },
+        limit: { in: "query", name: "limit", dataType: "double" },
+        before: { in: "query", name: "before", dataType: "string" },
+        after: { in: "query", name: "after", dataType: "string" },
     };
     app.get(
         "/chat/:caregiverId",

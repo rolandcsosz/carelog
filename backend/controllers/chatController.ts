@@ -17,14 +17,6 @@ import { getErrorMessage } from "../utils.js";
 
 const prisma = new PrismaClient();
 
-interface MessagePageInfo {
-    page: number;
-    pageSize: number;
-    totalMessages: number;
-    totalPages: number;
-    messages: Message[];
-}
-
 interface Message {
     id: string;
     status: string;
@@ -47,31 +39,24 @@ export class ChatController extends Controller {
     @Response<ErrorResponse>(500, "Database error")
     public async getChatHistory(
         @Path() caregiverId: string,
-        @Query() page: number = 1,
-        @Query() pageSize: number = 20,
-    ): Promise<MessagePageInfo | ErrorResponse> {
+        @Query() limit?: number,
+        @Query() before?: string,
+        @Query() after?: string,
+    ): Promise<Message[] | ErrorResponse> {
         try {
-            if (page < 1) {
-                page = 1;
-            }
+            const dateBefore = before ? new Date(before) : undefined;
+            const dateAfter = after ? new Date(after) : undefined;
 
             const messages = await prisma.message.findMany({
-                where: { userId: caregiverId },
-                orderBy: { time: "asc" },
-                skip: (page - 1) * pageSize,
-                take: pageSize,
+                where: {
+                    userId: caregiverId,
+                    time: { lt: dateBefore, gt: dateAfter },
+                },
+                orderBy: { time: "desc" },
+                take: limit,
             });
 
-            const total = await prisma.message.count({ where: { userId: caregiverId } });
-
-            const totalPages = Math.ceil(total / pageSize);
-            return {
-                page,
-                pageSize,
-                totalMessages: total,
-                totalPages,
-                messages,
-            };
+            return messages;
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba", message: getErrorMessage(err) } as ErrorResponse;
@@ -84,7 +69,7 @@ export class ChatController extends Controller {
     @Response<ErrorResponse>(400, "Missing fields")
     @Response<ErrorResponse>(404, "Entity not found")
     @Response<ErrorResponse>(500, "Database error")
-    public async sendMessage(@Body() body: SendMessageBody): Promise<SuccessResponse | ErrorResponse> {
+    public async sendMessage(@Body() body: SendMessageBody): Promise<Message | ErrorResponse> {
         const { caregiverId, content } = body;
         if (!caregiverId || !content) {
             this.setStatus(400);
@@ -98,7 +83,7 @@ export class ChatController extends Controller {
                 this.setStatus(404);
                 return { error: "Nincs ilyen gondozó", message: "" } as ErrorResponse;
             }
-            await prisma.message.create({
+            const message = await prisma.message.create({
                 data: {
                     senderRole: "user",
                     content,
@@ -109,7 +94,7 @@ export class ChatController extends Controller {
             });
 
             this.setStatus(201);
-            return successResponse;
+            return message;
         } catch (err: unknown) {
             this.setStatus(500);
             return { error: "Hiba a üzenet küldése során", message: getErrorMessage(err) } as ErrorResponse;
