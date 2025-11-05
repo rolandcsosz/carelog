@@ -7,17 +7,28 @@ import { useCaregiverModel } from "../hooks/useCaregiverModel";
 import { fetchData, getDefaultErrorModal, RequestFnType } from "../utils";
 import { sendMessage } from "../../api/sdk.gen";
 import usePopup from "../hooks/usePopup";
+import { env } from "../env";
+import { userState } from "../model";
+import { useRecoilValue } from "recoil";
 
 type ChatContextType = {
     chats: Message[];
     fetchNextOlderPage: () => Promise<void>;
     fetchLatestChats: () => Promise<void>;
     newMessage: (msg: string) => Promise<void>;
+    connected: boolean;
+    pendingMessage: Message | null;
+};
+
+type WebSocketData = {
+    type: "token" | "error" | "completion" | "history";
+    token: string;
 };
 
 const ChatContext = createContext<ChatContextType | null>(null);
 
 const pageSize = 20;
+const baseUrl = env.BACKEND_URL || "http://localhost:8080";
 
 const fetchMessages = (request: RequestFnType, data: GetChatHistoryData) =>
     fetchData(request, getChatHistory, data, [] as Message[]);
@@ -31,10 +42,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { user } = useCaregiverModel();
     const initHappenedRef = React.useRef(false);
     const { openPopup } = usePopup();
+    const [connected, setConnected] = useState(false);
+    const logedInUser = useRecoilValue(userState);
+    const [pendingMessage, setPendingMessage] = useState<Message | null>(null);
 
     useEffect(() => {
         const fetchInitialMessages = async () => {
-            if (!user.list?.id || initHappenedRef.current) {
+            if (!user.list?.id || initHappenedRef.current || oldChats.length > 0) {
                 return;
             }
 
@@ -58,6 +72,128 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fetchInitialMessages();
     }, [user.list?.id, request]);
 
+    const fetchLatestChats = useCallback(async () => {
+        if (!user.list?.id) {
+            return;
+        }
+
+        const newestMessages = await fetchMessages(request, {
+            caregiverId: user.list.id,
+            after: cursor || undefined,
+        });
+
+        if (newestMessages.length === 0) {
+            return;
+        }
+
+        const itemsToUpdate = newestMessages.filter(
+            (msg) => !newChats.some((existingMsg) => existingMsg.id === msg.id && existingMsg.status === msg.status),
+        );
+
+        const itemsToInsert = itemsToUpdate.filter((msg) => !newChats.some((existingMsg) => existingMsg.id === msg.id));
+
+        if (itemsToInsert.length === 0 && itemsToUpdate.length === 0) {
+            return;
+        }
+
+        const updatedItems = newChats.map((existingMsg) => {
+            const updatedMsg = newestMessages.find((msg) => msg.id === existingMsg.id);
+            return updatedMsg ? updatedMsg : existingMsg;
+        });
+
+        setNewChats([...updatedItems, ...itemsToInsert]);
+    }, [cursor, newChats, request, user.list?.id]);
+
+    const handleWebSocketMessage = useCallback(
+        (event: MessageEvent) => {
+            try {
+                console.log("WebSocket message received:", event.data);
+                const message: WebSocketData = JSON.parse(event.data);
+                console.log("WebSocket message received:", message);
+
+                if (message.type === "error" || message.type === "completion") {
+                    fetchLatestChats();
+                    setPendingMessage(null);
+                    return;
+                }
+
+                if (message.type === "token") {
+                    setPendingMessage((prev) => {
+                        if (prev === null) {
+                            return {
+                                id: Date.now().toString(),
+                                senderRole: "bot",
+                                status: "processing",
+                                content: message.token,
+                                time: new Date().toISOString(),
+                                userId: user.list?.id || "",
+                            };
+                        } else {
+                            return {
+                                ...prev,
+                                content: prev.content === "..." ? message.token : prev.content + message.token,
+                                time: new Date().toISOString(),
+                            };
+                        }
+                    });
+                }
+
+                if (message.type === "history") {
+                    setPendingMessage({
+                        id: Date.now().toString(),
+                        senderRole: "bot",
+                        status: "processing",
+                        content: message.token,
+                        time: new Date().toISOString(),
+                        userId: user.list?.id || "",
+                    });
+                    return;
+                }
+            } catch (err) {
+                console.error("Invalid message:", event.data);
+            }
+        },
+        [fetchLatestChats, user.list?.id, pendingMessage],
+    );
+
+    useEffect(() => {
+        if (!logedInUser?.token) return;
+
+        let ws: WebSocket | null = null;
+        let reconnectTimeout: NodeJS.Timeout;
+
+        const connect = () => {
+            ws = new WebSocket(`${baseUrl.replace("http://", "ws://")}?token=${logedInUser.token}`);
+
+            ws.onopen = () => {
+                console.log("WebSocket connected");
+                setConnected(true);
+            };
+
+            ws.onmessage = (event) => {
+                handleWebSocketMessage(event);
+            };
+
+            ws.onclose = () => {
+                console.log("WebSocket closed");
+                setConnected(false);
+                reconnectTimeout = setTimeout(connect, 2000);
+            };
+
+            ws.onerror = (err) => {
+                console.error("WebSocket error:", err);
+                ws?.close();
+            };
+        };
+
+        connect();
+
+        return () => {
+            if (ws) ws.close();
+            if (reconnectTimeout) clearTimeout(reconnectTimeout);
+        };
+    }, [logedInUser?.token]);
+
     const fetchNextOlderPage = useCallback(async () => {
         if (!user.list?.id) {
             return;
@@ -73,41 +209,18 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
             return;
         }
 
-        setOldestMessageDate(next20NewestMessages[next20NewestMessages.length - 1].time);
-
-        setOldChats((prev) => [...next20NewestMessages, ...prev]);
-    }, [oldestMessageDate, request, user.list?.id]);
-
-    const fetchLatestChats = useCallback(async () => {
-        console.log("Fetching latest chats...");
-        if (!user.list?.id) {
-            return;
-        }
-
-        const newestMessages = await fetchMessages(request, {
-            caregiverId: user.list.id,
-            after: cursor || undefined,
-        });
-
-        if (newestMessages.length === 0) {
-            return;
-        }
-
-        const itemsToInsert = newestMessages.filter(
-            (msg) => !newChats.some((existingMsg) => existingMsg.id === msg.id && existingMsg.status === msg.status),
+        const messagesToAdd = next20NewestMessages.filter(
+            (msg) => !oldChats.some((existingMsg) => existingMsg.id === msg.id),
         );
 
-        if (itemsToInsert.length === 0) {
+        if (messagesToAdd.length === 0) {
             return;
         }
 
-        const updatedItems = newChats.map((existingMsg) => {
-            const updatedMsg = newestMessages.find((msg) => msg.id === existingMsg.id);
-            return updatedMsg ? updatedMsg : existingMsg;
-        });
+        setOldestMessageDate(messagesToAdd[messagesToAdd.length - 1].time);
 
-        setNewChats(updatedItems);
-    }, [cursor, newChats, request, user.list?.id]);
+        setOldChats((prev) => [...messagesToAdd, ...prev]);
+    }, [oldestMessageDate, request, user.list?.id]);
 
     const newMessage = useCallback(
         async (msg: string) => {
@@ -126,8 +239,18 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             const message = response.data as Message;
 
-            if (!newChats.some((existingMsg) => existingMsg.id === message.id)) {
-                setNewChats((prev) => [...prev, message]);
+            setNewChats((prev) => [...prev, message]);
+
+            if (!pendingMessage) {
+                setPendingMessage({
+                    id: Date.now().toString(),
+                    senderRole: "bot",
+                    status: "processing",
+                    content: "...",
+                    time: new Date().toISOString(),
+                    userId: user.list?.id || "",
+                });
+                return;
             }
         },
         [newChats, openPopup, request, user.list?.id],
@@ -138,6 +261,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fetchNextOlderPage,
         fetchLatestChats,
         newMessage,
+        connected,
+        pendingMessage: pendingMessage,
     };
 
     return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

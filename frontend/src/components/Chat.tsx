@@ -6,6 +6,7 @@ import { isSameDay } from "../utils";
 
 interface ChatProps {
     messages: Message[];
+    pendingMessage: Message | null;
     emptyStateMessage?: string;
     onLoadMore?: () => void;
 }
@@ -31,6 +32,7 @@ const formatTimestamp = (time: Date) => {
 
 const Chat: React.FC<ChatProps> = ({
     messages,
+    pendingMessage,
     emptyStateMessage = "No messages to display.",
     onLoadMore = () => {},
 }) => {
@@ -43,7 +45,6 @@ const Chat: React.FC<ChatProps> = ({
     };
 
     useEffect(() => {
-        console.log("Messages updated:", messages);
         if (loadingMoreRef.current) {
             loadingMoreRef.current = false;
             return;
@@ -119,9 +120,8 @@ const Chat: React.FC<ChatProps> = ({
     return (
         <div className={styles.container}>
             <div className={styles.messagesList} ref={containerRef}>
-                {messages.map((message, index) => {
+                {(pendingMessage ? [...messages, pendingMessage] : messages).map((message, index) => {
                     const isCurrent = message.senderRole === "user";
-                    console.log("Rendering message:", message);
                     const messageClasses = getMessageClasses(index, message);
                     return (
                         <div key={message.id} className={messageClasses}>

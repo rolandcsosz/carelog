@@ -21,6 +21,13 @@
     padding-bottom: 30px;
     gap: 2px;
     flex-shrink: 0;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .emptyState {

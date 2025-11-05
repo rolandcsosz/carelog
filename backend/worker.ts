@@ -1,9 +1,14 @@
 import { PrismaClient } from "@prisma/client";
+import { GoogleGenAI } from "@google/genai";
+
 import Redis from "ioredis";
+const ai = new GoogleGenAI({
+    apiKey: process.env.GOOGLE_API_KEY || "",
+});
 
 const prisma = new PrismaClient();
 
-const openAiApiKey = process.env.OPENAI_API_KEY || "";
+const googleApiKey = process.env.GOOGLE_API_KEY || "";
 
 console.log("Worker process started. Listening for pending messages...");
 
@@ -12,61 +17,24 @@ const redis = new Redis({
     port: Number(process.env.REDIS_PORT),
 });
 
-interface OpenAICallOptions {
-    apiKey: string;
-    body: unknown;
-    userId: string;
-}
-
-export const openaiStream = async ({ apiKey, body, userId }: OpenAICallOptions) => {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({ ...(body as object), stream: true }),
+export const googleStream = async ({ userId, message }: { apiKey: string; userId: string; message: string }) => {
+    const response = await ai.models.generateContentStream({
+        model: "gemini-2.5-flash",
+        contents: [
+            {
+                text: "Respond in plain text only. Do not use Markdown or special characters. Do not mention that you were asked to respond in plain text.",
+            },
+            { text: message },
+        ],
     });
 
-    if (!res.body) throw new Error("No response body");
-
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder("utf-8");
-
     let reply = "";
-    let done = false;
-    let buffer = "";
 
-    while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-
-        if (value) {
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split("\n");
-
-            buffer = lines.pop() || "";
-
-            for (const line of lines) {
-                const trimmed = line.trim();
-                if (!trimmed.startsWith("data:")) continue;
-
-                const jsonStr = trimmed.replace(/^data: /, "");
-                if (jsonStr === "[DONE]") continue;
-
-                try {
-                    const data = JSON.parse(jsonStr);
-                    const delta = data.choices?.[0]?.delta?.content;
-                    if (delta) {
-                        reply += delta;
-                        await redis.rpush(`chat:${userId}:tokens`, delta);
-                        await redis.publish(`chat:${userId}`, JSON.stringify({ type: "token", token: delta }));
-                    }
-                } catch (err) {
-                    console.error("Error parsing OpenAI stream chunk:", err);
-                }
-            }
-        }
+    for await (const chunk of response) {
+        if (!chunk.text) continue;
+        redis.rpush(`chat:${userId}:tokens`, chunk.text);
+        await redis.publish(`chat:${userId}`, JSON.stringify({ type: "token", token: chunk.text }));
+        reply += chunk.text;
     }
 
     return reply;
@@ -85,19 +53,18 @@ async function processPendingMessages() {
 
     for (const msg of messages) {
         console.log(`Processing message ID: ${msg.id}`);
+
+        await redis.del(`chat:${msg.userId}:tokens`);
         try {
             await prisma.message.update({
                 where: { id: msg.id },
                 data: { status: "processing" },
             });
 
-            const fullMessage = await openaiStream({
-                apiKey: openAiApiKey,
+            const fullMessage = await googleStream({
+                apiKey: googleApiKey,
                 userId: msg.userId,
-                body: {
-                    model: "gpt-5-nano",
-                    messages: [{ role: "user", content: msg.content }],
-                },
+                message: msg.content,
             });
 
             await prisma.message.update({
@@ -114,10 +81,9 @@ async function processPendingMessages() {
                     time: new Date(),
                 },
             });
+
             console.log(`Message ID: ${msg.id} processed successfully`);
         } catch (err) {
-            console.error("Error processing message", msg.id, err);
-
             await prisma.message.update({
                 where: { id: msg.id },
                 data: { status: "failed" },
@@ -127,11 +93,12 @@ async function processPendingMessages() {
                 await redis.rpush(`chat:${msg.userId}:tokens`, "...");
                 await redis.publish(`chat:${msg.userId}`, JSON.stringify({ type: "error", token: "..." }));
             }
+
+            console.error("Error processing message", msg.id, err);
         }
 
         await redis.publish(`chat:${msg.userId}`, JSON.stringify({ type: "completion", token: "" }));
         await redis.del(`chat:${msg.userId}:tokens`);
-        console.log(`Cleared token history for ${msg.userId}`);
     }
 }
 

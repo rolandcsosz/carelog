@@ -9,7 +9,7 @@ const ChatPage: React.FC = () => {
     const { user } = useCaregiverModel();
     const currentUserId = user?.list?.id || "";
     const [inputValue, setInputValue] = useState("");
-    const { chats, fetchNextOlderPage, fetchLatestChats, newMessage } = useChat();
+    const { chats, fetchNextOlderPage, fetchLatestChats, newMessage, connected, pendingMessage } = useChat();
 
     useEffect(() => {
         fetchLatestChats();
@@ -26,9 +26,10 @@ const ChatPage: React.FC = () => {
         <div className={styles.page}>
             <div className={`${styles.backRow} ${styles.sticky}`}>
                 <div className={styles.pageTitle}>Tanácsadás</div>
+                {!connected && <div className={styles.error}>Hiba történt a kapcsolat során.</div>}
             </div>
             <div className={styles.chatContainer}>
-                <Chat messages={chats} onLoadMore={fetchNextOlderPage} />
+                <Chat messages={chats} onLoadMore={fetchNextOlderPage} pendingMessage={pendingMessage} />
             </div>
             <div className={styles.inputContainer}>
                 <ChatInputField
@@ -36,7 +37,7 @@ const ChatPage: React.FC = () => {
                     onChange={setInputValue}
                     onSend={handleSend}
                     placeholder="Type your message..."
-                    disabled={!currentUserId}
+                    disabled={!currentUserId || !connected || !!pendingMessage}
                 />
             </div>
         </div>
