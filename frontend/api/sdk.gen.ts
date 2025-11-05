@@ -81,6 +81,10 @@ import type {
     UpdateRecipientPasswordResponse,
     LoginData,
     LoginResponse,
+    GetChatHistoryData,
+    GetChatHistoryResponse,
+    SendMessageData,
+    SendMessageResponse,
     GetCaregiversResponse,
     CreateCaregiverData,
     CreateCaregiverResponse,
@@ -937,6 +941,53 @@ export const login = (data: LoginData): CancelablePromise<LoginResponse> => {
         errors: {
             401: "Unauthorized",
             500: "Server error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.caregiverId
+ * @param data.limit
+ * @param data.before
+ * @param data.after
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const getChatHistory = (data: GetChatHistoryData): CancelablePromise<GetChatHistoryResponse> => {
+    return __request(OpenAPI, {
+        method: "GET",
+        url: "/chat/{caregiverId}",
+        path: {
+            caregiverId: data.caregiverId,
+        },
+        query: {
+            limit: data.limit,
+            before: data.before,
+            after: data.after,
+        },
+        errors: {
+            500: "Database error",
+        },
+    });
+};
+
+/**
+ * @param data The data for the request.
+ * @param data.requestBody
+ * @returns unknown Ok
+ * @throws ApiError
+ */
+export const sendMessage = (data: SendMessageData): CancelablePromise<SendMessageResponse> => {
+    return __request(OpenAPI, {
+        method: "POST",
+        url: "/chat",
+        body: data.requestBody,
+        mediaType: "application/json",
+        errors: {
+            400: "Missing fields",
+            404: "Entity not found",
+            500: "Database error",
         },
     });
 };

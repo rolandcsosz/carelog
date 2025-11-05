@@ -214,3 +214,9 @@ export const throwIfError = (response: FetchResponse<any>, errorMessage: string)
     }
     return response.data;
 };
+
+export const isSameDay = (timestamp1: Date, timestamp2: Date): boolean => {
+    const day1 = new Date(timestamp1.getFullYear(), timestamp1.getMonth(), timestamp1.getDate());
+    const day2 = new Date(timestamp2.getFullYear(), timestamp2.getMonth(), timestamp2.getDate());
+    return day1.getTime() === day2.getTime();
+};

@@ -1,3 +1,5 @@
+/*
+TODO: This Storybook story file is currently commented out.
 import type { Meta, StoryObj } from "@storybook/react";
 import Chat, { Message } from "../components/Chat";
 
@@ -182,3 +184,4 @@ export const FullHeight: Story = {
         currentUserId: "user1",
     },
 };
+*/

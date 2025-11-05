@@ -1,58 +1,70 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./Chat.module.scss";
-
-export interface Message {
-    id: string;
-    senderId: string;
-    senderName: string;
-    content: string;
-    time: Date;
-}
+import { Message } from "../../api/types.gen";
+import errorMessageIcon from "../assets/error-message-icon.svg";
+import { isSameDay } from "../utils";
 
 interface ChatProps {
     messages: Message[];
-    currentUserId: string;
     emptyStateMessage?: string;
+    onLoadMore?: () => void;
 }
 
-const Chat: React.FC<ChatProps> = ({ messages, currentUserId, emptyStateMessage = "No messages to display." }) => {
+const maxGapForFetching = 30;
+
+const formatTimestamp = (time: Date) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const messageDate = new Date(time.getFullYear(), time.getMonth(), time.getDate());
+
+    const hours = time.getHours().toString().padStart(2, "0");
+    const minutes = time.getMinutes().toString().padStart(2, "0");
+
+    if (messageDate.getTime() === today.getTime()) {
+        return `${hours}:${minutes}`;
+    } else {
+        const month = (time.getMonth() + 1).toString().padStart(2, "0");
+        const day = time.getDate().toString().padStart(2, "0");
+        return `${month}/${day} ${hours}:${minutes}`;
+    }
+};
+
+const Chat: React.FC<ChatProps> = ({
+    messages,
+    emptyStateMessage = "No messages to display.",
+    onLoadMore = () => {},
+}) => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const loadingMoreRef = useRef(false);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
     };
 
     useEffect(() => {
+        console.log("Messages updated:", messages);
+        if (loadingMoreRef.current) {
+            loadingMoreRef.current = false;
+            return;
+        }
         scrollToBottom();
     }, [messages]);
 
-    const formatTimestamp = (time: Date) => {
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const messageDate = new Date(time.getFullYear(), time.getMonth(), time.getDate());
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container || !onLoadMore) return;
 
-        const hours = time.getHours().toString().padStart(2, "0");
-        const minutes = time.getMinutes().toString().padStart(2, "0");
+        const handleScroll = () => {
+            if (container.scrollTop <= maxGapForFetching) {
+                loadingMoreRef.current = true;
+                onLoadMore();
+            }
+        };
 
-        if (messageDate.getTime() === today.getTime()) {
-            return `${hours}:${minutes}`;
-        } else {
-            const month = (time.getMonth() + 1).toString().padStart(2, "0");
-            const day = time.getDate().toString().padStart(2, "0");
-            return `${month}/${day} ${hours}:${minutes}`;
-        }
-    };
-
-    const isCurrentUser = (senderId: string) => {
-        return senderId === currentUserId;
-    };
-
-    const isSameDay = (timestamp1: Date, timestamp2: Date): boolean => {
-        const day1 = new Date(timestamp1.getFullYear(), timestamp1.getMonth(), timestamp1.getDate());
-        const day2 = new Date(timestamp2.getFullYear(), timestamp2.getMonth(), timestamp2.getDate());
-        return day1.getTime() === day2.getTime();
-    };
+        container.addEventListener("scroll", handleScroll);
+        return () => container.removeEventListener("scroll", handleScroll);
+    }, [onLoadMore]);
 
     if (messages.length === 0) {
         return (
@@ -63,17 +75,17 @@ const Chat: React.FC<ChatProps> = ({ messages, currentUserId, emptyStateMessage 
         );
     }
 
-    const getMessageClasses = (index: number, senderId: string, time: Date) => {
-        const isCurrent = isCurrentUser(senderId);
+    const getMessageClasses = (index: number, message: Message) => {
+        const isCurrent = message.senderRole === "user";
         const baseClass = isCurrent ? styles.currentUser : styles.otherUser;
         const classes = [styles.messageWrapper, baseClass];
 
         const prevMessage = index > 0 ? messages[index - 1] : null;
         const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
 
-        const hasPrevSameUser = prevMessage?.senderId === senderId;
-        const hasNextSameUser = nextMessage?.senderId === senderId;
-        const hasPrevDifferentDay = prevMessage && !isSameDay(prevMessage.time, time);
+        const hasPrevSameUser = prevMessage?.senderRole === message.senderRole;
+        const hasNextSameUser = nextMessage?.senderRole === message.senderRole;
+        const hasPrevDifferentDay = prevMessage && !isSameDay(new Date(prevMessage.time), new Date(message.time));
 
         if (hasPrevDifferentDay) {
             classes.push(styles.differentDay);
@@ -105,17 +117,23 @@ const Chat: React.FC<ChatProps> = ({ messages, currentUserId, emptyStateMessage 
     };
 
     return (
-        <div className={styles.container} ref={containerRef}>
-            <div className={styles.messagesList}>
+        <div className={styles.container}>
+            <div className={styles.messagesList} ref={containerRef}>
                 {messages.map((message, index) => {
-                    const isCurrent = isCurrentUser(message.senderId);
-                    const messageClasses = getMessageClasses(index, message.senderId, message.time);
+                    const isCurrent = message.senderRole === "user";
+                    console.log("Rendering message:", message);
+                    const messageClasses = getMessageClasses(index, message);
                     return (
                         <div key={message.id} className={messageClasses}>
                             <div className={styles.messageBubble}>
-                                {!isCurrent && <div className={styles.senderName}>{message.senderName}</div>}
+                                {!isCurrent && <div className={styles.senderName}>Bot</div>}
                                 <div className={styles.messageText}>{message.content}</div>
-                                <div className={styles.time}>{formatTimestamp(message.time)}</div>
+                                <div className={styles.time}>
+                                    {message.status === "failed" && (
+                                        <img src={errorMessageIcon} alt="Error" className={styles.errorIcon} />
+                                    )}
+                                    {formatTimestamp(new Date(message.time))}
+                                </div>
                             </div>
                         </div>
                     );

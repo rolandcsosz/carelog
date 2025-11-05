@@ -87,6 +87,15 @@ export type LoginSuccessResponse = {
 
 export type role = "admin" | "caregiver";
 
+export type Message = {
+    id: string;
+    status: string;
+    senderRole: string;
+    content: string;
+    time: string;
+    userId: string;
+};
+
 export type RecipientCaregiverRelationship = {
     id: string;
     recipientId: string;
@@ -121,6 +130,11 @@ export type ScheduleRequest = {
     relationshipId: string;
     startTime: string;
     endTime: string;
+};
+
+export type SendMessageBody = {
+    caregiverId: string;
+    content: string;
 };
 
 export type Subtask = {
@@ -427,6 +441,21 @@ export type LoginData = {
 };
 
 export type LoginResponse = LoginSuccessResponse | ErrorResponse;
+
+export type GetChatHistoryData = {
+    after?: string;
+    before?: string;
+    caregiverId: string;
+    limit?: number;
+};
+
+export type GetChatHistoryResponse = Array<Message> | ErrorResponse;
+
+export type SendMessageData = {
+    requestBody: SendMessageBody;
+};
+
+export type SendMessageResponse = Message | ErrorResponse;
 
 export type GetCaregiversResponse = Array<CaregiverWithoutPassword> | ErrorResponse;
 

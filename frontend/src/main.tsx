@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { OpenAPI } from "../api/core/OpenAPI";
 import { env } from "./env";
 import { RecoilRoot } from "recoil";
+import { ChatProvider } from "./contex/ChatContex.tsx";
 
 OpenAPI.BASE = env.BACKEND_URL;
 
@@ -16,7 +17,9 @@ const RootWithRecoil: React.FC = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <RecoilRoot key={recoilKey}>
-                <App onLogedOut={resetRecoil} />
+                <ChatProvider>
+                    <App onLogedOut={resetRecoil} />
+                </ChatProvider>
             </RecoilRoot>
         </QueryClientProvider>
     );
