@@ -15,11 +15,12 @@ import { getErrorMessage } from "../utils.js";
 import elasticClient from "../client.js";
 import { LogEntry } from "./logController.js";
 import { z } from "zod";
+import { GenerateContentResponse, GoogleGenAI, createPartFromUri } from "@google/genai";
 
 const prisma = new PrismaClient();
-
-const googleApiKey = process.env.GOOGLE_API_KEY || "";
-const openAiApiKey = process.env.OPENAI_API_KEY || "";
+const ai = new GoogleGenAI({
+    apiKey: process.env.GOOGLE_API_KEY || "",
+});
 
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 
@@ -34,6 +35,25 @@ interface VoiceConvertingRequest {
     inputMimeType: string;
     base64Audio: string;
 }
+const TaskSchema = z.object({
+    subTaskId: z.string(),
+    startTime: z.string().regex(timeRegex, "Invalid time format, expected HH:mm:ss"),
+    endTime: z.string().regex(timeRegex, "Invalid time format, expected HH:mm:ss"),
+    done: z.boolean(),
+    note: z.string(),
+});
+
+const TasksSchema = z.array(TaskSchema);
+
+const base64ToBlob = (base64: string, mimeType: string): Blob => {
+    const byteChars = atob(base64);
+    const byteNumbers = new Array(byteChars.length);
+    for (let i = 0; i < byteChars.length; i++) {
+        byteNumbers[i] = byteChars.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+};
 
 @Route("")
 @Tags("Voice Converter")
@@ -91,54 +111,55 @@ export class VoiceConverterController extends Controller {
                 return { error: "Nincsenek elérhető tevékenységek a naplóhoz", message: "" } as ErrorResponse;
             }
 
-            const googleApiBody = {
-                config: {
-                    encoding: types[0].googleType,
-                    languageCode: "hu-HU",
-                    sampleRateHertz: 48000,
-                },
-                audio: {
-                    content: base64Audio,
-                },
-            };
+            let voiceToTextResponse: GenerateContentResponse | null = null;
 
-            const googleResponse = await fetch(`https://speech.googleapis.com/v1/speech:recognize`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${googleApiKey}`,
-                },
-                body: JSON.stringify(googleApiBody),
+            const file = await ai.files.upload({
+                file: base64ToBlob(base64Audio, types[0].type),
+                config: { mimeType: types[0].type.split(";")[0] },
             });
 
-            if (!googleResponse.ok) {
+            try {
+                if (!file.uri) {
+                    this.setStatus(500);
+                    return { error: "Hiba a fájl feltöltésekor a Google szerverére", message: "" } as ErrorResponse;
+                }
+
+                voiceToTextResponse = await ai.models.generateContent({
+                    model: "gemini-2.5-flash",
+                    contents: [
+                        createPartFromUri(file.uri, types[0].type.split(";")[0]),
+                        {
+                            text: "Transcribe the speech in this audio exactly, including pauses and filler words. The speech is in Hungarian.",
+                        },
+                    ],
+                });
+            } catch (error) {
                 this.setStatus(500);
                 return {
                     error: "Hiba a Google Speech-to-Text API hívásakor",
-                    message: await googleResponse.text(),
+                    message: getErrorMessage(error),
                 } as ErrorResponse;
             }
 
-            const googleData = await googleResponse.json();
-            const text = googleData.results?.[0]?.alternatives?.[0]?.transcript || "";
+            if (!voiceToTextResponse) {
+                this.setStatus(500);
+                return { error: "Üres válasz a Google Speech-to-Text API-tól", message: "" } as ErrorResponse;
+            }
 
-            if (!text) {
+            if (!voiceToTextResponse.text) {
                 this.setStatus(500);
                 return { error: "Nem sikerült szöveget kinyerni a hangfájlból", message: "" } as ErrorResponse;
             }
 
-            const openAiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${openAiApiKey}`,
-                },
-                body: JSON.stringify({
-                    model: "gpt-5-nano",
-                    messages: [
+            let convertResponse: GenerateContentResponse | null = null;
+
+            try {
+                convertResponse = await ai.models.generateContent({
+                    config: { responseJsonSchema: TasksSchema },
+                    model: "gemini-2.5-flash",
+                    contents: [
                         {
-                            role: "system",
-                            content: `
+                            text: `
                             You are a healthcare data analysis assistant.
                             Your goal is to process caregivers' voice-to-text transcriptions and update or extend an existing structured list of subtasks in JSON format.
 
@@ -158,20 +179,20 @@ export class VoiceConverterController extends Controller {
 
                             Your job:
                             - Parse the transcription and identify which subtasks are mentioned.
-                            - If a task already exists in the initial list, **update it** with new information (e.g., add times, mark as done, append new notes).
-                            - If the transcription describes a new action, **append it** as a new subtask.
+                            - If a task already exists in the initial list, update it with new information (e.g., add times, mark as done, append new notes).
+                            - If the transcription describes a new action, append it as a new subtask.
                             - Use the predefined subTaskId list to map names to IDs.
                             - Infer start and end times from context (“before lunch”, “around 10”, “after breakfast”).
                             - If times are unclear, estimate logically based on order and other timestamps.
                             - Determine “done” from context (e.g., “I measured” → done = true, “I will measure” → done = false).
                             - Keep any important medical or contextual information in the note field.
-                            - Keep the output **as a valid JSON array** that represents the updated task list.
-                            - Do not include any explanation or text — output JSON only.
+                            - Don't add not important information to the note field. Only important medical or contextual information.
+                            - Keep the output as a valid JSON array that represents the updated task list.
+                            - Do not include any explanation or text. Output JSON only. Do not include Markdown formatting, code blocks, or any text before or after.
                             `,
                         },
                         {
-                            role: "user",
-                            content: `
+                            text: `
                             Subtask list:
                             ${JSON.stringify(subtasks)}
 
@@ -179,42 +200,49 @@ export class VoiceConverterController extends Controller {
                             ${JSON.stringify(log.tasks || [])}
 
                             Caregiver transcription:
-                            "${text}"`,
+                            "${voiceToTextResponse.text}"`,
                         },
                     ],
-                }),
-            });
-
-            if (!openAiResponse.ok) {
+                });
+            } catch (error) {
                 this.setStatus(500);
-                return { error: "Hiba az OpenAI API hívásakor", message: await openAiResponse.text() } as ErrorResponse;
+                return {
+                    error: "Hiba a Google API hívásakor",
+                    message: getErrorMessage(error),
+                } as ErrorResponse;
             }
 
-            const openAiData = await openAiResponse.json();
+            if (!convertResponse) {
+                this.setStatus(500);
+                return { error: "Üres válasz a Google API-tól", message: "" } as ErrorResponse;
+            }
 
-            const TaskSchema = z.object({
-                subTaskId: z.enum([...subtasks.map((st) => st.id)]),
-                startTime: z.string().regex(timeRegex, "Invalid time format (expected HH:mm:ss)"),
-                endTime: z.string().regex(timeRegex, "Invalid time format (expected HH:mm:ss)"),
-                done: z.boolean(),
-                note: z.string().max(500).optional().default(""),
-            });
+            const parsedResult = TasksSchema.safeParse(JSON.parse(convertResponse.text || "[]"));
 
-            const TasksSchema = z.array(TaskSchema);
-            const parseResult = TasksSchema.safeParse(JSON.parse(openAiData.choices[0].message.content));
-
-            if (!parseResult.success) {
+            if (!parsedResult.success) {
                 this.setStatus(500);
                 return {
                     error: "Hiba a feladatok feldolgozásakor",
-                    message: JSON.stringify(parseResult.error.message),
+                    message: JSON.stringify(parsedResult.error.issues),
+                } as ErrorResponse;
+            }
+
+            const tasksWithValidIds = parsedResult.data.filter((task) =>
+                subtasks.some((subtask) => subtask.id === task.subTaskId),
+            );
+
+            if (tasksWithValidIds.length === 0) {
+                this.setStatus(500);
+                return {
+                    error: "Nincsenek érvényes feladatok a feldolgozott eredményben",
+                    message: "",
                 } as ErrorResponse;
             }
 
             await elasticClient.update({
                 index: "logs",
                 id: hit._id,
-                doc: { tasks: parseResult.data },
+                doc: { tasks: tasksWithValidIds },
                 refresh: "wait_for",
             });
 
