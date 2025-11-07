@@ -1,0 +1,4 @@
+watchdog
+pdfminer.six
+google-genai
+python-dotenv
