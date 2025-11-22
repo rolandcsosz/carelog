@@ -2,8 +2,9 @@ import { useCallback } from "react";
 import { useCaregiverModel } from "./useCaregiverModel";
 import { compareTime, convertToGlobalUTC } from "../utils";
 import { LogEntry, RecipientWithoutPassword, Schedule } from "../../api/types.gen";
+import { useAdminModel } from "./useAdminModel";
 
-const useQueryData = () => {
+const useQueryData = ({ mode = "caregiver" }: { mode?: "caregiver" | "admin" } = { mode: "caregiver" }) => {
     const {
         recipients: caregiverRecipients,
         relationships: caregiverRelationShips,
@@ -11,7 +12,7 @@ const useQueryData = () => {
         schedules: caregiverSchadules,
         taskTypes,
         subTasks,
-    } = useCaregiverModel();
+    } = mode === "caregiver" ? useCaregiverModel() : useAdminModel();
 
     // Caregiver helper
     const getRecipientForLog = useCallback(

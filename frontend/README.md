@@ -37,3 +37,9 @@
 ## Known issues
 
 - [ ]  Transition on navigation is not smooth on desktop view. `useNavigation.ts` change requered. Low priority issue. ⬇️
+- [ ]  
+
+## Parts to improve
+
+- [ ]  Add tests for components and pages. High priority issue. ⬆️
+- [ ]  Merge useAdminModel and useUserModel into a single hook. Medium priority issue. ⬆️

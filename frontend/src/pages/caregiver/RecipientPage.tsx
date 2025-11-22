@@ -13,7 +13,7 @@ import plusButton from "../../assets/add-button-icon-secondary.svg";
 import usePopup from "../../hooks/usePopup";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 import TextArea from "../../components/TextArea";
-import LogEdit from "./LogEdit";
+import LogEdit from "../LogEdit";
 import { RecipientWithoutPassword, Todo } from "../../../api/types.gen";
 
 interface RecipientPageProps {
@@ -154,7 +154,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                             key={index}
                             date={new Date(log.date)}
                             onClick={() => {
-                                addPageToStack(<LogEdit log={log} />);
+                                addPageToStack(<LogEdit log={log} mode="caregiver" />);
                             }}
                         />
                     ))}

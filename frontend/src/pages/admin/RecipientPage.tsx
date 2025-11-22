@@ -13,6 +13,9 @@ import usePopup from "../../hooks/usePopup";
 import { getDefaultErrorModal, getDefaultSuccessModal } from "../../utils";
 import Switch from "../../components/Switch";
 import { CaregiverWithoutPassword, RecipientWithoutPassword } from "../../../api/types.gen";
+import useQueryData from "../../hooks/useQueryData";
+import DateCard from "../../components/DateCard";
+import LogEdit from "../LogEdit";
 
 interface RecipientPageProps {
     recipient: RecipientWithoutPassword;
@@ -20,7 +23,7 @@ interface RecipientPageProps {
 
 const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const [menu, setMenu] = useState<string>("Adatok");
-    const { removeLastPageFromStack } = useNavigation();
+    const { removeLastPageFromStack, addPageToStack } = useNavigation();
     const [name] = useState<string>(recipient.name);
     const [phone, setPhone] = useState<string>(recipient.phone);
     const [email, setEmail] = useState<string>(recipient.email);
@@ -31,6 +34,11 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
     const [selectedCaregiver, setSelectedCaregiver] = useState<CaregiverWithoutPassword | null>(caregiver || null);
     const [replacement, setReplacement] = useState<boolean>(false);
     const { openPopup, closePopup } = usePopup();
+    const { getLogsForRecipient } = useQueryData({ mode: "admin" });
+    const logsForRecipient =
+        getLogsForRecipient(recipient)?.sort((a, b) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }) || [];
 
     const caregiverIds = caregivers.list
         ?.filter((caregiver) =>
@@ -188,7 +196,7 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
 
     return (
         <UserProfile userName={name} backButtonOnClick={removeLastPageFromStack}>
-            <ButtonGroup menus={["Adatok", "Beosztás"]} onChange={setMenu} />
+            <ButtonGroup menus={["Adatok", "Naplók", "Beosztás"]} onChange={setMenu} />
 
             {menu === "Adatok" && (
                 <div className={styles.dataContainer}>
@@ -255,6 +263,20 @@ const RecipientPage: React.FC<RecipientPageProps> = ({ recipient }) => {
                             fillWidth={true}
                         />
                     </div>
+                </div>
+            )}
+
+            {menu === "Naplók" && (
+                <div className={styles.logContainer}>
+                    {logsForRecipient?.map((log, index) => (
+                        <DateCard
+                            key={index}
+                            date={new Date(log.date)}
+                            onClick={() => {
+                                addPageToStack(<LogEdit log={log} mode="admin" />);
+                            }}
+                        />
+                    ))}
                 </div>
             )}
 

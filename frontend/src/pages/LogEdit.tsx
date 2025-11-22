@@ -1,25 +1,27 @@
 import styles from "./LogEdit.module.scss";
 import React from "react";
-import { useCaregiverModel } from "../../hooks/useCaregiverModel.ts";
-import { getDateString } from "../../utils.tsx";
-import { Button } from "../../components/Button.tsx";
-import useQueryData from "../../hooks/useQueryData.ts";
-import usePopup from "../../hooks/usePopup.tsx";
-import { PopupActionResult } from "../../types";
-import LogCard from "../../components/LogCard.tsx";
-import IconButton from "../../components/IconButton.tsx";
-import useScroll from "../../hooks/useScroll.ts";
-import chevronLeft from "../../assets/chevron-left.svg";
-import useNavigation from "../../hooks/useNavigation.ts";
-import { LogEntry } from "../../../api/types.gen.ts";
+import { useCaregiverModel } from "./../hooks/useCaregiverModel.ts";
+import { getDateString } from "./../utils.tsx";
+import { Button } from "./../components/Button.tsx";
+import useQueryData from "./../hooks/useQueryData.ts";
+import usePopup from "./../hooks/usePopup.tsx";
+import { PopupActionResult } from "./../types";
+import LogCard from "./../components/LogCard.tsx";
+import IconButton from "./../components/IconButton.tsx";
+import useScroll from "./../hooks/useScroll.ts";
+import chevronLeft from "./../assets/chevron-left.svg";
+import useNavigation from "./../hooks/useNavigation.ts";
+import { LogEntry } from "./../../api/types.gen.ts";
+import { useAdminModel } from "../hooks/useAdminModel.ts";
 
 interface LogEditProps {
     log: LogEntry;
+    mode?: "caregiver" | "admin";
 }
 
-const LogEdit: React.FC<LogEditProps> = ({ log }) => {
-    const { getRecipientForLog } = useQueryData();
-    const { logs } = useCaregiverModel();
+const LogEdit: React.FC<LogEditProps> = ({ log, mode = "caregiver" }) => {
+    const { getRecipientForLog } = useQueryData({ mode });
+    const { logs } = mode === "caregiver" ? useCaregiverModel() : useAdminModel();
     const recipient = getRecipientForLog(log);
     const { openPopup, closePopup } = usePopup();
     const { scrollPosition } = useScroll();

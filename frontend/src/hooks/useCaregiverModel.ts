@@ -336,6 +336,11 @@ export const useCaregiverModel = () => {
         schedules: {
             list: schedule,
             refetch: refetchSchedules,
+            fetchForRecipient: fetchSchedules,
+            fetchForCaregiver: fetchSchedules,
+            add: () => Promise.resolve(),
+            edit: () => Promise.resolve(),
+            remove: () => Promise.resolve(),
         },
         relationships: {
             list: relationships,

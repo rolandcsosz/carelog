@@ -7,16 +7,21 @@ import {
     CaregiverWithoutPassword,
     CreateCaregiverData,
     CreateCaregiverResponse,
+    CreateLogData,
+    CreateLogResponse,
     CreateRecipientData,
     CreateRecipientResponse,
     CreateScheduleData,
     DeleteCaregiverData,
     DeleteCaregiverResponse,
+    DeleteLogData,
+    DeleteLogResponse,
     DeleteRecipientData,
     DeleteRecipientResponse,
     DeleteRelationshipData,
     DeleteRelationshipResponse,
     DeleteScheduleData,
+    LogEntry,
     RecipientCaregiverRelationship,
     RecipientWithoutPassword,
     Schedule,
@@ -25,6 +30,8 @@ import {
     UpdateAdminResponse,
     UpdateCaregiverData,
     UpdateCaregiverResponse,
+    UpdateLogData,
+    UpdateLogResponse,
     UpdateRecipientData,
     UpdateRecipientResponse,
     UpdateRelationshipData,
@@ -51,6 +58,10 @@ import {
     updateRelationship,
     updateSchedule,
     getSchedulesForRecipient,
+    createLog,
+    updateLog,
+    deleteLog,
+    getLogs,
 } from "../../api/sdk.gen";
 import { useAuth } from "./useAuth";
 import {
@@ -74,6 +85,8 @@ const fetchLogedInUser = (request: RequestFnType, id: string) =>
 
 const fetchRelationships = (request: RequestFnType) =>
     fetchData(request, getAllRelationships, undefined, [] as RecipientCaregiverRelationship[]);
+
+const fetchLogs = (request: RequestFnType) => fetchData(request, getLogs, undefined, [] as LogEntry[]);
 
 const fetchSchedulesForRecipient = (request: RequestFnType, recipientId: string) =>
     fetchData(request, getSchedulesForRecipient, { recipientId }, [] as Schedule[]);
@@ -117,6 +130,41 @@ export const useAdminModel = () => {
         queryFn: () => fetchRelationships(request),
         enabled: !!user?.id && caregivers.length > 0 && user.role === "admin",
         staleTime: 0,
+    });
+
+    const { data: logs, refetch: refetchLogs } = useQuery<LogEntry[]>({
+        queryKey: ["logs", caregivers?.map((c) => c.id).join(","), recipients?.map((c) => c.id).join(",")],
+        queryFn: () => fetchLogs(request),
+        enabled: !!user?.id && user?.role === "admin",
+        staleTime: 0,
+    });
+
+    const { mutate: addLog } = useApiMutation<CreateLogData, CreateLogResponse>({
+        request,
+        apiCall: createLog,
+        throwMessage: "Hiba történt a napló hozzáadásakor.",
+        onSuccess: () => {
+            setTimeout(() => {
+                refetchLogs();
+            }, 1000);
+        },
+        onError: (error) => console.error("Error adding log:", error),
+    });
+
+    const { mutate: editLog } = useApiMutation<UpdateLogData, UpdateLogResponse>({
+        request,
+        apiCall: updateLog,
+        throwMessage: "Hiba történt a napló szerkesztése során.",
+        onSuccess: refetchLogs,
+        onError: (error) => console.error("Error editing log:", error),
+    });
+
+    const { mutate: removeLog } = useApiMutation<DeleteLogData, DeleteLogResponse>({
+        request,
+        apiCall: deleteLog,
+        throwMessage: "Hiba történt a napló törlése során.",
+        onSuccess: refetchLogs,
+        onError: (error) => console.error("Error deleting log:", error),
     });
 
     const { mutate: addNewCaregiver } = useApiMutation<CreateCaregiverData, CreateCaregiverResponse>({
@@ -229,11 +277,29 @@ export const useAdminModel = () => {
             add: addSchedule,
             edit: editSchedule,
             remove: removeSchedule,
+            list: [],
+            refetch: () => Promise.resolve(),
         },
         user: {
             info: logedInUser,
             update: updateLogedInUser,
             setPassword: setPassword,
+        },
+        taskTypes: {
+            list: [],
+            refetch: () => Promise.resolve(),
+        },
+        subTasks: {
+            list: [],
+            add: () => Promise.resolve(),
+            refetch: () => Promise.resolve(),
+        },
+        logs: {
+            list: logs,
+            add: addLog,
+            refetch: refetchLogs,
+            edit: editLog,
+            remove: removeLog,
         },
         refetchData,
     };
