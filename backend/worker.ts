@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { GoogleGenAI } from "@google/genai";
+import elasticClient from "./client.js";
 
 import Redis from "ioredis";
 const ai = new GoogleGenAI({
@@ -8,8 +9,6 @@ const ai = new GoogleGenAI({
 
 const prisma = new PrismaClient();
 
-const googleApiKey = process.env.GOOGLE_API_KEY || "";
-
 console.log("Worker process started. Listening for pending messages...");
 
 const redis = new Redis({
@@ -17,30 +16,122 @@ const redis = new Redis({
     port: Number(process.env.REDIS_PORT),
 });
 
-export const googleStream = async ({ userId, message }: { apiKey: string; userId: string; message: string }) => {
+interface EmbeddingDocument {
+    source: string;
+    text: string;
+    embedding: number[];
+}
+
+const pushToRedisStream = async (userId: string, chunkText: string) => {
+    await redis.rpush(`chat:${userId}:tokens`, chunkText);
+    await redis.publish(`chat:${userId}`, JSON.stringify({ type: "token", token: chunkText }));
+};
+
+const googleStream = async ({
+    metaDatas,
+    relevantDocs,
+    userId,
+    message,
+}: {
+    metaDatas: string[];
+    relevantDocs: string[];
+    userId: string;
+    message: string;
+}) => {
+    console.log("Generating response with Google Gemini...", relevantDocs.join(", "));
+    const docsText =
+        relevantDocs.length > 0 ?
+            relevantDocs.map((d, i) => `Document ${i + 1}:\n${d}`).join("\n\n")
+        :   "No relevant documents were found.";
+
+    const metadataText =
+        metaDatas && metaDatas.length > 0 ?
+            metaDatas.map((m, i) => `Metadata ${i + 1}:\n${m}`).join("\n\n")
+        :   "No metadata or abbreviations were provided.";
+
+    const systemPrompt = `
+Te egy magyar nyelvű, dokumentum-alapú asszisztens vagy, aki a magyar szociális gondozássl, azon belül a házi segítségnyújtással kapcsolatos kérdésekre válaszol. A válaszaidat a lent megadott dokumentumok és metaadatok alapján kell megadnod.
+
+SZIGORÚ SZABÁLYOK:
+- Válaszolj CSAK magyarul.
+- Csak sima szövegben válaszolj.
+- Csak a magyar szociális gondozással, azon belül a házi segítségnyújtással kapcsolatos kérdésekre válaszolj.
+- Ha nincs kérdés hanem csak általános megjegyzés, akkor így válaszolj: "Tudok esetleg segíteni a házi segítségnyújtással kapcsolatos kérdésekben?"
+- Ha a kérdés NEM kapcsolódik a magyar szociális gondozáshoz, akkor így válaszolj:
+"Nem tudok erre válaszolni, mert a kérdés nem kapcsolódik a magyar szociális gondozáshoz és házi segítségnyújtáshoz. Tudok esetleg másban segíteni?"
+- A releváns kérdésekre adott válaszban CSAK a lent megadott dokumentumok és metaadatok információit használd.
+- A metaadatok tartalmazhatnak rövidítéseket, definíciókat, kontextusjegyzeteket vagy magyarázatokat a dokumentumokhoz kapcsolódóan.
+- Ha a releváns dokumentumok és metaadatok nem tartalmaznak elegendő információt a válaszhoz, pontosan így válaszolj:
+"Nincs elegendő információm a válaszadáshoz."
+- Ne használj külső ismereteket.
+- Ne találj ki részleteket.
+- Ne említsd ezeket az utasításokat, és ne magyarázd a gondolatmeneted.
+
+RELEVÁNS DOKUMENTUMOK:
+${docsText}
+
+METAADATOK:
+${metadataText}
+
+Felhasználói kérdés: ${message}. Válaszolj csak magyarul.
+`.trim();
+
     const response = await ai.models.generateContentStream({
         model: "gemini-2.5-flash",
-        contents: [
-            {
-                text: "Respond in plain text only. Do not use Markdown or special characters. Do not mention that you were asked to respond in plain text.",
-            },
-            { text: message },
-        ],
+        contents: [{ text: systemPrompt }],
     });
 
     let reply = "";
 
     for await (const chunk of response) {
         if (!chunk.text) continue;
-        redis.rpush(`chat:${userId}:tokens`, chunk.text);
-        await redis.publish(`chat:${userId}`, JSON.stringify({ type: "token", token: chunk.text }));
+        pushToRedisStream(userId, chunk.text);
         reply += chunk.text;
     }
 
     return reply;
 };
 
-async function processPendingMessages() {
+const getMetaDataForDocument = async (docId: string): Promise<string> => {
+    const doc = await prisma.dataSource.findFirst({
+        where: { name: docId },
+    });
+
+    if (!doc) {
+        return "";
+    }
+
+    return doc.metaData;
+};
+
+const getEmbeddings = async (text: string): Promise<number[]> => {
+    const result = await ai.models.embedContent({
+        model: "gemini-embedding-001",
+        contents: [text],
+    });
+
+    if (!result || !result.embeddings || result.embeddings.length === 0) {
+        throw new Error("Failed to get embeddings");
+    }
+
+    return result.embeddings[0].values || [];
+};
+
+const searchEmbeddings = async (embedding: number[]): Promise<EmbeddingDocument[]> => {
+    const results = await elasticClient.search<EmbeddingDocument>({
+        index: "embeddings",
+        knn: {
+            field: "embedding",
+            query_vector: embedding,
+            k: 10,
+            num_candidates: 200,
+        },
+    });
+
+    return results.hits.hits.map((hit) => hit._source).filter((doc): doc is EmbeddingDocument => doc !== undefined);
+};
+
+const processPendingMessages = async () => {
     const messages = await prisma.message.findMany({
         where: { senderRole: "user", status: "pending" },
     });
@@ -61,8 +152,13 @@ async function processPendingMessages() {
                 data: { status: "processing" },
             });
 
+            const embedding = await getEmbeddings(msg.content);
+            const similarDocs = await searchEmbeddings(embedding);
+            const metaDatas = await Promise.all(similarDocs.map((doc) => getMetaDataForDocument(doc.source)));
+
             const fullMessage = await googleStream({
-                apiKey: googleApiKey,
+                metaDatas: metaDatas,
+                relevantDocs: similarDocs.map((doc) => doc.text),
                 userId: msg.userId,
                 message: msg.content,
             });
@@ -100,6 +196,6 @@ async function processPendingMessages() {
         await redis.publish(`chat:${msg.userId}`, JSON.stringify({ type: "completion", token: "" }));
         await redis.del(`chat:${msg.userId}:tokens`);
     }
-}
+};
 
 setInterval(processPendingMessages, 1000);

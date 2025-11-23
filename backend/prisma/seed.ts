@@ -1,4 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+import { promises as fs } from "fs";
+import path from "path";
+import { loadCsvToMap } from "../utils.js";
 
 const prisma = new PrismaClient();
 
@@ -13,7 +16,7 @@ async function hasExistingData() {
         prisma.todo.count(),
     ]);
 
-    return counts.some((count) => count > 0);
+    return counts.some((count: number) => count > 0);
 }
 
 async function main() {
@@ -251,5 +254,34 @@ export const initMimeTypesIfNeeded = async () => {
         await prisma.mimeType.create({ data: { type: "audio/mp4", googleType: "MP4" } });
         await prisma.mimeType.create({ data: { type: "audio/ogg;codecs=opus", googleType: "OGG_OPUS" } });
         console.log("Initial mime types created.");
+    }
+};
+
+export const initSourceDataMetaInfoIfNeeded = async () => {
+    const dataSourceCount = await prisma.dataSource.count();
+
+    if (dataSourceCount > 0) {
+        return;
+    }
+
+    const embeddingDir = path.resolve(__dirname, "../rag/data/embeddings");
+    const rawDir = path.resolve(__dirname, "../rag/data/raw");
+    const file = path.join(embeddingDir, "meta.json");
+    const urlMapping = path.join(rawDir, "source.csv");
+
+    try {
+        const content = await fs.readFile(file, "utf-8");
+        const meta = JSON.parse(content);
+
+        const sourceMapping = loadCsvToMap(urlMapping);
+
+        meta.forEach(async (item: { file: string; metaInfo: string }) => {
+            const url = sourceMapping.get(item.file) || "";
+            await prisma.dataSource.create({ data: { name: item.file, metaData: item.metaInfo, url } });
+        });
+
+        console.log("Initial mime types created.");
+    } catch (err) {
+        console.error("Error reading fjson files:", err);
     }
 };

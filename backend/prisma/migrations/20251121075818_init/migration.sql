@@ -102,6 +102,16 @@ CREATE TABLE "Message" (
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "DataSource" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "metaData" TEXT NOT NULL,
+
+    CONSTRAINT "DataSource_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 

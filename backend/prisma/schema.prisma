@@ -98,3 +98,10 @@ model Message {
   userId      String
   caregiver   Caregiver @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model DataSource {
+  id        String   @id @default(uuid())
+  name      String
+  url       String
+  metaData  String
+}

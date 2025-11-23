@@ -9,7 +9,7 @@ import sys
 PROCESSED_DIR = "data/processed"
 EMBEDDING_DIR = "data/embeddings"
 OUTPUT_FILE = "data/embeddings/embeddings.json"
-MODEL = "models/embedding-001"
+MODEL = "gemini-embedding-001"
 CHUNK_SIZE = 500
 OVERLAP = 50
 

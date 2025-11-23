@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+
 export const getErrorMessage = (error: unknown): string => {
     if (error instanceof Error) {
         return error.message;
@@ -26,4 +28,22 @@ export const parseRows = <T>(rows: unknown): T[] => {
     } catch {
         return [];
     }
+};
+
+export const loadCsvToMap = (filePath: string): Map<string, string> => {
+    const data = readFileSync(filePath, "utf8");
+    const lines = data.split(/\r?\n/);
+
+    const map = new Map<string, string>();
+
+    for (const line of lines) {
+        if (!line.trim()) continue;
+
+        const [key, value] = line.split(",");
+        if (key && value) {
+            map.set(key.trim(), value.trim());
+        }
+    }
+
+    return map;
 };
