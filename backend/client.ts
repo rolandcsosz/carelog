@@ -92,6 +92,7 @@ export const createEmbeddingsIndexIfNotExists = async (): Promise<void> => {
             console.log("✔ Created 'embeddings' index in Elasticsearch.");
         } else {
             console.log("✔ 'embeddings' index already exists.");
+            return;
         }
 
         const rawData = await fs.readFile("./rag/data/embeddings/embeddings.json", "utf-8");

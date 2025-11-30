@@ -38,7 +38,6 @@ const googleStream = async ({
     userId: string;
     message: string;
 }) => {
-    console.log("Generating response with Google Gemini...", relevantDocs.join(", "));
     const docsText =
         relevantDocs.length > 0 ?
             relevantDocs.map((d, i) => `Document ${i + 1}:\n${d}`).join("\n\n")
