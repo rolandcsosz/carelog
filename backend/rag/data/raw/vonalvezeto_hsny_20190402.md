@@ -1,0 +1,929 @@
+﻿|**2019**|
+
+**HÁZI SEGÍTSÉGNYÚJTÁS**
+
+szolgáltatást biztosítók számára
+
+A dokumentum a 2019. január 1-jén hatályos szabályokat tartalmazza, ezért a módosítások miatt javasolt mindig a hatályos törvényekben, rendeletekben ellenőrizni a dokumentumban rögzített jogszabályi hivatkozásokat, tartalmi elemeket.
+
+Impresszum
+
+Készítette:
+
+Schweitzer Albert Református Szeretetotthon Módszertani Osztálya 
+Szociális és Gyermekvédelmi Főigazgatóság Módszertani Főosztálya
+
+**Az ajánlás készítésében közreműködött:** 
+Beszterczey András 
+Borosné Háfra Szilvia 
+Nagy Edina 
+Nagy-Szűcs Johanna 
+Ráczné Németh Teodóra 
+Vertetics Viola
+
+**G`rlikr.stmoLÉT1 Éti [iYl.5 4I V I**F**UI tiiI**
+
+**L Előszó	5**
+
+**II. Szakmai meghatározások, fogalmak	5**
+
+1. A házi segítségnyújtás meghatározása	5
+1. Hazai szabályozás	6
+1. Általános alapelvek	7
+
+**III. A házi segítségnyújtás célcsoportja**	8
+
+**IV. A házi segítségnyújtás dokumentációja**	9
+
+Megkereső tevékenység	9
+
+1) Tájékoztatás, a jelzőrendszer működtetése	9
+1) A szolgáltatás kérelmezése	9
+1) Várakozók jelentése	14
+
+Állapotfelmérés, jogosultsági vizsgálat	14
+
+1) Gondozási szükséglet vizsgálat értékelő adatlap	14
+
+Ellátási jogviszony létrejötte	17
+
+1) Megállapodás megkötéséhez, aláírásához kapcsolódó tevékenységek	17
+1) Térítési díj összegéről szóló tájékoztató	20
+1) Nyilatkozat önkéntes fizetésről	21
+1) KENYSZI	21
+1) Országos Jelentési Rendszer 	23
+
+**V. A házi segítségnyújtás szolgáltatási elemei**	23
+
+**VI. Tevékenységnapló**	27
+
+**VII. Térítési díj számítás és dokumentálása**	31
+
+1. Önköltségszámítás	31
+1. Intézményi térítési díj	31
+1. Személyi térítési díj	31
+1. Térítési díj meghatározásának szabályai	32
+1. A térítési díj dokumentálása	33
+1. A térítési díj befizetése és ellenőrzése 	35
+1. Térítési díj felülvizsgálata	35
+1. Tájékoztatás nyújtása az intézményi/személyi térítési díjról	35
+1. Példa a térítési díj számítására vonatkozóan	36
+
+**VIII. Finanszírozás**	38
+
+**IX. Feltételrendszer	41**
+
+
+Tárgyi feltételek	41
+1. Személyi feltételek	41
+
+Házi segítségnyújtás dokumentáció folyamatábra	45
+
+
+1. **Előszó**
+
+Az öregedő társadalmak adatainak tükrében, az élettartam hosszabbodásával Magyarországon is egyre nagyobb társadalmi és gazdasági kihívást jelent az idős emberek hosszú távú ápolása, gondozása.
+
+Az idősek számának növekedése következtében a szociális ellátórendszer egyre több kihívással néz szembe. Továbbra is elsődleges cél az idősek minél hosszabb ideig, saját otthonukban történő segítése, gondozása.
+
+Ennek egyik lehetséges formája a **házi segítségnyújtás,** amelyet minden településnek kötelező biztosítani a lakosság részére, így jelen módszertani ajánlással a házi segítségnyújtást **biztosító intézmények, szolgáltatók** számára szeretnénk segítséget adni.
+
+Jelen szakmai ajánlás egy egységes szerkezetben készített dokumentum, amely a jogszabályban meghatározott szakmai és működési feltételeket foglalja magába, és a mindennapi munkavégzés során, a már elsajátított ismeretek gyakorlati alkalmazását kívánja segíteni.
+
+1. **Szakmai meghatározások, fogalmak 1.** *A házi segítségnyújtás meghatározása*
+
+A szociálisan rászorult személyekről történő gondoskodás az állam, valamint az önkormányzatok kötelező feladata. Az állam és az önkormányzat mellett egyházak és nem állami fenntartók is jelentős szerepet vállalnak a szociális ellátásban. A személyes gondoskodás magában foglalja a szociális alapszolgáltatásokat és a szakosított ellátásokat. **Szociális alapszolgáltatás** megszervezésével a települési önkormányzat segítséget nyújt a szociálisan nehéz helyzetben lévő egyéneknek, hogy otthonukban, lakókörnyezetükben önálló életvitelüket fenntarthassák, valamint egészségi, mentális állapotukból vagy más okból származó problémáikat megoldhassák. A célcsoport specifikus alapszolgáltatások keretében elsősorban az időskorúak, a fogyatékos emberek, a pszichiátriai betegek, a szenvedélybetegek és a hajléktalan emberek számára nyújtanak szolgáltatásokat.
+
+A **házi segítségnyújtás** a szociális alapszolgáltatás keretében működő szolgáltatás, amely célja: az igénybe vevő részére a saját lakókörnyezetében biztosítani az önálló életvitel fenntartását előmozdító segítséget. A cél az, hogy a szolgáltató az igénybe vevő, **gondozásra szoruló ember szükségleteihez igazodó segítségnyújtást** biztosítson, amelynek mértékét és módját mindenkor a segítségre szoruló ember egészségi, szociális és pszichés állapota határozza meg.
+
+A házi segítségnyújtás keretében az igénybevevő lakókörnyezetében kell biztosítani: az önálló életvitel fenntartásához szükséges ellátást. Az ellátás keretén belül a célzottabb segítségnyújtás érdekében két szolgáltatási altípusba rendszerezzük a szolgáltatás tekintetében végezhető tevékenységeket.
+
+A házi segítségnyújtás biztosítása során szociális segítést vagy — a szociális segítés tevékenységeit is magába foglaló — személyi gondozást nyújt a szolgáltató az igénybevevő számára. A szociális segítés a szakképzettséget nem igénylő feladatokat foglalja magába:
+
+- a lakókörnyezeti higiénia megtartásában való közreműködést,
+
+  <b><sup>6</sup></b> a háztartási tevékenységben való közreműködést,
+
+- a veszélyhelyzetek kialakulásának megelőzésében és a kialakult veszélyhely-
+
+zet elhárításában történő segítségnyújtást,
+
+- szükség esetén a bentlakásos szociális intézménybe történő beköltözés segítését.
+
+Személyi gondozás keretében a szakképzettséget igénylő gondozási, ápolási feladatok is végezhetők a szociális segítés fent említett tevékenységei mellett. Személyi gondozás keretében ezek alapján biztosítani szükséges:
+
+- az ellátást igénybe vevővel a segítő kapcsolat kialakítását és fenntartását,
+- a gondozási és ápolási feladatok elvégzését,
+- a szociális segítés feladatait.
+
+*2. Hazai szabályozás*
+
+A házi segítségnyújtás szakmai hátterét több jogszabály határozza meg:
+
+- *A szociális igazgatásról és szociális ellátásokról szóló 1993. évi III. törvény —* a szolgáltatás tartalma, jogosultsági feltétel *(Továbbiakban: Szt.)*
+- *A személyes gondoskodást nyújtó szociális intézmények szakmai feladatairól és működésük feltételeiről szóló 112000. (1.7.) SzCsM rendelet* a nyújtható tevékenységek köre, az ellátás dokumentálása, a szolgáltatást nyújtókra vonatkozó képesítési előírások, személyi feltételek *(Továbbiakban: Szakmai Rendelet)*
+- *A személyes gondoskodást nyújtó szociális ellátások igénybevételéről szóló 911999. (X1.24.) SzCsM rendelet —* igénybevételi eljárás kötelező dokumentumai *(Továbbiakban: Ír.)*
+- *A gondozási szükséglet, valamint az egészségi állapoton alapuló szociális rászorultság vizsgálatának és igazolásának részletes szabályairól szóló 36/2007. (XH.22.) SZMM* *rendelet —* a törvényben meghatározott jogosultsági feltétel megállapításának szabályai *(Továbbiakban: Gszr.)*
+
+➢ *A személyes gondoskodást nyújtó szociális ellátások térítési díjáról szóló* 29/1993. *(11.17.) Künn. rendelet —* térítési díj megállapításának szabályai *(Továbbiakban: Tr.)*
+
+- *A szociális, gyermekjóléti és gyermekvédelmi igénybevevői nyilvántartásról és az országos jelentési rendszerről szóló 415/2015. (XII.23.) Korm. rendelet —* jelentési kötelezettség *(Továbbiakban: Szmr.)*
+- *A szociális, gyermekjóléti és gyermekvédelmi szolgáltatók, intézmények és hálózatok hatósági nyilvántartásáról és ellenőrzéséről szóló* 369/2013. *(K.24.) Korm. rendelet* —szolgáltatói nyilvántartás *(Továbbiakban: Sznyr.)*
+- Az *információs önrendelkezési jogról és az információszabadságról szóló 2011. évi CXII. törvény —* adatkezelésre vonatkozó szabályok
+- *A személyes gondoskodást végző személyek adatainak működési nyilvántartásáról szóló 812000. (VIII.4.) SZCSM rendelet*
+- *A személyes gondoskodást végző személyek továbbképzésérői és a szociális szakvizsgáról szóló 912000. (VIII.4.) SZCSM rendelet*
+- *Az Integrált Jogvédelmi Szolgálatról szóló 381/2016. (XII. 2.) Korm. rendelet* — ellátottjog
+- *Tárgyévre vonatkozó költségvetési törvény —* támogatás mértéke, ütköző szolgáltatások
+
+A jelen vonalvezető — a fent felsorolt jogszabályok — a megjelenés időpontjában hatályos szabályait tartalmazza. A vonalvezetőben dokumentum minták találhatók, amelyeket szükséges az Intézmény/Szolgálat helyi sajátosságainak, szabályozásának megfelelően a jogszabályi előírásokat figyelembe véve átdolgozni.
+
+*3. Általános alapelvek* 
+
+- az idős emberek társadalmi integrációja, aktivitásuk megőrzésének támogatása, társadalmi hozzájárulásuk elismerése, szükség esetén a **megfelelő gondoskodás és gondozás** biztosítása.(2002 Nemzetközi Idősügyi Cselekvési Terv),
+- **egyéni szükségletek elve:** a szolgáltatás biztosításánál figyelembe kell venni az idős személyek sajátos igényeit,
+- **biztonság és megfelelő életminőség,** a betegségek kockázatának alacsonyan tartása, az emberi méltóság megőrzése és a funkcionális önállóság elősegítése, az ellátást oly módon kell végezni, hogy figyelemmel legyenek a gondozottak személyét megillető **alkotmányos és emberi jogok maradéktalan és teljes körű tiszteletben tartására,**
+- **a táj ékoztatáshoz való jog:** az ellátottat érintő legfontosabb adatokhoz, információkhoz való hozzáférés biztosítása,
+- az **ellátást igénybevevő személyes adatainak védelme:** az ellátott személyes adatainak, élettörténetének, egészségi állapotának, szociális és anyagi helyzetének bizalmas kezelése az ellátás során (például adminisztráció, esetmegbeszélések, stb.),
+- az idős emberek társadalmi integrációja, **aktivitásuk megőrzésének támogatása,** társadalmi hozzájárulásuk elismerése, szükség esetén a megfelelő gondoskodás és gondozás biztosítása,
+- **törekvés** az életöröm, **az autonómia megőrzésére** és az önmegvalósításra.
+
+**III. A házi segítségnyújtás célcsoportja**
+
+- azok az **időskorú személyek,** akik otthonukban önmaguk ellátására saját
+
+erőből nem képesek és róluk nem vagy csak részben gondoskodnak,
+
+- azok a **pszichiátriai betegek, fogyatékos személyek, valamint szenvedélybetegek,** akik szomatikus állapotukból adódóan, az önálló életvitellel kapcsolatos feladataik ellátásában segítséget igényelnek, de egyébként önmaguk ellátására képesek, és a környezetükben nem érhető el az adott célcsoportnak megfelelő szociális alapszolgáltatás,
+- azok az **egészségi állapotuk miatt rászoruló személyek,** akik ezt az ellátási formát igénylik, és gondozási szükségletük van (akut, krónikus, rehabilitációs egészségügyi ellátás mellett/után), a saját lakókörnyezetükbe történő visszailleszkedés céljából támogatást igényelnek önálló életvitelük fenntartásához,
+- azok a személyek, akik elhelyezési kérvényüket beadták és gondozási szükségletük dokumentált szakosított ellátást biztosító intézménybe, de bekerülésükre még egyéb okok miatt (pl. férőhelyhiány) nincs lehetőség.
+
+
+**IV. A házi segítségnyújtás dokumentációja Megkereső tevékenység**
+
+1. **Tájékoztatás, a jelzőrendszer működtetése**
+
+Az **ellátási területen élő potenciális igénybevevői kör tájékoztatása (írásban vagy szóban)** a házi segítségnyújtás szolgáltatásról annak érdekében, hogy egyéni szükségleteik, rászorultságuk és saját döntésük alapján a megfelelő ellátást vehessék igénybe életminőségük javítása céljából.
+
+Az információnyújtás mellett fontos cél egy **közös jelzőrendszer kialakítása** a helyi önkormányzattal, a környék egészségügyi és szociális intézményeivel, otthonápolási szolgálataival, hogy azok az idősek, fogyatékkal élők, pszichiátriai- és szenvedélybetegek, illetve akik állapotuknál fogva rászorulnak az ellátásra **adekvát segítséget** kapjanak annak ellenére, hogy önállóan nem képesek igényelni a szolgáltatást.
+
+A jelzőrendszer tagjainak együttműködési módját rögzíteni kell, illetve **elengedhetetlen a rendszeres találkozó** a hatékony és minőségi csapatmunka érdekében.
+
+A megkereső tevékenység részletes, szolgálatra, illetve helyi adottságokra szabott kifejtését a szakmai program szolgáltatásról szóló tájékoztatás módjai, illetve a más intézményekkel történő együttműködés pont tartalmazza.
+
+1. **A szolgáltatás kérelmezése** *(ir. 3. §)*
+
+Az **ellátás igénybevétele önkéntes,** melynek **kérelmezését az ellátást igénybe vevő vagy törvényes képviselője** *(továbbiakban: jogosult)* **szóban vagy írásban teheti meg.** A Szakmai Programban, esetleg belső szabályozókban rögzíteni szükséges a szóbeli és az írásbeli kérelmezés eljárásrendjét. Önkormányzat fenntartásában működő szolgáltatók esetében további előírás, hogy a helyi rendeletben meghatározott norma figyelembevételével kell az igénybevételre vonatkozó eljárásrendet kialakítani, egyházi és nem állami fenntartásban működő intézmények esetében pedig —amennyiben a szolgáltatás működtetését ellátási szerződés alapján végzi a fenntartó — az ellátási szerződésben meghatározott előírások figyelembevételével kell meghatározni azt.
+
+Amennyiben szóban történik a kérelmezés, abban az esetben is rögzítheti a Szolgáltató a kérelmi adatokat egy általa készített dokumentumon, amelyen jelölni szükséges, hogy az ellátott szóban kérelmezte az ellátást. (Ebben az esetben a dokumentumot a jogosultnak nem kell aláírni.)
+
+Írásbeli kérelmezés esetén a kérelem **alakszerűségére nincs szabály.**
+
+Az Szt. 93. § (2) *bekezdés* értelmében: *„Ha az ellátást igénylő személy cselekvőképtelen kiskorú vagy a cselekvőképességet teljesen korlátozó gondnokság alatt áll, a kérelmet vagy indítványt — az érintett személy véleményét lehetőség szerint figyelembe véve — a törvényes képviselője terjeszti elő. A korlátozottan cselekvőképes kiskorú és a cselekvőképességében a szociális ellátás igénybevételével összefüggő jognyilatkozatok tekintetében részlegesen korlátozott személy a kérelmét, indítványát a törvényes képviselőjének beleegyezésével terjesztheti elő."* Azon ellátottak esetében, akik cselekvőképességet teljesen korlátozó, illetve cselekvőképességében a szociális ellátás igénybevételével összefüggő jognyilatkozatok tekintetében részlegesen korlátozó gondnokság alatt állnak, a **gondnokot kirendelő határozat másolatát mellékeljék —** és a határozat szerinti ügycsoport alapján, az igénybevételnél és azt követő dokumentumokon a gondnok nyilatkozata is szerepeljen - az ellátotti dokumentációba, a törvényes képviselő személyének igazolása miatt. Az igénybevételi **eljárás szakaszában nem elegendő adatkezelési nyilatkozatot aláíratni** az ellátást kérelmezővel vagy törvényes képviselőjével annak érdekében, hogy megvalósuljanak az *információs önrendelkezési jogról és az információszabadságról szóló 2011. évi CXII. törvényben* (a továbbiakban: Info. törvény). Az Info. törvény szigorú szabályokat határoz meg az adatkezeléssel összefüggő tájékoztatási kötelezettség követelményével kapcsolatban. E tájékoztatás során az érintettel közölni kell, hogy az adatkezelés az ő hozzájárulásán alapul, vagy törvény írja elő a szolgáltató számára az adatkezelési kötelezettséget. **Függetlenül attól, hogy az adatkezelés hozzájáruláson alapul vagy kötelező az adatkezelő számára, az érintettet az adatkezelés megkezdése előtt egyértelműen és részletesen tájékoztatni kell az adatai kezelésével kapcsolatos minden tényről:**
+
+- az adatkezelés céljáról,
+- az adatkezelés jogalapjáról,
+- az adatkezelésre és az adatfeldolgozásra jogosult személyekről,
+- az adatkezelés időtartamáról,
+
+arról, hogy kik ismerhetik meg az adatokat, továbbá a tájékoztatásnak ki kell terjednie
+
+- az érintett adatkezeléssel kapcsolatos jogaira és jogorvoslati lehetőségeire is. Kizárólag kötelező adatkezelés esetén történhet meg a tájékoztatás oly módon, hogy az adatkezelést előíró jogszabályi helyre hivatkozik az adatkezelő a tájékoztatás során.
+
+Az igénybevételi **eljárás során minden esetben csatolni szükséges** a mindenkor hatályos *Ír. 1. sz. melléklet I. része* szerinti a **háziorvos vagy kezelőorvos, vagy kórházi kezelés esetén a kórházi osztályos orvos által kiállított Egészségi állapotra vonatkozó igazolást,** vagy a fekvőbeteg- gyógyintézeti ellátás ideje alatt, illetve annak megszűnését követő 30 napon belül történő igénylésnél a kórházi záró jelentést.
+
+Az **orvosi igazoláson túl amennyiben a fenntartó térítési díj fizetése mellett biztosítja az ellátást, a kérelemhez jövedelemnyilatkozatot is csatolni szükséges.**
+
+A jövedelemnyilatkozat *(Ir. 3. § (3) bekezdés, 1. sz. melléklet II. rész)* kitöltése során egyértelműen jelölni szükséges azt, hogy az *Szt. 1171B. §-a* szerint **a mindenkori intézményi térítési díjjal azonos személyi térítési díj megfizetését az ellátást igénylő vagy a térítési díjat megfizető más személy vállalja-e:**
+
+**- „Igen"** választ szükséges megjelölni akkor, ha vállalja a mindenkori intézményi térítési díjjal azonos személyi térítési díj megfizetését. Ebben az esetben a jövedelemnyilatkozat fejlécének kivételével a többi részt üresen szükséges hagyni. Ez nem minősül tényleges vállalásnak, az ellátás megkezdésekor nyilatkozatot szükséges kitölteni az önkéntes fizetésre vonatkozóan. (Lásd: későbbiekben részletesen.) Az intézményi térítési díjjal azonos személyi térítési díj megfizetésére vonatkozó önkéntes vállalás legfeljebb egy év időtartam vonatkozásában tehető.
+
+**- „Nem"** válasz esetén az ellátást kérelmező jövedelmi adatait is szükséges a nyilatkozaton kitölteni.
+
+A jövedelemnyilatkozatban szereplő jövedelmekről a jövedelem típusának megfelelő iratot vagy annak másolatát kell a kérelemhez mellékelni. (pl. nyugdíjszelvény, bankszámla kivonat, stb.).
+
+A rendelet szerint a jövedelemnyilatkozat egy dokumentumban tartalmazza mind a **nagykorú,** mind a **kiskorú** igénybevevő részére vonatkozó jövedelmi adatokat. Mivel a jövedelemnyilatkozat tartalmi és formai követelményeit az *Ir. rendelet* előírja, ezért a két rész **nem választható el** egymástól.
+
+A személyes gondoskodást nyújtó **szociális ellátás feltételeiről a kérelem benyújtásakor a kérelmezőt tájékoztatni kell.** Az ellátás megkezdésének legkorábbi időpontjáról az intézmény vezetője a jogosultat, illetve hozzátartozóját értesíti. (Szt. 95. § (1) *bekezdés)* Jogszabály nem ír elő erre vonatkozóan írásbeli tájékoztatási kötelezettséget, a Szakmai Programban kell szabályozni azt, hogy az értesítés írásban vagy szóban történik.
+
+A személyes gondoskodást nyújtó **szociális ellátás iránti kérelemről** a jogszabály értelmében állami illetve önkormányzati fenntartásban működő szolgáltatás esetén **az intézményvezető, egyházi vagy nem állami fenntartó esetén a fenntartó vagy az általa kijelölt személy hoz döntést** /a továbbiakban: intézményvezetéV. Fontosnak tartjuk, hogy egyházi vagy nem állami fenntartó által működtetett szolgáltatónál kialakított döntési jogkört — munkakörhöz kötötten — az intézmény alapdokumentumaiban meg kell jeleníteni. Az intézményvezető a döntésről értesíti az ellátást igénylőt, illetve törvényes képviselőjét. Elutasítás esetén az értesítés írásban történik. *(Szt. 94IA. §)*
+
+Az igénybevételi eljáráshoz szükséges kötelező dokumentumok megléte után **a szolgáltatásra vonatkozó igényt érkezésének napján nyilvántartásba kell venni.** *(Szt. 20. §)* A nyilvántartás papíralapon és elektronikusan is vezethető. Fontos, hogy a sorrendiség megállapítható legyen, utólag ne legyen módosítható. (Pl.: nyomtatott forma esetén sorszámozás, elektronikus forma esetén időközönkénti lementés olyan formátumban, amely nem változtatható)
+
+A házi segítségnyújtás vonatkozásában **a nyilvántartásnak az alábbi adatokat kell tartalmaznia:**
+
+1. kérelmező természetes személyazonosító adatai és TAJ száma,
+1. kérelmező telefonszáma, lakó- és tartózkodási helye, értesítési címe,
+1. kérelmező állampolgársága, bevándorolt, letelepedett vagy menekült, hontalan jogállása, a szabad mozgás és tartózkodás jogára vonatkozó adat,
+1. a kérelmező cselekvőképességére vonatkozó adat,
+1. a kérelmező törvényes képviselőjének, a kérelmező megnevezett hozzátartozój ának neve, születési neve, telefonszáma, lakó- és tartózkodási helye vagy értesítési címe,
+1. a kérelem előterjesztésének időpontja,
+1. az ellátás megkezdésének és megszüntetésének dátuma, az ellátás megszüntetésének módja, oka,
+1. a jogosultsági feltételekre és az azokban bekövetkezett változásokra vonatkozó adatok, különösen a szociális rászorultság fennállása, a rászorultságot megalapozó körülményekre vonatkozó adatok.
+
+Az **a) — f) pontban** megjelölt adatokat a **szolgáltatás megkezdése előtt, tehát a kérelem benyújtásakor** szükséges nyilvántartásba venni. Majd a **szolgáltatás megkezdé-** sekor a nyilvántartó lapot a g) — h) pontban megjelölt információkkal szükséges kiegészíteni.
+
+A jogosultsági feltételekre és az azokban bekövetkezett változásokra vonatkozó adatok, különösen a szociális rászorultság fennállása, a rászorultságot megalapozó körülményekre vonatkozó adatok **pontba** házi segítségnyújtás esetében **rögzíteni szükséges,** hogy az **ellátottnak az elvégzett szükségletfelmérés** (gondozási szükséglet vizsgálat értékelő adatlap) **alapján, az igénybevételének jogosultságát mi igazolja. Ennek értelmében az alábbiakat szükséges rögzíteni,** tekintettel arra, hogy gondozási szükséglettel rendelkezik-e vagy sem az ellátást igénybe vevő személy.
+
+**Amennyiben gondozási szükséglettel rendelkezik,** abban az esetben az értékelő lap alábbi adatait szükséges rögzíteni:
+
+- pontszám
+
+- fokozat
+
+- egyéb körülmény megjelölése
+
+- szolgáltatástípus rögzítése (szociális segítés vagy személyi gondozás) a szükségletfelmérés időpontjának pontos megjelölése.
+
+**Amennyiben a jogosultság megállapításához előírt gondozási szükséglettel nem rendelkezik, és egyéb körülmények okán fennálló jogosultságot sem lehet megállapítani a kérelmet benyújtó személy számára,** abban az esetben az alábbit javasolt rögzíteni: gondozási szükséglettel nem rendelkezik, egyéb körülmények alapján jogosultság nem áll fenn.
+
+Az intézményi jogviszony megszüntetésétől számított **három hónapon belüli ismételt kérelmezése esetén az igény elbírálható a korábbi kérelem és mellékletei alapján.** Ebben az esetben **írásban nyilatkozni kell** arról, hogy a korábbi kérelemben foglaltak tekintetében időközben nem következett be változás. *(Ir. 3. § (Ici) bekezdés)*
+
+Az intézményi jogviszony megszüntetésétől **számított három hónapon túli kérelmezés esetén az igénybevételhez szükséges minden dokumentációt újra be kell nyújtani** az ellátást kérelmezőnek és/vagy törvényes képviselőjének.
+
+Az *Ir. 3. § és a 21. — 22/A. §* szerinti dokumentumok másolatként is benyújthatók, feltéve, hogy három hónapnál nem régebbiek. Nem szükséges ismételten benyújtani ezen dokumentumokat, amennyiben az igénylő ugyanannál az integrált intézménynél igényel más ellátást, ahol ellátásban részesül, feltéve, hogy a dokumentumok három hónapnál nem régebbiek. Un 3. § (5) *bekezdés)*
+
+3. **Várakozók jelentése**
+
+A szolgáltatóknál, intézményeknél **nyilvántartásban lévő kérelmezők Társadalombiztosítási Azonosító Jelét a fenntartónak a hónap első napjára vonatkozóan minden hónap ötödikéig rögzíteni szükséges** a KENYSZI (igénybevevői nyilvántartás) rendszerben. A **várakozók listájára vonatkozó adatszolgáltatási kötelezettséget minden hónapban teljesíteni szükséges** függetlenül attól, hogy az előző hónapban rögzített-e jelentést. Amennyiben nincs várakozó a házi segítségnyújtásra, az adatszolgáltatást akkor is teljesíteni szükséges minden hónapban.
+
+**Állapotfelmérés, jogosultsági vizsgálat**
+
+3. **Gondozási szükséglet vizsgálat értékelő adatlap (továbbiakban: értékelő adatlap)**
+
+A **házi segítségnyújtás ellátást megelőzően gondozási szükséglet vizsgálatot kell végezni,** melynek elvégzésekor a mindenkor hatályos *Gszr.* előírásait kell alkalmazni.
+
+Házi segítségnyújtás esetén a gondozási szükségletvizsgálat elvégzésével az a cél, hogy megállapításra kerüljön **az igényvevő ellátásra való jogosultsága.** Az értékelő adatlappal **az igénybevevő önellátási képességének felmérésére kerül sor.**
+
+A jogosultság megállapításával a **nyűjtható szolgáltatás altípusa is meghatározásra kerül.** A jogszabály értelmében amennyiben az igénybevevő az értékelő adatlapon minimum 20 pontot elér, akkor személyi gondozásra jogosult, ami magába foglalja a szociális segítés keretében nyújtható tevékenységeket is. Ha a szolgáltatást kérelmező a gondozási szükségletvizsgálat során nem éri el a 20 pontot, akkor számára az egyéb körülmények valamelyikének való megfelelés esetén szociális segítés nyújtható. Ennek értelmében a **jogosultsági vizsgálatot minden kérelmező esetében el kell végezni,** hiszen a pontszám határozza meg a jogosultságot.
+
+Amennyiben a Gszr.	*b) pontja* szerint 0. fokozatban **egyéb körülmény alapján**
+
+**megalapozott a szociális segítés,** akkor a következő igazolásokat kell az igénybe vevői iratanyagba csatolni:
+
+**az igénybe vevő hatvanötödik életévét betöltötte és egyedül él:** személyazonosításra alkalmas **igazolvány másolata,** és a jogosultság megállapításához a kliens **írásbeli nyilatkozatára is szükség van** arról, hogy jelenlegi háztartásában egyedül él. (Pl.: kérelmi adatlapon, külön nyilatkozatban vagy a gondozási szükséglet vizsgálat során készített feljegyzés formájában)
+
+- **az igénybe vevő hetvenedik életévét betöltötte és lakóhelye közműves vízellátás vagy fűtés nélküli:** személyazonosításra alkalmas **igazolvány másolata, települési önkormányzat jegyzőjének igazolása a közművesítés hiányáról**
+- **az igénybe vevő hetvenötödik életévét betöltötte:** személyazonosításra alkalmas **igazolvány másolata**
+- **egészségi állapota miatt átmeneti jelleggel —** időszakosan vagy tartósan — a **lakását nem képes kíséret nélkül elhagyni, háztartási tevékenységeit nem, vagy részlegesen képes ellátni:** ennek az állapotnak a fennállását a **kezelőorvos igazolja.**
+
+Lehetőség vart arra, hogy a kezelőorvos az egészségi állapotra vonatko-
+
+zó igazoláson szöveges formában jelezze ezt, vagy egy külön dokumentumban kerüljön igazolásra az, hogy egészségi állapota miatt átmeneti jelleggel nem tudja ellátni a fenti tevékenységeket. Az időintervallumot meg kell jelölni, tekintettel arra, hogy az „átmeneti jelleg" adja a szolgáltatáshoz való hozzáférés bemenetét.
+
+Fontos hangsúlyozni, hogy az igénybevételi eljárás során a **személyazonosításra alkalmas okmányok másolása kizárólag a jogosultság megállapítása céljából történhet meg.** A másolatra fel kell vezetni az adott napot, és azt, hogy a másolat készítésére a jogosultság megállapítása és annak igazolása céljából történt, továbbá az adatkezelő kinyilatkozza, hogy a másolatot más célból nem használja fel, és illetéktelenek a dokumentumhoz nem férnek hozzá stb. Az adattulajdonos ehhez történő hozzájárulását is rögzíteni kell a másolaton, továbbá dátummal kell ellátni azt.
+
+Az értékelő adatlap jogszabályban rögzített *(Gszr.* 3. *számú melléklet),* formája és tartalma nem változtatható. Az **értékelő adatlapot egy eredeti példányban szükséges kitölteni,** ezt követően **másolati példányát át kell adni az ellátást igénylőnek** és törvényes képviselőjének, melyet az átvevő személy aláírásával igazol.
+
+Ez kétféle módon valósítható meg:
+
+1) Az eredeti példányra felvezetni a következő szöveget: „Egy másolati példányt átvettem." Dátum, aláírás.
+1) Külön nyilatkozat formájában igazolják a dokumentum átvételét. Dátum, aláírás. A **gondozási szükségletvizsgálatot** az ellátást nyújtó részéről az **intézményvezető/szakértő végzi,** valamint a jogszabályban meghatározott pontok kitöltésében a **háziorvos minden esetben közreműködik.** A jogszabály nem határoz meg sorrendiséget a kitöltésre vonatkozóan, azonban célszerű a kérelmezési dokumentumokkal (kérelem, jövedelemnyilatkozat, egészségi állapotra vonatkozó igazolás) együtt átadni az igénybevevőnek, figyelembe véve az optimális munkaszervezést és a zökkenőmentes szolgáltatás nyújtását. A reális állapotfelmérés érdekében optimálisabb, ha az igénybevevő önmaga viszi el az értékelő adatlapot orvosának. Az igénylőnek vagy törvényes képviselőjének a gondozási szükséglet vizsgálatához be kell mutatnia a gondozási szükséglet megítélését szolgáló, rendelkezésre álló leletek és szakvélemények másolatát vagy az állapot fennállását alátámasztó igazolásokat. Ezek az igazolások abban segítik a felmérést végző személyt, hogy a kérelmező állapotának megítélése ne csak szubjektív benyomások alapján történjen, a szakember reális képet kapjon a kérelmező helyzetéről, egészségi állapotáról.
+
+Az értékelő adatlap kitöltése során a háziorvos, a kezelőorvos, a fekvőbeteg intézmény orvosa működhet közre.
+
+A fent megjelölt orvos az értékelő adatlap következő szakkérdéseinek kitöltésében közreműködőként vesz részt:
+
+- térbeli-időbeni tájékozódás
+- helyzetnek megfelelő viselkedés
+- terápiakövetés (rábízható-e az előírt gyógyszerek adagolása, szedése)
+- életvezetési képesség (felügyelet igénye)
+
+Az **ellátást nyújtó részéről az intézményvezető delegálhatja a jogszabály szerint hozzárendelt értékelő adatlap kitöltésére vonatkozó feladatot, azonban ezt hitelt érdemlő módon igazolni szükséges.** A feladat delegálását az SZMSZ-ben, a munkaköri leírásban, megbízási szerződésben vagy vállalkozási szerződésben is rögzíteni szükséges.
+
+Az értékelő adatlap **hatálya határozatlan ideig fennáll,** azzal, hogy amennyiben a házi segítségnyújtás során szociális segítés biztosítása esetén **személyi gondozási feladatok ellátása válik szükségessé,** a gondozási szükséglet vizsgálatot **ismételten el kell végezni.**
+
+Ezen felül **állapotrosszabbodás** esetén a gondozási szükséglet vizsgálatot **ismételten el kell végezni,** függetlenül attól, hogy szociális segítést vagy személyi gondozást igénybe vevő ellátottról van szó. Fontos, hogy amennyiben a szolgáltatást igénylő személy egészségi állapota vagy személyes körülményei a szolgáltatás **halaszthatatlan** biztosítását teszik szükségessé, a házi segítségnyújtás **legfeljebb 30 napos időtartamra** akkor is nyújtható, ha a **gondozási szükséglet vizsgálata még nem fejeződött be.**
+
+A gondozási szükséglet vizsgálatot házi segítségnyújtás és idősek otthona szolgáltatás kérelmezése során kell elvégezni. Ha a gondozási szükséglet vizsgálat eredménye az értékelő adatlap szerint **III. fokozatú,** a szolgáltatást igénylőt az intézményvezető, ennek hiányában a jegyző által (dokumentáltan) felkért **szakértő tájékoztatni köteles** a **bentlakásos intézményi ellátás igénybevételének lehetőségéről.** Ebben az esetben a szolgáltatást igénylő az intézményi elhelyezés időpontjáig házi segítségnyújtásra jogosult.
+
+A tájékoztatási kötelezettségre **formai előírás nincs,** alakszerűségre nincs szabály, azonban **javasolt írásban** eleget tenni ennek a követelménynek.
+
+Ha az igénybevételi eljárás dokumentumai már rendelkezésre állnak és a gondozási szükségletvizsgálat eredménye alapján a jogosultság fenn áll, akkor lehet megállapodást kötni a szolgáltatás igénybevételére.
+
+**Ellátási jogviszony létrejötte**
+
+**e. Megállapodás megkötéséhez, aláírásához kapcsolódó tevékenységek**
+
+A **megállapodás** az intézmény/szolgálat, valamint az ellátást igénybe vevő/törvényes képviselője között létrejövő szerződéses jogviszony. A megállapodás megkötése *Szt.* szerinti kötelezettség, adminisztratív feladat, azonban fontos a **megállapodás tartalmi elemeinek részletes ismertetése** az ellátást igénybe vevők részére, különös tekintettel a nyújtható szolgáltatások tartalmi elemeire, valamint a személyi térítési díj megállapítására, fizetésére vonatkozóan, amennyiben az ellátás térítési díj-fizetési kötelezettséggel jár.
+
+Az állami fenntartású intézmény esetén az ellátás iránti kérelemről az intézményvezető dönt, és erről **értesíti** az ellátást igénylőt, illetve törvényes képviselőjét. **Elutasítás** esetén az értesítés **írásban** történik. (Szt. 94/A. §).
+
+Jogszabály nem ír elő — az elutasítás kivételével — az értesítésre vonatkozóan írásbeli tájékoztatási kötelezettséget, azonban minden esetben **javasolt, de nem szükséges az értesítéseket írásba foglalni.** Az ellátás megkezdése előtt állami fenntartású intézmény (szolgáltató) esetén az intézményvezető, egyházi fenntartású és nem állami fenntartású intézmény (szolgáltató) esetén a fenntartó, vagy az általa megbízott személy az ellátást igénylővel, illetve törvényes képviselőjével írásban **megállapodást** köt. (Szt. *9410. § (1) bekezdés)*
+
+Amennyiben a fenntartó a **megállapodás aláírását delegálja,** abban az esetben **írásbeli meghatalmazást** kell adni a feladat elvégzésére kijelölt személynek. Ezt rögzíteni szükséges időtartam megjelölésével egy önálló meghatalmazásban vagy a munkaköri leírásban, de minden esetben, a Szakmai Programban és a Szervezeti és Működési Szabályzatban is rögzíteni kell.
+
+A megállapodás megkötéséhez az ellátást igénylő személy **személyes jognyilatkozata szükséges,** ha cselekvőképes vagy cselekvőképességében a szociális ellátások igénybevételével összefüggő jognyilatkozatok tekintetében részlegesen korlátozott. Ez utóbbi esetben a törvényes képviselő hozzájáruló nyilatkozatára is szükség van, a megállapodás csak az igénylő és törvényes képviselőjének együttes nyilatkozata és aláírása esetén érvényes.
+
+A gyakorlatban, sok esetben gondot okoz annak megállapítása, hogy a cselekvőképesség korlátozása milyen ügycsoportokra terjed ki. Ezt legkönnyebben az illetékes gyámhivatal gondnok kirendelő határozatából, vagy a bíróság ítéletét tartalmazó dokumentumból állapíthatja meg a szolgáltató. Amennyiben egyik dokumentum sem áll rendelkezésre, az ellátást igénylő lakóhelye szerint illetékes járási kormányhivatal gyámügyi osztályától kell hivatalos tájékoztatást kérni.
+
+A cselekvőképességében részlegesen korlátozott személy minden olyan ügyben önállóan tehet érvényes jognyilatkozatot, amely nem tartozik abba az ügycsoportba, amelyben cselekvőképességét a bíróság korlátozta. *(Ptk.)*
+
+A cselekvőképességet teljesen korlátozó gondnokság alatt álló személyt a megállapodás megkötését megelőzően meg kell hallgatni és véleményét a lehető legteljesebb mértékben figyelembe kell venni. A cselekvőképtelen nagykorú jognyilatkozata semmis, nevében gondnoka jár el.
+
+A jognyilatkozat alatt az ellátást igénybe vevő, vagy törvényes képviselője aláírását kell érteni oly módon, hogy a dokumentumban az aláírást közvetlenül megelőző részben kifejezetten utalni kell arra, hogy az aláíró ennek a dokumentumnak minden pontját megismerte és az abban foglaltakat elfogadja, a szolgáltatást igénybe veszi. A dokumentumot az aláírás előtt dátummal kell ellátni.
+
+A **megállapodásnak kötelezően tartalmaznia kell** az alábbiakat:  *(Szt.* 94/C § (3) *bek.)*
+
+- az ellátás kezdetének időpontját,
+- az ellátás időtartamát (a határozott vagy határozatlan időtartam megjelölését),
+- az igénybevevő számára nyújtott szolgáltatások tartalmát,
+- a személyi térítési díj megállapítására, fizetésére vonatkozó szabályokat, amennyiben az ellátás térítési díj fizetési kötelezettséggel jár,
+
+o Célszerű a megállapodásba csak a térítési díj megállapítására, fizetésére vonatkozó szabályokat beírni. A személyi térítési díj konkrét öszszegét a megállapodásba nem célszerű rögzíteni, mivel az minden évben változhat, így elegendő az általános szabályokat, valamint a szolgálatra jellemző specifikumokat rögzíteni. A megállapodás aláírásakor külön, írásos személyi térítési díj értesítőben tájékoztassuk az ellátottakat a szolgáltatás ellenértékeként fizetendő összegről.
+
+- az igénybevevő természetes személyazonosító adatait
+- **(Az 1996.** *évi* XX. *törvény* **4. §-a alapján a természetes személyazonosító adatok a következők:** a polgár családi és utóneve, születési családi és utóneve, születési helye, ideje, anyja születési családi és utóneve).
+
+A **megállapodás** jogszabály szerint nem kötelező, de **javasolt tartalmi elemei:** 
+
+- jogorvoslati lehetőségek,
+- az ellátás megszűnésének, megszüntetésének esetei,
+- ellátottjogi képviselő neve, elérhetősége
+
+o a dokumentumban legalább annyit célszerű feltüntetni, hogy a székhelyen/telephelyen/nyitva álló helyiségben jól látható helyen ki van függesztve), vagy
+
+o egy külön dokumentumban célszerű tájékoztatni az ellátást igénybe vevőt az ellátottjogi képviselő elérhetőségéről, fogadóórájáról, így változás esetén nem kell megállapodást módosítani.
+
+- adatkezelési nyilatkozat,
+- a személyes adatok országos TÁJ alapú elektronikus nyilvántartásban történő kezeléséről szóló tájékoztatás,
+- valamint az alábbi szöveg megjelenítése: Jelen megállapodásban nem szabályozott kérdésekben a szociális ellátásokra vonatkozó mindenkori jogszabályok, továbbá a Polgári Törvénykönyv rendelkezései az irányadók."
+
+**A fent megjelölt tartalmi elemeken kívül a megállapodás más, egyéb adatot ne tartalmazzon!**
+
+Amennyiben a nem kötelező elemek nem kerülnek rögzítésre a megállapodásban, abban az esetben **javasolt** egy **tájékoztató átadása** a megállapodás mellékleteként, amelynek átvételét a megállapodás átvételével aláírásával egyidejűleg aláírásával igazolja, annak érdekében, hogy igazolásra kerüljön, hogy megismerte a fenti szabályokat, mivel az Szt. 96. § (1) *bekezdés* szerint tájékoztatási kötelezettsége van a Szolgáltatóknak áz alábbiak vonatkozásában: igénybevétel feltételei, szolgáltatás tartalma, jogviszony megszűnése, fizetendő térítési díjra vonatkozó szabályok, jogorvoslati formák, ellátotti jogokra vonatkozó szabályok.
+
+A megállapodásban javasolt nyilatkoztatni a jogosultat arról, hogy a szociális ellátásra való jogosultság feltételeit és a jogosult, továbbá a közeli hozzátartozója természetes személyazonosító adataiban beállott változásokat haladéktalanul közli az intézmény vezetőjével. (Szt. 96. § (3) *bekezdés c) pont)*
+
+**f. Térítési díj összegéről szóló tájékoztató *(Szt.* 115. §** (2) *bekezdés)*
+
+Az ellátott által fizetendő személyi térítési díj összegét **konkrét összegben** szükséges megállapítani, melyről az ellátást igénylőt a következő esetekben írásban tájékoztatni szükséges:
+
+- megállapodás megkötésekor,
+- évente, az önköltségszámítást követően (Az intézményi térítési díjat évente, április 1-ig kell meghatároznia a fenntartónak, továbbá évente egy alkalommal módosíthatja azt. Az intézményi térítési díj megállapítását megelőzően, dokumentált módon kell elvégezni az önköltségszámítást.).
+
+Fontos, hogy a **személyi térítési díj nem haladhatja meg az intézményi térítési** díj összegét.
+
+A fentiek értelmében a megállapodás megkötésekor a **térítési díj** összegéről írásban tájékoztatni szükséges az ellátottat, amelyet célszerű a következő tartalommal elkészíteni:
+
+- a szolgáltatási önköltség összege (célszerű az értesítőbe tenni),
+- az intézményi térítési díj összege házi segítségnyújtásra vonatkozóan,
+- a személyi térítési díj összege házi segítségnyújtásra vonatkozóan,
+- a térítési díj fizetésére, jogorvoslatra vonatkozó szabályokat.
+
+A térítési díj tájékoztató ellátott részére történő átadása a következő formákban valósulhat meg: a megállapodásban, a megállapodás mellékleteként (ilyenkor a megállapodásban utalni kell arra, hogy a melléklet is a dokumentum részét képezi, a dokumentum a melléklettel együtt érvényes), külön térítési díj értesítőben. Amennyiben a személyi térítési díj összege változik erről az ellátottat a fent nevezett dokumentumok módosításával szükséges tájékoztatni.
+
+Mivel az intézményi térítési díj a szolgáltatási önköltség felső határa lehet, amely minden évben változhat, ezért erről is tájékoztatni kell az ellátottakat. Az értesítőt ebből kifolyólag minden évben az önköltségszámítást követően akkor is szükséges átadni az ellátott részére, ha a térítési díj összege nem változik, mivel az önköltség összege változhat. A szolgáltató működéséről és gazdálkodásáról szóló tájékoztatási kötelezettség teljesítésének további módja, ha a szolgáltató a székhelyén, a telephelyén, a nyitva álló egyéb helyiségben, és a honlapján is jól látható módon közzé teszi az erre vonatkozó dokumentumot.
+
+7. Nyilatkozat önkéntes fizetésről *(Szt.117113. §)*
+
+Az ellátást igénylő, az ellátott vagy a térítési díjat megfizető más személy, írásban vállalhatja a mindenkori intézményi térítési díjjal azonos személyi térítési díj megfizetését. A nyilatkozatot írásban szükséges megtenni, formai előírása nincs. Önkéntes vállalás esetén nem kell a jogszabály szerinti jövedelemvizsgálatot elvégezni és *az ir. 1. számú melléklete* szerinti jövedelemnyilatkozatnak csak a fejlécét kell tölteni.
+
+A jövedelemnyilatkozaton a mindenkori intézményi térítési díjjal azonos személyi térítési díj megfizetésének vállalása nem minősül tényleges vállalásnak. Tehát a fentiek értelmében a jövedelemnyilatkozaton *'igen'* válasz jelölése esetén szükséges önkéntes fizetésről szóló nyilatkozatot felvenni. Házi segítségnyújtás szolgáltatás esetén az ellátást igénylő vagy a térítési díjat megfizető más személy az intézményi térítési díjjal azonos személyi térítési díj megfizetését egy év időtartamra vállalhatja, amely időtartam meghosszabbítható. *(Tr. 21A..§ (1) bekezdés)*
+
+7. Központi Elektronikus Nyilvántartás a Szolgáltatást Igénybevevőkről KENYSZI *(Szt. 201C. §, Szmr. 3-11. §)*
+
+A megállapodás megkötését követően, de legkésőbb az igénybevétel első napját követő 24 óráig az intézményvezető, illetve az adatszolgáltatásra jogosult személy rögzíti az ellátást igénylő adatait az igénybevevői nyilvántartásban.
+
+Házi segítségnyújtás esetén **rögzíteni kell a megállapított gondozás! szükségletre** és az ellátott számára **nyújtott szolgáltatás tartalmára** vonatkozó adatokat is. Ennek értelmében a megállapodás rögzítésekor szociális segítést vagy személyi gondozást szükséges rögzíteni a KENYSZI rendszerben. Ha a gondozási szükséglet vagy az ellátott számára nyújtott szolgáltatás tartalmára vonatkozó adat megváltozik, a **változást követő 8 napon belül** a változásokat rögzíteni kell.
+
+Az **időszakos jelentés** keretében az adatszolgáltatásra jogosult az igénybevevői nyilvántartásban nyilatkozik arról, hogy az ellátást igénybevevő a szolgáltatást az adott napon igénybe vette-e, vagy az adott napon fennállt-e a szolgáltatásra irányuló jogviszony.
+
+Az időszakos jelentést házi segítségnyújtás esetén naponta, az **adott napot követő munkanap 24 óráig,** azt követően kell teljesíteni, hogy a szolgáltatást az adott napon az igénybevevőnek nyújtották.
+
+A napi jelentéstétel során a személyi gondozásra szóló megállapodások esetében rögzíteni szükséges az adott napon elvégzett gondozási és / vagy segítési tevékenységet. Amennyiben az ellátott mindkét féle tevékenységet kapott adott napon, akkor a gondozáshoz és a segítéshez is pipát szükséges tenni. Abban az esetben, ha csak az egyik féle tevékenység történt, akkor értelem szerűen csak vagy a gondozáshoz, vagy a segítéshez szükséges pipát tenni.
+
+A személyi gondozásra vonatkozó megállapodások vonatkozásában fontos arra figyelni, hogy azon napok számának, amelyen az ellátott számára személyi gondozást is nyújtottak, éves átlagban el kell érnie az összes gondozási nap legalább 50%-át.
+
+Fontos, hogy az a nap, amikor az ellátott számára személyi gondozást és szociális segítést is nyújtottak személyi gondozásos napnak kell számítani, így beleszámít a személyi gondozással töltött gondozási napok 50 %-ába.
+
+Az 50 %-os szabály figyelemmel kísérése érdekében javasolt vagy naponta lementeni a napi jelentést követően az **igénybevételi naplót,** vagy minden hónapban az **önellenőrzés időpontján belül** célszerű a végleges táblázatot lehívni, amely ellátottanként mutatja a gondozási napokat és az adott napon végzett tevékenységek típusát (személyi gondozás, szociális segítés), valamint a szolgáltatásra fordított időt (útidővel együtt), amennyiben rögzítésre kerül. A KENYSZI rendszerben a szolgáltatásra fordított időtartam megjelölését a szakmai ajánlás kiadásának időpontjában még nem kötelező rögzíteni, azonban javasolt. A lementett táblázatból látható, hogy milyen szolgáltatástípushoz volt hozzárendelve az ellátott és milyen időtartamban vette igénybe az ellátást.
+
+*i.* Országos Jelentési Rendszer (Szmr. 12. §)
+
+Az Szmr. 12. § (2) *bekezdése* értelmében az országos jelentési rendszerbe (KENYSZI) — a megállapítást, illetve a módosítást követő nyolc napon belül — térítési díjköteles szolgáltatás esetén be kell jelenteni az intézményi térítési díjat és annak változását.
+
+**V. A házi segítségnyújtás szolgáltatási elemei**
+
+A *Szakmai Rendeletbe* 2017. február 17-ével bekerültek a szolgáltatási elemek definíciói. A szolgáltatási elemek a szolgáltatás részeként megjelenő tevékenységek összességét jelentik, a szolgáltatás célcsoportjának szükségleteihez igazodva. A szolgáltatási elemeket a szakmai programban kell kifejteni részletesen.
+
+A rendelet értelmében a házi segítségnyújtás során az alábbi szolgáltatási elemeket kell biztosítani:
+
+- személyi gondozás keretében gondozás és háztartási segítségnyújtás,
+- szociális segítés keretében háztartási segítségnyújtás.
+
+A rendelet értelmében a szolgáltatási elemek az alábbiakat jelentik:
+
+- *gondozás:* az igénybe vevő bevonásával történő, tervezésen alapuló, célzott segítés mindazon tevékenységek elvégzésében, amelyeket saját maga tenne meg, ha erre képes lenne, továbbá olyan rendszeres vagy hosszabb idejű testi-lelki támogatása, fejlesztése, amely elősegíti a körülményekhez képest legjobb életminőség elérését, illetve a családban, társadalmi státuszban való megtartását, visszailleszkedését,
+- *háztartási vagy háztartást pótló segítségnyújtás:* az igénybe vevő segítése
+
+  mindennapi életvitelében, személyes környezete rendben tartásában, mindennapi ügyeinek intézésében, valamint a személyes szükségleteinek kielégítésére szolgáló lehetőségek és eszközök biztosítása, ha ezt saját háztartásában vagy annak hiányában nem tudja megoldani.
+
+A *Szakmai Rendelet 5. sz. melléklete tartalmazza a* központi költségvetésről szóló törvényben meghatározott támogatásra jogosító,- személyi gondozás és a szociális segítés keretében,- végezhető tevékenységeket és résztevékenységeket.
+
+Abban az esetben, ha a **megállapodást személyi gondozásra kötötték** az alábbi tevékenységek keretében meghatározott résztevékenységek nyújthatók az ellátást igénybe vevők részére. A személyi gondozás magában foglalja a szociális segítés keretében végezhető tevékenységeket is.
+
+*Szociális segítés keretében* az alábbi tevékenységek végezhetők állami támogatás igénybevétele mellett:
+
+A lakókörnyezeti higiénia megtartásában való közremüködés körében:
+
+- takarítás a lakás életvitelszerűen használt helyiségeiben (hálószobában, fürdőszobában, konyhában és illemhelyiségben)
+- mosás
+- vasalás
+
+A háztartási tevékenységben való közremüködés körében:
+
+- bevásárlás (személyes szükséglet mértékében), gyógyszer kiváltása
+- segítségnyújtás ételkészítésben és az étkezés előkészítésében
+- mosogatás
+- ruhajavítás
+- közkútról, fúrtkútról vízhordás
+- tüzelő behordása kályhához, egyedi fűtés beindítása (kivéve, ha ez a tevékenység egyéb szakmai kompetenciát igényel)
+- télen hóeltakarítás és síkosság mentesítés a lakás bejárata előtt
+- kísérés
+
+Segítségnyújtás veszélyhelyzet kialakulásának megelőzésében és a kialakult veszélyhelyzet elhárításában
+
+Szükség esetén a bentlakásos szociális intézménybe történő beköltözés segítése 
+
+*Személyi gondozás keretében* az alábbi tevékenységek végezhetők állami támogatás igénybevétele mellett:
+
+Az ellátást igénybe vevővel segítő kapcsolat kialakítása és fenntartása körében:
+
+- információnyújtás, tanácsadás és mentális támogatás'
+- családdal, ismerősökkel való kapcsolattartás segítése
+- az egészség megőrzésére irányuló aktív szabadidős tevékenységben való közremüködés
+- ügyintézés az ellátott érdekeinek védelmében
+
+Gondozási és ápolási feladatok körében:
+
+- mosdatás
+- fürdetés
+- öltöztetés
+- ágyazás, ágyneműcsere
+
+<sup>1</sup> Az információnyújtás, tanácsadás és mentális támogatás tevékenység nem egyenlő az ellátottal történő beszélgetéssel. E tevékenység során a szakmai szabályok figyelembevételével megfelelő információval látjuk el az ellátottat annak érdekében, hogy a felmerült problémáit megoldani, a kialakult élethelyzetét kezelni tudja.
+
+
+- inkontinens beteg ellátása, testfelület tisztítása, kezelése
+- haj, arcszőrzet ápolás
+- száj, fog és protézis ápolása
+- körömápolás, bőrápolás
+- folyadékpótlás, étkeztetés (segédeszköz nélkül)
+- mozgatás ágyban
+- decubitus megelőzés
+- felületi sebkezelés
+- sztómazsák cseréje
+- gyógyszer adagolása, gyógyszerelés monitorozása
+- vérnyomás és vércukor mérése
+- hely- és helyzetváltoztatás segítése lakáson belül és kívül
+- kényelmi és gyógyászati segédeszközök beszerzésében való közreműködés
+- kényelmi és gyógyászati segédeszközök használatának betanítása, karbantartásában való segítségnyújtás
+- a háziorvos írásos rendelésén alapuló terápia követése (a tevékenység elvégzéséhez való kompetencia határáig).
+
+A házi segítségnyújtás tevékenységei és résztevékenységei abban az esetben, ha a **megállapodást szociális segítésre kötötték.**
+
+*Szociális segítés keretében* az alábbi tevékenység végezhetők állami támogatás igénybevétele mellett:
+
+A lakókörnyezeti higiénia megtartásában való közremüködés körében:
+
+- takarítás a lakás életvitelszerűen használt helyiségeiben (hálószobában, fürdőszobában, konyhában és illemhelyiségben)
+- mosás
+- vasalás
+
+A háztartási tevékenységben való közreműködés körében:
+
+- bevásárlás (személyes szükséglet mértékében), gyógyszer kiváltása
+- segítségnyújtás ételkészítésben és az étkezés előkészítésében
+- mosogatás
+- ruhajavítás
+- ágyazás, ágyneműcsere
+- közkútról, fúrtkútról vízhordás
+- tüzelő behordása kályhához, egyedi fűtés beindítása (kivéve, ha ez a tevékenység egyéb szakmai kompetenciát igényel)
+- télen hóeltakarítás és síkosság mentesítés a lakás bejárata előtt
+- kísérés
+
+Segítségnyújtás veszélyhelyzet kialakulásának megelőzésében és a kialakult veszélyhelyzet elhárításában
+
+Szükség esetén a bentlakásos szociális intézménybe történő beköltözés segítése 
+
+**Kompetenciahatárok**
+
+A személyes gondoskodást nyújtó szociális intézményekben foglalkoztatottaknak az adott munkakör betöltéséhez szükséges képesítési minimum előírásait a *Szakmai Rendelet 3. számú melléklete* tartalmazza. A házi segítségnyújtás keretében a **személyi gondozás** tevékenységeit csak fentieknek megfelelő **szakképzettséggel rendelkező gondozó** végezheti.
+
+A **szociális segítés** tevékenységeit — segítő munkakörben — társadalmi gondozó, önkéntes vagy közfoglalkoztatotti jogviszonyban álló (nem szakképzett) személy is elvégezheti. Fontos, hogy az egyes munkakörökre vonatkozó kompetenciákról a munkatársak tájékoztatást kapjanak, valamint azok rögzítésre kerüljenek a munkaköri leírásokban. Meg kell jelölni kinek, meddig terjed a feladat- és hatásköre, és mikor, kinek kell jelezniük, ha problémát észlelnek.
+
+VI. Tevékenységnapló
+
+2017\. január 1-jei hatállyal a házi segítségnyújtás tevékenységnaplója két részre vált, és a szociális segítés és a személyi gondozás jogosultsági kategóriákhoz igazodóan került kialakításra:
+
+A) amennyiben a megállapodást személyi gondozásra kötötték, abban az esetben az „A" tevékenységnaplót szükséges vezetni
+
+*A) I. Tevékenységnapló házi segítségnyújtáshoz személyi gondozás esetén'*
+
+![ref3]a szolgálat vezetőjének aláírása
+
+<sup>1</sup> Ezt a tevékenységnaplót kell tölteni, ha a megállapodást személyi gondozásra kötötték.
+
+2 Akkor kell kitölteni, ha a megállapodásban fel van tiinteÉve.
+
+<sup>3</sup> Az időtartam számításakor be kell számítani az utazásra fordított időt is.
+
+*Az „A" tevékenységnapló 6 oszlopot tartalmaz:* 
+
+1. oszlop: A feladat elvégzésének napja.
+1. oszlop: Az ellátotti jogosultságnak megfelelő résztevékenységek feltüntetése. Személyi gondozásra megállapodással rendelkező ellátott esetén a személyi gondozásra történő jogosultság magába foglalja a szociális segítésre történő jogosultságot, ezért ezen ellátottaknál a szociális segítési tevékenységek is ebben a naplóban kerülnek rögzítésre.
+1. oszlop: Az elvégzett tevékenységekre fordított idő rögzítése, óra-perctől, órapercig történő megjelenítéssel. A személy térítési díj fizetésének alapját az itt rögzített időtartam képezi.
+1. oszlop: Ellátott, illetve törvényes képviselőjének aláírása. Az elvégzett tevékenységek dokumentálását követően, naponta szükséges aláírni.
+
+
+5. oszlop: A **3. oszlopban rögzített időtartam, valamint az ellátotthoz történő odautazás időtartama összesítve.** A **gondozói létszám,** valamint az **ellátotti létszám számítás alapját** az itt rögzített összesített időtartam **képezi.** Ezt az összesített számot 147-el osztva a szükséges gondozói létszámot, 21-el osztva a finanszírozott személyi gondozotti létszámot kapjuk meg. Amennyiben ez nem haladja meg a szolgáltatói nyilvántartásba rögzített személyi gondozásra befogadott ellátotti számot, ez az elszámolható ellátotti szám.
+
+**Mi minősül útidőnek?**
+
+- előző ellátottól adott ellátotthoz történő utazás időtartama,
+- székhelyről/telephelyről első ellátotthoz történő utazás ideje.
+
+6\. oszlop: A 2. oszlopban megnevezett **tevékenységeket elvégző személy aláírása** szerepel ebben az oszlopban. Az aláírást a tevékenységet végző munkatárs teheti meg.
+
+**A tevékenységnapló vezetésével kapcsolatos főbb tudnivalók:**
+
+- A tevékenységnaplót **ellátottanként** kell vezetni.
+- Személyi gondozásra megállapodással rendelkező ellátott esetén a személyi gondozásra történő jogosultság magába foglalja a szociális segítésre történő jogosultságot, ezért ezen ellátottaknál a szociális segítési tevékenységek is eb-
+
+  ben naplóban kerülnek rögzítésre.
+
+- A tevékenységnaplóban **ellátottanként az elvégzett résztevékenységet kell**
+
+**megnevezni,** majd az elvégzett **résztevékenység időtartamát kell megjelölni,** és a tevékenységnaplót az ellátottnak, a szociális gondozónak/segítőnek alá kell írni.
+
+- A tevékenységnaplóba **csak a** *Szakmai Rendelet 5. számú melléklete* **szerinti „A" tevékenységnaplóhoz kapcsolódó résztevékenységek rögzíthetők.** (A szociális segítés, vagy a személyi gondozás keretében nyújtható résztevékenységek konkrétan meghatározásra kerültek a *Szakmai Rendeletben,* a tevékenységnaplóban ezeket kell feltüntetni, tehát a tevékenységnapló vezetése szakmailag ezen jogszabályi rendelkezések alapján vezethető elfogadható módon.)
+- A szociális gondozók létszáma az 5. számú melléklet A) pontja szerinti tevékenységnapló 5. oszlopában ellátottanként, havonta rögzített időtartamok öszszesítése alapján kerül megállapításra.
+
+**FONTOS:** Amennyiben **szakképzetlen szociális segítő** végzi a személyi gondozásra jogosult személy részére nyújtott szociális segítést, a szakképzetlen szociális segítő által végzett tevékenységek havonta összesített időtartama
+
+**nem képezi a szakképzett munkatársak létszámszámításának alapját!**
+
+A pontos létszám számítás érdekében javasolt a szakképzetlen szociális segítő által a személyi gondozásra jogosult és megállapodással rendelkező ellátottnál végzett segítő tevékenység időtartamát pl. eltérő színnel jegyezni a tevékenységnaplóban.
+
+- A szociális segítési és személyi gondozási feladatokat egy rubrikán belül, egymás alá felsorolva javasolt feltüntetni a tevékenységnaplóban.
+
+- Az elvégzett résztevékenységekre fordított időt javasolt külön személyi gondozás és külön szociális segítés vonatkozásában rögzíteni.
+
+- **Aláírások napi szintű megléte** mind az ellátott, mind a gondozó részéről.
+- A tevékenységnaplót az **intézményvezetőnek havonta szükséges aláírásával igazolni.** (Fontos azonban az is, hogy a szervezeti és működési szabályzat - a feladatok megjelölése, és a munkavállalók felelősségének meghatározása miatt is - tartalmazzon arra vonatkozó rendelkezést, hogy ennek a feladatnak az ellátása melyik munkakört betöltő személy által történik, amelyet a munkaköri leírásában is rögzíteni szükséges.)
+
+B) amennyiben a **megállapodást szociális segítésre kötötték,** abban az esetben a **„B" tevékenységnaplót** szükséges vezetni
+
+*B) I. Tevékenységnapló házi segítségnyújtáshoz szociális segítés esetén'*
+
+*Az ellátott neve:*
+
+1 Ezt a tevékenységnaplót kell tölteni, ha a megállapodást szociális segítésre kötötték.
+
+![ref3]a szolgálat vezetőjének aláírása
+
+*A „B" tevékenységnapló 5 oszlopot tartalmaz:* 
+
+1. oszlop: A **feladat elvégzésének napja.**
+1. oszlop: A szociális segítés keretében **elvégzett résztevékenységek megnevezése.**
+1. oszlop: A 2. oszlopban rögzített, **elvégzett tevékenységekre fordított időt** kell ebbe az oszlopba rögzíteni, óra-perctől, óra-percig történő megjelenítéssel. A **személyi térítési díj fizetésének alapját** az itt rögzített időtartam képezi.
+1. oszlop: **Ellátott, illetve törvényes képviselőjének aláírása.** Az elvégzett tevékenységek dokumentálását követően, naponta szükséges aláírni.
+1. oszlop: A 2. oszlopban megnevezett **tevékenységeket elvégző személy aláírása** szerepel ebben az oszlopban. Az aláírást a tevékenységet végző munkatárs teheti meg, amely nem átruházható.
+
+A tevékenységnapló vezetésével kapcsolatos főbb tudnivalók:
+
+- a tevékenységnaplót **ellátottanként** kell vezetni.
+- A tevékenységnaplóban **ellátottanként az elvégzett résztevékenységet kell megnevezni,** majd az elvégzett **résztevékenység időtartamát kell megjelölni,** és a tevékenységnaplót az ellátottnak, a szociális gondozónak/segítőnek alá kell írni.
+- A tevékenységnaplóba **csak a** *Szakmai Rendelet 5. számú melléklete* **szerinti „B" tevékenységnaplóhoz kapcsolódó résztevékenységek rögzíthetők.** (A szociális segítés keretében nyújtható résztevékenységek konkrétan meghatározásra kerültek a Szakmai Rendeletben, a tevékenységnaplóban ezeket kell feltüntetni, tehát a tevékenységnapló vezetése szakmailag ezen jogszabályi rendelkezések alapján vezethető elfogadható módon.)
+- **Aláírások napi szintű megléte** mind az ellátott, mind a gondozó részéről.
+- A tevékenységnaplót az **intézményvezetőnek havonta szükséges aláírásával igazolni.** (Fontos azonban az is, hogy a szervezeti és működési szabályzat - a feladatok megjelölése, és a munkavállalók felelősségének meghatározása miatt is - tartalmazzon arra vonatkozó rendelkezést, hogy ennek a feladatnak az ellátása melyik munkakört betöltő személy által történik, amelyet a munkaköri leírásában is rögzíteni szükséges.)
+
+VII. Térítési díj számítás és dokumentálása
+
+A térítési díj helyes megállapítása és dokumentációja minden szociális szolgáltatás esetében rendkívüli jelentőséggel bír, fontos, hogy a számítása megfeleljen a jogszabályi előírásoknak.
+
+1. A térítési díj számítás első lépése az önköltségszámítás
+
+A szolgáltatási önköltség a szolgáltatás kapcsán felmerült ráfordítások *(a számvitelről szóló 2000. évi C.* törvényszerinti költségek, valamint állami és önkormányzati fenntartású intézmények esetén az *államháztartásról szóló 2011. évi CXCV. törvény* szerinti költségek) egy szolgáltatási egységre, házi segítségnyújtás esetében szolgáltatási órára számított értéke, amelyet tárgyév április 1-jéig kell megállapítani.
+
+Az önköltségszámítás módszerét — a törvényi keretek megtartása mellett — az önköltség-számítási szabályzatban (amennyiben van ilyen) vagy a számviteli szabályzatban kell rögzíteni.
+
+1. Intézményi térítési díj megállapítása
+
+Az *Szt. 115.* §-a értelmében az intézményi térítési díj a személyes gondoskodás körébe tartozó szociális ellátások ellenértékeként megállapított összeg. Az intézményi térítési díjat a fenntartó tárgyév április 1-jéig állapítja meg. Az intézményi térítési díj összege nem haladhatja meg a szolgáltatási önköltséget. Az intézményi térítési díj év közben egy alkalommal korrigálható. Az intézményi térítési díjat integrált intézmény esetében is szolgáltatásonként kell meghatározni, ilyen esetben az önköltség számítása során a közös költségelemeket a szolgáltatásonkénti közvetlen költségek arányában kell megosztani.
+
+A *Tr.* értelmében, az intézményi térítési díjat házi segítségnyújtás esetében gondozási órára vetítve kell meghatározni.
+
+Az Szmr. 12. § *(2) bekezdése* értelmében az országos jelentési rendszerbe (KENYSZI) - a megállapítást, illetve a módosítást követő nyolc napon belül — térítési díjköteles szolgáltatás esetén be kell jelenteni az intézményi térítési díjat és annak változását.
+
+1. Személyi térítési díj megállapítása
+
+Az intézményi térítési díj megállapítását követően a személyi térítési díj összegét szükséges gondozási órára vetítve megállapítani. A személyi térítési díj az, amit
+
+**ténylegesen fizetni kell az ellátásért,** melynek összege nem lehet több, mint az intézményi térítési díj.
+
+A házi segítségnyújtásban részesülő által havonta fizetendő személyi térítési díjat az **óradíj** és az adott hónapban a házi segítségnyújtás keretében **elvégzett tevékenységekre fordított idő szorzata** alapján kell kiszámítani.
+
+A házi segítségnyújtás személyi térítési díjának megállapításánál a szolgáltatást igénybe vevő személy rendszeres havi jövedelmét kell figyelembe venni. *(Szt.* 116. § (1) *bekezdés)*
+
+A személyi térítési díj nem haladhatja meg a hivatkozott jövedelem:
+
+\- 25%-át házi segítségnyújtás,
+
+30%-át, ha a házi segítségnyújtás mellett étkezést is biztosítanak.
+
+A személyi térítési díj összege önkormányzati intézmény esetén a fenntartó rendeletében foglaltak szerint, egyéb esetben a **fenntartó döntése alapján** csökkenthető, illetve elengedhető, ha a kötelezett jövedelmi és vagyoni viszonyai ezt indokolttá teszik.
+
+Az *Szt. szabályai* alapján a fenntartó **ingyenes ellátásban részesíti** azt az ellátottat, aki **jövedelemmel nem rendelkezik.**
+
+2017-től házi segítségnyújtás esetében a **gondozási szükséglettel nem rendelkező személy** is ellátható, ha az ellátást igénylő, vagy a térítési díjat megfizető más személy írásban vállalja a **szolgáltatási önköltséggel azonos mértékű személyi térítési díj megfizetését.**
+
+Fontos, hogy ebben az esetben **nem vehető igénybe költségvetési támogatás, nem kell gondozási szükséglet vizsgálatot végezni,** valamint **nem kell alkalmazni a térítési díj számítására** és a **jövedelemvizsgálatra vonatkozó szabályokat.** (Szí<sup>-</sup>. 63. § (5) — (7) *bekezdések, 115. § (6) bekezdés, 116. § (1) és (3) bekezdés, valamint 119/C. §)*
+
+**4. Térítési díj meghatározásának szabályai**
+
+Az <b>ellátott által fizetendő személyi térítési díj</b> összegét <b>konkrét összegben</b> állapítja meg az intézményvezető, melyről az ellátást igénylőt a megállapodás megkötésekor írásban tájékoztatni szükséges. <i>(Szí<sup>.</sup>. 115. § (2) bekezdés)</i>
+
+A fentiek értelmében az intézményi térítési díjat és a személyi térítési díjat házi segítségnyújtás esetén **gondozási órára vetítve kell meghatározni.**
+
+Az intézményi térítési díjat és a személyi térítési díjat az 1 és 2 forintos címletű érmék bevonása következtében szükséges kerekítés szabályairól szóló *2008. évi I.I. törvény 2.* s-ának megfelelő módon **kerekítve kell meghatározni.**
+
+A házi segítségnyújtásban részesülő által **havonta fizetendő személyi térítési díjat az** óradíj és az adott hónapban a házi segítségnyújtás keretében elvégzett tevékenységekre fordított idő szorzata alapján kell kiszámítani úgy, hogy annak összege ne haladja meg a szolgáltatást igénybe vevő személy rendszeres havi jövedelmének 25%-át házi segítségnyújtás, 30%-át, ha a házi segítségnyújtás mellett étkezést is biztosítanak.
+
+Nem kell a jövedelemkorlátot figyelembe venni és a jövedelemvizsgálatot lefolytatni abban az esetben, ha az ellátott vállalta az intézményi térítési díj összegével azonos személyi térítési díj megfizetését.
+
+A házi segítségnyújtás keretében elvégzett tevékenységekre fordított időt a *Szakmai Rendelet 5. számú melléklet* szerinti **tevékenységnapló alapján** kell megállapítani.
+
+**5. A térítési díj dokumentálása**
+
+A korábban térítésmentesen nyújtott szolgáltatások esetében a **térítési díj bevezetése előtt,** valamint — abban az esetben, ha a fenntartó **térítési díj fizetése mellett** biztosítja a házi segítségnyújtás szolgáltatást — **minden évben,** amikor az intézményi térítési díj változik és ennek következtében személyi térítési díj is módosul„ az **ellátottaknak jövedelemnyilatkozatot kell kitölteni..**
+
+A Jövedelemnyilatkozat *(Ir. 3. § (3) bekezdés, 1. sz. melléklet II. rész)* kitöltése során egyértelműen jelölni szükséges azt, hogy az Szt. *117113. §-a* szerint a mindenkori intézményi térítési díjjal azonos személyi térítési díj megfizetését az ellátást igénylő vagy a térítési díjat megfizető más személy vállalja-e, mely szabályok a felülvizsgálatra is vonatkoznak:
+
+**- „Igen"** választ szükséges megjelölni akkor, ha vállalja a mindenkori intézményi térítési díjjal azonos személyi térítési díj megfizetését. Ebben az esetben a jövedelemnyilatkozatnak csak a személyes adatokra vonatkozó részét és a vállalásra vonatkozó szakaszt kell tölteni, a többi részt üresen szükséges hagyni. Ez nem minősül tényleges vállalásnak, az ellátás megkezdésekor nyilatkozatot szükséges kitölteni az önkéntes fizetésre vonatkozóan.
+
+- „Nem" válasz esetén a fentieken túl az ellátást kérelmező jövedelmi adatait is szükséges a nyilatkozaton kitölteni.
+
+A térítési díj megállapításához szükséges jövedelmet igazoló bizonylatokat egyidejűleg csatolni kell. (nyugdíjszelvény, bankszámla kivonat, stb.)
+
+A rendelet szerint a jövedelemnyilatkozat egy dokumentumban tartalmazza mind a nagykorú, mind a kiskorú igénybevevő részére vonatkozó jövedelmi adatokat. Mivel a jövedelemnyilatkozat tartalmi és formai követelményeit az *ir. rendelet* előírja, ezért a két rész nem választható el egymástól.
+
+A jogszabályi előírások értelmében a megállapodásba rögzíteni szükséges a személyi térítési díj megállapítására, fizetésére vonatkozó szabályokat, amennyiben az ellátás térítési díj fizetési kötelezettséggel jár.
+
+Ennek értelmében célszerű a megállapodásba csak a térítési díj megállapítására, fizetésére vonatkozó szabályokat beírni. A térítési díj összegét a megállapodásba nem célszerű rögzíteni, mivel az minden évben változhat, így elegendő az általános szabályokat, valamint a szolgálatra jellemző specifikumokat rögzíteni.
+
+Minden évben, a bevezetéskor is a térítési díj összegéről külön értesítőt kell az ellátott részére átadni, amely tartalmazza a szolgáltatási önköltséget (javasolt), az intézményi és személyi térítési díj összegét, valamint a térítési díjra vonatkozó szabályokat. Az értesítőt abban az esetben is szükséges átadni az ellátott részére minden évben, ha a térítési díj nem változik, mivel az önköltség összege változhat.
+
+Az ellátott részére minden hónapban számlát kell kiállítani, az elszámolás alapját a tevékenységnaplóban rögzített gondozási órák képezik.
+
+Ha az ellátott, a törvényes képviselője vagy a térítési díjat megfizető személy a személyi térítési díj összegét vitatja, illetve annak csökkentését vagy elengedését kéri, állami fenntartó esetén a térítési díj értesítés kézhezvételétől számított nyolc napon belül a fenntartóhoz fordulhat, ezt követően a fenntartó döntésének felülvizsgálata bíróságtól kérhető.
+
+Ha az ellátott, törvényes képviselője vagy a térítési díjat megfizető személy a személyi térítési díj összegét vitatja, illetve annak csökkenését vagy elengedését kéri, egyházi  vagy nem állami fenntartó által megállapított összegét vitatja, a bíróságtól kérheti a térítési díj megállapítását.
+
+A fenntartó döntéséig, illetve a bíróság jogerős határozatáig a korábban megállapított térítési díjat kell megfizetni.
+
+6. **A térítési díj befizetése és ellenőrzése** *(Tr.)*
+
+A térítési díjat az **igénybevétel napjától havonta —** ha e rendelet, az önkormányzat rendelete vagy a megállapodás másként nem rendelkezik — a **tárgyhónapot követő hónap 10. napjáig kell befizetni** az ellátást nyújtó intézmény elszámolási számlájára, vagy a házi pénztárába.
+
+Az intézmény vezetője **ellenőrzi,** hogy a megállapított térítési díj **befizetése havonta megtörténik-e.** Ha a kötelezett a befizetést elmulasztotta, az intézményvezető 15 napos határidő megjelölésével a fizetésre kötelezett személyt írásban felszólítja az elmaradt térítési díj befizetésére. Ha a határidő eredménytelenül telt el, az intézmény vezetője a kötelezett nevét, lakcímét és a fennálló díjhátralékot nyilvántartásba veszi.
+
+6. **Térítési díj felülvizsgálata (Szt.)**
+
+A **személyi térítési díj összege** a megállapítás időpontjától függetlenül **évente két alkalommal** vizsgálható felül és változtatható meg, **kivéve, ha** az ellátott jövedelme
+
+- *a)* olyan mértékben csökken, hogy az e törvényben meghatározott térítési díj fizetési kötelezettségének nem tud eleget tenni;
+- *b)* az öregségi nyugdíj mindenkori legkisebb összegének 25%-át meghaladó mértékben növekedett.
+
+A felülvizsgálat során **megállapított új személyi térítési díj megfizetésének időpontjáról a fenntartó rendelkezik.** Az új térítési díj megfizetésére a kötelezett **nem kötelezhető a felülvizsgálatot megelőző időszakra,** kivéve, ha az ellátott a felülvizsgálatot megelőzően — jövedelem és vagyon hiányában — térítésmentesen vette igénybe az ellátást, és részére visszamenőlegesen rendszeres pénzellátás került megállapításra. Ez utóbbi esetben a személyi térítési díj megfizetésének kezdő időpontja a rendszeres pénzellátásra való jogosultság kezdő napja.
+
+**8. Tájékoztatás nyújtása az intézményi/ személyi térítési díjról**
+
+- Kötelező a tájékoztatás az ellátott (és hozzátartozója), valamint törvényes képviselője részére az *Szt. 94IC.§* alapján megkötött **megállapodásban,** ahol a személyi térítési díj megállapítására, fizetésére vonatkozó szabályokat kell részletezni, érthetően elmondani. *(Szt. 9410. § (3) bekezdés)*
+- **Térítési díj értesítő** a konkrétan fizetendő személyi térítési díjról. (minden évben)
+
+Az intézmény vezetője által évente az intézmény gazdálkodásáról készített és az intézményben jól látható helyen **kifüggesztett táj ékoztatóban** az intézmény működési költségének összesítésén és az egy ellátottra jutó önköltség összegén kívül köteles feltünteti az intézményi térítési díj összegét.
+
+**9. Példa a térítési díj számítására vonatkozóan**
+
+A fenntartó által megállapított és dokumentált **intézményi térítési díj** legmagasabb összege — a fenti szabályok értelmében — legfeljebb az 1 órára jutó önköltség összege lehet.
+
+A térítési díj számításához első lépésben a házi segítségnyújtásra **vonatkozó költségek összességét** kell meghatározni.
+
+Tárgyévben a házi segítségnyújtás várható **teljes költségének összesítése:**
+
+- személyi jellegű kiadások, járulék
+- működési (dologi) kiadások
+
+Integrált intézmény esetében az önköltség számítása során a közös költségelemeket a szolgáltatásonkénti közvetlen költségek arányában kell megosztani, amelynek számítási elvét belső gazdálkodási szabályzatban rögzíteni szükséges.
+
+A költségek meghatározása után a **gondozási órák számát szükséges meghatározni.** Ehhez többféle alkalmazást is lehet használni:
+
+kiindulási alap az előző évi gondozási órák száma
+
+munkatársi létszámot alapul véve meghatározásra kerül, hogy napi hány órában végeznek gondozást, ezt a számot felszorozva a tárgyévi gondozási napok számával, megkapjuk az adott évre vonatkozó gondozási órák számát
+
+Egy gondozási óra intézményi térítési díja = önköltség éves összege / éves gondozási órák száma
+
+*Példa:*
+
+Adott évben a házi segítségnyújtás várható teljes költsége — 15.650.000 Ft/év Gondozási órák száma — 5 fő munkatárs \* 8 óra \* 252 nap = 10.080 gondozási óra/év
+
+Egy gondozási óra intézményi térítési díja legfeljebb — 15.650.000 Ft / 10.080 gondozási óra =1553 Ft/óra lehet.
+
+A fentiek alapján a fenntartó legfeljebb 1550 Ft/órában állapíthatja meg az intézményi térítési díjat mind személyi gondozás vonatkozásában, mind szociális segítés vonatkozásában.
+
+Természetesen a fenntartónak jogában áll az, hogy az önköltségnél alacsonyabb mértékben állapítsa meg az intézményi térítési díjat. A fenti példánál maradva ilyenkor a helyes elnevezés és meghatározás a következő:
+
+Önköltség egy órára jutó összege: 1553,-Ft/óra
+
+Intézményi térítési díj egy órára jutó összege /a fenntartó döntése alapjául: 180,- Ft/óra.
+
+Személyi térítési díj megállapítása: 
+
+A személyi térítési díj az, amit ténylegesen fizetni kell az ellátásért, melynek összege nem lehet több, mint az intézményi térítési díj.
+
+A személyi térítési díj összege függ attól, hogy az ellátott vállalja-e az intézményi térítési díjjal azonos személyi térítési díj megfizetését. Amennyiben vállalja, akkor az összeg megegyezik az intézményi térítési díj összegével:
+
+o 180 Ft / gondozási óra házi segítségnyújtás igénybevétele esetén
+
+Amennyiben az ellátott nem vállalja az intézményi térítési díjjal azonos személyi térítési díj megfizetését, abban az esetben a személyi térítési díj megállapítása során az ellátott jövedelmét kell figyelembe venni úgy, hogy annak összege ne haladja meg a szolgáltatást igénybe vevő személy rendszeres havi jövedelmének 25%-át házi segítségnyújtás, 30%-át, ha a házi segítségnyújtás mellett étkezést is biztosítanak. Fontos, hogy a személyi térítési díj nem haladhatja meg az intézményi térítési díj összegét.
+
+A személyi térítési díj állami vagy önkormányzati fenntartó esetén az önkormányzati rendeletben megállapítható sávosan.
+
+Például:
+
+Az önkormányzati rendelete szerint az intézményi térítési díj 180,-Ft/óra, de méltányossági jogkörében eljárva az önkormányzat alábbi méltányosságot gyakorolja:
+
+|Jövedelem|Személyi térítési díj|
+| :- | :- |
+|60\.000 Ft — 79.999 Ft|150 Ft|
+|40\.000 Ft — 59.999 Ft|120 Ft|
+|40\.000 Ft alatt|100 Ft|
+
+
+Egyházi és nem állami fenntartó esetében a fenntartói egyedi döntésben határozhat meg méltányosságot az ellátott jövedelméhez igazítva.
+
+Amennyiben az ellátott nem rendelkezik jövedelemmel a Fenntartó részére ingyenesen biztosítja az ellátást.
+
+Amennyiben a szabályoknak megfelelően megállapításra kerül az intézményi és a személyi térítési díj óradíja, valamint minden hónapban a jogszabálynak megfelelően megállapitásra kerül az adott hónapban fizetendő személyi térítési díj végösszege, úgy a fenntartónak lehetősége van arra, hogy egy adott összegben maximalizálja a fizetendő térítési díjat (pl.: 1800 Ft/hó).
+
+Fontos, hogy ebben az esetben a fenntartónak egyértelműen rendelkeznie kell írásbeli döntés/határozat formájában az alábbiakról:
+
+- havi szinten fizetendő maximum személyi térítési díj összege,
+- fizetésre vonatkozó szabályok,
+- teljesítés feltételei.
+
+A fentiekről az ellátást igénybe vevőt, valamint törvényes képviselőjét **írásos formában tájékoztatni** szükséges.
+
+Fontos, hogy az ellátott számára havonta kiállított számlán szerepelnie kell annak az összegnek is, amelyet a térítési díj számítás alapján valójában fizetnie kellene.
+
+**VIII. Finanszírozás**
+
+A mindenkor hatályos *költségvetési törvény* szabályozza a házi segítségnyújtás szociális szolgáltatás működtetéséhez biztosított állami támogatást.
+
+A törvény értelmében a támogatásra az a szolgáltató jogosult, amely a finanszírozási rendszerbe befogadást nyert, és a házi segítségnyújtás szolgáltatást az Szt. 63. §-a alapján és a *Költségvetési tv. Kiegészítő szabályok 5.o) pontja* szerinti szakmai szabályoknak megfelelően működteti.
+
+A támogatás a **házi segítségnyújtás keretében ellátott személyek számított létszáma szerint** illeti meg a fenntartót.
+
+2017-től a szociális segítésre és a személyi gondozásra eltérő összegű állami támogatás jár.
+
+- *Szociális segítés* „A támogatás az Szt. 63. § (3) *bekezdése* és a *Költségvetési tv. Kiegészítő szabályok*
+
+
+*5.0) pontja* szerinti szakmai szabályok alapján biztosított **szociális segítés keretében kizárólag szociális segítésre megállapodást kötött ellátottak után jár.** A feladat ellátható közfoglalkoztatottak alkalmazásával, de ez esetben a támogatás kizárólag a feladat ellátásával összefüggő kiadások közfoglalkoztatáshoz kapcsolódó egyéb állami támogatással nem fedezett részére használható fel." *(Költségvetési tv.)*
+
+*• Személyi gondozás*
+
+A támogatás az *Szt.* 63. § *(4) bekezdése* és a *Költségvetési tv. Kiegészítő szabályok 5.o) pontja* szerinti szakmai szabályok alapján biztosított **személyi gondozás keretében kizárólag személyi gondozásra megállapodást kötött ellátottak után jár.** 2016. évben kötött megállapodások esetén azon ellátottak után is jár a támogatás, akikkel személyi gondozásra és szociális segítésre kötöttek megállapodást. E feladat ellátásában társadalmi gondozók, közfoglalkoztatotti jogviszonyban állók és önkéntesek, valamint szociális szövetkezetek nem működhetnek közre. *(Költségvetési tv.)*
+
+A személyi gondozás állami támogatásra való jogosultság feltétele, hogy egy ellátott esetében azon napok számának, amelyen **számára személyi gondozást is nyújtottak,** éves átlagban el kell érnie az **összes gondozási nap legalább 50 %-át.**
+
+**Mi minősül személyi gondozási napnak?**
+
+1. az a nap, amikor az ellátott számára csak személyi gondozás történt
+1. az a nap, amikor az ellátott számára személyi gondozás és szociális segítés történt, függetlenül attól, hogy melyik milyen arányt képviselt az adott napon történő ellátás során.
+
+Minden ellátott esetében fontos tehát, hogy az olyan napok száma, amikor csak szociális segítést végeztek, ne haladja meg azon napok számát, amely napokon személyi gondozásban is részesült.
+
+**Az ellátottak számának meghatározása:**
+
+**Szociális segítés**
+
+**Tervezés:** kizárólag szociális segítésre megállapodást kötött ellátottak éves becsült száma
+
+**Elszámolás:** a szociális segítésben részesülők tevékenységnaplója alapján naponta összesített ellátottak száma osztva a költségvetési törvényben meghatározott napok számával *(Költségvetési tv.)*
+
+**Személyi gondozás**
+
+<b><sup>9</sup> Tervezés:</b> a személyi gondozásra megállapodással rendelkező ellátottak részére nyújtott tevékenység éves becsült óraszáma alapján kalkulált ellátotti létszám.
+
+<b><sup>9</sup> Elszámolás:</b> az ellátotti létszámot a személyes gondoskodást nyújtó szociális intézmények szakmai feladatairól és működésük feltételeiről szóló 1/2000. (1.7.) SzCsM rendelet 2. számú melléklet Kiegészítő szabályok 3. pontja alapján kell meghatározni <i>(Költségvetési tv.).</i> /Amennyiben a gondozást nem heti 40 órában foglalkoztatott gondozó végzi, úgy a gondozó havi 147 órás órakeretét arányosan csökkentve kell figyelembe venni./
+
+Fontos, hogy az ellátottak száma sem igényléskor, sem elszámoláskor **nem haladhatja meg** a befogadott ellátotti létszámot, azon belül **a személyi gondozásra befogadott ellátotti létszámot.**
+
+**INC. Feltételrendszer**
+
+1\. Tárgyi feltételek:
+
+Amennyiben az ellátottak számára biztosított nyitva álló helyiség, azt úgy kell kialakítani, hogy:
+
+- az tömegközlekedési eszközzel könnyen megközelíthető legyen,
+- épületeinek építészeti megoldásai tegyék lehetővé az akadálymentes közlekedést, valamint álljon rendelkezésre akadálymentes vizesblokk.
+
+A szociális gondozó és segítő munkakörben dolgozók számára biztosítani szükséges:
+
+- utazást segítő közlekedési eszköz: kerékpár, elektromos kerékpár, motorkerékpár, személygépkocsi, bérlet, stb.
+
+  <b><sup>49</sup></b> gondozáshoz szükséges eszközök: gumikesztyű, kézfertőtlenítő, szájmaszk, RR mérő, VC mérő, stb.
+
+- munkaruha, védőruha: utcai felső ruházat, cipő, kabát, esőköpeny, stb.
+- infrastruktúrával ellátott irodahelyiség: telefon, számítógép, fax, internet, fénymásoló, nyomtató, stb.
+
+2\. Személyi feltételek:
+
+Házi segítségnyújtás szakfeladaton a *Szakmai Rendelet* 2. *számú melléklete* értelmében ápoló, gondozó, valamint 10 vagy több főállású, teljes munkaidős /heti 40 óra/ gondozó/ápoló munkatárs esetén 1 fő intézményvezető alkalmazása szükséges.
+
+Ezen felül a *Szakmai Rendelet 19IA. §-ában* rögzített általános személyi feltételeket is szem előtt kell tartani, hiszen ha a házi segítségnyújtás más alapszolgáltatásokkal együtt vagy bentlakásos intézmény keretében kerül megszervezésre, biztosítani kell
+
+önálló szakmai egységként történő működtetését. Ha a házi segítségnyújtást nyújtó \
+szakmai egység keretében legalább 10 főt foglalkoztatnak, a szakmai egység vezetője
+
+nem lehet más szakmai egység, illetve a szolgáltató, intézmény vezetője.
+
+Házi segítségnyújtás keretében nyújtott személyi gondozás esetén a szociális gondozók havi számát az 5. *számú melléklet A) pontja* szerinti tevékenységnaplókban ellátottanként, havonta rögzített időtartamok összesítése alapján kell meghatározni. A tevékenység megkezdésének első hónapjában a megállapodásokban rögzített időtartamok összesítése az irányadó. Egy gondozó közvetlen gondozásra fordított havi órakerete **éves átlagban 147 óra.**
+
+A házi segítségnyújtás keretében személyi gondozást végző személynek rendelkeznie kell a *Szakmai Rendelet 3. számú melléklete* szerinti **képesítési előírásoknak megfelelő végzettséggel,** de a szociális segítés keretébe tartozó tevékenységeket elvégezheti szakképesítéssel nem rendelkező segítő munkakörben foglalkoztatott személy is.
+
+A munkakör betöltéséhez szükséges képesítési előírások alól — ide nem értve a vezető beosztású, megbízású vagy munkakörű személyeket — a munkáltatói jogkör gyakorlója határozott időre, házi segítségnyújtás esetén két évre **felmentést adhat, ha**
+
+- a munkakört betölteni kívánó személy a képesítés megszerzése érdekében már
+
+szakirányú oktatásban vesz részt,
+
+- az adott munkakör betöltésére nem áll rendelkezésre a képesítési előírásoknak megfelelő személy, és a munkakört betölteni kívánó személy vállalja a szükséges szakirányú képesítés megszerzését.
+
+Azt a személyt, aki a munkakör betöltéséhez szükséges képesítési előírások alól felmentést kapott, a felmentés ideje alatt a *Szakmai Rendelet 2. számú mellékletben* meghatározott létszámnormák teljesítése szempontjából szakképzettnek kell tekinteni.
+
+A felmentés ideje alatt a munkakör betöltéséhez szükséges szakirányú képesítést meg kell szereznie a munkavállalónak, más különben a felmentés idejének lejártát követően, csak szakképzetlen munkatársként alkalmazható tovább.
+
+Abban az esetben, ha szakképzetlen munkatársnak felmentést adunk annak érdekében, hogy a szükséges szakirányú képesítést megszerezze, az intézményvezető felelőssége, hogy milyen, a munkatárs kompetenciakörébe tartozó tevékenységeket végezhet az ellátottak körül.
+
+A házi segítségnyújtásban foglalkoztatott személy **feladatait** az intézmény szervezeti és működési szabályzatában és a munkaköri leírásban foglaltak szerint **végzi.**
+
+A munkaköri leírásba és a szervezeti és működési szabályzatba javasolt részletesen leírni, hogy milyen feladatokat végeznek a szakképzett gondozók, milyen feladatokat végezhetnek a szakképzetlen szociális segítők. Ezen dokumentumokba részletesen kifejteni szükséges a helyettesítés rendjére vonatkozó szabályokat is.
+
+A házi segítségnyújtás keretében kizárólag **szociális segítés —** segítő munkakörben — a személyi jövedelemadóról szóló törvényben meghatározott szociális gondozói díjban részesíthető **társadalmi gondozó** alkalmazásával, közérdekű **önkéntes tevékenység keretében, közfoglalkoztatotti jogviszonyban álló személyek vagy szociális szövetkezet igénybevételével is nyújtható.**
+
+Ebben az esetben a házi segítségnyújtást biztosító szolgáltató 100 órás belső képzést szervez azon segítő munkakörben foglalkoztatni kívánt személyek részére, akik a szociális gondozó munkakörre előírt szakképesítéssel nem rendelkeznek.
+
+A képzés célja az idős személyekkel végzett segítő tevékenységre való felkészítés, ennek keretében érzékenyítés, kommunikáció, problémakezelés, valamint a kompetencia-határok kijelölése a szociális segítés és a személyi gondozás között. A képzésen való részvételt — a résztvevők által aláírt dokumentumon — az intézményvezető igazolja. A képzésben való részvétel ideje alatt a segítő munkakörbe tartozó feladatok más szakképzett vagy a képzést elvégzett munkatárssal együttesen végezhetőek.
+
+A munkatársak alkalmazásával kapcsolatos dokumentáció, ügyintézés:
+
+- Kötelező munkaügyi dokumentáció:
+- Munkaszerződés
+- Munkaköri leírás
+- Írásbeli tájékoztató *(Mt.* 46.§ (1) *bekezdés)*
+- munkaidő nyilvántartás, amiből a foglalkoztatottak átlagos létszáma megállapítható
+- Tartási, öröklési, életjáradéki szerződés tilalma *(Szakmai Rendelet 6.§ (10) bekezdés)*
+
+A munkaköri leírás részeként, vagy egy külön nyilatkozat formájában célszerű a munkavállalókkal megismertetni a tartási, öröklési, életjáradéki szerződés kötésére vonatkozó tilalmat.
+
+- Működési nyilvántartás (Szt. *92/E.§, 921F.§)*
+
+  Bejelentési kötelezettség *(8/2000. (Viii.4.) SZCSM rendelet (3)-(4).§; 1. számú melléklet)*
+
+  A munkáltató a bejelentési kötelezettsége teljesítésekor az 1. számú melléklet szerinti nyomtatványokat a 3. *számú melléklet* szerinti adatösszesítővel továbbítja a nyilvántartónak.
+
+  A továbbképzési kötelezettség teljesítését a tárgyévet követő év február 28-áig, a vezetőképzés kötelezettség teljesítését az arról szóló tanúsítvány bemutatását követő harminc napon belül kell jelenteni a nyilvántartónak a 4. *számú melléklet* szerinti adatlapon.
+
+Munkáltatói igazolvány *(Szakmai Rendelet 19.§ (3) bekezdés)*
+
+Az alapszolgáltatásban részt vevő, gondozási feladatokat ellátó személy részére az intézmény vezetője **munkáltatói igazolványt** állít ki, annak érdekében, hogy a gondozási, ápolási feladatok elvégzése során a feladat ellátására vonatkozó felhatalmazását igazolni tudja.
+
+Munkaköri alkalmassági vizsgálat *(3311998. (VI.24.) NM rendelet)*
+
+A **munkaköri alkalmassági vizsgálat** során a cél annak megállapítása, hogy egy meghatározott munkakörben és munkahelyen végzett tevékenység által okozott megterhelés a vizsgált személy számára milyen igénybevételt jelent és annak képes-e megfelelni.
+
+**Házi segítségnyújtás dokumentáció folyamatábra**
+
+**Intézmény/szolgálat által vezetendő dokumentáció**
+
+Nyilvántartás
+
+Tájékoztatás az igénybevétel feltételeiről
+
+Gondozási szükséglet vizsgálat
+
+Értesítés az igénybevétel biztosításáról (szóban vagy írásban), vagy a kérelem elutasításáról (minden esetben írásban)
+
+Értesítés az ellátás megkezdésének legkorábbi időpontjáról
+
+Megállapodás
+
+Nyilatkozat az önkéntes fizetésről
+
+melyet az intézmény/szolgáltató készít el, de az ellátott vagy a törvényes képviselője ír alá ha írásban nyújtja be az igényt a kérelmező, de az írásos formához a szolgáltató nem ragaszkodhat
+
+<sup>\*\*</sup>a szolgáltató nem teheti kötelezővé, nem szabhatja a szolgáltatásnyújtás feltételeként

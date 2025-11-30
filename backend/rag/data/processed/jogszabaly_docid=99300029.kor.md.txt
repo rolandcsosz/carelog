@@ -1,0 +1,305 @@
+Jelen dokumentum a jogszabály 1. weboldalát tartalmazza. A teljes jogszabály nyomtatásához valássza a fejlécen található nyomtatás ikont!
+
+# 29/1993. (II. 17.) Korm. rendelet
+
+# a személyes gondoskodást nyújtó szociális ellátások térítési díjáról
+
+A szociális igazgatásról és szociális ellátásokról szóló 1993. évi III. törvény (a továbbiakban: Szt.) 132. §-ának (1) bekezdése e) pontjában, valamint a helyi önkormányzatokról szóló 1990. évi LXV. törvény 7. §-ának (1) bekezdésében kapott felhatalmazás alapján a Kormány a következőket rendeli el:
+
+## A rendelet hatálya
+
+1. § (1) [\*](#lbj0idf3cf) E rendeletet az Szt. 4. § (1) bekezdés m) pont ma) alpontja szerinti állami fenntartók által fenntartott személyes gondoskodást nyújtó szociális ellátásokért és szolgáltatásokért (a továbbiakban együtt: ellátás) fizetendő térítési díjak megállapítására kell alkalmazni. E rendeletet kell alkalmazni akkor is, ha az egyházi fenntartó vagy a nem állami fenntartó a személyes gondoskodást nyújtó szociális ellátások biztosítását a települési önkormányzattól vagy a Szociális és Gyermekvédelmi Főigazgatóságtól az Szt. VI. fejezetében meghatározottak szerint ellátási szerződésben átvállalja vagy jogszabály alapján ahhoz támogatást vesz igénybe.
+
+(2) [\*](#lbj1idf3cf) E rendelet hatálya nem terjed ki
+
+a) [\*](#lbj2idf3cf) jelzőrendszeres házi segítségnyújtás, támogató szolgáltatás esetében a szociálisan nem rászorult személyek térítési díjára, [\*](#lbj3idf3cf)
+
+b) [\*](#lbj4idf3cf) a gyermekek védelméről és a gyámügyi igazgatásról szóló 1997. évi XXXI. törvény szerinti gyermekjóléti alapellátásokra és gyermekvédelmi szakellátásokra.
+
+(3) [\*](#lbj5idf3cf) E rendelet alkalmazásában intézmény alatt – eltérő rendelkezés hiányában – az Szt. 4. §-a (1) bekezdésének g)–h) pontja szerinti szociális szolgáltatót és szociális intézményt kell érteni.
+
+## Általános szabályok
+
+2. § (1) [\*](#lbj6idf3cf) A fenntartó a személyes gondoskodás körébe tartozó szociális ellátásért térítési díjat (a továbbiakban: intézményi térítési díj) állapít meg, amelyet az Szt.-ben, e rendeletben, a fenntartó önkormányzatok rendeletében, valamint az Szt. 94/C. §-a, illetve a 2011. január 1-jét megelőzően hatályos 94/B. vagy 94/D. §-a szerinti megállapodásban (a továbbiakban együtt: megállapodás) foglaltak szerint kell megfizetni.
+
+(2) [\*](#lbj7idf3cf)
+
+(3) Ha az ellátásra jogosult tartási vagy öröklési szerződést kötött, a térítési díj fizetésére a tartást és gondozást szerződésben vállaló a kötelezett. Ilyen esetben a személyi térítési díj az intézményi térítési díjjal azonos összegű.
+
+(4) [\*](#lbj8idf3cf) Ha a családi pótlékot az intézmény vezetőjének folyósítják, akkor a családi pótlékra jutó személyi térítési díjat az intézményvezető fizeti be.
+
+(5) [\*](#lbj9idf3cf) A személyi térítési díj mellett eseti térítési díj kérhető a külön jogszabály szerinti alapfeladatok körébe nem tartozó szociális szolgáltatásokért, valamint az intézmény által szervezett szabadidős programokért. Az eseti térítési díj fizetésének eseteit a házirendben és a megállapodásban kell meghatározni.
+
+2/A. § [\*](#lbj10idf3cf) (1) Az Szt. 117/B. §-a szerinti esetben az ellátást igénylő vagy a térítési díjat megfizető más személy az intézményi térítési díjjal azonos személyi térítési díj megfizetését egy év időtartamra, tartós bentlakásos intézmény esetén legfeljebb három év időtartamra vállalhatja, amely időtartam meghosszabbítható.
+
+(2) Ha az (1) bekezdés szerinti időtartam meghosszabbítására nem kerül sor, az Szt.-nek a személyi térítési díj megállapítására vonatkozó általános szabályait kell alkalmazni.
+
+(3) [\*](#lbj11idf3cf) Az Szt. 68/B. §-a szerinti esetben az ellátást igénylő vagy a térítési díjat megfizető más személy a szolgáltatási önköltséggel azonos mértékű személyi térítési díj megfizetését határozatlan időre vagy határozott idejű megállapodás esetén legalább egy év időtartamra vállalja.
+
+3. § [\*](#lbj12idf3cf) (1) Az intézményi térítési díjat és a személyi térítési díjat
+
+a) étkeztetés esetén ellátási napra,
+
+b) [\*](#lbj13idf3cf) házi segítségnyújtás esetén gondozási órára,
+
+c) jelzőrendszeres házi segítségnyújtás esetén ellátási napra,
+
+d) támogató szolgáltatás esetén szolgálati órára és szállítási kilométerre,
+
+e) nappali ellátás esetén ellátási napra,
+
+f) [\*](#lbj14idf3cf) bentlakásos intézményi ellátás esetén ellátási napra,
+
+g) [\*](#lbj15idf3cf) a támogatott lakhatásban igénybe vett, az Szt. 75. § (1) bekezdés d) pont db) alpontja szerinti esetben ellátási napra, dh) pontja szerinti esetben szállítási kilométerre, da) , dc)–dg) és di) alpontja szerinti esetben órára
+
+vetítve kell meghatározni.
+
+(2) [\*](#lbj16idf3cf)
+
+(3) Az intézményi térítési díj szolgáltatónként, intézményenként, telephellyel rendelkező szolgáltató, intézmény esetén ellátást nyújtó székhelyenként, telephelyenként, továbbá bentlakásos intézményi ellátás esetén épületenként külön-külön is meghatározható.
+
+(4) A intézményi térítési díjat és a személyi térítési díjat az 1 és 2 forintos címletű érmék bevonása következtében szükséges kerekítés szabályairól szóló 2008. évi III. törvény 2. §-ának megfelelő módon kerekítve kell meghatározni.
+
+4. § (1) [\*](#lbj17idf3cf)
+
+(2)–(4) [\*](#lbj18idf3cf)
+
+(5) [\*](#lbj19idf3cf) A Szociális és Gyermekvédelmi Főigazgatóság által fenntartott intézmények intézményi térítési díját és belépési hozzájárulásának összegét a honlapján közzé kell tenni.
+
+(6) [\*](#lbj20idf3cf)
+
+4/A. § [\*](#lbj21idf3cf)
+
+4/B. § [\*](#lbj22idf3cf)
+
+5. § [\*](#lbj23idf3cf) (1) [\*](#lbj24idf3cf) Ha a személyi térítési díj az ellátás, szolgáltatás igénybevételét követő 30 napon belül nem állapítható meg, a térítési díj megállapítására jogosult térítésidíj-előleg fizetését kérheti.
+
+(2) A személyi térítési díj megállapításakor intézkedni kell arról, hogy az (1) bekezdés szerinti előleg, illetve az előleg fizetésének időszakára jutó személyi térítési díj közötti különbözet kiegyenlítése megtörténjen.
+
+(3) [\*](#lbj25idf3cf) Ha az önkormányzat rendelete, illetve a megállapodás eltérően nem rendelkezik, a személyi térítési díjat
+
+a) az átmeneti elhelyezést nyújtó intézményeknél legfeljebb egy havi időtartamra előre,
+
+b) más személyes gondoskodási formáknál havonta utólag
+
+kell megfizetni.
+
+(4) Ha a személyi térítési díjat előre kell megfizetni és az adott hónapra fizetendő térítési díj összege kevesebb lenne, mint a már befizetett összeg, az előre befizetett térítési díjat a következő fizetés alkalmával be kell számítani vagy azt vissza kell fizetni. Amennyiben a fizetendő személyi térítési díj összege növekszik, a befizetett és a ténylegesen fizetendő összeg különbözetét visszamenőleg meg kell téríteni.
+
+6. § [\*](#lbj26idf3cf) Ha az ellátott az étkeztetést, a jelzőrendszeres házi segítségnyújtást vagy a nappali ellátást a hónap nem mindegyik napján veszi igénybe, a napi személyi térítési díj – az Szt. 116. § (2) bekezdésében és 117/B. §-ában foglaltak kivételével – nem haladhatja meg az Szt. 116. § (3) bekezdése, illetve 117. § (1) bekezdése szerinti jövedelemhatár harmincad részét.
+
+7. § [\*](#lbj27idf3cf) (1) Ha a személyi térítési díj megállapítására, felülvizsgálatára nem az intézmény vezetője jogosult, a megállapításhoz, felülvizsgálathoz szükséges iratokat az intézmény vezetője – az ellátás igénybevételétől, illetőleg a felülvizsgálat kezdetétől számított 15 napon belül – megküldi az arra jogosult szervnek.
+
+(2) [\*](#lbj28idf3cf) A egyházi fenntartó vagy nem állami fenntartó által fenntartott intézményben lakó személyi térítési díját – ha az ellátási szerződés eltérően nem rendelkezik – a fenntartó állapítja meg és vizsgálja felül.
+
+8. § [\*](#lbj29idf3cf)
+
+## Étkeztetés
+
+9. § (1) [\*](#lbj30idf3cf)
+
+(2)–(3) [\*](#lbj31idf3cf)
+
+(4) [\*](#lbj32idf3cf) Az étkeztetés intézményi térítési díja aszerint differenciált, hogy az ételt a helyszínen fogyasztják el vagy az igénybevétel helyére szállítják. A kiosztó helyen, illetve a lakáson történő étkeztetés térítési díja a kiszállítás költségét is tartalmazza. Ha az étel lakásra történő kiszállítása közös háztartásban élő személyek részére történik, a kiszállításért fizetendő személyi térítési díjat csak egy személyre lehet megállapítani.
+
+(5) [\*](#lbj33idf3cf) Az étel helyben fogyasztásáért vagy elviteléért fizetendő személyi térítési díj a napi személyi térítési díj és az adott hónapban igénybe vett étkezési napok szorzata. Az étel kiszállítása esetén a személyi térítési díj a kiszállításra számított térítési díjnak és az adott hónapban kiszállítással igénybe vett étkezési napok szorzatának összegével növekszik. [\*](#lbj34idf3cf)
+
+(6) [\*](#lbj35idf3cf) Ha az ellátást betegség vagy más ok miatt a jogosult nem kívánja igénybe venni, a távolmaradást az intézmény vezetőjének legalább két munkanappal a távolmaradást megelőzően írásban be kell jelenteni. Ennek elmulasztása esetén a kötelezett a térítési díj megfizetésének kötelezettsége alól a távolmaradás kezdetétől számított 3. munkanaptól mentesül. A kötelezett a távolmaradás idejére mentesül a térítési díj megfizetésének kötelezettsége alól.
+
+10. § [\*](#lbj36idf3cf)
+
+11. § [\*](#lbj37idf3cf) Ha a fenntartó az étkeztetést több főzőhelyről biztosítja, az intézményi térítési díjat főzőhelyenként eltérően is meghatározhatja. Egy településen működtetett több főzőhely esetén az intézményi térítési díjat akkor lehet eltérően meghatározni, ha az ellátásban részesülő választhat, hogy az étkezést melyik főzőhelyről veszi igénybe.
+
+## Házi segítségnyújtás
+
+12. § [\*](#lbj38idf3cf)
+
+13. § (1) [\*](#lbj39idf3cf) A házi segítségnyújtásban részesülő által havonta fizetendő személyi térítési díjat az óradíj és az adott hónapban a házi segítségnyújtás keretében elvégzett tevékenységekre fordított idő szorzata alapján kell kiszámítani úgy, hogy annak összege – az Szt. 117/B. §-ában meghatározott esetet kivéve – ne haladja meg az Szt. 116. § (3) bekezdésében meghatározott mértéket. A házi segítségnyújtás keretében elvégzett tevékenységekre fordított időt a külön jogszabály szerinti tevékenységnapló alapján kell megállapítani.
+
+(2) [\*](#lbj40idf3cf)
+
+## Jelzőrendszeres házi segítségnyújtás [\*](#lbj41idf3cf)
+
+14. § [\*](#lbj42idf3cf) (1)–(2) [\*](#lbj43idf3cf)
+
+(3) A jelzőrendszeres házi segítségnyújtásért fizetendő személyi térítési díj azokra az ellátási napokra állapítandó meg, melyeken az igénylő otthonában működő jelzőkészülék található.
+
+## Támogató szolgálat [\*](#lbj44idf3cf)
+
+14/A. § [\*](#lbj45idf3cf) (1) [\*](#lbj46idf3cf) A támogató szolgáltatás térítési díja az óradíjból és szállítási kilométerdíjból áll.
+
+(2)–(5) [\*](#lbj47idf3cf)
+
+(6) [\*](#lbj48idf3cf) Ha az ellátott szállítása – pszichiáter vagy neurológus szakorvos által igazoltan – csak állandó felügyelet mellett biztosítható, a szállítás időtartama egyidejűleg személyi segítésként is elszámolható, azzal, hogy az ellátott csak a szállítási díjat fizeti meg.
+
+14/B. § [\*](#lbj49idf3cf)
+
+## Nappali ellátást nyújtó intézmények
+
+15. § (1) [\*](#lbj50idf3cf) Nappali ellátás esetében az intézményi térítési díjat külön meg kell határozni
+
+a) a csak napközbeni tartózkodást igénybe vevőkre, illetve
+
+b) a napközbeni tartózkodást és ott étkezést igénybe vevőkre, ahol az intézményi térítési díj megegyezik az a) pont szerint meghatározott és a (2) bekezdés szerinti díj összegével.
+
+(2) [\*](#lbj51idf3cf) A nappali ellátás keretében igénybe vett étkezés esetében a személyi térítési díj megállapítására a 9. § (5) bekezdésében foglaltak az irányadók.
+
+(3) Ha a jogosult az ellátást meghatározott ideig nem kívánja igénybe venni, azt a házirendben foglaltak szerint be kell jelenteni.
+
+(4) [\*](#lbj52idf3cf) Amennyiben a nappali ellátást nyújtó intézményben az ellátottról – átmenetileg – a házi segítségnyújtás keretében gondoskodnak, az ellátás intézményi térítési díjának, valamint a személyi térítési díjnak a megállapítására a 13. § rendelkezései ételemszerűen irányadók.
+
+(5) [\*](#lbj53idf3cf) A gyermekek védelméről és a gyámügyi igazgatásról szóló 1997. évi XXXI. törvény gyermekétkeztetésért fizetendő térítési díjra vonatkozó szabályait kell alkalmazni a fogyatékos gyermekek számára nappali ellátást nyújtó fogyatékosok nappali intézményében nyújtott étkeztetésre.
+
+(6) [\*](#lbj54idf3cf) Nappali ellátás esetén az adott hónapra fizetendő személyi térítési díj a napi személyi térítési díj és az ellátási napok szorzata.
+
+## Átmeneti és tartós bentlakásos intézményekre vonatkozó általános szabályok
+
+16. § [\*](#lbj55idf3cf) Ha az ellátott a bentlakásos intézményi ellátást a hónap nem mindegyik napján veszi igénybe, a távolléti napok számát meg kell szorozni a 28. §-ban foglaltak szerint számított csökkentett összegű napi személyi térítési díjjal, a jelenléti napok számát pedig meg kell szorozni a teljes összegű napi személyi térítési díjjal. A két szorzat összege az adott hónapra fizetendő térítési díj. A jelenléti napok számát úgy kell meghatározni, hogy az adott hónap napjainak számából le kell vonni a távolléti napok számát, valamint azoknak a napoknak a számát, amelyeken az intézményi jogviszony nem állt fenn.
+
+17. § [\*](#lbj56idf3cf) Ha az ellátott a bentlakásos intézményben az intézményi étkezést nem veszi igénybe, az intézményi térítési díjat az élelmezésre fordított költségekkel csökkentve kell megállapítani.
+
+18. § (1) [\*](#lbj57idf3cf) Ha az ellátásra jogosult a térítési díjat egészben vagy részben nem képes megfizetni, illetve nem fizeti meg, és az intézményi térítési díj vagy az önköltség erejéig, vagy annak egy részéig fennálló különbözet megfizetését megállapodás alapján sem vállalták, a tartására köteles hozzátartozó részére fizetési kötelezettséget akkor lehet megállapítani, ha a család havi összjövedelméből levonva a havi személyi térítési díjat, az egy főre jutó jövedelem meghaladja a szociális vetítési alap összegének két és félszeresét.
+
+(2) [\*](#lbj58idf3cf) Az (1) bekezdés szerinti térítési díj nem lehet magasabb, mint a család havi összjövedelmének és az Szt. 114. § (2) bekezdésének c) pontjában meghatározott értékhatár családtagok számával szorzott összegének különbözete.
+
+(3) Több egy sorban kötelezhető hozzátartozó esetén a térítési díjat vagy annak hiányzó részét a hozzátartozók jövedelmi viszonyai alapján – arányosan megosztva – kell megállapítani.
+
+19. § [\*](#lbj59idf3cf) A fizetendő személyi térítési díj összegét, a pénz- és ingatlanvagyon terhelését, a fizetési kötelezettség teljesítését, valamint a hátralékot – az Szt. 68/B. §-a és 117/B. §-a szerinti eset kivételével – nyilván kell tartani.
+
+20. § (1)–(2) [\*](#lbj60idf3cf)
+
+(3) [\*](#lbj61idf3cf)
+
+21. § (1) [\*](#lbj62idf3cf)
+
+(2) [\*](#lbj63idf3cf) A gondozási napokról – a hajléktalan személyek átmeneti szállásához vagy nappali melegedőjéhez kapcsolódó, az Szt. 84. § (2) bekezdés a) pontja szerinti lakhatási szolgáltatást nyújtó férőhelyek kivételével – a 4. számú melléklet szerinti nyilvántartást kell vezetni.
+
+## Hajléktalan személyek átmeneti szállása [\*](#lbj64idf3cf)
+
+22. § (1) [\*](#lbj65idf3cf) A hajléktalanok átmeneti szállására szolgáló intézményekben – a rehabilitációs célú intézmények és a hajléktalan személyek átmeneti szállásához vagy nappali melegedőjéhez kapcsolódó, az Szt. 84. § (2) bekezdés a) pontja szerinti lakhatási szolgáltatást nyújtó férőhelyek kivételével – a gondozás első 30 napjára személyi térítési díj nem kérhető.
+
+(2) [\*](#lbj66idf3cf) A hajléktalan személyek átmeneti szállása külső férőhelyén fizetendő lakhatási költség megállapítása során a 28. § (4) bekezdésében foglaltakat kell alkalmazni.
+
+23. § [\*](#lbj67idf3cf) A hajléktalan személyek átmeneti szállásán nyújtott étkezésért az étkeztetésre vonatkozó szabályok szerint kell térítési díjat fizetni.
+
+23/A. § [\*](#lbj68idf3cf)
+
+## Tartós bentlakásos intézmények
+
+24. § [\*](#lbj69idf3cf) A rehabilitációs intézményben elhelyezett ellátott és a rehabilitációs célú lakóotthonban határozott időre elhelyezett ellátott esetében a fenntartó a személyi térítési díj 50%-át előtakarékossági címen elkülönítetten kezelheti. Az előtakarékosság címén befizetett összeget elkülönített betétkönyvben, vagy elkülönített letéti számlán kell elhelyezni, és ki kell adni, ha az ellátott intézményi jogviszonya a sikeres rehabilitáció következtében megszűnik. Ha az intézményi jogviszony egyéb okból szűnik meg, az előtakarékosság címén befizetett összeget térítési díjhátralékként kell kezelni.
+
+25. § [\*](#lbj70idf3cf) (1) A támogatott lakhatás személyi térítési díja
+
+a) a 28. § (4) bekezdése szerinti lakhatási költségekből, és
+
+b) a komplex szükségletfelmérés alapján az Szt. 75. § (1) bekezdés d) pontja szerint igénybe vett egyéb szolgáltatások térítési díjából
+
+adódik össze.
+
+(2) [\*](#lbj71idf3cf)
+
+(3) [\*](#lbj72idf3cf) A támogatott lakhatás személyi térítési díja akkor érheti el az Szt. 117. § (2a) bekezdés szerinti mértéket, ha az ellátottnak a komplex szükségletfelmérés eredményeként az Szt. 67. § (1) bekezdése szerinti teljes körű ellátást kell nyújtani.
+
+26. § (1) [\*](#lbj73idf3cf) A személyi térítési díj meghatározásánál nem vehető figyelembe az ellátásban részesülő
+
+a) [\*](#lbj74idf3cf) foglalkoztatásából származó munkajutalma,
+
+b) tanulmányi ösztöndíja,
+
+c) költőpénze.
+
+(2) [\*](#lbj75idf3cf) Az ideiglenesen beutalt ellátott esetén az ideiglenes beutalás tartamára a térítési díj alapjául szolgáló jövedelmet az önálló lakás (ingatlan) fenntartásával kapcsolatos igazolt költségekkel (lakbér, hiteltörlesztés, közös költség stb.) csökkenteni lehet.
+
+27. § [\*](#lbj76idf3cf) (1) [\*](#lbj77idf3cf) Ha az ellátott gondnokság alatt áll, gondnoka – amennyiben az ellátott megfelelő jövedelemmel vagy készpénzvagyonnal rendelkezik – köteles – legalább az Szt. 117/A. §-a szerinti, a költőpénz összegével azonos összegű – készpénzt biztosítani a gondnokolt személyes szükségleteire. Amennyiben a gondnok e kötelességének nem tesz eleget, az intézményvezető erről – a szükséges intézkedés megtétele érdekében – tájékoztatja a gondnokot kirendelő gyámhatóságot.
+
+(2) [\*](#lbj78idf3cf) Az (1) bekezdés rendelkezéseit értelemszerűen kell alkalmazni a személyes gondoskodásban részesülő gyermekvédelmi gondoskodás alatt álló kiskorúak esetében is.
+
+28. § [\*](#lbj79idf3cf) (1) [\*](#lbj80idf3cf) Az ellátott két hónapot meg nem haladó távollét idejére – a rehabilitációs célú lakóotthoni ellátás és a támogatott lakhatás kivételével – a távollét minden napjára a napi személyi térítési díj 20%-át kell fizetni. A távolléti napok naptári éves szinten összesíthetők.
+
+(2) [\*](#lbj81idf3cf) Az ellátott két hónapot meghaladó távolléte idejére – a rehabilitációs célú lakóotthoni ellátás és a támogatott lakhatás kivételével –
+
+a) az egészségügyi intézményben történő kezelésének időtartama alatt, a távollét minden napjára a napi személyi térítési díj 40%-át,
+
+b) az a) pontban nem említett esetben a távollét minden napjára a napi személyi térítési díj 60%-át
+
+kell fizetni.
+
+(3) [\*](#lbj82idf3cf) A rehabilitációs lakóotthonban elhelyezett személy távolléte idejére személyi térítési díjként a lakhatási költség 100%-át fizeti. Távollétnek minősül az a gondozási nap, melyen az ellátott nem tartózkodik az intézményben.
+
+(4) [\*](#lbj83idf3cf) Lakhatási költség alatt a fűtés-, áram-, gáz-, víz- és csatornaszolgáltatásért, szemétszállításért fizetendő díjak és a közös költség együttes összege értendő.
+
+(5) Az (1)–(3) bekezdésben foglalt esetekben az egy napra jutó térítési díj megállapítása az intézmény vezetőjének feladata.
+
+(6) [\*](#lbj84idf3cf) E § szabályait – a hajléktalan személyek átmeneti szállásához vagy nappali melegedőjéhez kapcsolódó, az Szt. 84. § (2) bekezdés a) pontja szerinti lakhatási szolgáltatást nyújtó férőhelyek kivételével – az átmeneti elhelyezést nyújtó intézményekre is alkalmazni kell.
+
+(7) [\*](#lbj85idf3cf) A támogatott lakhatást igénybe vevő személy távolléte idejére személyi térítési díjként a lakhatási költség 100%-át, és ha távollétének ideje alatt az Szt. 75. § (1) bekezdés d) pontja szerint egyéb szolgáltatásokat igénybe veszi, a ténylegesen igénybe vett szolgáltatások térítési díját fizeti. Távollétnek minősül az a nap, melyen az ellátott nem tartózkodik a támogatott lakhatást biztosító ingatlanban.
+
+29. § (1) A felnőttkorban megvakultak rahabilitációját biztosító intézményben a vak személy önálló életre való felkészítése idejére csak az élelmezési költség megfizetésére kötelezhető.
+
+(2) [\*](#lbj86idf3cf) Nem kell térítési díjat fizetni a sikeres rehabilitáció érdekében történő, legfeljebb három hónap időtartamú eltávozás esetén, valamint a látás- és mozgássérült fogyatékos személyek intézményében a hivatalos iskolai szünet alatti távollét idejére.
+
+(3) [\*](#lbj87idf3cf)
+
+30. § Az intézményvezető döntésével az intézménybe vizsgálat vagy megfigyelés céljából felvett személy a személyi térítési díj 50%-át fizeti a vizsgálat vagy megfigyelés időtartamára.
+
+30/A. § [\*](#lbj88idf3cf) A lakóotthoni elhelyezés esetén, ha a megállapodás szerint az ellátott személyi térítési díj pótlék megfizetésére is köteles, a fenntartó részben a személyi térítési díj pótlékból fedezi a lakóotthon karbantartásának, felújításnak költségeit, berendezési tárgyainak cseréjét.
+
+## A térítési díj befizetése és ellenőrzése
+
+31. § (1) [\*](#lbj89idf3cf) A térítési díjat az igénybevétel napjától havonként – ha e rendelet, az önkormányzat rendelete vagy a megállapodás másként nem rendelkezik – a tárgyhónapot követő hónap 10. napjáig kell befizetni az ellátást nyújtó intézmény elszámolási számlájára.
+
+(2) [\*](#lbj90idf3cf) Az intézmény vezetője ellenőrzi, hogy a megállapított térítési díj befizetése havonként megtörténik-e. Ha a kötelezett a befizetést elmulasztotta, az intézményvezető 15 napos határidő megjelölésével a fizetésre kötelezett személyt írásban felhívja az elmaradt térítési díj befizetésére. Ha a határidő eredménytelenül telt el, az intézmény vezetője a kötelezett nevét, lakcímét és a fennálló díjhátralékot nyilvántartásba veszi.
+
+(3) [\*](#lbj91idf3cf) A (2) bekezdés szerint nyilvántartott díjhátralékról az intézmény vezetője negyedévenként tájékoztatja a fenntartót a térítési díjhátralék behajtása vagy a behajtatlan hátralék törlése érdekében. Az intézményvezető a fenntartót – az Szt. 119. § (3) bekezdése szerinti jelzálogbejegyzés kezdeményezéséről való döntés érdekében – évente értesíti a hátralékról.
+
+(4) [\*](#lbj92idf3cf) A Kormány az Szt. 119. §-a (3) bekezdésének alkalmazása során szociális hatóságnak az intézmény székhelye, telephelye szerint illetékes fővárosi és vármegyei kormányhivatalt jelöli ki.
+
+(4a) [\*](#lbj93idf3cf) A fővárosi és vármegyei kormányhivatal (4) bekezdés szerinti eljárásában a felügyeleti szerv a szociálpolitikáért felelős miniszter.
+
+(5) [\*](#lbj94idf3cf) A bejegyzett jelzálog hagyatéki teherként érvényesíthető.
+
+(6) [\*](#lbj95idf3cf) A Kormány az Szt. 17. § (1) bekezdés c) pontjának alkalmazása során az Szt. 17. § (3) bekezdése szerinti szociális hatáskört gyakorló szervként az intézmény székhelye, telephelye szerint illetékes fővárosi és vármegyei kormányhivatalt jelöli ki.
+
+32. § (1) Ez a rendelet 1993. február 26-án lép hatályba azzal, hogy ha a személyes gondoskodásra való jogosultságot a rendelet hatálybalépését követően állapítják meg vagy a jogosult intézményi elhelyezésére a rendelet hatálybalépését követően kerül sor a személyi térítési díjat az adott intézményben a rendelet hatálybalépése előtt megállapított térítési díj felső határa figyelembevételével kell megállapítani mindaddig, amíg a helyi önkormányzat az intézményi térítési díj összegéről nem határozott. Azoknál a személyes gondoskodást nyújtó intézményeknél, ahol térítési díj felső határa nincs meghatározva, az intézményi térítési díj megállapításáig a jogosult az ellátásban részesülők által fizetett térítési díj átlagának megfelelő térítési díjat fizet.
+
+(2) Az (1) bekezdés alapján fizetett térítési díj összeg nem haladhatja meg az Szt. 116. §-ában és a 117. § (1) és (2) bekezdésében meghatározott mértéket.
+
+32/A. § [\*](#lbj96idf3cf) A 2008. január 1-jén idősotthoni ellátásban részesülő személyre – ha az egyes szociális tárgyú törvények módosításáról szóló 2007. évi CXXI. törvény 81. § (6) vagy (10) bekezdése szerint nem kérik a jövedelemvizsgálatot – a térítési díj megállapítása során a jövedelmi helyzet vizsgálatára, a térítési díj alapjául figyelembe vehető jövedelemre, vagyonra, illetve ezek körére továbbra is a 2007. december 31-én hatályos szabályokat kell alkalmazni.
+
+33. § [\*](#lbj97idf3cf) (1) E rendeletnek a szociális szolgáltatási tárgyú kormányrendeleteknek az egyes szociális, gyermekvédelmi, családtámogatási, fogyatékosságügyi és foglalkoztatási tárgyú törvények módosításáról szóló 2010. évi CLXXI. törvénnyel összefüggő módosításáról szóló 357/2010. (XII. 30.) Korm. rendelettel megállapított, illetve módosított
+
+a) 3. §-át a térítési díj 2010. december 31-ét követő megállapítása és felülvizsgálata során kell alkalmazni,
+
+b) 16. §-át és 28. § (1)–(3) bekezdését a 2010. december 31-ét követő időszakra fizetendő térítési díjakra kell alkalmazni.
+
+(2) A 2010. december 31-éig kiadott jegyzői jövedelemigazolások alapján megállapított személyi térítési díj a személyi térítési díj soron következő felülvizsgálatáig alkalmazható.
+
+## 1. számú melléklet a 29/1993. (II. 17.) Korm. rendelethez [\*](#lbj98idf3cf)
+
+## 2. számú melléklet a 29/1993. (II. 17.) Korm. rendelethez [\*](#lbj99idf3cf)
+
+## 3. számú melléklet a 29/1993. (II. 17.) Korm. rendelethez [\*](#lbj100idf3cf)
+
+## 4. számú melléklet a 29/1993. (II. 17.) Korm. rendelethez [\*](#lbj101idf3cf)
+
+### NYILVÁNTARTÁS
+
+### a gondozási és élelmezési napok számának alakulásáról 20... évben
+
+| | | | | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| | | Ellátásra | Közülük távollevők száma | | | | | | |
+| Sor- szám | Hónap | jogosultak száma (gond. napok száma) | kórházban | szabadságon | engedély nélkül | Élelmezési napok száma | | Megjegyzés | |
+| | | | | | | | | | |
+
+Kitöltési utasítás:
+
+– A nyilvántartás az év első napjától (ahol év közben indul az ellátás, ott az indulás napjától) 1-es sorszámmal kezdődően naponta kell vezetni, ha változás nincs, akkor is.
+
+– Az ellátásra jogosultak számában azokat az ellátottakat is fel kell tüntetni, akik távol vannak, de beutalásuk (felvételük) nem szűnt meg, a férőhelyüket a távollét ideje alatt is fenn kell tartani. A gondozási napok száma, az ellátásra jogosultak száma és a betöltött férőhelyek száma azonos tartalommal bíró fogalmak, így összegük megegyezik.
+
+– Az ellátottak átlaglétszámát egy adott időszakban megkapjuk, ha a gondozási napok számát elosztjuk az adott időszak napjainak számával.
+
+– Az élelmezési napok számának a napi konyhaanyag-elszámolásban szereplő adatokkal egyeznie kell.
+
+---
