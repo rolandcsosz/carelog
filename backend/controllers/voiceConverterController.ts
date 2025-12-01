@@ -111,44 +111,14 @@ export class VoiceConverterController extends Controller {
                 return { error: "Nincsenek elérhető tevékenységek a naplóhoz", message: "" } as ErrorResponse;
             }
 
-            let voiceToTextResponse: GenerateContentResponse | null = null;
-
             const file = await ai.files.upload({
                 file: base64ToBlob(base64Audio, types[0].type),
                 config: { mimeType: types[0].type.split(";")[0] },
             });
 
-            try {
-                if (!file.uri) {
-                    this.setStatus(500);
-                    return { error: "Hiba a fájl feltöltésekor a Google szerverére", message: "" } as ErrorResponse;
-                }
-
-                voiceToTextResponse = await ai.models.generateContent({
-                    model: "gemini-2.5-flash",
-                    contents: [
-                        createPartFromUri(file.uri, types[0].type.split(";")[0]),
-                        {
-                            text: "Transcribe the speech in this audio exactly, including pauses and filler words. The speech is in Hungarian.",
-                        },
-                    ],
-                });
-            } catch (error) {
+            if (!file.uri) {
                 this.setStatus(500);
-                return {
-                    error: "Hiba a Google Speech-to-Text API hívásakor",
-                    message: getErrorMessage(error),
-                } as ErrorResponse;
-            }
-
-            if (!voiceToTextResponse) {
-                this.setStatus(500);
-                return { error: "Üres válasz a Google Speech-to-Text API-tól", message: "" } as ErrorResponse;
-            }
-
-            if (!voiceToTextResponse.text) {
-                this.setStatus(500);
-                return { error: "Nem sikerült szöveget kinyerni a hangfájlból", message: "" } as ErrorResponse;
+                return { error: "Hiba a fájl feltöltésekor a Google szerverére", message: "" } as ErrorResponse;
             }
 
             let convertResponse: GenerateContentResponse | null = null;
@@ -199,9 +169,9 @@ export class VoiceConverterController extends Controller {
                             Initial tasks:
                             ${JSON.stringify(log.tasks || [])}
 
-                            Caregiver transcription:
-                            "${voiceToTextResponse.text}"`,
+                            The caregiver's transcription is contained in the following audio file:`,
                         },
+                        createPartFromUri(file.uri, types[0].type.split(";")[0]),
                     ],
                 });
             } catch (error) {

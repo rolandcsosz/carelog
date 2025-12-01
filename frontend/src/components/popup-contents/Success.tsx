@@ -25,7 +25,6 @@ const Success: React.FC<SuccessProps> = ({ title, message }) => {
                 </svg>
             </div>
             <div className={styles.title}>{title}</div>
-
             <div className={styles.message}>{message}</div>
             <div />
         </div>

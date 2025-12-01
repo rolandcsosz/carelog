@@ -54,11 +54,9 @@ class Processor(BaseEmbeddingProcessor):
         for item in content_data:
             question = item["question"].strip()
             answer = item["answer"].strip()
-
             question_words = len(question.split())
-            max_answer_words = max(self.overlap, self.chunk_size - question_words)
-
-            answer_chunks = self.chunk_text_helper(answer, max_answer_words, self.overlap)
+            max_answer_word_count = max(self.overlap, self.chunk_size - question_words)
+            answer_chunks = self.chunk_text_helper(answer, max_answer_word_count, self.overlap)
 
             for chunk in answer_chunks:
                 formatted_text = f"Kérdés: {question}\nVálasz: {chunk}"

@@ -29,6 +29,14 @@ $checkmark-color: white;
     text-align: center;
 }
 
+.message {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
 .wrapper {
     flex-direction: column;
     justify-content: center;
