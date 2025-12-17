@@ -75,15 +75,20 @@ ${metadataText}
 
 Felhasználói kérdés: ${message}. Válaszolj csak magyarul.
 `.trim();
-
+    const startTime = Date.now();
     const response = await ai.models.generateContentStream({
         model: "gemini-2.5-flash",
         contents: [{ text: systemPrompt }],
     });
 
     let reply = "";
+    let firstChunk = true;
 
     for await (const chunk of response) {
+        if (firstChunk) {
+            console.log(`First token for user ${userId} received in ${Date.now() - startTime}ms after request.`);
+            firstChunk = false;
+        }
         if (!chunk.text) continue;
         pushToRedisStream(userId, chunk.text);
         reply += chunk.text;
@@ -145,6 +150,8 @@ const processPendingMessages = async () => {
     for (const msg of messages) {
         console.log(`Processing message ID: ${msg.id}`);
 
+        const startTime = Date.now();
+
         await redis.del(`chat:${msg.userId}:tokens`);
         try {
             await prisma.message.update({
@@ -155,6 +162,8 @@ const processPendingMessages = async () => {
             const embedding = await getEmbeddings(msg.content);
             const similarDocs = await searchEmbeddings(embedding);
             const metaDatas = await Promise.all(similarDocs.map((doc) => getMetaDataForDocument(doc.source)));
+
+            console.log(`Message ID: ${msg.id} - Retrieved ${similarDocs.length} similar documents in ${Date.now() - startTime}ms`);
 
             const fullMessage = await googleStream({
                 metaDatas: metaDatas,

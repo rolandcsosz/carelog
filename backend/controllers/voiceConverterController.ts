@@ -84,6 +84,8 @@ export class VoiceConverterController extends Controller {
             return { error: "Hiányzó kötelező mező", message: "" } as ErrorResponse;
         }
 
+        const queryStart = Date.now();
+
         try {
             const types = await prisma.mimeType.findMany({ where: { type: inputMimeType } });
             if (!types || types.length === 0) {
@@ -121,6 +123,10 @@ export class VoiceConverterController extends Controller {
                 return { error: "Hiba a fájl feltöltésekor a Google szerverére", message: "" } as ErrorResponse;
             }
 
+            console.log(`Query time + processing time: ${Date.now() - queryStart} ms`);
+
+            const apiTimeStart = Date.now();
+
             let convertResponse: GenerateContentResponse | null = null;
 
             try {
@@ -130,35 +136,38 @@ export class VoiceConverterController extends Controller {
                     contents: [
                         {
                             text: `
-                            You are a healthcare data analysis assistant.
-                            Your goal is to process caregivers' voice-to-text transcriptions and update or extend an existing structured list of subtasks in JSON format.
+                            Asszisztensként egészségügyi adatfeldolgozást végzel.  
+                            Feladatod, hogy a gondozók beszédfelismerésből származó szöveges leiratait feldolgozd, és egy meglévő, strukturált, JSON formátumú részfeladat-listát frissíts vagy bővíts.
 
-                            Each task follows this schema:
+                            Minden feladat a következő sémát követi:
                             {
-                            "subTaskId": "text",
-                            "startTime": "HH:mm:ss",
-                            "endTime": "HH:mm:ss",
-                            "done": boolean,
-                            "note": "text"
+                                "subTaskId": "szöveg",
+                                "startTime": "HH:mm:ss",
+                                "endTime": "HH:mm:ss",
+                                "done": boolean,
+                                "note": "szöveg"
                             }
 
-                            Inputs you receive:
-                            1. A list of all possible subtasks with their IDs and names.
-                            2. The caregiver's transcription text.
-                            3. An existing list of tasks (may be empty or partially filled).
+                            A bemeneteid:
+                            1. Az összes létező részfeladat listája azonosítókkal és nevekkel.
+                            2. A gondozó beszédfelismerésből származó szövege.
+                            3. Egy meglévő feladatlista (üres is lehet, vagy részben kitöltött).
 
-                            Your job:
-                            - Parse the transcription and identify which subtasks are mentioned.
-                            - If a task already exists in the initial list, update it with new information (e.g., add times, mark as done, append new notes).
-                            - If the transcription describes a new action, append it as a new subtask.
-                            - Use the predefined subTaskId list to map names to IDs.
-                            - Infer start and end times from context (“before lunch”, “around 10”, “after breakfast”).
-                            - If times are unclear, estimate logically based on order and other timestamps.
-                            - Determine “done” from context (e.g., “I measured” → done = true, “I will measure” → done = false).
-                            - Keep any important medical or contextual information in the note field.
-                            - Don't add not important information to the note field. Only important medical or contextual information.
-                            - Keep the output as a valid JSON array that represents the updated task list.
-                            - Do not include any explanation or text. Output JSON only. Do not include Markdown formatting, code blocks, or any text before or after.
+                            Feladatod:
+                            - Elemezd a szöveget, és azonosítsd, mely részfeladatok szerepelnek benne.
+                            - Ha a részfeladat már szerepel a meglévő listában, frissítsd az új információkkal  
+                            (pl. adj hozzá időpontokat, jelöld késznek, vagy egészítsd ki a megjegyzést).
+                            - Ha a szöveg egy új tevékenységet ír le, add hozzá új részfeladatként.
+                            - A megadott subTaskId lista alapján rendeld hozzá a megfelelő azonosítót.
+                            - Időpontokat következtess ki a szövegből (pl. „ebéd előtt”, „10 körül”, „reggeli után”).
+                            - Ha az időpont nem egyértelmű, következtesd ki logikusan a sorrend és más időadatok alapján.
+                            - Állapítsd meg, hogy a feladat el lett-e végezve (pl. „megmértem” → done = true; „meg fogom mérni” → done = false).
+                            - Csak lényeges orvosi vagy kontextuális információt adj a „note” mezőhöz.
+                            - Ne írj bele jelentéktelen részleteket.
+                            - A kimenet egy érvényes JSON tömb legyen, amely a frissített feladatlistát tartalmazza.
+                            - Ne adj magyarázatot vagy kiegészítő szöveget.  
+                            Csak a JSON legyen a kimenet.  
+                            Ne használj Markdown-t, kódblokkokat vagy bármilyen bevezető/záró szöveget.
                             `,
                         },
                         {
@@ -215,6 +224,8 @@ export class VoiceConverterController extends Controller {
                 doc: { tasks: tasksWithValidIds },
                 refresh: "wait_for",
             });
+
+            console.log(`Google API processing time: ${Date.now() - apiTimeStart} ms`);
 
             return successResponse;
         } catch (err: unknown) {
