@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - BACKEND_URL=http://localhost:8080
+    networks:
+      - app-network
+
+  redis:
+      image: redis:7
+      ports:
+        - "6379:6379"
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - backend/.env
+      - backend/.env.prod
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"]
+      interval: 5s
+      retries: 10
+
+  worker:
+    build:
+      context: backend
+      dockerfile: Dockerfile.worker
+    env_file:
+      - backend/.env
+      - backend/.env.prod
+    networks:
+      - app-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:14
+    restart: always
+    env_file:
+      - backend/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 5s
+      retries: 10
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200 || exit 1"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  pgdata:
+  esdata:
+
+networks:
+  app-network:
+    driver: bridge
