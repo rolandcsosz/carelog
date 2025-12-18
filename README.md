@@ -23,7 +23,7 @@ The project is configured to run easily using Docker Compose from the root direc
 * Docker & Docker Compose installed.
 * A valid **Google Gemini API Key**.
 
-### 1-Minute Setup
+### Setup With Seeded Data
 
 1. **Configure Backend:**
     Go to `backend/` directory, create a `.env` file from the template, and **add your API Key**.
@@ -39,12 +39,18 @@ The project is configured to run easily using Docker Compose from the root direc
 
     ```bash
     cd ..
-    docker-compose up -d
+    ./run.sh # On Windows, use run.bat
     ```
 
 1. **Access:**
     * **App:** [http://localhost](http://localhost) (Frontned)
     * **API:** [http://localhost:8080](http://localhost:8080) (Backend)
+
+For testing use the following default admin user credentials:
+* **Username:** admin@admin.hu
+* **Password:** pw123
+
+For every seeded user, the password is `pw123`.
 
 For detailed installation instructions (including manual setup and mobile builds), please refer to **[INSTALL.md](./INSTALL.md)**.
 

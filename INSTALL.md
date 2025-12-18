@@ -40,10 +40,10 @@ The backend needs environment variables to function (Database URL, API Keys).
 1. Run the compose command:
 
     ```bash
-    docker-compose up -d --build
+    ./run.sh # On Windows, use run.bat
     ```
 
-    *This command uses the `extends` feature to pull service definitions from `frontend/docker-compose.yml` and `backend/docker-compose.yml`.*
+    *This will start both the backend and frontend services.*
 
 ### Step 3: Access the Application
 
