@@ -1,4 +1,8 @@
-# Activity Log App - Frontend
+# Mobile Application (Frontend)
+
+> **Note:** For full system setup and installation instructions, please refer to the **[Root README](../README.md)**.
+
+This directory contains the Ionic + React frontend for the CareLog application.
 
 ## Local dev setup
 

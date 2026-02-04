@@ -1,61 +1,109 @@
-# Digital Logging with Voice Input and LLM-based Advisory in Social Care
+# CareLog - AI-Powered Social Care Logging
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Status](https://img.shields.io/badge/status-Active-success.svg)
+![Docker](https://img.shields.io/badge/docker-supported-blue)
 
-This repository contains the source code for the thesis titled **"Digitális naplózás hangbevitellel és LLM-alapú tanácsadás a szociális ellátásban"** (Digital Logging with Voice Input and LLM-based Advisory in Social Care).
+**CareLog** is a specialized digital solution engineered to alleviate the administrative burden within the **Hungarian social care system**. It addresses the critical challenge of time-consuming manual documentation, which often detracts from direct patient care.
 
-The system consists of three main components:
+By leveraging **Voice-to-Text** technology and **Large Language Models (LLMs)**, CareLog enables care workers to dictate logs and receive intelligent, regulation-compliant advisory support entirely in **Hungarian**.
 
-1. **Frontend:** Ionic + React mobile application.
-1. **Backend:** Node.js + Express + PostgreSQL API server.
-2. **RAG Module:** Python-based embedding generator for the AI advisory system.
+## 🚀 Key Features
 
-## Project Structure
+- **🗣️ Hungarian Voice-First Data Entry**: Care workers can dictate logs directly into the mobile app in Hungarian, saving time and reducing typing effort.
+- **🤖 AI Knowledge Support (RAG)**: A Retrieval-Augmented Generation module helps navigate complex care protocols and documents, providing instant, context-aware information to support decision-making.
+- **📱 Cross-Platform Mobile App**: Built with Ionic and React for a seamless experience on both iOS and Android.
+- **🔐 Secure Backend**: A robust Node.js/Express API ensuring data integrity and user authentication.
+- **🐳 Dockerized Deployment**: Fully containerized environment for easy setup and reproducibility.
 
-* **[frontend/](./frontend/README.md)** - Source code for the Mobile App.
-* **[backend/](./backend/README.md)** - Source code for the API Server.
-* **[backend/rag/](./backend/rag/README.md)** - Python scripts for document processing (RAG).
+## 🛠️ Tech Stack
 
-## Quick Start (Docker)
+### Frontend
+- **Framework**: [React](https://reactjs.org/) + [Ionic](https://ionicframework.com/)
+- **State Management**: [Recoil](https://recoiljs.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Testing**: [Vitest](https://vitest.dev/)
+- **Language**: TypeScript
 
-The project is configured to run easily using Docker Compose from the root directory.
+### Backend
+- **Runtime**: [Node.js](https://nodejs.org/)
+- **Framework**: [Express.js](https://expressjs.com/)
+- **API Spec**: [TSOA](https://tsoa-community.github.io/docs/) (OpenAPI/Swagger)
+- **Database**: [PostgreSQL](https://www.postgresql.org/) + [Prisma ORM](https://www.prisma.io/)
+- **Language**: TypeScript
+
+### AI / RAG Module
+- **Language**: Python
+- **LLM**: Google Gemini API
+- **Embeddings**: Vector-based document retrieval
+
+## 🏗️ Architecture
+
+The system follows a modern client-server architecture with a specialized microservice for AI processing.
+![Architecture](./frontend/public/architecture.png)
+
+## 🏁 Getting Started
 
 ### Prerequisites
 
-* Docker & Docker Compose installed.
-* A valid **Google Gemini API Key**.
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- A valid **Google Gemini API Key**
 
-### Setup With Seeded Data
+### 1. Clone the Repository
 
-1. **Configure Backend:**
-    Go to `backend/` directory, create a `.env` file from the template, and **add your API Key**.
+```bash
+git clone https://github.com/your-username/carelog.git
+cd carelog
+```
 
-    ```bash
-    cd backend
-    cp .env.prod .env
-    # Open .env and set GOOGLE_API_KEY=...
-    ```
+### 2. Configure Environment
 
-1. **Run the System:**
-    Go back to the root directory and start the services.
+The system requires simple configuration variables.
 
-    ```bash
-    cd ..
-    ./run.sh # On Windows, use run.bat
-    ```
+1. Navigate to `backend/` and create a `.env` file.
+2. Add your Google API Key:
+   ```env
+   GOOGLE_API_KEY=your_api_key_here
+   ```
 
-1. **Access:**
-    * **App:** [http://localhost](http://localhost) (Frontned)
-    * **API:** [http://localhost:8080](http://localhost:8080) (Backend)
+*See [INSTALL.md](./INSTALL.md) for full configuration details.*
 
-For testing use the following default admin user credentials:
-* **Username:** admin@admin.hu
-* **Password:** pw123
+### 3. Run with Docker
 
-For every seeded user, the password is `pw123`.
+We provide a specialized script to launch the entire stack in one go.
 
-For detailed installation instructions (including manual setup and mobile builds), please refer to **[INSTALL.md](./INSTALL.md)**.
+```bash
+# On Linux/Mac
+./run.sh
 
-## License
+# On Windows
+./run.bat
+```
 
-Copyright © 2025 *Roland Csősz*. All rights reserved.
+Access the applications at:
+- **Frontend**: http://localhost
+- **Backend API**: http://localhost:8080
 
-This project was developed as a BSc Thesis at the Budapest University of Technology and Economics (BME VIK).
+## 🧪 Development
+
+### Backend
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+For detailed contribution guidelines, please see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+*Created by Roland Csősz*
