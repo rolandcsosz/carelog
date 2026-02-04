@@ -26,7 +26,7 @@ const usePopup = () => {
             setIsClosing(false);
             setIsOpen(false);
             setPopupProps(null);
-        }, 300); // Adjust the timeout to match your closing animation duration
+        }, 300);
     }, [setIsOpen, setPopupProps, setIsClosing]);
 
     const handleButtonClick = useCallback(

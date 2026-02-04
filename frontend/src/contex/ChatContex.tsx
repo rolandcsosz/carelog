@@ -1,4 +1,3 @@
-// context/ChatContext.tsx
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useApi } from "../hooks/useApi";
 import { getChatHistory } from "../../api/sdk.gen";

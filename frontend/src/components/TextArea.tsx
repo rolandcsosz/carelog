@@ -23,8 +23,8 @@ const TextArea: React.FC<TextAreaProps> = ({
 
     useEffect(() => {
         if (textAreaRef.current) {
-            textAreaRef.current.style.height = "auto"; // reset height
-            textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight - 16}px`; // grow to fit content
+            textAreaRef.current.style.height = "auto";
+            textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight - 16}px`;
         }
     }, [text]);
 

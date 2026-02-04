@@ -22,8 +22,8 @@ interface RecipientPageProps {
 
 const moveItem = (arr: Todo[], fromIndex: number, toIndex: number): Todo[] => {
     const newArr = [...arr];
-    const [item] = newArr.splice(fromIndex, 1); // remove the item at fromIndex
-    newArr.splice(toIndex, 0, item); // insert the item at toIndex
+    const [item] = newArr.splice(fromIndex, 1);
+    newArr.splice(toIndex, 0, item);
     return newArr;
 };
 

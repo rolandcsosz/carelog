@@ -118,11 +118,8 @@ export const AudioRecorderForm = forwardRef<AudioRecorderFormRef, AudioRecorderF
                     }
 
                     await new Promise((resolve) => setTimeout(resolve, 100));
-
                     const chunks = allAudioChunksRef.current.filter((c) => c.size > 0);
 
-                    // Always call onRecordingComplete, even if there are no chunks
-                    // This ensures the promise in Log.tsx resolves even if no recording was made
                     if (chunks.length === 0) {
                         onRecordingComplete({
                             audioUrl: "",

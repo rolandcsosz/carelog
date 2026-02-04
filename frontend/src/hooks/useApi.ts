@@ -47,12 +47,9 @@ export function useApi() {
                 let errorMessage = "Hiba történt a kérés feldolgozása során.";
                 let errorDetails: any = null;
 
-                // Try to get actual error response body if present
                 if (error?.body) {
                     try {
                         errorDetails = typeof error.body === "string" ? JSON.parse(error.body) : error.body;
-
-                        // Optional: override the default errorMessage if backend sends a nice message
                         if (errorDetails?.error) {
                             errorMessage = errorDetails.error;
                         }

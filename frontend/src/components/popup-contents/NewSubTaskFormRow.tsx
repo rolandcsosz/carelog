@@ -18,10 +18,6 @@ const NewSubTaskFormRow: React.FC<NewSubTaskFormRowProps> = ({ taskOptions, onCh
 
     return (
         <>
-            {/*<div className={styles.formRow}> // TODO: if there will be a name field, uncomment this
-                <div className={styles.formLabel}>Megnevezés</div>
-                <TextInput text={name} placeholder="Megnevezés" onChange={setName} fillWidth={true} />
-            </div>*/}
             <div className={styles.formRow}>
                 <div className={styles.formLabel}>Kategória</div>
                 <Dropdown options={taskOptions} selected={task} onChange={setTask} fillWidth={true} />

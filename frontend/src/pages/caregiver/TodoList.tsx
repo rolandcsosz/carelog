@@ -49,7 +49,6 @@ const TodoList: React.FC<TodoListProps> = ({ dropdownOptions, items, onReorder, 
                         }}
                     >
                         <TodoItem
-                            //name={item.name} //TODO: add name for todo later
                             selectedItem={getTaskNameById(item.subtaskId)}
                             options={dropdownOptions}
                             index={0}

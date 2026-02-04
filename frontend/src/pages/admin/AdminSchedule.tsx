@@ -102,16 +102,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ userId, caregiverIds, rec
         }
     };
 
-    /*const handleDeleteSchedule = async (id: number) => { //TODO: implement delete schedule
-        const response = await schedules.delete(request, {
-            id: id,
-        });
-
-        if (response) {
-            refetchSchedules();
-        }
-    };*/
-
     const handleModifySchedule = async (schedule: NewScheduleData) => {
         if (!schedule.selectedOption) {
             return;

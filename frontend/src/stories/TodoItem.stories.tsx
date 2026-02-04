@@ -12,7 +12,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        //name: "name",
         selectedItem: "selectedItem",
         options: [],
         index: 0,

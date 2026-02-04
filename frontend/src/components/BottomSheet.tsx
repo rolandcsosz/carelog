@@ -69,34 +69,32 @@ export function BottomSheet() {
     };
 
     const closeSheetAnimated = () => {
-        // Use CSS transition for smoother closing
         setSheetHeight(SheetSize.CLOSED);
-        setTimeout(() => closeSheet(), 300); // Wait for the animation to complete before closing
+        setTimeout(() => closeSheet(), 300);
     };
 
     const openSheet = (targetSize: SheetSize) => {
-        // Use CSS transition to smoothly open the sheet
         setSheetHeight(targetSize);
     };
 
     useEffect(() => {
         if (isDragging) {
-            document.addEventListener("mousemove", handleDrag); // Add mousemove event listener
-            document.addEventListener("mouseup", handleDragEnd); // Add mouseup event listener
-            document.addEventListener("touchmove", handleDrag); // Add touchmove event listener
-            document.addEventListener("touchend", handleDragEnd); // Add touchend event listener
+            document.addEventListener("mousemove", handleDrag);
+            document.addEventListener("mouseup", handleDragEnd);
+            document.addEventListener("touchmove", handleDrag);
+            document.addEventListener("touchend", handleDragEnd);
         } else {
-            document.removeEventListener("mousemove", handleDrag); // Remove mousemove event listener
-            document.removeEventListener("mouseup", handleDragEnd); // Remove mouseup event listener
-            document.removeEventListener("touchmove", handleDrag); // Remove touchmove event listener
-            document.removeEventListener("touchend", handleDragEnd); // Remove touchend event listener
+            document.removeEventListener("mousemove", handleDrag);
+            document.removeEventListener("mouseup", handleDragEnd);
+            document.removeEventListener("touchmove", handleDrag);
+            document.removeEventListener("touchend", handleDragEnd);
         }
 
         return () => {
-            document.removeEventListener("mousemove", handleDrag); // Cleanup mousemove event listener
-            document.removeEventListener("mouseup", handleDragEnd); // Cleanup mouseup event listener
-            document.removeEventListener("touchmove", handleDrag); // Cleanup touchmove event listener
-            document.removeEventListener("touchend", handleDragEnd); // Cleanup touchend event listener
+            document.removeEventListener("mousemove", handleDrag);
+            document.removeEventListener("mouseup", handleDragEnd);
+            document.removeEventListener("touchmove", handleDrag);
+            document.removeEventListener("touchend", handleDragEnd);
         };
     }, [isDragging]);
 
@@ -106,31 +104,27 @@ export function BottomSheet() {
                 className={styles.bottomSheet}
                 ref={sheetRef}
                 style={{
-                    transform: `translateY(${sheetHeight}px)`, // Translate sheet based on height
+                    transform: `translateY(${sheetHeight}px)`,
                     height: `100vh`,
-                    transition: isDragging ? "none" : "transform 0.3s ease-in-out", // Use transform instead of height for smoother animations
+                    transition: isDragging ? "none" : "transform 0.3s ease-in-out",
                 }}
             >
                 <div
                     className={styles.handleArea}
-                    onMouseDown={handleDragStart} // Start drag on mousedown
-                    onTouchStart={handleDragStart} // Start drag on touchstart
+                    onMouseDown={handleDragStart}
+                    onTouchStart={handleDragStart}
                     onClick={() => {
                         openSheet(sheetHeight);
-                    }} // Toggle sheet size on click
+                    }}
                 >
                     <div className={styles.handleBar} />
                 </div>
-                <button
-                    className={styles.closeButton}
-                    onClick={closeSheetAnimated} // Close sheet with animation
-                >
+                <button className={styles.closeButton} onClick={closeSheetAnimated}>
                     <img src={sheetCloseButtonUrl} alt="Close" />
                 </button>
                 <div className={styles.bottomSheetContent}>
                     <Log />
-                </div>{" "}
-                {/* Render sheet content */}
+                </div>
             </div>
         )
     );

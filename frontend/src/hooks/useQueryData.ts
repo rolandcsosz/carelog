@@ -14,7 +14,6 @@ const useQueryData = ({ mode = "caregiver" }: { mode?: "caregiver" | "admin" } =
         subTasks,
     } = mode === "caregiver" ? useCaregiverModel() : useAdminModel();
 
-    // Caregiver helper
     const getRecipientForLog = useCallback(
         (log: LogEntry): RecipientWithoutPassword | undefined => {
             const relationship = caregiverRelationShips.list?.find(
@@ -33,7 +32,6 @@ const useQueryData = ({ mode = "caregiver" }: { mode?: "caregiver" | "admin" } =
         [caregiverRelationShips.list, caregiverRecipients.list],
     );
 
-    // Caregiver helper
     const getRecipientForSchedule = useCallback(
         (schedule: Schedule): RecipientWithoutPassword | undefined => {
             const relationship = caregiverRelationShips.list?.find(
@@ -52,7 +50,6 @@ const useQueryData = ({ mode = "caregiver" }: { mode?: "caregiver" | "admin" } =
         [caregiverRelationShips.list, caregiverRecipients.list],
     );
 
-    // Caregiver helper
     const getFilteredSchedules = useCallback(
         (selectedDate: Date): Schedule[] => {
             return (
@@ -68,7 +65,6 @@ const useQueryData = ({ mode = "caregiver" }: { mode?: "caregiver" | "admin" } =
         [caregiverSchadules.list],
     );
 
-    // Caregiver helper
     const getLogsForRecipient = useCallback(
         (recipient: RecipientWithoutPassword): LogEntry[] | undefined => {
             let filteredLogs = logs.list?.filter((log) =>

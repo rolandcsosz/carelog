@@ -2,11 +2,9 @@ import dotenv from "dotenv";
 import { OpenAPI } from "./api/core/OpenAPI";
 import { getLogById, processAudio, sendMessage, updateLog } from "./api/sdk.gen";
 import { GetLogByIdData, ProcessAudioData, SendMessageData } from "./api/types.gen";
-import WebSocket from 'ws';
+import WebSocket from "ws";
 import path from "path";
 import fs from "fs";
-
-
 
 dotenv.config();
 
@@ -17,20 +15,20 @@ const TEST_USER_ID = "";
 const AUTH_TOKEN = "";
 OpenAPI.TOKEN = AUTH_TOKEN;
 
-const TEST_QUESTIONS =
-["Milyen alapfeltételeknek kell megfelelnie egy személynek, hogy házi segítségnyújtásban részesülhessen?",
-"Hogyan lehet igényelni a házi segítségnyújtást és milyen dokumentumokat kell benyújtani hozzá?",
-"Mi a házi segítségnyújtás célja és milyen tevékenységeket foglal magában?",
-"Melyek a házi segítségnyújtás keretében ellátott személy jogai és kötelezettségei?",
-"Milyen időtartamra és milyen gyakorisággal lehet házi segítségnyújtást igénybe venni?",
-"Milyen szabályok vonatkoznak a házi gondozó munkavégzésére?",
-"Hogyan kell dokumentálni a házi segítségnyújtás során végzett tevékenységeket?",
-"Milyen higiéniai előírásokat kell betartani a gondozás során?",
-"Hogyan kell eljárni, ha a gondozott állapota hirtelen romlik?",
-"Milyen kommunikációs és konfliktuskezelési szabályok vonatkoznak a gondozóra?"]
+const TEST_QUESTIONS = [
+    "Milyen alapfeltételeknek kell megfelelnie egy személynek, hogy házi segítségnyújtásban részesülhessen?",
+    "Hogyan lehet igényelni a házi segítségnyújtást és milyen dokumentumokat kell benyújtani hozzá?",
+    "Mi a házi segítségnyújtás célja és milyen tevékenységeket foglal magában?",
+    "Melyek a házi segítségnyújtás keretében ellátott személy jogai és kötelezettségei?",
+    "Milyen időtartamra és milyen gyakorisággal lehet házi segítségnyújtást igénybe venni?",
+    "Milyen szabályok vonatkoznak a házi gondozó munkavégzésére?",
+    "Hogyan kell dokumentálni a házi segítségnyújtás során végzett tevékenységeket?",
+    "Milyen higiéniai előírásokat kell betartani a gondozás során?",
+    "Hogyan kell eljárni, ha a gondozott állapota hirtelen romlik?",
+    "Milyen kommunikációs és konfliktuskezelési szabályok vonatkoznak a gondozóra?",
+];
 
-
-const TEST_AUDIO_FILE = "clean.webm"; // Custom audio file path
+const TEST_AUDIO_FILE = "clean.webm";
 const TEST_MIME_TYPE = "audio/webm;codecs=opus";
 
 const NUM_ITERATIONS = 10;
@@ -48,10 +46,8 @@ type WebSocketData = {
     token: string;
 };
 
-
 async function runRagTest(iteration: number): Promise<BenchmarkResult> {
     return new Promise((resolve) => {
-
         let ws: WebSocket | null = null;
         let startTime = 0;
         let firstTokenTime = 0;
@@ -62,17 +58,19 @@ async function runRagTest(iteration: number): Promise<BenchmarkResult> {
         const connect = () => {
             ws = new WebSocket(`${WS_URL}?token=${AUTH_TOKEN}`);
 
-            ws.addEventListener('open', async () => {
+            ws.addEventListener("open", async () => {
                 console.log(`[${iteration}] WS Connected`);
 
                 try {
                     startTime = Date.now();
-                    const response = await sendMessage({ requestBody:{
-                        caregiverId: TEST_USER_ID,
-                        content: TEST_QUESTIONS[iteration],
-                    }} as SendMessageData);
+                    const response = await sendMessage({
+                        requestBody: {
+                            caregiverId: TEST_USER_ID,
+                            content: TEST_QUESTIONS[iteration],
+                        },
+                    } as SendMessageData);
 
-                    if(!response) {
+                    if (!response) {
                         throw new Error("No messageId in response");
                     }
 
@@ -83,9 +81,9 @@ async function runRagTest(iteration: number): Promise<BenchmarkResult> {
                 }
             });
 
-            ws.addEventListener('message', (event) => {
+            ws.addEventListener("message", (event) => {
                 const data = JSON.parse(
-                    typeof event.data === "string" ? event.data : event.data.toString()
+                    typeof event.data === "string" ? event.data : event.data.toString(),
                 ) as WebSocketData;
 
                 if (data.type === "token") {
@@ -101,16 +99,16 @@ async function runRagTest(iteration: number): Promise<BenchmarkResult> {
                     resolve({
                         ttft: firstTokenTime - startTime,
                         totalTime: endTime - startTime,
-                        success: data.type === "completion"
+                        success: data.type === "completion",
                     });
                 }
             });
 
-            ws.addEventListener('close', () => {
+            ws.addEventListener("close", () => {
                 console.log("WebSocket closed");
             });
 
-            ws.addEventListener('error', (err: any) => {
+            ws.addEventListener("error", (err: any) => {
                 console.error(`[${iteration}] WS Error:`, err);
                 resolve({ ttft: 0, totalTime: 0, success: false });
             });
@@ -120,7 +118,6 @@ async function runRagTest(iteration: number): Promise<BenchmarkResult> {
     });
 }
 
-
 async function runAudioTest(iteration: number): Promise<BenchmarkResult> {
     const filePath = path.join(".", TEST_AUDIO_FILE);
     if (!fs.existsSync(filePath)) {
@@ -129,20 +126,19 @@ async function runAudioTest(iteration: number): Promise<BenchmarkResult> {
     }
 
     const fileBuffer = fs.readFileSync(filePath);
-   const base64AudioNormal =  fileBuffer.toString('base64');
-    const logId = ""; // Changed to a fixed log ID for testing
+    const base64AudioNormal = fileBuffer.toString("base64");
+    const logId = "";
 
     const startTime = Date.now();
 
     try {
-
         await updateLog({
             id: logId,
-            requestBody : {"relationshipId":"","finished":false,"closed":false,"tasks":[], date: "2025-12-01"} // Update id
+            requestBody: { relationshipId: "", finished: false, closed: false, tasks: [], date: "2025-12-01" },
         });
 
         const baseState = await getLogById({
-            id: logId
+            id: logId,
         } as GetLogByIdData);
 
         console.log(`[${iteration}] Retrieved log state: ${JSON.stringify(baseState)}`);
@@ -151,35 +147,33 @@ async function runAudioTest(iteration: number): Promise<BenchmarkResult> {
             requestBody: {
                 logId: logId,
                 inputMimeType: TEST_MIME_TYPE,
-                base64Audio: base64AudioNormal
-            }
+                base64Audio: base64AudioNormal,
+            },
         } as ProcessAudioData);
 
         console.log(response);
 
-        if(!response) {
+        if (!response) {
             throw new Error("Audio processing failed to start");
         }
 
         const endTime = Date.now();
 
         const updatedLog = await getLogById({
-            id: logId
+            id: logId,
         } as GetLogByIdData);
         console.log(`[${iteration}] Updated log state: ${JSON.stringify(updatedLog)}`);
 
         return {
             ttft: 0,
             totalTime: endTime - startTime,
-            success: true
+            success: true,
         };
-
     } catch (error) {
         console.error(`[${iteration}] Audio Error:`, (error as Error).message);
         return { ttft: 0, totalTime: 0, success: false };
     }
 }
-
 
 async function main() {
     console.log("Starting Benchmarks...");
@@ -218,8 +212,8 @@ function printStats(name: string, results: BenchmarkResult[]) {
         return;
     }
 
-    const ttfts = results.map(r => r.ttft).filter(t => t > 0);
-    const totals = results.map(r => r.totalTime);
+    const ttfts = results.map((r) => r.ttft).filter((t) => t > 0);
+    const totals = results.map((r) => r.totalTime);
 
     const avgTotal = totals.reduce((a, b) => a + b, 0) / totals.length;
     const minTotal = Math.min(...totals);

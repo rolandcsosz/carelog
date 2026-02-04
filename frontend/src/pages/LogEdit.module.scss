@@ -28,8 +28,7 @@
     background-color: #fbfbfb;
     border-bottom: none;
     flex-shrink: 0;
-    //transition: border-color 0.3s ease-in-out;
-    transition: background-color 0.1s ease-in-out; // <--- ADD THIS
+    transition: background-color 0.1s ease-in-out;
 }
 
 .profileHeaderText {
