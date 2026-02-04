@@ -1,7 +1,10 @@
-# CareLog - AI-Powered Social Care Logging
+# CareLog - Smart Logging for Social Care
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-Active-success.svg)
 ![Docker](https://img.shields.io/badge/docker-supported-blue)
+
+
+![CareLog](./frontend/public/tumbnail.png)
 
 **CareLog** is a specialized digital solution engineered to alleviate the administrative burden within the **Hungarian social care system**. It addresses the critical challenge of time-consuming manual documentation, which often detracts from direct patient care.
 
@@ -9,19 +12,16 @@ By leveraging **Voice-to-Text** technology and **Large Language Models (LLMs)**,
 
 ## 🚀 Key Features
 
-- **🗣️ Hungarian Voice-First Data Entry**: Care workers can dictate logs directly into the mobile app in Hungarian, saving time and reducing typing effort.
-- **🤖 AI Knowledge Support (RAG)**: A Retrieval-Augmented Generation module helps navigate complex care protocols and documents, providing instant, context-aware information to support decision-making.
-- **📱 Cross-Platform Mobile App**: Built with Ionic and React for a seamless experience on both iOS and Android.
-- **🔐 Secure Backend**: A robust Node.js/Express API ensuring data integrity and user authentication.
-- **🐳 Dockerized Deployment**: Fully containerized environment for easy setup and reproducibility.
+- **Cross-Platform Mobile App**: Built with Ionic and React for a seamless experience on both iOS and Android.
+- **Hungarian Voice-First Data Entry**: Care workers can dictate logs directly into the mobile app in Hungarian, saving time and reducing typing effort.
+- **AI Knowledge Support (RAG)**: A Retrieval-Augmented Generation module helps navigate complex care protocols and documents, providing instant, context-aware information to support decision-making.
+- **Dockerized Deployment**: Fully containerized environment for easy setup and reproducibility.
 
 ## 🛠️ Tech Stack
 
 ### Frontend
 - **Framework**: [React](https://reactjs.org/) + [Ionic](https://ionicframework.com/)
 - **State Management**: [Recoil](https://recoiljs.org/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
-- **Testing**: [Vitest](https://vitest.dev/)
 - **Language**: TypeScript
 
 ### Backend
@@ -38,14 +38,21 @@ By leveraging **Voice-to-Text** technology and **Large Language Models (LLMs)**,
 
 ## 🏗️ Architecture
 
-The system follows a modern client-server architecture with a specialized microservice for AI processing.
+The system follows a modern client-server architecture with a specialized microservice for AI processing. The following components are used:
+- **Frontend**: React + Ionic
+- **Backend**: Node.js + Express.js
+- Databases: **PostgreSQL** + **Elasticsearch** (used as a vector database)
+- **Worker node** for async tasks: Node.js + Express.js
+- **Redis** for message queue
+- AI and pre-processing RAG module: Python + Google Gemini API
+
 ![Architecture](./frontend/public/architecture.png)
 
 ## 🏁 Getting Started
 
 ### Prerequisites
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [Docker compose](https://docs.docker.com/compose/)
 - A valid **Google Gemini API Key**
 
 ### 1. Clone the Repository

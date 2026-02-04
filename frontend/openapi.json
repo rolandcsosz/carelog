@@ -314,7 +314,7 @@
         },
         "securitySchemes": { "jwt": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" } }
     },
-    "info": { "title": "activity-log-app-backend", "version": "0.0.0", "license": { "name": "ISC" }, "contact": {} },
+    "info": { "title": "carelog-backend", "version": "0.0.0", "license": { "name": "ISC" }, "contact": {} },
     "paths": {
         "/logs": {
             "post": {
